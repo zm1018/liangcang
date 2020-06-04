@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form表单学习</title>
+</head>
+
+<body>
+    <h2>form表单知识点</h2>
+
+    <!-- action属性写url地址的，method属性是写请求方式的，常用两种：get和post，name属性是写这个表单叫什么名字的 -->
+    <form action="#" method="GET" name="#">
+        <!-- label标签是input标签元素的定义标注，用来绑定一个表单元素，增加用户体验的，属性for要和绑定的那个input的id属性名字相同，作用比如：按钮特别小，想让鼠标移到按钮那块内容就可以点击选中 -->
+        <label for="某个input控件的名字"></label>
+        <!-- type属性的属性值：text表示文本，可以在里面输入任何文字，password密码，输入内容时会变成隐形的圆点,每个type属性都要取名字用于区别，用input的name属性实现,value属性类似于输入框的提示信息,maxlength规定用户输入的字符内容最大长度-->
+        姓名：<input type="text" name="username" value="请输入用户名">
+        <br> 密码：<input type="password" name="psd" maxlength="8">
+        <br>
+        <!-- input的checked属性是首次加载页面就选中指定按钮，是针对radio和checkbox设置的属性 -->
+        <!-- radio是单选按钮，如果想实现多个里只能选一个，需要给多个radio取个相同的name，这里还演示label标签的用法-->
+        性别：<label for="nan">男</label> <input type="radio" name="sex" id="nan"> 女<input type="radio" name="sex" checked="checked">
+        <br>
+        <!-- 多选框按钮 -->
+        爱好：吃饭<input type="checkbox" name="hobby">睡觉<input type="checkbox" name="hobby"> 打豆豆<input type="checkbox" name="hobby">
+        <br>
+        <!-- submit提交按钮,这个按钮是向服务器提交数据的 ，reset是重置按钮，用户填的内容可以点这个按钮一键清空到啥都没填时,button是普通按钮，经常后期结合js用的-->
+        <input type="submit" value="免费注册"><input type="reset"><input type="button" value="我是普通按钮">
+        <br>
+        <!-- file是文件域按钮，用来上传文件的 -->
+        上传头像：<input type="file">
+        <br>
+        <hr>
+        <!-- select标签是下拉列表，节省页面空间的。里面最少写一个option标签来设置选项内容,默认显示第一个option内容 -->
+        籍贯：
+        <select name="" id="">
+            <option value="">北京</option>
+            <option value="">上海</option>
+            <option value="">广州</option>
+            <!-- selected属性是设置默认选中的，哪个option需要首次进入页面就默认选中，就写在哪个option标签里 -->
+            <option value="" selected='selected'>浙江</option>
+        </select>
+        <hr>
+        <!-- textarea标签是文本域，是多行文本输入的控件，一般用来写留言、评论，属性cols是一行显示多少个字，rows是显示多少行 -->
+        今日反馈：
+        <textarea name="" id="" cols="30" rows="10">今天天气不错啊</textarea>
+
+    </form>
+    <hr>
+    <hr>
+
+
+
+    <h3>自己写的练习作业</h3>
+    <form action="#" method="GET" name="#">
+        <table>
+            <col width='100'>
+            <tr>
+                <h4>青春不常在，抓紧谈恋爱</h4>
+            </tr>
+            <tr>
+                <td width="80">性别：</td>
+                <td><input type="radio" name="gender" id="boy" checked="checked">
+                    <label for="boy"><img src="image/nan.jpg" alt="">男</label></td>
+                <td><input type="radio" name="gender" id="nv"><label for="nv"><img src="image/nv.jpg" alt="">女</label></td>
+            </tr>
+            <tr>
+                <td width="80">生日：</td>
+                <td><select>
+                        <option>请选择年</option>
+                        <option value="">2020年</option>
+                        <option value="">2019年</option>
+                        <option value="">2018年</option>
+                    </select></td>
+                <td><select name="" id="">
+                        <option value="">请选择月</option>
+                        <option value="">1月</option>
+                        <option value="">2月</option>
+                        <option value="">3月</option>
+                    </select></td>
+                <td><select name="" id="">
+                        <option value="">请选择日</option>
+                        <option value="">1</option>
+                        <option value="">15</option>
+                        <option value="">30</option>
+                    </select></td>
+            </tr>
+            <tr>
+                <td width="80">所在地区：</td>
+                <td colspan="2"><input type="text" value="北京思密达"></td>
+            </tr>
+            <tr>
+                <td width="80">婚姻状况：</td>
+                <td><input type="radio" name="hun" id="weihun" checked="checked"><label for="weihun">未婚</label></td>
+                <td><input type="radio" name="hun" id="yihun"><label for="yihun">已婚</label></td>
+                <td><input type="radio" name="hun" id="lihun"><label for="lihun">离婚</label></td>
+
+            </tr>
+            <tr>
+                <td width="80">学历：</td>
+                <td><select name="" id="">
+                <option value="">幼儿园</option>
+                <option value="">小学</option>
+                <option value="">大学</option>
+            </select></td>
+            </tr>
+            <!-- 多选项按钮放在一个单元格的写法,要不就table标签那设置表格宽度，要不就td标签这里跨列合并单元格 -->
+            <tr>
+                <td>喜欢的类型：</td>
+                <td colspan="4">
+                    <input type="checkbox" name="like" id="wumei"><label for="wumei"> 妩媚的</label>
+                    <input type="checkbox" name="like" id="keai"><label for="keai">可爱的</label>
+                    <input type="checkbox" name="like" id="xiao"><label for="xiao">小鲜肉</label>
+                    <input type="checkbox" name="like" id="lao"><label for="lao">老腊肉</label>
+                    <input type="checkbox" name="like" id="dou"><label for="dou">都喜欢</label>
+                </td>
+            </tr>
+            <tr>
+                <td>喜欢的类型:</td>
+                <td><input type="checkbox" name="like" id="wumei"><label for="wumei"> 妩媚的</label></td>
+                <td><input type="checkbox" name="like" id="keai"><label for="keai">可爱的</label> </td>
+                <td><input type="checkbox" name="like" id="xiao"><label for="xiao">小鲜肉</label></td>
+                <td><input type="checkbox" name="like" id="lao"><label for="lao">老腊肉</label></td>
+                <td><input type="checkbox" name="like" id="dou"><label for="dou">都喜欢</label></td>
+            </tr>
+            <tr>
+                <td width='80'>自我介绍:</td>
+                <td colspan="3"><textarea name="" id="" cols="30" rows="2">自我介绍</textarea></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value='免费注册'></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="3">
+                    <input type="checkbox" name="tiaokuan" id="tongyi" checked='checked'>
+                    <label for="tongyi">我同意注册条款和会员加入标准</label>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="2"><a href="#">我是会员，立即登录</a></td>
+            </tr>
+            <!-- 列表最好写ul无序列表 -->
+            <tr>
+                <td></td>
+                <td colspan="4">
+                    <h3>我承诺</h3>
+                    <ul>
+                        <li>年满18岁，单身</li>
+                        <li>抱着严肃的态度</li>
+                        <li>真诚寻找另一半</li>
+                    </ul>
+                </td>
+            </tr>
+
+
+            <hr>
+            <tr>
+                <td></td>
+                <td colspan="2">
+                    <dl>
+                        <dt><h3>我承诺</h3></dt>
+                        <dd>
+                            <li>年满18岁，单身</li>
+                            <li>抱着严肃的态度</li>
+                            <li>真诚寻找另一半</li>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 复合选择器学习 -->
+    <style>
+        /* 后代选择器，可以选择父标签下的所有子标签，用空格隔开，效果如下： */
+        
+        ul li {
+            color: blue;
+        }
+        
+        .two li {
+            color: green;
+        }
+        
+        ol li {
+            color: red;
+        }
+        /* 后代选择器可以进入到最里层，只要是被父类包裹的，都可以选，这里选择a标签，效果如下 */
+        
+        ol li a {
+            color: rgb(9, 6, 43);
+        }
+        /* 子选择器，只能选择父元素最近的一级子元素，用>隔开，效果如下： */
+        
+        div>a {
+            font-weight: 700;
+            text-decoration: none;
+        }
+        /* 并集选择器，可以选多个标签，同时为他们定义相同的样式，用，隔开，整个页面所有的这几种标签都会被选择，效果如下： */
+        
+        .san,
+        p,
+        h3 {
+            text-align: center;
+        }
+        /* 伪类选择器，常用2种：链接伪类选择器、focus伪类选择器，都用：隔开 */
+        /* 链接伪类选择器，4种，书写顺序一定要按L V H A来写 ，如下：*/
+        /* link是没被点击的链接 */
+        
+        .lianjie:link {
+            text-decoration: none;
+            color: black;
+        }
+        /* visited是点击过的链接 */
+        
+        .lianjie.visited {
+            color: red;
+        }
+        /* hover是鼠标经过时的链接 */
+        
+        .lianjie:hover {
+            color: violet;
+            text-decoration: underline;
+        }
+        /* active是鼠标点着没松开时的链接 */
+        
+        .lianjie:active {
+            color: yellow;
+        }
+        /* focus伪类选择器，主要是获取焦点（鼠标光标）的表单元素，一般是input标签用的 */
+        
+        input:focus {
+            background: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 后代选择器，选择ul里的所有li标签，演示 -->
+    <ul>
+        <li>后代选择器演示</li>
+        <li>后代选择器演示</li>
+    </ul>
+    <ul class="two">
+        <li>后代选择器演示两个ul标签可以通过类名选择里面的li标签，演示1</li>
+        <li>后代选择器演示两个ul标签可以通过类名选择里面的li标签，演示2</li>
+        <li>后代选择器演示两个ul标签可以通过类名选择里面的li标签，演示3</li>
+    </ul>
+    <ol>
+        <li>后代选择器演示1</li>
+        <li>
+            <p>哈哈哈</p>
+        </li>
+        <li>后代选择器演示2</li>
+        <li><a href="">后代选择器演示选择a标签</a></li>
+    </ol>
+    <!-- 子选择器，这里选择div里的a标签，只会对第一级的a有效，演示 -->
+    <div>
+        <a href="">a标签子选择器演示1</a>
+        <p><a href="">a标签子选择器演示2</a> p标签并集选择器演示</p>
+    </div>
+    <!-- 并集选择器，同时选择多组标签 -->
+    <p>并集选择器演示</p>
+    <h3>并集选择器演示</h3>
+    <div class="san">并集选择器演示</div>
+
+    <!-- 链接伪类选择器，演示-->
+    <a href="#" class="lianjie">链接伪类选择器1</a><br>
+    <a href="#" class="lianjie">链接伪类选择器2</a><br>
+    <a href="#" class="lianjie">链接伪类选择器3</a><br>
+    <a href="#" class="lianjie">链接伪类选择器4</a><br>
+    <!-- focus伪类选择器，演示 -->
+    <input type="text">
+    <input type="text">
+    <input type="text">
+</body>
+
+</html>

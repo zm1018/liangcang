@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>这是网页的名字</title>
+</head>
+
+<body>
+    <h1 id="maodian">html的常用标签，如下：</h1>
+    <br>
+    <h1>h是head的缩写，这是一号标题</h1>
+    <h2>这是二号标题</h2>
+    <h3>这是三号标题</h3>
+    <h4>这是四号标题</h4>
+    <h5>这是五号标题</h5>
+    <h6>这是六号标题</h6>
+    <hr>
+    <p>这是一个段落，p是单词paragraph</p>
+    <br />
+    <hr>
+    <h3>下面是文本格式化标签，推荐用每种的第一个，语义更强</h3>
+    <strong>这是加粗标签</strong>
+    <b>这是加粗标签</b>
+    <br>
+    <em>这是倾斜标签</em>
+    <i>这是倾斜标签</i>
+    <br>
+    <del>这是删除线标签</del>
+    <s>这是删除线标签</s>
+    <br>
+    <ins>这是下划线</ins>
+    <u>这是下划线</u>
+    <br>
+    <p>sup标签是把文字变成上标，写数据公式的时候用，sup是supper，例如：10<sup>2</sup></p>
+    <br>
+    <center>这是居中标签</center>
+    <hr>
+    <h3>下面两组布局用的标签，就是一个盒子样的容器，没有语义</h3>
+    <div>division缩写，分割、分区的意思，是大盒子，一个div独占一行</div>
+    <span>跨度、跨距的意思，是小盒子，一行可以有多个span</span> <span>百度</span> <span>新浪</span> <span>谷歌</span>
+    <br>
+    <hr>
+    <h3>下面是图像标签,单标签,src是必须属性,单词source,用来指定图片路径或文件名的,如果图片在这个html同级目录,直接填文件名,如果不在,要写全路径</h3>
+    <img src="image/python_logo.gif" alt="替换文本属性，这是图片不能正常显示时替换成文字的属性，图片正常显示这行文字就不会显示在页面上" title="提示文本属性，鼠标放图片上会显示提示的文字" width="50 像素属性，设置图像的宽度，如果直接填数字，是像素单位，实际应用中一般宽和高选一个进行修改就行了，避免图片变形，如果填100%是调整图片和窗口的比例，撑满整个窗口。" height="80 像素属性，设置图像的高度" border="15 像素属性，单词是边框的意思，设置图像边框的粗细"
+    />
+    <br>
+    <div><img src="image/python_logo.gif" width="50%">50%是撑满窗口的一半</div>
+    <hr>
+    <h3>下面是超链接标签，共5种，a是anchor，锚的意思，href是必须属性</h3>
+    <a href="https://www.baidu.com/" target="_blank">这种是外部链接，点这里跳转到百度，target属性的参数_self是默认参数，在当前窗口打开页面，参数_blank是在新窗口打开页面，常用blank</a>
+    <br>
+    <a href="锚点链接学习.html">这种是内部链接，网站内部的页面之间的链接，href地址写页面名字即可，target没指定参数，就默认在当前窗口打开页面</a>
+    <br>
+    <a href="#">空链接，href地址写#号就行，一般是要跳转的页面还没做好</a>
+    <br>
+    <a href="image/python_logo.zip">下载链接，href地址写文件.exe或压缩包.zip等等</a>
+    <br>
+    <a href="https://www.baidu.com/" target="_blank"><img src="image/python_logo.gif" title="这是网页元素链接，点这个图片就能跳转到百度，网页元素比如图片、视频、音乐等等" height="30" /> </a>
+    <br>
+    <a href="#maodian">这是锚点链接，快速定位到页面中的某个位置，href地址写#名字，定位的那位置标签里要加参数id="名字"，这里定位到h1标题那里了</a>
+    <br>
+    <hr>
+    <h3>下面是列表标签，3种：有序列表ol标签和无序列表ul标签和自定义列表dl标签</h3>
+    <ul type="square">
+        <!-- 这是无序列表，ul标签的type属性有三种值，disc是实心圆(默认)，circle是空心圆，square是实心方块 -->
+        <li>ul里只能写li标签，li标签是个容器，里面可以写任意元素标签</li>
+        <li>这是无序列表</li>
+    </ul>
+    <hr>
+    <ol type="a">
+        <!-- 这是有序标签,ol标签的type属性有五种值，1是数字，A是大写字母排序，a是小写字母排序，I是大写罗马字母，i是小写罗马字母排序 -->
+        <li>ol里只能写li标签，li标签是个容器，里面可以写任意元素标签</li>
+        <li>这是有序标签</li>
+    </ol>
+    <hr>
+    <dl>
+        <!-- 这是自定义列表，dl里只能写dt和dd，它们是并列关系，dd里可以写任意元素标签 -->
+        <dt>
+          定义项目和名字的，就是写名词的
+            <dd>对项目（名词）进行解释说明的</dd>
+            <dd>一个dt标签里可以有多个dd标签</dd>
+        </dt>
+    </dl>
+
+    <hr>
+    <h3>下面的是注释和特殊字符</h3>
+    <!-- 这是注释，网页上看不见，审查元素时能看见 -->
+    <p>
+        写空格，好麻&nbsp; 烦，一个这东西只代表一个空格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的
+        <br> 写小于号&lt;和大于号&gt;和乘号&times;和除号&divide;等等特殊符号，记不住，要用时去百度吧
+    </p>
+    <button>这是一个按钮</button>
+    <hr>
+    <h3>下面是表格标签table</h3>
+    <!-- border属性是设置显示边框的，不设置这个属性就看不见边框线，cellspacing是去除边框间隙的，cellpadding是内容到单元格边框的距离，默认值是1 -->
+    <table border="1px" cellspacing="0" cellpadding='20'>
+        <!-- col表示一列，需要设置width属性让单元格大小一致，有多少列就写多少个col标签，这是个单标签,单词column -->
+        <col width="200px">
+        <!-- colgroup是把很多相同的列标签简写合成一句代码，属性span=数字，有几列一样的要简写，数字就写几，再设置宽度width属性 -->
+        <colgroup span="6" width="100px"></colgroup>
+        <!-- th标签是表头，单词table head,一般用于表的第一行，主要实现文字加粗的效果 -->
+        <th></th>
+        <!-- tr标签是行，表格要画多少行就要写多少个tr标签，tr单词是table row，表格行的意思，align属性设置单元格内容对齐方式 -->
+        <tr>
+            <!-- td标签是单元格，也就是表格数据，一行需要多少单元格就要写多少tr标签，单词是table data，表格数据的意思 -->
+            <!-- height设置行高度，否则是默认的内容文字多高，单元格就多高，align是设置对其方式的，align='center'内容居中 -->
+            <td>合并单元格有两种：跨行合并和跨列合并，要合并的行或列的单元格里的第一个是目标单元格</td>
+            <td>跨行合并在目标单元格里写属性rowspan="数字"，要把几个单元格合并成一个就写几"</td>
+            <td>跨列合并在目标单元格写colspan='数字'，合并完一定要删除多余的单元格</td>
+        </tr>
+    </table>
+    <hr>
+    <h3>下面是表单标签form，作用是搜集用户信息的</h3>
+    <form action="url的地址" method="POST" name="给表单取个名字，这名字要对应视图函数里的存数据的变量名">
+        form里面可以写各种控件标签，还有提示信息
+        <br> 控件标签有3种：input输入框标签，select下拉标签，textarea文本域标签
+        <br>input标签的type属性是必须属性，选择属性值实现各种功能
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css语法和选择器学习</title>
+    <!-- css书写方式：3类：内部样式表；行内样式表，外部样式表 -->
+    <!-- 这个style标签里包裹的是内部样式表 -->
+    <style>
+        /* 选择器分2类：基础选择器和复合选择器 */
+        /* 基础选择器一共4种 ，如下：*/
+        /* 标签选择器语法 */
+        
+        p {
+            /* 文本属性：居中 */
+            text-align: center;
+            /* 文本属性：文字颜色 */
+            color: red;
+            /* 文本属性：首行缩进，只对每个段落的首行开头有用,em单位是相对单位，就是设置的文字大小是多少，1个em就缩进多少像素 */
+            text-indent: 2em;
+            /* 文本属性：行间距 */
+            line-height: 50px;
+        }
+        /* 类选择器语法,类可以多次调用，多个标签调用 */
+        
+        .red {
+            background-color: red;
+        }
+        
+        .green {
+            color: green;
+            background-color: green;
+        }
+        
+        .box {
+            width: 100px;
+            height: 100px;
+            font-size: 30px;
+        }
+        /* id选择器，唯一的，只能调用一次，后期经常和js搭配使用 */
+        
+        #weiyi {
+            color: rgb(83, 43, 226);
+        }
+        /* 通配符选择器，语法是 * { key ：value；} 作用：整个页面的标签都会被选择，以便用来清除页面边距的*/
+        
+        * {
+            /* 外边距为0 */
+            margin: 0px;
+            /* 内边距为0 */
+            padding: 0px;
+        }
+        /* font字体属性，如下： */
+        
+        body {
+            /* 字体属性写法，可以同时写多个字体，用，号隔开。名字是多个单词组成的字体，需要加“ ” 号括起来*/
+            font-family: 'Microsoft Yahei', Arial, Helvetica, sans-serif;
+            /* 字体大小写法，这里数字要带单位px，这个16px设置后整个body里的内容都通用，但h标签特殊 */
+            font-size: 16px;
+            /* 字体粗细写法，400变细（恢复正常粗细），700变粗，这里一定不带单位 */
+            font-weight: 700;
+            /* 字体风格，italic倾斜或normal倾斜的恢复正常等等，常用语html的em或i标签的字体恢复正常 */
+            /* font-style: italic; */
+            font-style: normal;
+        }
+        /* 字体符合属性写法，也就是简写少写点代码，必需按如下顺序写，如果不想每个属性都设置，这两个必需属性font-size和font-family一定要写，否则代码无效 */
+        
+        .ziti {
+            /* font: font-style font-weight font-size/line-height font-family; */
+            font: italic 700 16px 'Microsoft Yahei';
+        }
+        /* 文本属性：装饰文本，去掉下划线或添加线等等,比如给a标签去下划线 */
+        
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>css字体大小特例演示</h3>
+    <p>这是一个段落，用css设置样式
+        <a href="#">这是一个链接，用css装饰文本属性，去掉链接的下划线</a>
+    </p>
+    <ul>
+        <li class="red">css类选择器演示</li>
+        <li id="weiyi">css的id选择器演示</li>
+    </ul>
+    <div class="red box">我想变颜色</div>
+    <div class="green box"></div>
+    <div class="red box"></div>
+    <ol>
+        <li class="ziti">css字体复合属性写法演示</li>
+        <li class="ziti">css字体复合属性写法演示</li>
+        <li class="ziti">css字体复合属性写法演示</li>
+    </ol>
+
+
+    <!-- 行内样式表，修改比较简单的样式时用，只能控制本行标签，较少用 -->
+    <span style="color: chocolate; font-family: Arial, Helvetica, sans-serif;">css行内样式表写法演示</span>
+</body>
+
+</html>

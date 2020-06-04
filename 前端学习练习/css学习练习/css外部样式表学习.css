@@ -1,0 +1,67 @@
+/* 整张页面居中 */
+
+body {
+    margin: 0 auto;
+    width: 960px;
+    font: 16px/28px 'Microsoft yahei';
+}
+
+
+/* 第一个div标签的设置 */
+
+.divone {
+    width: 1000px;
+    height: 64px;
+    font: 16px '宋体';
+    color: #333333;
+}
+
+
+/* 第一个span标签的设置 ，让span居右用float属性*/
+
+.spanone {
+    float: right;
+    width: 490px;
+    height: 30px;
+    line-height: 80px;
+    padding-left: 300px;
+}
+
+
+/* 给所有a标签去下划线，改字体颜色 */
+
+a {
+    text-decoration: none;
+    color: #333333;
+}
+
+
+/* 给hr标签线加粗，solid是实线，改颜色 */
+
+hr {
+    border: none;
+    border-top: 2px solid #3333334d;
+}
+
+.divtwo {
+    width: 1000px;
+    height: 25px;
+}
+
+
+/* 给每个p的首行缩进两个当前字的大小 */
+
+p {
+    text-indent: 2em;
+}
+
+
+/* 给含input的p标签居中 */
+
+.juzhong {
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
