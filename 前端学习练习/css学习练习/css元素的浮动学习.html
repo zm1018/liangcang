@@ -8,14 +8,14 @@
     <style>
         .div1 {
             float: left;
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             background: blue;
         }
         
         .div2 {
-            width: 200px;
-            height: 200px;
+            width: 100px;
+            height: 100px;
             background: red;
         }
         /* 横向排版是要三个div都设置向左浮动  */
@@ -24,11 +24,11 @@
         .div4,
         .div5 {
             float: left;
-            height: 300px;
+            height: 50px;
         }
         
         .div3 {
-            width: 200px;
+            width: 100px;
             background: burlywood;
         }
         
@@ -41,25 +41,146 @@
             width: 400px;
             background: crimson;
         }
+        
+        .div6,
+        .div7,
+        .div8 {
+            height: 80px;
+            float: left;
+        }
+        
+        .div6 {
+            width: 20%;
+            background: darkgreen;
+        }
+        
+        .div7 {
+            width: 50%;
+            background: darksalmon;
+        }
+        
+        .div8 {
+            width: 30%;
+            background: fuchsia;
+        }
+        
+        .div9 {
+            height: 150px;
+            /* 宽度不用设，默认占一行，也就是占满网页的 */
+            /* width: 100%; */
+            background: darkblue;
+            /* 清除左浮动影响，排在浮动div后面的代码就能正常排列显示了 */
+            clear: left;
+        }
+        /* 父元素一般会被里面的子元素大小撑开，但因为这里的子元素是浮动的，不占据空间，所以并没有撑开，
+        3种解决方法：1设置父元素的高度和子元素相同，
+        2设置父元素属性overflow(溢出的意思) : auto（自动的意思），作用是给超出边界的元素进行自动调整；
+        3谁不想受影响给谁设置属性clear ：both，两个单词组合到一起是清除两者的数据格式，clear（清除的意思）还有两个参数：left，right */
+        
+        .fu {
+            /* 设置和子元素相同的高度 */
+            /* height: 100px; */
+            /* 调整溢出，让父元素的高度自动包住子元素 */
+            overflow: auto;
+        }
+        
+        .aaa {
+            overflow: auto;
+        }
+        
+        ul {
+            width: 600px;
+            height: 500px;
+            background: lightblue;
+            border-style: solid;
+            border-width: 1px;
+            border-color: black;
+        }
+        
+        .bbb1 {
+            /* 设置外边距（自身边框到另一个容器边框之间的距离，四个参数：上下左右）上下高度10，左右100px，
+            因为是第一个子元素，所以外边距都是相对于父元素的 */
+            margin: 10px 100px;
+        }
+        
+        .bbb3,
+        .bbb5 {
+            float: left;
+        }
+        
+        .bbb2,
+        .bbb4,
+        .bbb6 {
+            float: right;
+            /* 不设置右外边距的话，向右浮动会很贴右边框线，不好看 */
+            margin-right: 20px;
+        }
+        
+        li {
+            /* 清除浮动效果的影响，才会每行显示一个，否则浮动会让一行排列多个 */
+            clear: both;
+            /* 设置每个li标签的边框 */
+            border: 1px solid black;
+            background: #D4D0D3;
+            padding: 10px;
+        }
+        
+        img {
+            border: 1px solid greenyellow;
+            margin: 5px;
+        }
     </style>
 </head>
 
 <body>
     <!-- 容器类的元素，不管大小如何，都是独占一行的 -->
-    <!-- 给容器元素设置浮动属性，可以让元素漂浮，在页面产生空缺，这样它下面的元素就会自动填补空缺，就可以产生重叠或者横向排版效果 -->
-    <!-- 可以脱离网页文档与元素重叠，但不会与文字内容发生重叠，文字会自动向没被覆盖的空隙挤，所以可以做出文字环绕效果 -->
-    <!-- float浮动的意思，有两个参数，left左浮动，right右浮动 -->
+    <!-- 给容器元素设置浮动属性，可以让元素漂浮，不占页面任何地方了，这样它下面的元素就会自动填补空缺，就可以产生重叠或者横向排版效果 -->
+    <!-- 可以脱离网页文档与没有浮动的元素重叠，覆盖没有浮动的元素，
+        但不会与没浮动的元素：文字、图片、表单元素（就是input那些按钮）内容发生重叠（就是不会覆盖），
+        文字会自动向没被覆盖的空隙挤，所以可以做出文字环绕效果 -->
+    <!-- float浮动的意思，有两个参数，left左浮动，right右浮动（右浮动时会按代码顺序排列，第一个会在最右边，会产生倒序的效果） -->
+    <!-- 一行放不下时，浮动元素只参考它的上一个元素排列 -->
     <p>文字环绕效果演示</p>
-    <div class="div1"></div>
-    <div class="div2">
-        文字环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕
+    <div class="aaa">
+        <div class="div1"></div>
+        <!-- 这里div盒子设置的小，文字会溢出，怎么处理？不能直接用溢出属性，会失去重叠效果。
+            包个父标签，给父标签设置溢出自动调整边界，解决了，这种会有滚动条，溢出的内容不显示在页面，但滑动滚动条可以查看。
+            怎么能让溢出内容不显示呢？暂时没学 -->
+        <div class="div2">
+            文字环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕哈哈哈
+        </div>
     </div>
 
-    <hr>
+
+    <!-- 这三个div宽度没设置的占满网页，下面的p标签内容会自动接着div后面剩下的空白页面显示，怎么处理？ -->
     <p>横向排版演示</p>
-    <div class="div3"></div>
-    <div class="div4"></div>
-    <div class="div5"></div>
+    <div class="div3">float:left左浮动</div>
+    <div class="div4">float:left左浮动</div>
+    <div class="div5">float:left左浮动</div>
+
+
+    <!-- 清除浮动影响，解决自动接着上面的空白页面显示的问题 -->
+    <p style="clear: both;">上面横向排版，下面元素正常显示，让浮动元素不覆盖它下面的元素演示</p>
+    <!-- 设置div的浮动的横向排版效果，但下面的div会自动补齐页面空缺，产生重叠，可以写个父元素包裹浮动元素解决此问题，或给下面的设置clear清除样式 -->
+    <div class="fu">
+        <div class="div6">让浮动的div不覆盖下面的div</div>
+        <div class="div7">让浮动的div不覆盖下面的div</div>
+        <div class="div8">让浮动的div不覆盖下面的div</div>
+    </div>
+    <!-- 设置clear="both"属性，清除别人对自己的影响 -->
+    <div class="div9">我没被覆盖</div>
+    <p>微信聊天对话框排版设计</p>
+
+    <ul>
+        <!-- 有多少个li就得设置多少float，不智能，怎么才能统一设置，尽量少写代码，不用一个一个写呢？ -->
+        <li class="bbb1">聊天对话框</li>
+        <li class="bbb2">对话内容2</li>
+        <li class="bbb3">对话内容3</li>
+        <li class="bbb4"><img src="../html学习练习/image/news1.jpg"><br> 对话内容4 </li>
+        <li class="bbb5">对话内容5</li>
+        <li class="bbb6">对话内容6</li>
+    </ul>
+
 </body>
 
 </html>

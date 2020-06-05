@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 正确书写方式就是先给所有元素去内外边框 */
+        
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        /* 第一层盒子需要设置高度，宽度不用设置，默认页面的100% */
+        
+        .header {
+            height: 50px;
+            background: red;
+        }
+        /* 第二层盒子需要设置宽度，再设置外边框，能实现第二层盒子在页面居中的效果 */
+        
+        .header .head {
+            height: 50px;
+            width: 1050px;
+            background: #D4D2D6;
+            margin: auto;
+        }
+        
+        .banner {
+            height: 500px;
+            background: blue;
+        }
+        /* 需要里面包裹的内容在页面居中排列的，都需要设置最外层的盒子宽度和外边距自动，实现居中 */
+        
+        .category {
+            width: 1005px;
+            height: 200px;
+            margin: auto;
+            background: rgb(153, 51, 85);
+        }
+        
+        .category .item {
+            width: 125px;
+            height: 165px;
+            padding: 10px 25px 25px 25px;
+            /* dashed是虚线 */
+            border-right: 1px dashed #FDFCFD;
+            float: left;
+            background: green;
+        }
+        /* 第一层盒子占满整个屏幕的 */
+        
+        .case {
+            height: 490px;
+            background: #eeeeee;
+        }
+        
+        .text,
+        .text2 {
+            padding: 20px 0 10px;
+            font-size: 40px;
+            width: 1005px;
+            margin: auto;
+        }
+        /* 第二层盒子设置宽度和外边距，实现居中，并设置盒子里的大小溢出时第二层盒子自动补齐增大 */
+        
+        .case .item1,
+        .client .wei {
+            margin: auto;
+            width: 1000px;
+            overflow: auto;
+        }
+        /* 第三层盒子设置浮动 */
+        
+        .item2 {
+            width: 320px;
+            height: 330px;
+            float: left;
+            background: darkcyan;
+        }
+        
+        p {
+            /* 设置宽度，外边距左右设置自动，实现p标签在页面居中效果 */
+            width: 1005px;
+            margin: 15px auto 0 auto;
+            /* p标签高度和每行文字的高度一样，实现文字垂直居中 */
+            height: 40px;
+            line-height: 40px;
+            /* 文字水平居中 */
+            text-align: center;
+            font-size: 30px;
+            color: dimgray;
+        }
+        
+        .client {
+            height: 300px;
+        }
+        
+        .hezi {
+            width: 180px;
+            height: 210px;
+            float: left;
+            margin: 10px;
+            background: rgb(153, 51, 85);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="head"></div>
+    </div>
+    <div class="banner"></div>
+    <div class="category">
+        <div class="item" style="padding-left: 0;"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <!-- 最后这个盒子的右边框线1px要去掉，否则超出父div的尺寸，会自动换下一行去，要不就调大父元素的宽度 -->
+        <div class="item" style="padding-right: 0; border: 0;"></div>
+    </div>
+    <div class="case">
+        <div class="text">Case</div>
+        <div class="item1">
+            <div class="item2"></div>
+            <div class="item2" style="margin: 0 20px;"></div>
+            <div class="item2"></div>
+        </div>
+        <p>查看更多+</p>
+    </div>
+    <div class="client">
+        <div class="text2">Client</div>
+        <div class="wei">
+            <div class="hezi"></div>
+            <div class="hezi"></div>
+            <div class="hezi"></div>
+            <div class="hezi"></div>
+            <div class="hezi"></div>
+        </div>
+    </div>
+</body>
+
+</html>
