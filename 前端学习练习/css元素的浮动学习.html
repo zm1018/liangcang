@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .div1 {
+            float: left;
+            width: 100px;
+            height: 100px;
+            background: blue;
+        }
+        
+        .div2 {
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+        /* 横向排版是要三个div都设置向左浮动  */
+        
+        .div3,
+        .div4,
+        .div5 {
+            float: left;
+            height: 300px;
+        }
+        
+        .div3 {
+            width: 200px;
+            background: burlywood;
+        }
+        
+        .div4 {
+            width: 500px;
+            background: cadetblue;
+        }
+        
+        .div5 {
+            width: 400px;
+            background: crimson;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 容器类的元素，不管大小如何，都是独占一行的 -->
+    <!-- 给容器元素设置浮动属性，可以让元素漂浮，在页面产生空缺，这样它下面的元素就会自动填补空缺，就可以产生重叠或者横向排版效果 -->
+    <!-- 可以脱离网页文档与元素重叠，但不会与文字内容发生重叠，文字会自动向没被覆盖的空隙挤，所以可以做出文字环绕效果 -->
+    <!-- float浮动的意思，有两个参数，left左浮动，right右浮动 -->
+    <p>文字环绕效果演示</p>
+    <div class="div1"></div>
+    <div class="div2">
+        文字环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕环绕
+    </div>
+
+    <hr>
+    <p>横向排版演示</p>
+    <div class="div3"></div>
+    <div class="div4"></div>
+    <div class="div5"></div>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        /* 想让图片撑满整个网页，必需设置图片宽度为100%，设置div的盒子宽度是没用的，图片不会变的撑满 */
+        
+        img {
+            width: 100%;
+            height: 450px;
+        }
+        
+        #div2,
+        #div3,
+        .div4 {
+            text-align: center;
+            height: 60px;
+            /* line-height行高属性设置的与div盒子一样的高度值，可以让文字在div里垂直居中 */
+            line-height: 60px;
+        }
+        
+        #div2 {
+            background: white;
+        }
+        
+        #div3 {
+            color: rgb(87, 80, 85);
+            font-size: 13px;
+        }
+        
+        html {
+            background: #dddddd;
+        }
+        /* 这里id选择器使用了后代选择器，和类选择器可以使用并集选择器 */
+        
+        #div2 a,
+        .item {
+            text-decoration: none;
+            color: black;
+        }
+        /* 链接伪类选择器不能和并集选择器同时使用，没效果 */
+        
+        #div2 a:link {
+            color: black;
+        }
+        
+        #div2 a:visited {
+            color: red;
+        }
+        
+        #div2 a:hover {
+            color: blue;
+        }
+        
+        #div2 a:active {
+            color: yellow;
+        }
+        /* css样式重叠，就是一个标签设置多个样式 */
+        /* 最后一个超链接的右边不能有边框，第二种方法，后代选择器优先于类选择器  */
+        /* .div4 last {
+            border: none;
+        } */
+        
+        .item {
+            /* 边框的参数：实线 粗细1px 颜色灰色 */
+            border-right: solid 1px #808080;
+            padding: 0 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div1">
+        <img src="../html学习练习/image/盆景.jpg">
+    </div>
+    <div id="div2"><a href="#">He walked slowly up the hill pushing his bike.</a> </div>
+    <div id="div3">他推着自行车缓缓爬上山。</div>
+    </div>
+    <!-- 给a标签设置border边框属性实线链接后面的 | -->
+    <div class="div4">
+        <a href="#" class="item">Terms</a>
+        <a href="#" class="item">Privacy</a>
+        <a href="#" class="item">Security</a>
+        <a href="#" class="item">Status</a>
+        <!-- 最后一个超链接的右边不能有边框，两种设置方法实现：1写行内样式，2写后代选择器，需要再取个类名，只控制这一个链接，两种方法优先级都高于类选择器 -->
+        <a href="#" class="item last" style="border: none;">Help</a>
+    </div>
+</body>
+
+</html>

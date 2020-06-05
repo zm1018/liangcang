@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*  body标签也是一个容器，默认宽度占满整个页面，没有高度的，这时设置高度100%也没用，因为元素宽高的百分比是相对于父元素的，父元素是0，所以没用  */
+        
+        html,
+        body {
+            /* 给父元素和子元素都设置高度，这时body才会撑满整个屏幕，但侧边会出现滚动条 */
+            height: 100%;
+            /* 去掉滚动条 */
+            margin: 0;
+        }
+        /* 给body标签设置背景图，直接用backround-image属性，url里填路径 */
+        
+        body {
+            /* 背景图默认平铺整个页面的 */
+            background-image: url(../html学习练习/image/python_logo.gif);
+            /* 取消平铺,就是取消重复，repeat重复的意思，取消重复后图片默认居左 */
+            background-repeat: no-repeat;
+            /* position位置的意思，居右，参数要写两个，1图片在水平位置的对齐方式，2图片在垂直位置的对齐方式,bottom底部的意思*/
+            /* background-position: right bottom; */
+            background-position: center center;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>
