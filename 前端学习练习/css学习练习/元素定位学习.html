@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        /* 绝对定位 ，如下：*/
+        
+        .box {
+            height: 650px;
+            width: 1280px;
+            margin: 10px auto;
+            background: url(../html学习练习/image/地图背景图.jpg) no-repeat;
+            /* 相对位置 */
+            position: relative;
+        }
+        
+        .div2 {
+            /* 左边（开始位置相对于父元素来说的）到元素的坐标距离 */
+            left: 150px;
+            /* 顶部（开始位置相对于父元素来计算的，父元素是相对参考系）到元素的坐标距离 */
+            top: 130px;
+            /* 绝对位置，是相对于父元素的，所以父元素要写相对位置属性 */
+            position: absolute;
+        }
+        
+        .span1,
+        .span2 {
+            width: 10px;
+            height: 10px;
+            background-color: blue;
+            float: left;
+        }
+        
+        a {
+            /* 转换成行内块元素 */
+            /* display: inline-block; */
+            /* 去链接的下划线 */
+            text-decoration: none;
+            /* 同时设置浮动和行高，文字才能和前面的那个span1蓝方块对齐 */
+            float: left;
+            /* 一般文字的默认行高都是21px */
+            line-height: 10px;
+            /* font-size: 10px; */
+        }
+        
+        .div3 {
+            position: absolute;
+            top: 220px;
+            left: 260px;
+        }
+        
+        .span3 {
+            float: left;
+            line-height: 10px;
+            color: blue;
+        }
+        /* 固定定位，固定定位的参考坐标是整个网页，如下： */
+        
+        .div4 {
+            height: 100px;
+            width: 100%;
+            background-color: coral;
+            /* 固定定位 */
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 布局中的元素定位，3种属性值：absolute(绝对定位),relative(相对定位),fixed(固定定位), -->
+    <!-- 坐标系，2条：top（顶部到这个点的距离，Y 轴），left（左边到这个点的距离，X 轴）,可以定位到窗口的任何位置，可以取负值 -->
+    <!-- 绝对定位的点会依次往上以设置了定位属性的元素为参考坐标（只要设置了定位属性，三种值都能使绝对定位生效，
+        标准的是设置成relative这个值），如果直到最大的html标签都没设置，就以窗口为参考坐标 -->
+    <div class="box">
+        <div class="div2">
+            <!-- span是行内元素，直接设置宽高大小无效，可以转换元素类型，但涉及知识太多，也可以设置浮动，浮动元素都是块元素，就能正常显示了 -->
+            <span class="span1"></span>
+            <a href="#">中国</a>
+        </div>
+        <div class="div3">
+            <div class="span2"></div>
+            <div class="span3">欧洲</div>
+        </div>
+    </div>
+
+
+
+    <div class="div4">固定定位演示</div>
+</body>
+
+</html>

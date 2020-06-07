@@ -22,12 +22,39 @@
             background-image: url(../html学习练习/image/python_logo.gif);
             /* 取消平铺,就是取消重复，repeat重复的意思，取消重复后图片默认居左 */
             background-repeat: no-repeat;
-            /* position位置的意思，居右，参数要写两个，1图片在水平位置的对齐方式，2图片在垂直位置的对齐方式,bottom底部的意思*/
+            /* position位置的意思，作用是固定图片位置，参数要写两个：X Y 轴。
+            1图片在水平位置的对齐方式，2图片在垂直位置的对齐方式,bottom底部的意思*/
             /* background-position: right bottom; */
             background-position: center center;
         }
     </style>
 </head>
+<!-- packground属性 ，背景图默认是滚动的，共有 5 种，优点：比插入图片更好控制图片位置，如下：
+
+background-color/背景图颜色，可以设置的值有：transparent(透明)、各种颜色，
+    
+background-image/背景图，可以设置的值有：尺寸、大小、内外边距、边框粗细、线条等。。。 
+
+background-repeat/背景图平铺，可以设置的值有：repeat(平铺)、repeat-x水平平铺、repeat-y垂直平铺、 norepeat（不平铺） 
+
+background-position ：X Y /背景图固定位置，可以设置的值有3种：方位名词、精确单位、混合单位。 
+    方位名词：top上，center中，bottom下，left左，right右，两个值写的时候不用管顺序的，
+    如果只写一个参数，第二个没写的值都是居中显示的 
+
+    精确单位：两个值写的时候一定要有顺序，先 X 后 Y ,长度（px单位的像素或者 %百分比值）,
+    如果只写一个值，一定是 X ，默认没写的y会垂直居中
+
+    混合单位：两个值写的时候一定要有顺序，先 X 后 Y ，例如：20px center
+
+background-attachment/背景附着，作用是设置背景图片是否固定或随着页面的内容滚动，制作视差滚动效果，
+    可以设置的值有2个：scroll（滚动）不设置这个属性时，默认滚动、fixed（固定）
+
+background：rgba（0, 0, 0, .5）/背景色半透明，这是一个常用特殊值：rgba(0, 0, 0, 0.3)半透明, 最后的a是alpha（透明度）取值范围是0~1之间（0全透明，1不透明）。
+
+     
+复合写法：background：后面的5个属性没有顺序要求，习惯约定顺序是：颜色/地址/平铺/滚动/固定位置
+-->
+
 
 <body>
 

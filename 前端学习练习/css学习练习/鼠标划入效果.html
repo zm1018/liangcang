@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .div1 {
+            background: #545759;
+            width: 180px;
+            height: 210px;
+        }
+        
+        a {
+            display: block;
+            width: 160px;
+            height: 30px;
+            line-height: 30px;
+            padding-left: 20px;
+            color: blanchedalmond;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        /* 伪类选择器实现鼠标划入时变色 */
+        
+        a:hover {
+            background: #FF6600
+        }
+        /* 五彩导航第一种 */
+        /* 两种都不需要给外面的div盒子设置宽高，这里写的多余的 */
+        /* .div2,
+        .div3 {
+            width: 503px;
+            height: 60px;
+            margin: 5px;
+            background: red;
+        } */
+        
+        .div2 a {
+            display: inline-block;
+            width: 115px;
+            height: 50px;
+            margin: 5px 1px;
+            /* 文字居中总是有点靠右，a标签转换类型后怎么自带内边距？设置为0，里面的文字才真正居中 */
+            padding: 0;
+            line-height: 50px;
+            text-align: center;
+            font-family: '宋体';
+            /* 字体加粗的值语法是：直接写数字，不能带单位，带单位报错 */
+            font-weight: 700;
+            color: #fdfdfd;
+        }
+        
+        .hezi1 {
+            background: #CE4B67;
+        }
+        
+        .hezi2 {
+            background: #0D81B3;
+        }
+        
+        .hezi3 {
+            background: #620CB4;
+        }
+        
+        .hezi4 {
+            background: #A305AD;
+        }
+        
+        .div2 a:hover {
+            background-color: pink;
+            text-decoration: underline;
+        }
+        /* 五彩导航第二种，效果差不多，代码少的多 */
+        
+        .div3 a {
+            /* a标签的元素类型改成了行内块元素，不用浮动了 */
+            /* float: left; */
+            margin: 5px 1px;
+            width: 120px;
+            height: 60px;
+            /* 元素间因为代码换行就有了空格，导致自带缝隙的，要清除，这里用内边距为0来清除缝隙 */
+            padding: 0;
+            display: inline-block;
+        }
+        /* a 标签里放的是背景图，只能设置背景图变色，但背景图变色了没有字，这里是粉紫色半透明*/
+        
+        .div3 a:hover {
+            background: rgba(245, 117, 191, 0.5);
+        }
+        
+        .div3 .p1 {
+            background: url(../html学习练习/image/1.png) no-repeat;
+        }
+        
+        .div3 .p2 {
+            background: url(../html学习练习/image/2.png) no-repeat;
+        }
+        
+        .div3 .p3 {
+            background: url(../html学习练习/image/3.png) no-repeat;
+        }
+        
+        .div3 .p4 {
+            background: url(../html学习练习/image/4.png) no-repeat;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div1">
+        <a href="">手机 电话卡</a>
+        <a href="">电视 盒子</a>
+        <a href="">笔记本 平板</a>
+        <a href="">出行 穿戴</a>
+        <a href="">智能 路由器</a>
+        <a href="">健康 儿童</a>
+        <a href="">耳机 音响</a>
+
+    </div>
+    <!-- 五彩导航条第一种方法，画盒子，每个给一种背景色 -->
+    <div class="div2">
+        <a href="#" class="hezi1">五彩导航</a>
+        <a href="#" class="hezi2">五彩导航</a>
+        <a href="#" class="hezi3">五彩导航</a>
+        <a href="#" class="hezi4">五彩导航</a>
+    </div>
+    <!-- 五彩导航条第二种方法 ，直接传背景图-->
+    <div class="div3">
+        <a href="#" class="p1"></a>
+        <a href="#" class="p2"></a>
+        <a href="#" class="p3"></a>
+        <a href="#" class="p4"></a>
+    </div>
+</body>
+
+</html>
