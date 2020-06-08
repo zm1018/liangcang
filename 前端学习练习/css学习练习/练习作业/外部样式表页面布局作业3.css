@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.div1 {
+    height: 36px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.span1,
+.span2 {
+    height: 36px;
+    width: 105px;
+    background-color: bisque;
+    float: left;
+}
+
+.input1 {
+    height: 34px;
+    width: 1137px;
+    background-color: #F1F3F4;
+    float: left;
+    border: 1px solid #FFFFFF;
+    border-radius: 17px;
+}
+
+.div2 {
+    width: 1226px;
+    height: 300px;
+    margin: auto;
+    clear: left;
+    margin-bottom: 20px;
+}
+
+.daohang1,
+.daohang2 {
+    margin-left: 20px;
+    float: left;
+}
+
+.daohang1 {
+    width: 306px;
+    height: 300px;
+    background-color: yellow;
+}
+
+.daohang2 {
+    width: 880px;
+    height: 300px;
+    background-color: pink;
+}
+
+.div3 {
+    width: 1226px;
+    height: 200px;
+    margin: auto;
+    margin-bottom: 20px;
+    /* clear: left; */
+}
+
+.box1,
+.box2,
+.box3,
+.box4 {
+    width: 286px;
+    height: 200px;
+    float: left;
+    margin-left: 20px;
+}
+
+.box1 {
+    background-color: seagreen;
+}
+
+.box2 {
+    background-color: rgb(152, 228, 185);
+}
+
+.box3 {
+    background-color: rgb(45, 233, 126);
+}
+
+.box4 {
+    background-color: rgb(4, 99, 45);
+}
+
+.ul1 {
+    width: 1226px;
+    height: 400px;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+li {
+    list-style: none;
+    background-color: tomato;
+    margin-left: 20px;
+    float: left;
+    width: 286px;
+    height: 190px;
+}
+
+.li1,
+.li2,
+.li3,
+.li4 {
+    margin-bottom: 20px;
+}
+
+.div4 {
+    width: 100%;
+    height: 300px;
+    background-color: violet;
+}
+
+.div5 {
+    width: 1206px;
+    height: 200px;
+    margin: 0px 81.5px;
+    margin-bottom: 20px;
+    background-color: rgb(130, 159, 238);
+    /* border-width: 20px solid transparent; */
+}

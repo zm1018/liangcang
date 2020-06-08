@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 边框演示： */
+        
+        .border,
+        .yuanjiao,
+        .yuanxing,
+        .juxing,
+        .butongyuanjiao {
+            /* 浮动之后两个盒子的边框有一条边是挨到一起的，就变粗了 */
+            float: left;
+            /* 合并相邻的边框，解决挨到一起的变变粗问题，这个属性只在table标签里才有效 */
+            /* border-collapse: collapse; */
+            width: 200px;
+            height: 200px;
+            /* 这里设置了4条边 */
+            border: 5px dotted blue;
+            /* 层叠性，要就近原则，不能写4条边那句代码的上面，而且给指定的某一条边改颜色，不能只写颜色，也要写粗细，样式，不然不显示 */
+            border-top: 20px dotted red;
+            line-height: 200px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .yuanjiao {
+            /* 圆角边框，值越大，角越明显，演示： */
+            border-radius: 50px;
+        }
+        
+        .yuanxing {
+            /* 圆形盒子，值设置成盒子高或宽的一半，就能实现，演示： */
+            /* 这种值是精确值，建议使用百分比的，不用自己算，更智能 */
+            /* border-radius: 100px; */
+            border-radius: 50%;
+        }
+        
+        .juxing {
+            /* 样式冲突，就近原则，所以高度改成60px生效了 */
+            height: 60px;
+            /* 圆角矩形，值设置成高度的一半，就能实现，演示： */
+            border-radius: 30px;
+            /* 让文字显示在圆角矩形里，行高也要跟着一起改 */
+            line-height: 60px;
+        }
+        
+        .butongyuanjiao {
+            /* 每个圆角都不同，4个值顺序：左上、右上、右下、左下角,演示： */
+            border-radius: 10px 35px 70px;
+            margin-left: 10px;
+            border: solid red;
+        }
+        /* 内容演示： */
+        
+        .content {
+            /* 文字居中 */
+            line-height: 200px;
+            text-align: center;
+            color: green;
+            font: italic 700 30px "宋体";
+            clear: left;
+        }
+        /* 内边距演示： */
+        
+        .padding {
+            height: 41px;
+            background: #fcfcfc;
+            color: #4c4c4c;
+            border: 5px dashed blue;
+            border-top: solid 3px #ff8500;
+            border-bottom: 1px dotted #edeef0;
+            line-height: 41px;
+        }
+        
+        a {
+            font-size: 12px;
+            color: #4c4c4c;
+            text-decoration: none;
+            padding: 5px 20px;
+            padding-left: 10px;
+        }
+        
+        a:hover {
+            background: #97c0d1;
+            height: 36px;
+            text-decoration: underline;
+            color: red;
+        }
+        /* 外边距演示： */
+        
+        .margin1,
+        .margin2 {
+            width: 150px;
+            height: 150px;
+            /* 这个是为了让盒子居中显示 */
+            margin: auto;
+            background: red;
+        }
+        
+        .margin1 {
+            /* 这个是为了让盒子之间有间距 */
+            margin-top: 30px;
+            margin-bottom: 10px;
+            /* 解决嵌套时上边距塌陷和子元素溢出的，值hidden（隐藏的意思）会让子元素超出父元素大小的那部分不显示出来，但视觉上子元素变小了，值auto（自动）会让父元素右和下边出现滚动条效果，显示不完的内容滑滚动条能看到 */
+            /* overflow: hidden; */
+            /* overflow: auto; */
+            /* 给父盒子加上边框，不想看见边框线就设置成透明的，解决上边距塌陷问题。transparent（透明）*/
+            /* border: 1px solid transparent; */
+            /* 给父元素定个上内边距，解决上边距塌陷问题 */
+            /* padding-top: 10px; */
+            /* 设置子元素绝对定位，父元素相对定位，解决上边距塌陷问题 */
+            position: relative;
+        }
+        
+        .qiantao {
+            width: 100px;
+            height: 100px;
+            background: rosybrown;
+            /* 子盒子也设置的外边距，而且还比父元素的30px大，但子和父的上面一条边之间依然是重叠的，并没有缝隙，但是此时父元素的上外边距到其它元素就会变成80px的距离，这就是塌陷。只有上边距会是这个效果，其它三边不会。但子元素加上外边距，大小变得比父元素的盒子大小还大了，父元素装不下的部分，就会溢出，溢出和上外边距重叠的解决办法，给父元素写overflow属性，父和子之间的上外边距就有空隙了，然后父元素和子元素就各自恢复到自己设置的上外边距值了 */
+            margin: 80px;
+            /* 设置子元素浮动，解决上外边距塌陷问题 */
+            /* float: left; */
+            /* 设置绝对定位，解决上外边距塌陷问题，x和y轴的值都要设置为0，否则子元素的外边距还会加上xy轴的值，才是到父盒子的真正距离，这样子元素左边和上边的外边距值都会变大 */
+            top: 0px;
+            left: 0px;
+            position: absolute;
+        }
+        /* 清除整个网页内外边距，必需写在css代码第一行。这里是演示： */
+        
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        /* 盒子阴影效果演示： */
+        
+        .yinying {
+            width: 200px;
+            height: 200px;
+            margin: 30px;
+            text-align: center;
+            /* line-height: 200px; */
+            background: pink;
+        }
+        
+        .yinying:hover {
+            /* 鼠标滑动出现阴影效果,这样默认是外部阴影，常用默认的外部阴影效果 */
+            box-shadow: 10px 10px 20px -1px rgba(0, 0, 0, .3);
+            /* 这样是内部阴影 */
+            /* box-shadow: 10px 10px 20px -1px rgba(0, 0, 0, .3) inset; */
+            /* 文字阴影效果 */
+            text-shadow: 5px 5px 1px rgba(0, 0, 0, .3);
+        }
+    </style>
+</head>
+
+<body>
+    css盒子模型，4部分组成：border(边框)、content(内容)、padding(内边距)、margin(外边距)。
+
+    <br> 这几个属性简写时，它们四条边都遵循：上右下左。写法例如：border:1px(只有一个值，代表4条边)， padding：1px 1px (有两个值，代表上下、左右)，margin:1px 1px 1px(有三个值，代表上、左右、下)， padding：1px 1px 1px 1px (有四个值，代表上、右、下、左)
+
+    <!-- 边框 -->
+    border有3个部分组成：border-width(边框粗细，单位是px)、border-style(边框样式)、还有个属性：border-redius(盒子变成圆角边框或圆)
+
+    <br> border-color(边框颜色) 简写： border: 1px solid red; 没有顺序。边框的宽度会加在盒子宽度的外层，使盒子变大。
+    <br>合并相邻的边框：用border-collapse:collapse;来合并边框。这个属性只能用在table标签里，解决边框和边框组合到一起时，像素相加边框变粗了。
+
+    <br>border-style常用参数：none(无边框，与任何指定的border-width值无关)、hidden(隐藏边框，IE浏览器不支持)、solid(实线)、dotted(点线)、dashed(虚线)
+
+    <br>要使用border-style属性，必需先设置对象的宽或高，或者设置定位为绝对定位：position(位置)：absolute(绝对)。如果border-width属性值不大于0，border-style属性将失去作用。
+
+    <br>border-radius属性：做圆角边框盒子或圆形盒子的。
+    <br> 值有两种写法：px 或 百分比。写4个值：左上、右上、右下、左下角（固定顺序），写3个值：左上、右上/左下、右下， 写2个值：对角关系（第一个值：左上/右下、第二个值：右上/左下），写1个值：代表4个角。
+    <br>单独指定一个角变圆角：border-top-left-radius(左上),border-top-right-radius(右上), border-bottom-right-radius(右下),border-bottom-left-radius(左下)
+
+    <br> 使盒子变成圆角的：用border-radius（半径）属性，属性值：数字px; 代表半径，实现原理:根据给的半径画圆，再每个角与每个圆重合的地方把直角走向改成圆边走向，就显示圆角盒子了。
+
+    <br>使盒子变圆形的：属性值写盒子宽高的一半(前提是盒子必需是正方形的，就是盒子宽和高是一样的值的)，就可以实现圆形盒子，值建议这种写法：50%
+
+    <br>使盒子变圆角矩形的：属性值设置成盒子高度的一半（注意：长方形的盒子，高度的一半）
+
+    <br>使盒子变4个角不同的圆角：
+
+    <div class="border">边框演示</div>
+    <div class="border">边框演示</div>
+    <div class="yuanjiao">圆角边框演示</div>
+    <div class="yuanxing">圆形盒子演示</div>
+    <div class="juxing">圆角矩形演示</div>
+    <div class="butongyuanjiao">盒子4个不同圆角演示</div>
+
+
+    <!-- 内容 -->
+    就是盒子里的文字内容
+
+    <div class="content">内容演示</div>
+
+    <!-- 内边距 -->
+    padding是内容到边框的距离，内边距的宽度会加在内容外层，设置内边距的值也会撑大盒子。
+    <br>实际应用中，如果盒子内的文字字数不一样，最好不要设置盒子的宽度，直接给内边距，让内容和内边距撑开盒子，看起来更美观。
+    <br>另一种情况：标签嵌套时，如果子标签没指定宽度，默认和父标签同宽，这时padding设置4个边的内边距，左右是不会生效的，不会改变父标签的宽度。但如果子标签指定了宽度，左右内边距也会生效，撑宽盒子，子标签的宽度会超过父标签的宽度，所以建议不要设置子标签的宽度。
+
+    <div class="padding">
+        <a href="">内边距演示</a>
+        <a href="">手机客户端</a>
+        <a href="">头条</a>
+        <a href="">朋友圈</a>
+    </div>
+
+    <!-- 外边距 -->
+    margin是控制盒子与盒子之间的距离，可以让块级元素实现水平居中（要满足两个条件：1、必需给盒子指定宽度，2、盒子左右的外边距值设置成auto，写法：margin：auto;
+
+    <br>上外边距塌陷问题（嵌套时，4条边只会塌陷上外边距，其它3边没影响）：
+    <br> 使用margin定义块元素的垂直外边距时，可能会出现外边距的合并。（遇到两个盒子嵌套，父和子元素都设置了外边距,如果父元素的外边距值比子元素的值大，子元素上边依然紧挨父元素没有缝隙，父元素和其它元素之间的上外边距依然是父元素设置外边距的值，没有改变；
+    <br>如果子元素上外边距的值比父元素的大，此时父元素会塌陷较大的外边距值，也就是子元素的外边距值是多少，父元素和其它元素的上外边距值就变成了多少，不在是父外边距自己设置的那个上外边距值了。
+
+    <br>上外边距塌陷解决方案：1、给父元素加上边框；2、给父元素加上内边距；（这两种都会改变父元素的盒子大小）3、给父元素加overflow（溢出）属性；4、给子元素设置浮动效果；5、给子元素设置绝对定位，父元素设置相对定位；6、固定（这个没学还不会）
+    <!-- 外边距演示 -->
+    <div class="margin1">
+        <div class="qiantao">嵌套塌陷和解决方案演示，详细查看上面写的css样式</div>
+    </div>
+    <div class="margin2">外边距演示</div>
+    <!-- 清除整个网页的内外边距  -->
+    很多标签元素会自带内/外边距，所以css代码开始的第一行必需是用* {padding:0; margin:0;}清除内外边距。
+    <br> 注意：行内元素为了照顾浏览器兼容性，尽量设置左右内/外边距，不要设置上下内/外边距，但是转换成块级元素或行内块元素就可以随意设置了
+
+    <!-- 盒子阴影 -->
+    给盒子添加阴影效果，5个值：前面两个参数必需写，后面的按需求。影子不占空间，不影响盒子和其它盒子之间的排列。
+
+    <br> 语法：box-shadow:h-shadow v-shadow blur spread color inset
+
+    <br> box(盒子)，shadow(影子)，h-shadow(水平阴影位置，正值往右负值往左移动，必写) v-shadow(垂直阴影位置，正直往下负值往上移动，必写) blur(模糊距离，虚实：0实的，值越大越虚) spread(阴影尺寸，影子的大小) color(影子颜色，常用半透明写法rgba(0,0,0,.3)百分之三十的半透明黑色) inset(内部阴影)，不写时，默认外部阴影(outset)，但这个单词千万不能写上，否则这个添加阴影效果的代码是无效的。
+
+    <!-- 文字阴影 -->
+    给文字添加阴影效果，4个值：前面两个参数必需写，后面的按需求。
+
+    <br> 语法：text-shadow:h-shadow v-shadow blur spread color
+
+    <div class="yinying">盒子阴影效果演示和文字阴影效果演示</div>
+
+
+
+</body>
+
+</html>

@@ -69,7 +69,7 @@
     <hr>
     <h3>下面是列表标签，3种：有序列表ol标签和无序列表ul标签和自定义列表dl标签</h3>
     <ul type="square">
-        <!-- 这是无序列表，ul标签的type属性有三种值，disc是实心圆(默认)，circle是空心圆，square是实心方块 -->
+        <!-- 这是无序列表，ul标签的type属性有三种值，disc是实心圆(默认)，circle是空心圆，square是实心方块，把style属性设置成style="list-style: none;"就会去除li前面的小圆点或方块 -->
         <li>ul里只能写li标签，li标签是个容器，里面可以写任意元素标签</li>
         <li>这是无序列表</li>
     </ul>
@@ -132,6 +132,8 @@
     2.在产生边距的行内块的父元素设置属性：font-size：0px;
     3.在父元素上设置，word-spacing(词边距)的值设为合适的负值即可
     4.在html中将行内块元素在同一行显示，不要进行美观缩进或者换行 -->
+
+    <!-- 居中：所有的行内或行内块元素想实现居中，只需要给它们的父标签写个text-align:center;即可实现 -->
     <p>
         在css中html的标签分3种类型： 行内元素（inline也叫内联元素）；行内块元素（inline-block）；块元素(block)； 常用的内联元素有：
         <a>、<span>、<br>、<i>、<em>、<strong>、<label>、<q>、<var>、<cite>、<code>
