@@ -39,7 +39,21 @@
             <option value="">上海</option>
             <option value="">广州</option>
             <!-- selected属性是设置默认选中的，哪个option需要首次进入页面就默认选中，就写在哪个option标签里 -->
-            <option value="" selected='selected'>浙江</option>
+            <option value="" selected='selected'>设置默认选中：浙江</option>
+        </select>
+        <!-- size属性显示多项，设置在select下拉菜单，不写这个属性默认显示一项，写了属性值是几就显示几项，然后在里面几选一 。 -->
+        size设置显示几项内容
+        <select name="" id="" size="3">            
+            <option value="">北京</option>
+            <option value="">上海</option>
+            <option value="">广州</option>
+        </select>
+        <!-- multiple是设置滑动鼠标可以同时选多个内容的属性，设置在select标签里，不需要给属性值，可以用在很多地方，比如input里写这个属性，上传文件时可以多选文件  -->
+        滑动鼠标同时多选
+        <select name="" id="" multiple>            
+            <option value="">北京</option>
+            <option value="">上海</option>
+            <option value="">广州</option>
         </select>
         <hr>
         <!-- textarea标签是文本域，是多行文本输入的控件，一般用来写留言、评论，属性cols是一行显示多少个字，rows是显示多少行 -->
@@ -47,134 +61,6 @@
         <textarea name="" id="" cols="30" rows="10">今天天气不错啊</textarea>
 
     </form>
-    <hr>
-    <hr>
-
-
-
-    <h3>自己写的练习作业</h3>
-    <form action="#" method="GET" name="#">
-        <table>
-            <col width='100'>
-            <tr>
-                <h4>青春不常在，抓紧谈恋爱</h4>
-            </tr>
-            <tr>
-                <td width="80">性别：</td>
-                <td><input type="radio" name="gender" id="boy" checked="checked">
-                    <label for="boy"><img src="image/nan.jpg" alt="">男</label></td>
-                <td><input type="radio" name="gender" id="nv"><label for="nv"><img src="image/nv.jpg" alt="">女</label></td>
-            </tr>
-            <tr>
-                <td width="80">生日：</td>
-                <td><select>
-                        <option>请选择年</option>
-                        <option value="">2020年</option>
-                        <option value="">2019年</option>
-                        <option value="">2018年</option>
-                    </select></td>
-                <td><select name="" id="">
-                        <option value="">请选择月</option>
-                        <option value="">1月</option>
-                        <option value="">2月</option>
-                        <option value="">3月</option>
-                    </select></td>
-                <td><select name="" id="">
-                        <option value="">请选择日</option>
-                        <option value="">1</option>
-                        <option value="">15</option>
-                        <option value="">30</option>
-                    </select></td>
-            </tr>
-            <tr>
-                <td width="80">所在地区：</td>
-                <td colspan="2"><input type="text" value="北京思密达"></td>
-            </tr>
-            <tr>
-                <td width="80">婚姻状况：</td>
-                <td><input type="radio" name="hun" id="weihun" checked="checked"><label for="weihun">未婚</label></td>
-                <td><input type="radio" name="hun" id="yihun"><label for="yihun">已婚</label></td>
-                <td><input type="radio" name="hun" id="lihun"><label for="lihun">离婚</label></td>
-
-            </tr>
-            <tr>
-                <td width="80">学历：</td>
-                <td><select name="" id="">
-                <option value="">幼儿园</option>
-                <option value="">小学</option>
-                <option value="">大学</option>
-            </select></td>
-            </tr>
-            <!-- 多选项按钮放在一个单元格的写法,要不就table标签那设置表格宽度，要不就td标签这里跨列合并单元格 -->
-            <tr>
-                <td>喜欢的类型：</td>
-                <td colspan="4">
-                    <input type="checkbox" name="like" id="wumei"><label for="wumei"> 妩媚的</label>
-                    <input type="checkbox" name="like" id="keai"><label for="keai">可爱的</label>
-                    <input type="checkbox" name="like" id="xiao"><label for="xiao">小鲜肉</label>
-                    <input type="checkbox" name="like" id="lao"><label for="lao">老腊肉</label>
-                    <input type="checkbox" name="like" id="dou"><label for="dou">都喜欢</label>
-                </td>
-            </tr>
-            <tr>
-                <td>喜欢的类型:</td>
-                <td><input type="checkbox" name="like" id="wumei"><label for="wumei"> 妩媚的</label></td>
-                <td><input type="checkbox" name="like" id="keai"><label for="keai">可爱的</label> </td>
-                <td><input type="checkbox" name="like" id="xiao"><label for="xiao">小鲜肉</label></td>
-                <td><input type="checkbox" name="like" id="lao"><label for="lao">老腊肉</label></td>
-                <td><input type="checkbox" name="like" id="dou"><label for="dou">都喜欢</label></td>
-            </tr>
-            <tr>
-                <td width='80'>自我介绍:</td>
-                <td colspan="3"><textarea name="" id="" cols="30" rows="2">自我介绍</textarea></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value='免费注册'></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="3">
-                    <input type="checkbox" name="tiaokuan" id="tongyi" checked='checked'>
-                    <label for="tongyi">我同意注册条款和会员加入标准</label>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="2"><a href="#">我是会员，立即登录</a></td>
-            </tr>
-            <!-- 列表最好写ul无序列表 -->
-            <tr>
-                <td></td>
-                <td colspan="4">
-                    <h3>我承诺</h3>
-                    <ul>
-                        <li>年满18岁，单身</li>
-                        <li>抱着严肃的态度</li>
-                        <li>真诚寻找另一半</li>
-                    </ul>
-                </td>
-            </tr>
-
-
-            <hr>
-            <tr>
-                <td></td>
-                <td colspan="2">
-                    <dl>
-                        <dt><h3>我承诺</h3></dt>
-                        <dd>
-                            <li>年满18岁，单身</li>
-                            <li>抱着严肃的态度</li>
-                            <li>真诚寻找另一半</li>
-                        </dd>
-                    </dl>
-                </td>
-            </tr>
-        </table>
-    </form>
-
-
 
 
 </body>

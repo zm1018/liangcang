@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>table作业</title>
+    <style>
+        table {
+            font: 700/16px '宋体';
+        }
+        
+        tr {
+            width: 200px;
+        }
+        
+        .red {
+            color: #4285F4;
+        }
+        /* 实现td设置了宽度，里面的内容超出自动换行，这里table标签要写:(表单布局:固定) */
+        
+        .table3 {
+            margin-top: 50px;
+            table-layout: fixed;
+            /* 给单元格设置宽度，让文字内容自动填充单元格，实现整个表格的大小 */
+            /* height: 165px; */
+            /* width: 745px; */
+            text-align: center;
+        }
+        
+        .table3 td {
+            /* 实现td设置了宽度，里面的内容超出自动换行, */
+            word-wrap: break-word;
+            width: 130px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 做一份个人简介-->
+
+    <table border="1px" cellspacing="0" cellpadding="10">
+        <colgroup span="6" width="100px"></colgroup>
+
+        <col width="200px">
+
+        <tr align="center">
+            <th colspan="7">
+                <h2>个人简历</h2>
+            </th>
+        </tr>
+        <tr align="center">
+            <td>姓名</td>
+            <td></td>
+            <td>性别</td>
+            <td></td>
+            <td>年龄</td>
+            <td></td>
+            <td colspan="2" rowspan="4">照片</td>
+        </tr>
+        <tr align="center">
+            <td>学历</td>
+            <td></td>
+            <td colspan="4">籍贯</td>
+
+
+        </tr>
+        <tr align="center">
+            <td>电话</td>
+            <td></td>
+            <td colspan="4">政治面貌</td>
+
+        </tr>
+        <tr align="center">
+            <td>毕业院校</td>
+            <td colspan="5"></td>
+        </tr>
+        <tr align="center">
+            <td colspan="7">求职信息</td>
+        </tr>
+    </table>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <!-- get请求时地址栏后面会显示请求参数，并且输入内容的长度有限制（一般输入关键字就行，不需要长篇大论），是为了获取内容 -->
+    <!-- post请求时地址栏后面不会显示请求参数，内容长度没有限制，是为了提交内容，一般写博客、日记、用户名密码等都是 -->
+    <form action="https://www.baidu.com/" method="POST">
+        <!-- 用直接设置整个表的宽度，代替设置每列的宽度 ，省代码-->
+        <table border="1px" cellspacing="0" width="600px" class="two">
+
+            <!-- <colgroup span="2" width="200px"></colgroup>
+            <colgroup span="1" width="400px"></colgroup> -->
+            <tr align="center" height="40px">
+                <td rowspan="4" class="red">总体信息</td>
+                <td colspan="2"></td>
+
+            </tr>
+            <tr height="40px">
+
+                <td align="right">用户名:</td>
+                <td><input type="text" name="username"></td>
+            </tr>
+            <tr height="40px">
+
+
+                <td align="right">密码:</td>
+                <td><input type="text" name="password"></td>
+
+            </tr>
+            <tr align="center" height="30px">
+
+                <td colspan="2"><input type="submit" style="background: #1CA261;">
+                    <input type="reset" style="background: #1CA261;"></td>
+
+
+            </tr>
+
+        </table>
+    </form>
+
+    <!-- 作业3 -->
+    <!-- 边框属性放在css那要写很多参数，去除单元格间隙的属性放css那写不生效 -->
+    <table class="table3" border="1px" cellspacing="0">
+        <tr>
+            <th>班次名称</th>
+            <th>科目</th>
+            <th>授课内容</th>
+            <th>增值服务</th>
+            <th>课时</th>
+            <th>价格</th>
+            <th>试听</th>
+            <th>购买</th>
+        </tr>
+        <tr>
+            <th rowspan="3">真题精解班</th>
+            <td>行测+申论</td>
+            <td>全科历年真题精解</td>
+            <td rowspan="3">课后赠2套模拟试卷24小时以内答疑</td>
+            <td>48</td>
+            <td>1280元</td>
+            <td>
+                <a href=""> <img src="../image/耳机.png" alt=""></a>
+            </td>
+            <td>
+                <a href=""> <img src="../image/购物车.png" alt=""></a>
+            </td>
+        </tr>
+        <tr>
+
+            <td>行测</td>
+            <td>行测历年真题精解</td>
+            <td>32</td>
+            <td>980元</td>
+            <td>
+                <a href=""> <img src="../image/耳机.png" alt=""></a>
+            </td>
+            <td>
+                <a href=""> <img src="../image/购物车.png" alt=""></a>
+            </td>
+        </tr>
+        <tr>
+
+            <td>申论</td>
+            <td>申论历年真题精解</td>
+            <td>16</td>
+            <td>580元</td>
+            <td>
+                <a href=""> <img src="../image/耳机.png" alt=""></a>
+            </td>
+            <td>
+                <a href=""> <img src="../image/购物车.png" alt=""></a>
+            </td>
+        </tr>
+        <tr>
+            <th rowspan="3">高分技巧班</th>
+            <td>行测+申论</td>
+            <td>全科技巧强化</td>
+            <td rowspan="3">入学试卷测评24小时答疑</td>
+            <td>32</td>
+            <td>980元</td>
+            <td>
+                <a href=""> <img src="../image/耳机.png" alt=""></a>
+            </td>
+            <td>
+                <a href=""> <img src="../image/购物车.png" alt=""></a>
+            </td>
+        </tr>
+        <tr>
+
+            <td>行测</td>
+            <td>行测速解技巧强化</td>
+            <td>18</td>
+            <td>680元</td>
+            <td>
+                <a href=""> <img src="../image/耳机.png" alt=""></a>
+            </td>
+            <td>
+                <a href=""> <img src="../image/购物车.png" alt=""></a>
+            </td>
+        </tr>
+        <tr>
+
+            <td>申论</td>
+            <td>申论速解技巧强化</td>
+            <td>14</td>
+            <td>580元</td>
+            <td>
+                <a href=""> <img src="../image/耳机.png" alt=""></a>
+            </td>
+            <td>
+                <a href=""> <img src="../image/购物车.png" alt=""></a>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

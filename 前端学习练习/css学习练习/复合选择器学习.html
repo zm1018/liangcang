@@ -62,10 +62,65 @@
         .lianjie:active {
             color: yellow;
         }
-        /* focus伪类选择器，主要是获取焦点（鼠标光标）的表单元素，一般是input标签用的 */
+        /* focus伪类选择器，主要是获取焦点（鼠标光标）的表单元素，一般是input标签用的，鼠标一点input的输入框，框里就会显示focus选择器设置的pink色效果 */
         
         input:focus {
             background: pink;
+        }
+        /*清除浮动的两种方法： after和before伪类选择器，主要是清除浮动的，一般写在css代码的上几行，做公用的，取个类名，谁需要清除浮动就调用那个类名就行。 */
+        /* 这是after，在浮动代码后面加一堵墙清除浮动效果的作用 */
+        
+        .clearfix:after {
+            content: '';
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+        
+        .clearfix {
+            *zoom: 1;
+        }
+        /* 这是after和before一起用，在浮动代码前后各加一堵墙清除浮动效果的作用，开发中规范的取名字最好叫clearfix ，这里区别于和上面的after重名，所以取个别的名字*/
+        
+        .aaa：before,
+        .aaa:after {
+            content: '';
+            display: table;
+        }
+        
+        .aaa:after {
+            clear: both;
+        }
+        
+        .aaa {
+            *zoom: 1;
+        }
+        
+        .ul0 {
+            width: 1226px;
+            /* height: 120px; */
+            margin: 0 auto;
+            /* 因为ul盒子没设置高度，它里面的li元素的高度就是它的高度，但它的实际高度是0，所以设置的白色背景看不见，当它下面有标准流的元素时，那个标准流元素会自动上移占它的位置，为了让那个标准流能正常在自己的位置显示，就需要给ul盒子清除浮动  */
+            background-color: #fff;
+            /* 清除ul列表里li前面那个小点 */
+            list-style: none;
+        }
+        
+        .ul0 li {
+            float: left;
+            width: 300px;
+            height: 120px;
+            background-color: blue;
+            margin-top: 10px;
+            margin-right: 10px;
+            color: #000;
+            font-size: 20px;
+        }
+        
+        .qingchu {
+            height: 200px;
+            background-color: yellow;
         }
     </style>
 </head>
@@ -105,10 +160,22 @@
     <a href="#" class="lianjie">链接伪类选择器2</a><br>
     <a href="#" class="lianjie">链接伪类选择器3</a><br>
     <a href="#" class="lianjie">链接伪类选择器4</a><br>
-    <!-- focus伪类选择器，演示 -->
+    <!-- focus伪类选择器，用来获取鼠标焦点的，演示 -->
+    <input type="text" value="focus伪类选择器，演示">
     <input type="text">
     <input type="text">
-    <input type="text">
+    <!-- after伪类选择器，和before伪类选择器，用来清除浮动的，演示 -->
+    <!-- ul是第一层大盒子，它里面的子盒子浮动，才会影响下面的标准流盒子，如果ul外面还有层大盒子，是不会影响标准流的显示位置的。为了after伪类选择器的效果，我把ul外面的大盒子div注释掉 -->
+    <!-- <div class="div0"> -->
+    <!-- 调用清除浮动的伪类选择器类名clearfix或aaa来清除浮动对下面的标准流的影响（类名是qingchu） -->
+    <ul class="ul0 aaa">
+        我是ul盒子,调用取消浮动的伪类选择器,演示：
+        <li class="li0">我是浮动的li盒子</li>
+        <li class="li2">我是浮动的li盒子</li>
+    </ul>
+    <!-- </div> -->
+
+    <div class="qingchu">我是标准流盒子</div>
 </body>
 
 </html>
