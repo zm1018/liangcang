@@ -1,0 +1,68 @@
+<!-- 字体图标下载地址：
+    国外的：https://icomoon.io
+    阿里的：https://www.iconfont.cn
+字体图标引入：
+    1.首先把下载的压缩文件解压，找到里面的fonts文件夹，复制一份到要使用它的那个html文件同级根目录(一定要注意路径问题，要放到文件同级目录）。
+    2.在要使用它的html文件的css样式（也就是style标签）里写下面这段代码：
+    @font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?7kkyc2');
+  src:  url('fonts/icomoon.eot?7kkyc2#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?7kkyc2') format('truetype'),
+    url('fonts/icomoon.woff?7kkyc2') format('woff'),
+    url('fonts/icomoon.svg?7kkyc2#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+字体图标的使用：
+    1.里面的元素要使用字体图标，先去解压的文件里找到demo.html文件，打开后要使用哪个图标就复制它下面的  这种小框框，粘贴到元素使用。
+    2.再去css样式里给要使用字体图标的元素写样式，给复制的那个字（小框框）申明为字体图标，例如span标签要使用字体图标：
+    span {
+        font-family: "icomoon";
+    }
+
+字体图标的追加：
+    原来的不够用了，需要下载点新的。
+    1.想要追加字体图标，先去国外的网站点击左上角Import Icons按钮，选择自己电脑里的解压文件，找到selection.json文件，会弹出一个对话框，点击yes，就会重新加载文件，以前下载过的，和新的都显示在页面上，想要哪个点击哪个，选好后，点右下角的Generate Font按钮，然后下载下来。
+    2.把电脑里原来的压缩包和解压文件全部替换成新的，再把fonts文件夹复制到要使用它的html文件同级目录就行。
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字体图标学习</title>
+    <style>
+        /* 字体申明代码 */
+        
+        @font-face {
+            font-family: 'icomoon';
+            src: url('fonts/icomoon.eot?7kkyc2');
+            src: url('fonts/icomoon.eot?7kkyc2#iefix') format('embedded-opentype'), url('fonts/icomoon.ttf?7kkyc2') format('truetype'), url('fonts/icomoon.woff?7kkyc2') format('woff'), url('fonts/icomoon.svg?7kkyc2#icomoon') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+        /* 字体图标使用 */
+        
+        span {
+            /* 字体图标使用 */
+            font-family: 'icomoon';
+            /* 因为是文字，可以设置文字所有的属性 */
+            font-size: 50px;
+            color: pink;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span>百度</span>
+    <span>企鹅</span>
+    <span>我</span>
+</body>
+
+</html>
