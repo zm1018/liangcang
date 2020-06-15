@@ -1,0 +1,172 @@
+/* 公共样式部分 */
+
+
+/* 字体图标声明 ,不是和css文件同级目录，所以路径要改一下*/
+
+@font-face {
+    font-family: 'icomoon';
+    src: url('../fonts/icomoon.eot?6cm2ix');
+    src: url('../fonts/icomoon.eot?6cm2ix#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?6cm2ix') format('truetype'), url('../fonts/icomoon.woff?6cm2ix') format('woff'), url('../fonts/icomoon.svg?6cm2ix#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+
+/* 版心 */
+
+.w {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* 快捷导航模块 */
+
+.shortcut {
+    /* width: 100%; */
+    height: 31px;
+    line-height: 31px;
+    background-color: #f1f1f1;
+}
+
+
+/* 快捷导航模块的左盒子 */
+
+.fl {
+    float: left;
+}
+
+
+/* 快捷导航模块的右盒子 */
+
+.fr {
+    float: right;
+}
+
+
+/* 很多地方用到这个红色，写个公共样式 */
+
+.style_red {
+    color: #C81623;
+}
+
+.shortcut ul li {
+    float: left;
+}
+
+
+/* 快捷导航的小竖线 */
+
+.shortcut .fr ul li:nth-child(even) {
+    width: 1px;
+    height: 12px;
+    background-color: #666;
+    margin: 9px 15px 0px;
+}
+
+
+/* 快捷导航的小三角 */
+
+.arrow-icon::after {
+    font-family: 'icomoon';
+    content: "";
+    margin-left: 6px;
+}
+
+
+/* header头部制作 */
+
+.header {
+    position: relative;
+    height: 105px;
+    background-color: pink;
+}
+
+
+/* logo制作 */
+
+.header .logo {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    width: 142px;
+    height: 46px;
+}
+
+.header .logo h1 a {
+    display: block;
+    width: 142px;
+    height: 46px;
+    background: url(../images/logo.png) no-repeat;
+    /* 隐藏a标签里的文字 */
+    font-size: 0;
+}
+
+
+/* search制作 */
+
+.search {
+    position: absolute;
+    left: 346px;
+    top: 25px;
+    width: 538px;
+    height: 36px;
+    border: 2px solid #B01919;
+}
+
+.search input {
+    width: 454px;
+    height: 32px;
+    padding-left: 10px;
+}
+
+.search button {
+    width: 80px;
+    height: 32px;
+    background-color: #B01919;
+    font-size: 16px;
+    color: #fff;
+}
+
+
+/* 热词模块 */
+
+.hotwrods {
+    position: absolute;
+    top: 66px;
+    left: 346px;
+    width: 538px;
+}
+
+.hotwrods a {
+    margin: 0 10px;
+}
+
+
+/* 购物车模块 */
+
+.shopcar {
+    position: absolute;
+    top: 25px;
+    right: 60px;
+    width: 140px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border: 1px solid #dfdfdf;
+    background-color: #f7f7f7;
+}
+
+.shopcar::before {
+    font-family: "icomoon";
+    content: "";
+    margin-right: 5px;
+    color: #B01919;
+}
+
+.shopcar::after {
+    font-family: "icomoon";
+    content: "";
+    margin-left: 10px;
+}
