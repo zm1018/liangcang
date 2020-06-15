@@ -80,6 +80,28 @@ visibility（可见性）属性：
         collapse（主要用来隐藏表格的行或列的，隐藏的行或列能被其它内容使用。对于表格外的其它对象，其作用等同于hidden。
 
 overflow（溢出）属性：visible(显示内容，是默认值，不用设置)、hidden（隐藏，超出盒子大小的部分隐藏不显示）、scroll（显示滚动条，溢出或不溢出都有滚动条）、auto（自动，溢出就会显示滚动条，不溢出就没有滚动条）
+        让溢出的文字显示省略号,两种：
+            1.单行显示省略号：
+            white-space:nowrap（不换行）；（默认normal自动换行）   
+            overflow:hidden;(超出的部分隐藏)
+            text-overflow:ellipsis（省略号）;(文字超出的部分用省略号代替)   
+            
+            2.多行文本溢出显示省略号：不常用，兼容性差，IE不支持.
+            overflow:hidden;
+            text-overflow:ellipsis;
+            display: -webkit-box;(转换成弹性伸缩盒子模型)
+            -webkit-line-clamp:2;(设置在第几行显示省略号)
+            -webkit-box-orient:vertical;（设置里面的子元素垂直居中）
+
+
+vertical(垂直的)-align(对齐)属性：baseline(默认值，图片和文字基线对齐)、middle（让图片和文字居中对齐 ）、top（让图片和文字顶端对齐）、bottom(让图片和文字底端对齐)。
+
+该属性常用于设置图片或表单和文字垂直对齐的。但只对行内元素或行内块元素有效。
+    所有的图片和父盒子底部都有一条缝隙，原因是因为行内元素和行内块元素都是默认基线对齐的特性，去掉底部缝隙有两种方法：
+        1.用vertical-align属性，除了默认值baseline不能用，其它值都可以去除底部缝隙。（推荐使用第一种方法）
+        2.把图片转换成块级元素，块级元素没有基线对齐的特性。                        
 
 -->
 <img src="../html学习练习/image/定位总结.png" alt="">
+
+<img src="../html学习练习/image/垂直对齐的四条线.png" alt="" style="vertical-align: middle;">我要和这图垂直居中对齐

@@ -110,10 +110,41 @@
         .div3 .p4 {
             background: url(../html学习练习/image/4.png) no-repeat;
         }
+        /* 鼠标光标形状 */
+        
+        li {
+            margin: 20px;
+        }
+        
+        .li1 {
+            /* 默认白箭头 */
+            cursor: default;
+        }
+        
+        .li2 {
+            /* 小手 */
+            cursor: pointer;
+        }
+        
+        .li3 {
+            /* 移动十字架 */
+            cursor: move;
+        }
+        
+        .li4 {
+            /* 文本 I */
+            cursor: text;
+        }
+        
+        .li5 {
+            /* 禁止 */
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
 <body>
+    <!-- 伪类选择器实现鼠标滑入变色 -->
     <div class="div1">
         <a href="">手机 电话卡</a>
         <a href="">电视 盒子</a>
@@ -138,6 +169,22 @@
         <a href="#" class="p3"></a>
         <a href="#" class="p4"></a>
     </div>
+
+    <!-- 鼠标样式cursor(光标)属性实现鼠标划入改变光标形状，5种参数：
+            defaut(默认的形状，白箭头)
+            pointer(小手)
+            move(移动 十字架) 
+            text（文本 I）
+            not-allowed(禁止 红色圆圈中间一条杠)   
+        -->
+    <ul>
+        <li class="li1">我是默认白箭头形状</li>
+        <li class="li2">我是小手形状</li>
+        <li class="li3">我是十字架形状</li>
+        <li class="li4">我是文本形状</li>
+        <li class="li5">我是禁止形状</li>
+    </ul>
+
 </body>
 
 </html>

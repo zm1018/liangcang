@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .box {
+            /* 父盒子相对定位 */
+            position: relative;
+            width: 55px;
+            height: 55px;
+            margin: 50px;
+            /* 因为子盒子宽度比父盒子大,所以父盒子要正常显示一张图片,需要把溢出部分隐藏 */
+            overflow: hidden;
+        }
+        
+        .box2 {
+            /* 子盒子绝对定位 */
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* 子盒子的宽度就是父盒子的宽度乘以几张图，几张图就乘以几 */
+            width: calc(100% * 2);
+            /* 高度和父盒子一样 */
+            height: 100%;
+            /* 子盒子添加过渡效果,为了让两张图片链接都能点击,让鼠标延迟触发0.5秒 */
+            transition: all 1s .5s;
+        }
+        /* 给子盒子里的图片设置浮动,让它们在一行显示,并且没有缝隙 */
+        
+        .box a[class*=a] {
+            float: left;
+        }
+        /* 鼠标划入父盒子时,里面的子盒子左偏移一张图片的宽度,就会把溢出的部分显示出来,实现图片切换 */
+        
+        .box:hover .box2 {
+            position: absolute;
+            /* left: -55px; */
+            /* 这样写宽度更灵活 */
+            left: -100%;
+            /* 不需要隐藏显示了,偏移的时候就会在父盒子中显示隐藏的那部分 */
+            /* overflow: visible; */
+        }
+        /* 销量进度条 */
+        
+        .div2 {
+            width: 300px;
+            /* 不设高度，让内容自动撑大 */
+            /* height: 500px; */
+            /* background-color: rgb(146, 228, 214); */
+            margin: auto;
+        }
+        
+        .div2 img {
+            margin: 20px 25%;
+        }
+        
+        .div2 p {
+            color: #99999A;
+            margin: 15px;
+        }
+        
+        .div2 b {
+            margin: 15px 5px 15px 15px;
+            color: #BB403D;
+            font-size: 24px;
+        }
+        
+        .div2 del {
+            color: #99999A;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .div3 {
+            font-size: 14px;
+            color: #A7AAA6;
+            margin: 15px;
+            vertical-align: middle;
+        }
+        
+        i {
+            color: #e5979b;
+            font-style: normal;
+        }
+        /* 进度条 */
+        
+        .span1,
+        .span2 {
+            display: inline-block;
+        }
+        
+        .span1 {
+            width: 130px;
+            height: 15px;
+            border: 1px solid #F24347;
+            border-radius: 7px;
+            /* box-sizing: content-box; */
+            margin: 0 5px;
+        }
+        
+        .span2 {
+            width: calc(100% - 30px);
+            height: 15px;
+            background: #B01919;
+            border-radius: 7px 0 0 7px;
+            transition: all .5s;
+        }
+        
+        .span2:hover {
+            width: 100%;
+            border-radius: 7px;
+        }
+        
+        .div4 {
+            height: 45px;
+            margin: 15px;
+            background-color: #B01919;
+            color: #F3E2DB;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 小米logo动画效果 -->
+    <div class="box">
+        <div class="box2">
+            <a href="https://www.baidu.com/" class="a1"><img src="../../html学习练习/image/mi2.png" alt=""></a>
+            <a href="https://www.baidu.com/" class="a2"><img src="../../html学习练习/image/mi1.png" alt=""></a>
+        </div>
+    </div>
+    <!-- 销量进度条过渡效果 -->
+    <section>
+        <div class="div2">
+            <img src="../../html学习练习/image/手机.png" alt="">
+            <p>Apple苹果iphone 6s plus 32G 金色 移动联通电信4G手机</p>
+            <b>￥6088</b><del>￥6988</del>
+            <div class="div3">
+                已售<i>87%</i> <span class="span1"><span class="span2"></span></span> 剩余<i>29</i>件
+            </div>
+            <div class="div4">立即抢购</div>
+        </div>
+    </section>
+</body>
+
+</html>

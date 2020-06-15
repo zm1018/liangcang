@@ -134,3 +134,54 @@ li {
     background-color: rgb(130, 159, 238);
     /* border-width: 20px solid transparent; */
 }
+
+
+/* 页码 */
+
+.yema {
+    margin: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #70656D;
+}
+
+.yema a,
+.yema input,
+.yema button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #DEE0DE;
+    background-color: #F6F7F6;
+    line-height: 36px;
+    text-align: center;
+}
+
+a {
+    display: inline-block;
+    text-decoration: none;
+    /* a自带字体颜色，给父盒子里的元素字体改统一颜色，却改不了a的，明明父的类选择器权重比a的标签选择器高啊，为什么还要再写a标签的color属性才能改字体颜色呢？ */
+    /* color: #70656D; */
+    /* inherit（继承的意思）继承父的字体颜色 */
+    color: inherit;
+}
+
+.yema .a1,
+.yema .a8 {
+    width: 86px;
+}
+
+.yema .a2,
+.yema .a7 {
+    border: none;
+    background-color: #fff;
+}
+
+.yema input {
+    outline: none;
+}
+
+.yema button {
+    /* button按钮也是自带字体颜色，不会主动继承父的颜色，需要设置它的color属性才能改 */
+    /* color: #70656D; */
+    color: inherit;
+}

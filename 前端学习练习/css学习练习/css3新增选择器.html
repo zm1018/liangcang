@@ -1,0 +1,416 @@
+<!-- css3新增的选择器有兼容性问题，IE9以上的版本才支持 -->
+<!-- 共种：
+    1、属性选择器
+    2、结构伪类选择器
+    3、 -->
+
+
+<!-- 属性选择器的权重是10。
+
+    共5种：
+
+    1.属性选择器：
+        相同的标签，可以根据里面的不同属性进行选择，来设置样式。
+    语法：标签名[属性名] {
+                样式。。。
+                }
+
+
+    2.属性=属性值选择器：
+        相同的标签，相同的属性，可以通过属性=属性值来进行选择。
+    语法：标签名[属性名=属性值] {
+                样式。。。
+                }
+
+
+    3.属性^=属性值选择器：
+        相同的标签，相同的属性，属性值有相同的开头，可以通过此选择器统一进行选择。以前可能要通过并集或者类选择器来一个个写。
+    语法：标签名[属性名^=属性值相同的开头部分] {
+                样式。。。
+                }
+
+
+    4.属性$=属性值选择器：
+        相同的标签，相同的属性，属性值开头部分全相同，有相同和不同的结尾，把含有相同结尾的属性值的标签选择出来。
+    语法：标签名[属性名$=属性值结尾的部分相同] {
+                    样式。。。
+                }
+
+
+    5.属性*=属性值选择器：
+        相同的标签，相同的属性，包含某个值的所有标签全部选择出来。
+    语法：标签名[属性名*=属性值] {
+                    样式。。。
+                }
+ -->
+
+<!-- 各种属性选择器的演示： -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 属性选择器演示 */
+        
+        input[value] {
+            color: blue;
+        }
+        /* 属性=属性值选择器演示 */
+        
+        div[class=no] {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            margin: 10px;
+        }
+        /* 属性^=相同开头的属性值选择器演示 */
+        
+        div[class^=w],
+        span[class^=w],
+        h2[class^=w] {
+            color: cadetblue;
+        }
+        /* 属性$=相同结尾的属性值选择器演示 */
+        
+        li[class$=ai] {
+            color: yellow;
+        }
+        /* 属性*=含相同内容的属性值选择器演示 */
+        
+        li[class*=h] {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 属性选择器,要选择第一个input标签，它有个不同的属性，用它不同的属性来选出这个标签，演示： -->
+    <input type="text" value="哈哈">
+    <input type="text">
+
+    <!-- 属性=属性值选择器,选值是no的，会把属性值相同的选出来 ，演示：-->
+    <div class="yes">1</div>
+    <div class="no">2</div>
+    <div class="yes">3</div>
+    <div class="no">4</div>
+
+    <!-- 把属性值以相同内容开头的元素选出来,选w开头的，会把w开头的标签都选出来，演示： -->
+    <div class="w1">11</div>
+    <span class="w2">22</span>
+    <span class="z5">55</span>
+    <h2 class="w3">33</h2>
+    <h4 class="z1">44</h4>
+
+    <!-- 把属性值以相同内容结尾的元素选出来，这里选ai结尾的，演示： -->
+    <ul>
+        <li class="keai">1</li>
+        <li class="keai">2</li>
+        <li class="kele">61</li>
+        <li class="kele">62</li>
+    </ul>
+
+    <!-- 把属性值里含此内容的元素都选出来，这里选带h的，演示： -->
+    <ul>
+        <li class="fish">60</li>
+        <li class="fh">66</li>
+        <li class="ish">61</li>
+        <li class="ih">62</li>
+        <li class="ir">62</li>
+    </ul>
+</body>
+
+</html>
+
+
+<!-- 结构伪类选择器也属于伪类选择器，权重是10。
+
+    共6种：
+
+    1.结构伪类选择器选择父元素里的第一个子元素
+    语法：父标签名 子标签名:first-child {
+                                样式。。。
+                            }
+
+    2.结构伪类选择器选择父元素里的最后一个子元素
+    语法：父标签名 子标签名:last-child {
+                                样式。。。
+                            }  
+                            
+    3. 结构伪类选择器选择父元素里的一个或多个子元素, n有三种值：
+            数字（想选第几个子元素，就写数字几）
+            关键字（两种：even偶数，odd奇数）
+            公式（5种：
+                1.括号里只写n，默认从0个元素（元素都是1开始的，所以第0个元素n会自动忽略掉）开始到最后一个元素结束（含最后一个元素），统统选择，也就是括号里填n就会选择所有的子元素。，类似for循环。
+
+                2.括号里写2n，选择全部偶数元素，就是2乘以n，等价于even。
+
+                3.写2n+1，全部选奇数元素，就是2乘以n再加1，等价于odd。
+
+                4.写5n，选5的倍数元素，就是5乘以n。
+
+                5.写n+5，选从第5个开始（含第5个）到最后的所有子元素。
+
+                6.写-n+5,选前5个（含第5个）元素。
+
+    语法：父标签名 子标签名:nth-child(n) {
+                                样式。。。
+                            }                       
+
+    4. 结构伪类选择器里选择父元素的指定子元素的第一个元素。
+    语法：父标签名 子标签名:frist-of-type {
+                                样式。。
+                            }    
+    
+    5. 结构伪类选择器里选择父元素的指定子元素的最后一个元素。
+    语法：父标签名 子标签名:last-of-type {
+                                样式。。
+                            }                            
+    
+    6. 结构伪类选择器里选择父元素的指定子元素的第n个元素。和nth-child（n）里n的值一样，有三种。
+    语法：父标签名 子标签名:nth-of-type(n) {
+                                样式。。
+                            }                            
+区别：
+    父标签 子标签：nth-child(n)： 程序会先执行nth-child(n)，再去匹配子标签是否符合要选择的目标，符合就能匹配，不符合就谁都不选。
+
+    父标签 子标签：nth-of-type(n)： 程序会先执行指定的子标签，再执行子标签里nth-of-type(n)的n是几，去选匹配的子标签的第n个元素。
+
+-->
+
+
+<!-- 各种结构伪类选择器的演示： -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 结构伪类选择器选第一个子元素，两种写法，演示： */
+        
+        section div:first-child {
+            color: yellowgreen;
+        }
+        
+        section div:first-of-type {
+            color: red;
+        }
+        /* 结构伪类选择器选最后一个子元素，两种写法，演示： */
+        
+        section li:last-of-type {
+            color: blue;
+        }
+        
+        section li:last-child {
+            color: rgb(214, 226, 43);
+        }
+        /* 结构伪类选择器选择第n个子元素，两种写法，演示： */
+        /* 父里有很多不同标签时，nth-child(n) 可以直接选择父里的第n个子元素 ，父元素一定要空一格， ：前面可以不写子元素*/
+        
+        section :nth-child(4) {
+            background-color: red;
+        }
+        /* 父里有很多不同标签时，nth-of-type（）不能直接写父标签后面，  ：前面必需指定子元素，才能用nth-of-type选择父里指定的相同的第n个子元素 */
+        
+        section div:nth-of-type(2) {
+            background-color: blueviolet;
+        }
+        /* 选奇数子元素，4种写法，父里的子标签相同，  ：前面可以不带子标签，直接选，演示： */
+        
+        .ul2 :nth-child(odd) {
+            color: coral;
+        }
+        
+        .ul2 :nth-child(2n+1) {
+            color: yellowgreen;
+        }
+        
+        .ul2 :nth-of-type(odd) {
+            color: cornflowerblue;
+        }
+        
+        .ul2 :nth-of-type(2n+1) {
+            color: rgb(237, 100, 157);
+        }
+        /* 选偶数子元素，4种写法： */
+        
+        .ul2 li:nth-of-type(even) {
+            background-color: cyan;
+        }
+        
+        .ul2 li:nth-of-type(2n) {
+            background-color: rgb(47, 0, 255);
+        }
+        
+        .ul2 li:nth-child(even) {
+            background: darkgoldenrod;
+        }
+        
+        .ul2 li:nth-child(2n) {
+            background: rgb(80, 184, 11);
+        }
+        /* 用公式选父元素的第5个子元素和后面的所有子元素，2种写法： */
+        
+        .ul2 li:nth-child(n+5) {
+            font-weight: 700;
+        }
+        
+        .ul2 li:nth-of-type(n+5) {
+            font-size: 25px;
+        }
+        /* 用公式选父元素的前5个子元素，含第5个子元素，2种写法： */
+        
+        .ul2 li:nth-child(-n+5) {
+            height: 50px;
+        }
+        
+        .ul2 li:nth-of-type(-n+5) {
+            width: 200px;
+        }
+        /* 用公式选父元素里5的倍数的子元素，2种写法： */
+        
+        .ul2 li:nth-of-type(5n) {
+            border: 2px solid black;
+        }
+        
+        .ul2 li:nth-child(5n) {
+            font-style: italic;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div>我是第1个孩子</div>
+        <div>我是第2个孩子</div>
+        <p>我是第3个孩子</p>
+        <ul>
+            <li>我是第4个孩子</li>
+            <li>我是第5个孩子</li>
+        </ul>
+    </section>
+
+    <ul class="ul2">
+        <li>我是第1个孩子</li>
+        <li>我是第2个孩子</li>
+        <li>我是第3个孩子</li>
+        <li>我是第4个孩子</li>
+        <li>我是第5个孩子</li>
+        <li>我是第6个孩子</li>
+        <li>我是第7个孩子</li>
+        <li>我是第8个孩子</li>
+        <li>我是第9个孩子</li>
+        <li>我是第10个孩子</li>
+        <li>我是第11个孩子</li>
+    </ul>
+</body>
+
+</html>
+
+<!-- 伪元素选择器权重值是1。
+    伪元素选择器是css创建的元素，不会在html文件的结构里显示，是行内元素类型，里面必需有content属性，否则伪元素选择器无效，要显示的内容都是写在content属性里的。
+        常用于做清除浮动和字体图标插入或视频遮罩层的效果。
+
+    共2种：before是在父元素的其它子元素前面创建一个元素插入进去；after是在父元素的其它子元素后面创建一个元素插入。
+    语法：父元素::before {
+                    content="内容"；
+                    样式。。。
+                }
+         父元素::after {
+                    content="";
+                    其它样式。。
+                }
+    注意：content的属性值一定要加“ ” 伪元素和父元素直接一定不能有空格，标准写法是：：低版本的浏览器可以写一个： 。
+-->
+
+<!-- 伪元素演示： -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 字体图标声明 */
+        
+        @font-face {
+            font-family: 'icomoon';
+            src: url('fonts/icomoon.eot?fi7d8j');
+            src: url('fonts/icomoon.eot?fi7d8j#iefix') format('embedded-opentype'), url('fonts/icomoon.ttf?fi7d8j') format('truetype'), url('fonts/icomoon.woff?fi7d8j') format('woff'), url('fonts/icomoon.svg?fi7d8j#icomoon') format('svg');
+            font-weight: normal;
+            font-style: normal;
+            font-display: block;
+        }
+        /* 盒子里的内容前面插入内容 */
+        
+        .div66::before {
+            content: '我';
+        }
+        /* 盒子里的内容后面插入内容 */
+        
+        .div66::after {
+            content: "M M";
+            color: rgb(28, 53, 197);
+        }
+        
+        .div55 {
+            position: relative;
+            width: 300px;
+            height: 100px;
+            background: lightgreen;
+            margin: auto;
+            line-height: 100px;
+            /* vertical-align: middle; */
+            text-align: center;
+        }
+        /* 盒子里插入字体图标 */
+        
+        .div55::after {
+            position: absolute;
+            /* 因为给父盒子里的内容都设置了居中，所以这里字体图标的top值为0才是居中 */
+            top: 0;
+            right: 20px;
+            font-family: 'icomoon';
+            /* 放了两个图标进去，不空格内容挨在一起，空格也会显示出内容之间有空格 */
+            content: " ";
+            color: lightcoral;
+            font-size: 20px;
+        }
+        /* 用伪元素做个遮罩层，并且遮罩层中间有个暂停键，类似视频暂停的感觉 */
+        
+        .div55::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100px;
+            background: rgba(0, 0, 0, .3);
+            /* 隐藏遮罩层 */
+            display: none;
+            /* 内容插了个字体图标，也可以写这种数字，也可以写那种小框框 */
+            font-family: 'icomoon';
+            content: "\ea15";
+            font-size: 50px;
+            color: #fff;
+        }
+        /* 鼠标经过父盒子时里面的before伪元素显示出来，每个：之间都不能有空格 */
+        
+        .div55:hover::before {
+            /* 隐藏的元素显示出来 */
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div66">是</div>
+    <div class="div55">我后面图标</div>
+</body>
+
+</html>

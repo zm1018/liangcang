@@ -20,10 +20,20 @@
         
         .div2 {
             width: 100px;
-            height: 100px;
+            height: 83px;
             background: red;
             /* 文字太多，溢出盒子了，用溢出隐藏，重叠的文字环绕效果就消失了，不想改变盒子大小的情况下怎么解决？ */
             /* overflow: hidden; */
+            /* 多行文字：第四行溢出部分用省略号显示 */
+            /* overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical; */
+            /* 单行文字溢出部分用省略号显示 */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         /* 横向排版是要三个div都设置向左浮动  */
         
@@ -96,19 +106,27 @@
         }
         
         ul {
+            /* position: relative; */
             width: 600px;
             height: 500px;
             background: lightblue;
             border-style: solid;
             border-width: 1px;
             border-color: black;
+            margin-left: 30px;
         }
         
-        .bbb1 {
+        #ul1 .bbb1 {
             /* 设置外边距（自身边框到另一个容器边框之间的距离，四个参数：上下左右）上下高度10，左右100px，
             因为是第一个子元素，所以外边距都是相对于父元素的 */
-            /* 因为li标签统一设置了10px的外边距，此时50%会让这个li偏右，所以40%能视觉上居中，但文字就会换行或者竖着显示，设置宽度也会竖着显示，就设置不换行属性，解决了 */
-            margin: 10px 40%;
+            /* 因为li标签统一设置了10px的内边距，此时50%会让这个li偏右，所以40%能视觉上居中，但不准确。
+            最好用定位，这里为了保留原先位置子元素也使用了相对定位。left值给ul宽度的50%，再margin值给个-50px实现居中，因为li这个盒子宽度被内容撑开成了100px宽的，取它的一半，负值往左移动。
+            但居中后文字就会换行或者竖着显示，设置宽度也会竖着显示，就设置不换行属性，解决了 */
+            /* margin: 10px 40%; */
+            position: relative;
+            top: 0;
+            left: 50%;
+            margin: 10px -50px;
             /* 强制让文字不换行 */
             white-space: nowrap;
             float: left;
@@ -116,20 +134,28 @@
             /* text-align: center; */
             /* margin: 10px auto; */
         }
+        /* 一个元素往左浮动，另一个元素就得往右浮动，交叉的，一个个设置右不现实，可以通过结构伪类选择器解决问题 */
         
-        .bbb3,
-        .bbb5 {
+        ul li:nth-child(even) {
             float: left;
         }
         
-        .bbb2,
-        .bbb4,
-        .bbb6 {
-            /* 怎么让右浮动的元素都左边对齐显示，而不是和右边框对齐显示呢？ */
+        ul li:nth-child(odd) {
             float: right;
-            /* 不设置右外边距的话，向右浮动会很贴右边框线，不好看 */
             margin-right: 20px;
         }
+        /* .bbb3,
+        .bbb5 {
+            float: left;
+        } */
+        /* .bbb2,
+        .bbb4,
+        .bbb6 { */
+        /* 怎么让右浮动的元素都左边对齐显示，而不是和右边框对齐显示呢？ */
+        /* float: right; */
+        /* 不设置右外边距的话，向右浮动会很贴右边框线，不好看 */
+        /* margin-right: 20px; */
+        /* } */
         
         li {
             /* 清除浮动效果的影响，才会每行显示一个，否则浮动会让一行排列多个 */
@@ -189,8 +215,8 @@
     <div class="div9">我没被覆盖</div>
     <p>微信聊天对话框排版设计</p>
 
-    <ul>
-        <!-- 因为有的左浮动，有的右浮动，那有多少个li就得设置多少float，不智能，怎么才能统一设置，尽量少写代码，不用一个一个写呢？ -->
+    <ul id="ul1">
+        <!-- 因为有的左浮动，有的右浮动，那有多少个li就得设置多少float，不智能，怎么才能统一设置，尽量少写代码，不用一个一个写呢？ 用结构伪类选择器解决了。-->
         <li class="bbb1">聊天对话框</li>
         <li class="bbb2">对话内容2</li>
         <li class="bbb3">对话内容3</li>

@@ -15,7 +15,9 @@
         .butongyuanjiao {
             /* 浮动之后两个盒子的边框有一条边是挨到一起的，就变粗了 */
             float: left;
-            /* 合并相邻的边框，解决挨到一起的变变粗问题，这个属性只在table标签里才有效 */
+            /* 用margin给负值，解决挨到一起边框变粗的问题 */
+            margin-right: -5px;
+            /* 用合并相邻的边框无效，解决挨到一起的变变粗问题，这个属性只在table标签里才有效 */
             /* border-collapse: collapse; */
             width: 200px;
             height: 200px;
@@ -26,6 +28,15 @@
             line-height: 200px;
             text-align: center;
             margin-top: 30px;
+        }
+        /* 实现鼠标经过边框四条边都变色，并且解决上面那个margin负值造成的排在中间的盒子右边框被压住，只会显示另外三条边框的问题，用相对定位。如果它们里面还有其他元素，它们作为父元素已经添加过相对定位，那就在鼠标经过那里设置它们的z-index属性值更高一些，提高层级就能实现四条边都显示。 */
+        
+        .border:hover,
+        .yuanjiao:hover,
+        .yuanxing:hover {
+            position: relative;
+            /* z-index: 1; */
+            border: 10px solid gold;
         }
         
         .yuanjiao {
@@ -155,13 +166,188 @@
             /* 文字阴影效果 */
             text-shadow: 5px 5px 1px rgba(0, 0, 0, .3);
         }
+        /* 三角形制作 */
+        
+        .sanjiao1 {
+            width: 0;
+            height: 0;
+            /* 四条边所以会产生4个三角形 */
+            border-top: 50px solid red;
+            border-left: 50px solid #000;
+            border-right: 50px solid blue;
+            border-bottom: 50px solid green;
+        }
+        
+        .sanjiao2 {
+            width: 0;
+            height: 0;
+            /* 制作一个三角形，先写4条边都透明，再把某一条边设置成想要的颜色 */
+            border: 50px solid transparent;
+            border-top: 50px solid #000;
+            margin: 20px auto;
+        }
+        /* 盒子上面有个小三角，两种： */
+        /* 第一种： */
+        
+        .jing {
+            position: relative;
+            width: 200px;
+            height: 50px;
+            background-color: red;
+        }
+        
+        .dong {
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            /* 这两行代码的作用是为了照顾低版本浏览器的兼容性。 */
+            font-size: 0;
+            line-height: 0;
+            /* 为什么居中要再移5px呢？因为一个上边框高5，下边框高5，整个盒子高度就是10了，它自己的一半就是5 */
+            margin-top: -5px;
+            width: 0;
+            height: 0;
+            border: 5px solid transparent;
+            border-left: 5px solid #000;
+        }
+        /* 第二种: */
+        
+        .jingdong {
+            position: relative;
+            width: 100px;
+            height: 150px;
+            margin: 0 500px;
+            background-color: pink;
+        }
+        
+        .jingdong .sanjiao {
+            position: absolute;
+            top: -10px;
+            right: 30px;
+            width: 0;
+            height: 0;
+            border: 5px solid transparent;
+            border-bottom: 5px solid pink;
+        }
+        /* 直角三角形制作 */
+        
+        .zhijiao {
+            width: 0;
+            height: 0;
+            /* 去掉底边和左边，再把上边改成透明色，就做成了一个右直角三角形。右直角三角形的高是靠top边框宽度撑开的，宽是自己的边框宽度*/
+            border-top: 100px solid transparent;
+            border-right: 50px solid blue;
+        }
+        /* 梯形 */
+        
+        .tixing {
+            position: relative;
+            width: 100px;
+            height: 50px;
+            background-color: brown;
+            margin: 30px;
+        }
+        
+        .tixing .pinjie {
+            /* 用定位，左移父盒子的100%宽度，就能实现拼接 */
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: 0;
+            height: 0;
+            /* 倒三角，所以显示的是上边框，高度一定要和父盒子一样高 */
+            border-top: 50px solid red;
+            /* 右边框的大小控制倒三角的宽度。 */
+            border-right: 20px solid transparent;
+        }
+        /* 两色的矩形盒子 */
+        
+        .twose {
+            width: 150px;
+            height: 50px;
+            border: 1px solid sandybrown;
+            margin: 30px;
+            line-height: 50px;
+            text-align: center;
+        }
+        
+        .tixing2 {
+            position: relative;
+            float: left;
+            width: 80px;
+            height: 100%;
+            background-color: sandybrown;
+            font-weight: 700;
+            font-size: 13px;
+            color: #fff;
+        }
+        
+        .sanjiao3 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-top: 50px solid transparent;
+            border-right: 20px solid #fff;
+        }
+        /* 前面的盒子设置浮动，这个盒子只写文字，会自动文字环绕，不用设置宽高 */
+        
+        .yuanjia {
+            /* float: left;
+            width: 70ox;
+            height: 100%; */
+            font-size: 12px;
+            color: rgb(206, 209, 211);
+            /* 删除线 */
+            text-decoration: line-through;
+        }
+        /* box-sizing属性的border-box属性值使盒子大小只能是width值，这个属性一般都是全局通用，用来设置所有的盒子 */
+        
+        .div66 {
+            width: 200px;
+            height: 200px;
+            background: yellowgreen;
+            border: 5px solid red;
+            padding: 10px;
+            /* 盒子大小就是宽高的大小 */
+            box-sizing: border-box;
+        }
+        /* transition属性的过渡效果演示： */
+        
+        .guodu {
+            width: 100px;
+            height: 100px;
+            background-color: goldenrod;
+            margin: 30px auto;
+            /* 谁需要过渡效果，就写谁这里 */
+            /* 给一个属性设置过渡效果 */
+            /* transition: width .5s; */
+            /* 给宽高属性都设置过渡效果，属性之间用 ，隔开。 */
+            /* transition: width .5s, height 1s; */
+            /* 给所有属性都设置过渡效果，这个最常用 */
+            transition: all 1s;
+        }
+        
+        .guodu:hover {
+            width: 200px;
+            height: 200px;
+            background-color: hotpink;
+        }
     </style>
 </head>
 
 <body>
-    css盒子模型，4部分组成：border(边框)、content(内容)、padding(内边距)、margin(外边距)。
-
-    <br> 这几个属性简写时，它们四条边都遵循：上右下左。写法例如：border:1px(只有一个值，代表4条边)， padding：1px 1px (有两个值，代表上下、左右)，margin:1px 1px 1px(有三个值，代表上、左右、下)， padding：1px 1px 1px 1px (有四个值，代表上、右、下、左)
+    <!-- css盒子模型，4部分组成：border(边框)、content(内容)、padding(内边距)、margin(外边距)。 
+         
+        4个属性属性简写时，它们四条边都遵循：上右下左。写法例如：border:1px(只有一个值，代表4条边)， padding：1px 1px (有两个值，代表上下、左右)，margin:1px 1px 1px(有三个值，代表上、左右、下)， padding：1px 1px 1px 1px (有四个值，代表上、右、下、左) 。
+        
+        可以通过box-sizings属性来指定盒子模型怎么计算大小，两个属性值：
+            1.box-sizing:content-box;(默认值，不写这个属性的时候所有盒模型都是以这种方法计算大小的，计算方法：width+padding+border，盒子会变大)
+    
+            2.box-sizing:border-box;(这个属性的作用是改变盒模型计算大小的方法，使盒子既带有边框和内边距的值，大小仍然是width的值。
+            无论border和padding值给多大，只要盒子里内容content部分尺寸不为0，盒子就不会变大，但只要里面的内容部分是0了，即使是border-box的属性值，盒子也还是会变大。去审查元素看css模型图就能看出来)
+            -->
 
     <!-- 边框 -->
     border有3个部分组成：border-width(边框粗细，单位是px)、border-style(边框样式)、还有个属性：border-redius(盒子变成圆角边框或圆)
@@ -182,6 +368,8 @@
     <br>使盒子变圆形的：属性值写盒子宽高的一半(前提是盒子必需是正方形的，就是盒子宽和高是一样的值的)，就可以实现圆形盒子，值建议这种写法：50%
 
     <br>使盒子变圆角矩形的：属性值设置成盒子高度的一半（注意：长方形的盒子，高度的一半）
+
+    <br>制作三角形：盒子的宽高必需是0,再把边框粗细设置成想要多大的三角形就写多少px，会产生4个三角形。如果想要一个三角形，朝哪个方向就设置哪条边，想要什么颜色就设置什么颜色，再把其余三条边改成透明（transparent）就行。
 
     <br>使盒子变4个角不同的圆角：
 
@@ -227,6 +415,15 @@
     很多标签元素会自带内/外边距，所以css代码开始的第一行必需是用* {padding:0; margin:0;}清除内外边距。
     <br> 注意：行内元素为了照顾浏览器兼容性，尽量设置左右内/外边距，不要设置上下内/外边距，但是转换成块级元素或行内块元素就可以随意设置了
 
+    <!-- calc()函数，用来自动计算盒子嵌套时子盒子的属性的值，有 + - * / 四个运算符。
+        这样自动计算的优点是不管父盒子尺寸变多大，子盒子都会自动跟着变，不需要再去改子盒子的值。
+        运算的式子之间一定要空格，不然无效。演示：-->
+    <div class="div99" style="width: 300px; height: 300px; background-color: pink; margin-left: 20px;">
+        <!-- 这里演示的：子盒子宽永远比父盒子小50px，高要比父盒子小100px ,但设置的margin值的上下边距都不生效。padding值4条边都有效，会使子盒子变大-->
+        <div class="son" style="width:calc(100% - 50px); height: calc(100% - 100px); background-color: yellowgreen; margin: 10px; padding: 10px;">我的宽高是用calc函数自动算的</div>
+    </div>
+
+
     <!-- 盒子阴影 -->
     给盒子添加阴影效果，5个值：前面两个参数必需写，后面的按需求。影子不占空间，不影响盒子和其它盒子之间的排列。
 
@@ -241,8 +438,43 @@
 
     <div class="yinying">盒子阴影效果演示和文字阴影效果演示</div>
 
+    <!-- 三角形 -->
+    <div class="sanjiao1">4个三角形演示</div>
+    <div class="sanjiao2">1个三角形演示</div>
+    <!-- 盒子拼接三角形 -->
+    <div class="jing">
+        <div class="dong"></div>
+    </div>
 
+    <div class="jingdong">
+        <div class="sanjiao"></div>
+    </div>
+    <!-- 直角三角形 -->
+    <div class="zhijiao">直角三角形</div>
+    <!-- 梯形（用直角三角形和矩形盒子拼接制作的） -->
+    <div class="tixing">
+        梯形
+        <div class="pinjie"></div>
+    </div>
+    <!-- 两种颜色拼在一起的矩形 -->
+    <div class="twose">
+        <span class="tixing2">
+            ￥160.00
+            <i class="sanjiao3"></i>
+        </span>
+        <span class="yuanjia">￥999.00</span>
+    </div>
+    <!-- box-sizing属性演示： -->
+    <div class="div66">我设置了内边距和边框也不会变大</div>
 
+    <!-- css3新增transition过渡属性，但IE9以上版本浏览器才支持，低版本的不生效也不影响布局。
+
+    语法：transition: 属性（谁要做过渡就写谁，比如width、height等等，如果盒子的全部属性都要过渡效果，那就写all就行。） 花费时间（单位是秒s，必需写单位） 运动曲线（默认是ease，这个属性值可以省略）何时开始（单位是秒s，作用是延迟触发时间，这个属性也可以省略）。
+
+    过渡效果一般常常和鼠标经过的hover伪类选择器一起用。
+    -->
+    <!-- transition过渡属性演示： -->
+    <div class="guodu">看我的动画效果</div>
 </body>
 
 </html>
