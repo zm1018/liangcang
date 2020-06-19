@@ -1,0 +1,174 @@
+/* 版心 */
+
+.w {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.style_red {
+    color: #C40000;
+}
+
+
+/* 头部模块 */
+
+header {
+    height: 84px;
+    border-bottom: 2px solid #C40000;
+    line-height: 84px;
+}
+
+
+/* 注册专区 */
+
+.registerarea {
+    height: 570px;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+}
+
+
+/* 注册专区的标题 */
+
+.registerarea h3 {
+    height: 43px;
+    border-bottom: 1px solid #ccc;
+    background-color: #ececec;
+    line-height: 42px;
+    padding: 0 10px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.registerarea h3 .login {
+    float: right;
+    font-size: 14px;
+}
+
+
+/* 注册内容 */
+
+.registerarea .reg_form {
+    width: 600px;
+    /* height: 452px; */
+    margin: 50px auto 0;
+}
+
+.registerarea .reg_form ul li {
+    margin-bottom: 20px;
+}
+
+.registerarea .reg_form ul li label {
+    display: inline-block;
+    width: 88px;
+    /* 文字右对齐，必需要给label标签转换类型，并且指定宽度 */
+    text-align: right;
+}
+
+.registerarea .reg_form ul li input {
+    width: 242px;
+    height: 37px;
+    border: 1px solid #ccc;
+    margin: 0 10px;
+}
+
+
+/* 提示信息，错误的和正确的 */
+
+.registerarea .reg_form ul li .error {
+    color: #C40000;
+}
+
+.registerarea .reg_form ul li .error .error_icon,
+.registerarea .reg_form ul li .success .success_icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+
+.registerarea .reg_form ul li .error .error_icon {
+    background-image: url(../images/error_icon.png);
+}
+
+.success {
+    color: green;
+}
+
+.success .success_icon {
+    background-image: url(../images/success_icon.png);
+}
+
+
+/* 密码强弱提示  */
+
+.safe {
+    padding-left: 170px;
+}
+
+.registerarea .reg_form ul .safe em {
+    padding: 0 12px;
+    color: #fff;
+    text-align: center;
+}
+
+.ruo {
+    background-color: #DE1011;
+}
+
+.zhong {
+    background-color: #3FB63F;
+}
+
+.qiang {
+    background-color: #F98F00;
+}
+
+
+/* 用户协议 */
+
+.registerarea .reg_form ul .agree {
+    padding-left: 95px;
+}
+
+.registerarea .reg_form ul .agree input {
+    width: 10px;
+    height: 10px;
+}
+
+.agree a {
+    color: #1ba1e6;
+}
+
+
+/* 完成注册 */
+
+.registerarea .reg_form ul li:last-child input {
+    /* width: 200px;
+    height: 34px; */
+    background-color: #C91019;
+    margin: 0 0 20px 98px;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+
+/* 底部模块制作 */
+
+.mod_copyright {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.mod_copyright .links {
+    margin-bottom: 15px;
+}
+
+.mod_copyright .links a {
+    margin: 0 3px;
+}
+
+.mod_copyright .copyright {
+    line-height: 20px;
+}

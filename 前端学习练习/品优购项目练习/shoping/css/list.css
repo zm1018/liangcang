@@ -1,0 +1,187 @@
+/* 列表页专有样式 */
+
+
+/* 字体声明 */
+
+@font-face {
+    font-family: 'icomoon';
+    src: url('../fonts/icomoon.eot?6cm2ix');
+    src: url('../fonts/icomoon.eot?6cm2ix#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?6cm2ix') format('truetype'), url('../fonts/icomoon.woff?6cm2ix') format('woff'), url('../fonts/icomoon.svg?6cm2ix#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+
+/* 秒杀模块 */
+
+
+/* 溢出2px隐藏，就不会影响下面的列表模块了 */
+
+.nav {
+    overflow: hidden;
+}
+
+.header .sk {
+    position: absolute;
+    left: 190px;
+    top: 40px;
+    border-left: 1px solid #c81523;
+    padding: 3px 0 0 14px;
+}
+
+.sk_list,
+.sk_con,
+.sk_list ul li,
+.sk_con ul li {
+    float: left;
+}
+
+
+/* 左盒子内容 */
+
+.sk_list ul li a {
+    display: block;
+    line-height: 47px;
+    padding: 0 30px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+}
+
+
+/* 右盒子内容 */
+
+.sk_con ul li a {
+    display: block;
+    /* 行高大于父盒子的高度47px，文字就会偏下，实现右盒子的文字偏下效果 */
+    line-height: 49px;
+    padding: 0 20px;
+    font-size: 14px;
+}
+
+.sk_con ul li:last-child a::after {
+    font-family: "icomoon";
+    content: "";
+}
+
+
+/* 列表模块制作 */
+
+
+/* 我截的图小了，给个版心同宽的尺寸拉大图片 */
+
+.sk_container .sk_hd img {
+    width: 100%;
+    height: 100px;
+}
+
+
+/* 列表详情 */
+
+.sk_container .sk_bd ul li {
+    float: left;
+    width: calc(1170px / 4);
+    margin-right: 10px;
+    padding-top: 20px;
+    /* 想让鼠标经过li，显示边框，而且li里面的内容不跳动，就得先给li加个边框，颜色是透明的 */
+    border: 1px solid transparent;
+}
+
+
+/* 鼠标经过显示li的红色边框 */
+
+.sk_container .sk_bd ul li:hover {
+    border: 1px solid #C40000;
+}
+
+
+/* 每行第4个li取消右外边距 */
+
+.sk_container .sk_bd ul li:nth-child(4n) {
+    margin-right: 0;
+}
+
+
+/* 怎么才能让图片自动居中呢？我这是算出来的 */
+
+.sk_container .sk_bd ul li a img {
+    width: 140px;
+    /* text-align: center; */
+    margin: 0 75px 20px 75px;
+}
+
+
+/* 文字和价格 */
+
+.sk_container .sk_bd ul li p,
+.sk_container .sk_bd ul li del {
+    font-size: 14px;
+    margin: 0 10px;
+}
+
+.sk_container .sk_bd ul li b {
+    font-size: 22px;
+    color: #C40000;
+    margin-left: 5px;
+}
+
+
+/* 进度条的大盒子 */
+
+.sk_bd ul li div {
+    font-size: 14px;
+    margin: 10px;
+}
+
+
+/* 进度条 */
+
+.sk_container .sk_bd ul li span {
+    display: inline-block;
+}
+
+.sk_container .sk_bd ul li div .d_span {
+    width: 130px;
+    height: 15px;
+    border: 1px solid #C40000;
+    border-radius: 7.5px;
+    margin: 0 10px;
+}
+
+.d_span .d_span2 {
+    /* 为了清除两个span盒子之间的缝隙 */
+    float: left;
+    width: calc(100% - 30px);
+    height: 13px;
+    background-color: #c40000;
+    border-radius: 7.5px 0 0 7.5px;
+    transition: all .5s;
+}
+
+.d_span:hover .d_span2 {
+    width: 100%;
+    border-radius: 7.5px;
+}
+
+
+/* 立即抢购 */
+
+.sk_container .sk_bd ul li .qg {
+    width: 100%;
+    height: 45px;
+    background-color: #c40000;
+    text-align: center;
+    line-height: 45px;
+    margin: 10px 0 0 0;
+    font-size: 16px;
+    color: #fff;
+}
+
+
+/* 列表最大盒子没给高度，li盒子又浮动，会影响下面的底部模块，所以要给底部模块清除浮动,不用再写，之前有写到初始化文件里，调用类名就行了 */
+
+
+/* .footer {
+    clear: both;
+} */

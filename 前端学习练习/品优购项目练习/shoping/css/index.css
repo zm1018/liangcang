@@ -1,0 +1,495 @@
+/* 字体图标声明 */
+
+@font-face {
+    font-family: 'icomoon';
+    src: url('../fonts/icomoon.eot?6cm2ix');
+    src: url('../fonts/icomoon.eot?6cm2ix#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?6cm2ix') format('truetype'), url('../fonts/icomoon.woff?6cm2ix') format('woff'), url('../fonts/icomoon.svg?6cm2ix#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+
+/* main盒子,首页主体模块 */
+
+.w .main {
+    width: calc(100% - 220px);
+    height: 455px;
+    margin: 10px 0 0 220px;
+}
+
+
+/* 焦点图模块 */
+
+.w .main .focus {
+    position: relative;
+    float: left;
+    width: 721px;
+    height: 455px;
+    /* margin-right: 10px; */
+}
+
+
+/* 轮播图外面的盒子给精确宽高px后，图片不用再设置宽高了 */
+
+
+/* 
+.w .main .focus .focus_img li img {
+    width: 721px;
+    height: 455px;
+    height: 100%;
+} */
+
+
+/* 用伪元素做左右两边的<>不能放链接，所以改成span盒子 */
+
+.w .main .focus span {
+    position: absolute;
+    top: 50%;
+    margin-top: -20px;
+    width: 24px;
+    height: 40px;
+    font-family: 'icomoon';
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    font-size: 18px;
+    background-color: rgba(0, 0, 0, .3);
+}
+
+.w .main .focus .sl {
+    left: 0;
+}
+
+.w .main .focus .sr {
+    right: 0;
+}
+
+
+/* 小圆点 */
+
+.w .main .focus .focus_piont {
+    position: absolute;
+    left: 50px;
+    bottom: 10px;
+    width: 144px;
+    height: 12px;
+}
+
+.w .main .focus .focus_piont li {
+    float: left;
+    width: 12px;
+    height: 12px;
+    margin: 0 3px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, .5);
+}
+
+.w .main .focus ul li:nth-of-type(2) {
+    background-color: #fff;
+}
+
+
+/* .w .main .focus::before,
+.focus::after {
+    定位和上外边距负盒子高度的一半实现居中
+    position: absolute;
+    top: 50%;
+    margin-top: -20px;
+    width: 24px;
+    height: 40px;
+    font-family: 'icomoon';
+    content: "";
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    font-size: 18px;
+    background-color: rgba(0, 0, 0, .3);
+}
+
+.w .main .focus::before {
+    left: 0;
+    content: "";
+}
+
+.w .main .focus::after {
+    right: 0;
+    content: "";
+} */
+
+
+/* 新闻快报模块 */
+
+
+/* main盒子里的两个盒子一个左浮动，一个右浮动刚好，中间10px间距，如果两个都是左浮动，再给10px间距，右边那个盒子会掉下去 */
+
+.w .main .newsflash {
+    float: right;
+    width: 250px;
+    height: 100%;
+}
+
+
+/* 新闻 */
+
+.w .main .newsflash .news {
+    height: 165px;
+    border: 1px solid #CCCCCC;
+}
+
+.w .main .newsflash .news .news_hd {
+    height: 33px;
+    border-bottom: 1px dashed #CCCCCC;
+    font-family: 'icomoon';
+    line-height: 33px;
+    padding: 0 15px;
+    font-size: 14px;
+}
+
+.w .main .newsflash .news .news_hd a {
+    float: right;
+    font-size: 12px;
+}
+
+.w .main .newsflash .news .news_bd {
+    height: 130px;
+    margin: 10px 0 0 15px;
+}
+
+
+/* 快报列表了的文字如果超出，显示省略号 */
+
+.w .main .newsflash .news .news_bd li {
+    height: 23px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* 生活服务 */
+
+.w .main .newsflash .lifeservice {
+    height: 210px;
+    border: 1px solid #CCCCCC;
+    border-top: 0;
+}
+
+
+/* 每个li小盒子自动计算宽高 */
+
+.w .main .newsflash .lifeservice ul li {
+    position: relative;
+    float: left;
+    width: calc(248px / 4);
+    height: calc(210px / 3);
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+
+/* 右边框和大盒子重叠了，用结构伪类选择器把第4、8、12个li盒子去除右边框 */
+
+.w .main .newsflash .lifeservice ul li:nth-child(4n) {
+    border-right: 0;
+}
+
+.w .main .newsflash .lifeservice ul li i {
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin: 10px auto;
+    background: url(../images/icons.png) -18px -17px;
+}
+
+.w .main .newsflash .lifeservice ul li p {
+    text-align: center;
+}
+
+
+/* 第二个li盒子右上角的减图片，背景图要设置盒子的宽高，直接去插入图片不用，标签结构会变复杂 */
+
+.w .main .newsflash .lifeservice ul li span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 15px;
+    background: url(../images/jian.jpg);
+}
+
+
+/* 广告 */
+
+.w .main .newsflash .bargain {
+    margin-top: 5px;
+}
+
+
+/* 推荐模块 */
+
+.recom {
+    height: 163px;
+    margin-top: 10px;
+    background-color: #EBEBEB;
+}
+
+
+/* 左边有表的大盒子 */
+
+.recom .recom_hd {
+    float: left;
+    width: 200px;
+    height: 100%;
+    background-color: #5C5251;
+    text-align: center;
+}
+
+.recom .recom_hd img {
+    width: 57px;
+    height: 57px;
+    margin: 30px 0 10px 0;
+}
+
+.recom .recom_hd h3 {
+    font-size: 18px;
+    font-weight: normal;
+    color: #ffffff;
+}
+
+
+/* 右边盒子,宽高都是靠图片撑大的，图片那里定好了宽高，图片的父元素们都不需要设置了 */
+
+.recom .recom_bd {
+    float: left;
+    /* line-height: 163px; */
+    /* width: calc(100% - 200px);
+    height: 100%; */
+}
+
+.recom .recom_bd li {
+    position: relative;
+    float: left;
+    /* width: calc(100% / 4); */
+}
+
+
+/* 这里经常更换图片，为了布局整齐，图片大小定好，裁多大的图片都按这个大小来显示 */
+
+.recom .recom_bd li img {
+    width: 248px;
+    height: 163px;
+}
+
+
+/* 第4个没有竖线，用结构伪类选择器选择器选出前3个加after伪元素 */
+
+.recom .recom_bd li:nth-child(-n+3)::after {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    content: "";
+    width: 1px;
+    height: 145px;
+    background-color: #dddddd;
+}
+
+
+/* 猜你喜欢模块 */
+
+.like h3 {
+    position: relative;
+    margin: 10px 0 5px 0;
+    color: #666666;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.like h3::after {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    font-family: 'icomoon';
+    content: "换一批 ";
+    font-size: 14px;
+}
+
+
+/* 装图片的大盒子 */
+
+.like .guess {
+    width: 100%;
+    height: 300px;
+    border: 1px solid #CCCCCC;
+}
+
+
+/* 共6个li盒子 */
+
+.like .guess li {
+    float: left;
+    width: calc(1173px / 6);
+    /* 外面盒子边框2px，因为这个有背景色，如果这个不少2px就把外面盒子下边框压住了 */
+    height: 298px;
+    margin-right: 5px;
+    background-color: rgb(243, 241, 241);
+}
+
+
+/* 去掉最后一个li盒子的右外边距，不然盒子会掉下去 */
+
+.like .guess li:last-child {
+    margin-right: 0;
+}
+
+
+/* 图片大小固定，更换图片时不会影响布局 */
+
+.like .guess li img {
+    width: 150px;
+    height: 150px;
+    margin: 20px 22px 10px 22px;
+}
+
+
+/* 文字 */
+
+.like .guess li p {
+    width: 200px;
+    height: 48px;
+    line-height: 24px;
+    font-size: 14px;
+    /* 多行溢出显示省略号 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+
+/* 价格 */
+
+.like .guess li .price {
+    position: relative;
+    display: inline-block;
+    width: 90%;
+    margin: 15px 10px 30px 10px;
+    font-size: 18px;
+    color: #E1251B;
+}
+
+
+/* 销量 */
+
+.like .guess li .price::after {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    content: "已售8件";
+    line-height: 27px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #666;
+}
+
+
+/* floor楼层区域制作 */
+
+
+/* 楼层区域每一层都有一个上外边距30px,通用，所以写版心这个名字最合适，而不是写每一层楼的名字 */
+
+.floor .w {
+    margin-top: 30px;
+}
+
+
+/* 每一层的结构都一样，所以下面的样式都通用 */
+
+
+/* 头部 */
+
+.box_hd {
+    height: 30px;
+    border-bottom: 2px solid #C81623;
+    line-height: 30px;
+}
+
+.box_hd h3 {
+    float: left;
+    font-size: 18px;
+    font-weight: normal;
+    color: #c81623;
+}
+
+.box_hd .tab_list {
+    float: right;
+}
+
+.box_hd .tab_list ul li {
+    float: left;
+}
+
+
+/* padding值给a标签,小竖线和文字之间也有缝隙了 */
+
+.box_hd .tab_list ul li a {
+    padding: 0 15px;
+}
+
+
+/* 主体 */
+
+.box_bd {
+    height: 361px;
+}
+
+.box_bd .tab_content .tab_list_item>div {
+    float: left;
+}
+
+.tab_list_item .col_210 {
+    width: 210px;
+    background-color: #FBFBFB;
+    text-align: center;
+}
+
+.tab_list_item .col_329 {
+    width: 329px;
+}
+
+.tab_list_item .col_221 {
+    width: 221px;
+}
+
+.tab_list_item .col_219 {
+    width: 219px;
+}
+
+.tab_list_item .col_210 ul li {
+    float: left;
+    width: calc(170px / 2);
+    height: calc(100px /3);
+    margin-left: 10px;
+    /* 不在这里设置，不然下面的图片也要设置，去给col_210盒子设置水平居中，里面的元素都居中 */
+    /* text-align: center; */
+    line-height: 33px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+
+/* 让box_bd盒子里的图片，统一设置鼠标划入图片过渡效果 */
+
+box_bd img {
+    transition: all .2s;
+}
+
+.box_bd img:hover {
+    margin-left: 8px;
+}
+
+.col_221 img,
+.col_219 img {
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}

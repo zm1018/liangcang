@@ -80,7 +80,6 @@
 .header {
     position: relative;
     height: 105px;
-    background-color: pink;
 }
 
 
@@ -90,15 +89,17 @@
     position: absolute;
     top: 25px;
     left: 0;
-    width: 142px;
-    height: 46px;
+    width: 175px;
+    height: 56px;
 }
 
 .header .logo h1 a {
     display: block;
-    width: 142px;
-    height: 46px;
-    background: url(../images/logo.png) no-repeat;
+    width: 175px;
+    height: 56px;
+    /* 精灵图里的没有单独的那张图好看，换好看的 */
+    /* background: url(../images/icons.png) -373px -17px; */
+    background: url(../images/logo.png);
     /* 隐藏a标签里的文字 */
     font-size: 0;
 }
@@ -158,6 +159,9 @@
     background-color: #f7f7f7;
 }
 
+
+/* 购物车字体图标 */
+
 .shopcar::before {
     font-family: "icomoon";
     content: "";
@@ -165,8 +169,291 @@
     color: #B01919;
 }
 
+
+/* 右>字体图标 */
+
 .shopcar::after {
     font-family: "icomoon";
     content: "";
     margin-left: 10px;
+}
+
+
+/* 购物车上面的件数框 */
+
+.shopcar .count {
+    position: absolute;
+    top: -5px;
+    /* 如果数字比较大，会撑开盒子的宽度，但右对齐会往左走，所以最好用left，会往右走。 */
+    /* right: 20px; */
+    left: 105px;
+    height: 14px;
+    padding: 0 5px;
+    line-height: 14px;
+    border-radius: 7px 7px 7px 0;
+    background-color: #B01919;
+    color: #ffffff;
+}
+
+
+/* nav导航栏制作 */
+
+
+/* 有下边框线的大盒子 */
+
+.nav {
+    height: 47px;
+    border-bottom: 2px solid #B01919;
+}
+
+
+/* 版心盒子里左边的下拉菜单 */
+
+.nav .dropdown {
+    float: left;
+    width: 210px;
+    height: 45px;
+    background-color: #B01919;
+}
+
+
+/* 下拉菜单名 */
+
+.nav .dropdown .dt {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 45px;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+
+/* 下拉菜单详细内容 */
+
+
+/* 下拉菜单的大盒子 */
+
+.nav .dropdown .dd {
+    width: 210px;
+    height: 465px;
+    background-color: #C71522;
+    margin-top: 2px;
+    /* display: none; */
+}
+
+
+/* .nav .dropdown:hover dd {
+    display: block;
+} */
+
+
+/* 下拉菜单的每一行的样式 */
+
+.nav .dropdown .dd ul li {
+    position: relative;
+    height: 31px;
+    line-height: 31px;
+    margin-left: 2px;
+    padding-left: 10px;
+}
+
+
+/* 每行右侧的>字体图标 */
+
+.nav .dropdown .dd ul li::after {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    font-family: "icomoon";
+    content: "";
+    color: #ffffff;
+    font-size: 14px;
+}
+
+
+/* 鼠标经过每一行背景颜色变白色 */
+
+.nav .dropdown .dd ul li:hover {
+    background-color: #fff;
+}
+
+
+/* 每一行链接里的字是白色 */
+
+.nav .dropdown .dd ul li a {
+    font-size: 14px;
+    color: #ffffff;
+}
+
+
+/* 鼠标经过字变红色 */
+
+.nav .dropdown .dd ul li:hover a {
+    color: #B01919;
+}
+
+
+/* 版心盒子里右边的导航栏组 */
+
+.nav .navitems {
+    float: left;
+    height: 45px;
+}
+
+
+/* li不设置行高，继承navitems的行高了吗？反正文字居中效果达到了 */
+
+.nav .navitems li {
+    line-height: 45px;
+}
+
+.nav .navitems li a {
+    margin: 0 25px;
+    font-size: 16px;
+}
+
+
+/* 底部模块制作 */
+
+
+/* 底部大盒子，与页面同宽 */
+
+.footer {
+    height: 415px;
+    background-color: #f5f5f5;
+    padding-top: 30px;
+}
+
+
+/* 服务模块，就设置个底部边框 */
+
+.footer .w .mod_service {
+    height: 80px;
+    border-bottom: 1px solid #ccc;
+}
+
+
+/* 服务模块的5个小盒子 */
+
+.footer .w .mod_service ul li {
+    float: left;
+    /* 共5个li盒子，父盒子是版心的宽度，那就版心的宽1200除以5，就是每个li盒子的宽度 */
+    width: calc(1200px / 5);
+    height: 50px;
+    padding-left: 35px;
+}
+
+
+/* h5标签添加浮动，后面的h4和p标签都是文字，会自动环绕 */
+
+.footer .w .mod_service ul li h5 {
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-right: 8px;
+    /* 使用精灵图，坐标是先left后top的顺序 */
+    background: url(../images/icons.png) -253px -2px;
+    /* 图片有点偏下，垂直居中对齐没效果。往下给文字的h4标签加上内边距，搞定了 */
+    /* vertical-align: middle; */
+}
+
+
+/* 想用结构伪类选择器改第二个h5标签的图，没效果啊 */
+
+
+/* ul li:nth-of-type(2) h5 {
+    background: url(../images/精灵图.png) -252px -57px;
+} */
+
+
+/* 标题文字 */
+
+.footer .w .mod_service ul li .service_txt h4 {
+    font-size: 14px;
+    /* 图片有点偏下，给文字往下挤一点 */
+    padding-top: 5px;
+}
+
+
+/* 段落文字 */
+
+.footer .w .mod_service ul li .service_txt p {
+    font-size: 12px;
+}
+
+
+/* 帮助模块制作 */
+
+
+/* 帮助模块大盒子 */
+
+.footer .w .mod_help {
+    height: 185px;
+    border-bottom: 1px solid #ccc;
+    padding-top: 20px;
+    padding-left: 50px;
+}
+
+
+/* 帮助模块dl盒子,块级元素,要加浮动,一行显示,一共6个,所以版心宽度除以6 */
+
+.footer .w .mod_help dl {
+    float: left;
+    width: calc(1200px / 6);
+}
+
+
+/* 帮助模块dt名词 */
+
+.footer .w .mod_help dl dt {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+
+/* 用结构选择器把最后一共dl改小，让它显示在一行，里面的元素居中对齐 */
+
+.footer .w .mod_help dl:last-child {
+    width: 90px;
+    text-align: center;
+}
+
+
+/* 让二维码和文字有点距离 */
+
+.footer .w .mod_help dl dd img {
+    margin-bottom: 5px;
+}
+
+
+/* 版权模块制作 */
+
+
+/* 让文字居中 */
+
+.mod_copyright {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+/* 第一段文字 */
+
+.mod_copyright .links {
+    margin-bottom: 15px;
+}
+
+
+/* 第一段文字之间的缝隙3px */
+
+.mod_copyright .links a {
+    margin: 0 3px;
+}
+
+
+/* 第二段文字，给行高是让两行文字上下间距大一点 */
+
+.mod_copyright .copyright {
+    line-height: 20px;
 }
