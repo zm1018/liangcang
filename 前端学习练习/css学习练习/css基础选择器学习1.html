@@ -100,6 +100,20 @@
             /* 转换成行内元素 */
             display: inline;
         }
+        /* opacity（不透明度的意思）是元素设置透明度的属性:取值0-1之间，默认值是1（不透明），0（全透明）。
+        语法：opacity：值；
+        如果父元素设置的opacity属性，子元素默认继承父元素的opacity属性，当父元素设置opacity，子元素也设置opacity，在IE下子元素设置的opacity不起作用，在ff和Chrome下，子元素最终的opacity=父元素opacity*子元素opacity。
+        这个属性是设置元素的所有属性的不透明度，设置了之后，元素的背景颜色字体颜色边框颜色等等，都按设置的值变化。
+        
+        演示半透明，如下： */
+        
+        .box1 {
+            opacity: 0.5;
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+            border: 2px solid red;
+        }
     </style>
 </head>
 
@@ -120,7 +134,7 @@
         <li class="ziti">css字体复合属性写法演示</li>
         <li class="ziti">css字体复合属性写法演示</li>
     </ol>
-
+    <div class="box1">看我的透明度</div>
 
     <!-- 行内样式表，修改比较简单的样式时用，只能控制本行标签，较少用 -->
     <span style="color: chocolate; font-family: Arial, Helvetica, sans-serif;">css行内样式表写法演示</span>

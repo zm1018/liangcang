@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        /* 用animation-timing-function的steps属性做出打字机打字效果 */
+        
+        @keyframes box1 {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 200px;
+            }
+        }
+        
+        .box1 {
+            width: 0;
+            height: 30px;
+            font-size: 20px;
+            color: #fff;
+            overflow: hidden;
+            white-space: nowrap;
+            animation-name: box1;
+            animation-duration: 3s;
+            animation-timing-function: steps(10);
+            animation-fill-mode: forwards;
+            /* animation-iteration-count: infinite; */
+        }
+        /* 热点图效果 */
+        
+        body {
+            background-color: #333;
+        }
+        /* 装图片的盒子 */
+        
+        .box2 {
+            position: relative;
+            width: 747px;
+            height: 617px;
+            /* 图是透明的，要给body加背景颜色，才能看到图 */
+            background: url(../../html学习练习/image/热点图.png);
+            margin: 0 auto;
+        }
+        /* 装圆点和阴影的盒子 */
+        
+        .city {
+            position: absolute;
+            right: 193px;
+            top: 228px;
+        }
+        /* 中心的圆点 */
+        
+        .dotted {
+            width: 8px;
+            height: 8px;
+            background-color: rgb(0, 204, 255);
+            border-radius: 50%;
+        }
+        /* 3个阴影盒子 */
+        
+        .city div[class^='pulse'],
+        .city2 div[class^='pulse'] {
+            /* 定位到city盒子的居中位置，保证阴影是以中心点向外发散 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            /* 给盒子阴影，放大后光圈的效果更好看 */
+            box-shadow: 0 0 12px #009dfd;
+            border-radius: 50%;
+            /* 盒子阴影都调用动画，3个阴影一起变大，再去改另外两个阴影的延迟时间，让它们一个个放大 */
+            animation: pulse 1.5s linear infinite;
+        }
+        /* 阴影2和3的延迟时间，但选择器的权重不够，代码不执行，加权重 */
+        
+        .box2 .city .pulse2 {
+            animation-delay: .3s;
+        }
+        
+        .box2 .city .pulse3 {
+            animation-delay: .6s;
+        }
+        /* 规定动画 */
+        
+        @keyframes pulse {
+            /* 0时候不变 */
+            0% {}
+            /* 50的时候变大，阴影不透明 */
+            50% {
+                /* 不能用缩放，缩放会把盒子放大的同时，把盒子的阴影也放大，宽高只会使盒子变大，阴影不会变大 */
+                /* transform: scale(3); */
+                width: 20px;
+                height: 20px;
+                /* 不透明 */
+                opacity: 1;
+            }
+            /* 100的时候变大，阴影扩散到最大后慢慢消失，不透明度改成0完全透明 */
+            100% {
+                width: 40px;
+                height: 40px;
+                opacity: 0;
+            }
+        }
+        /* tb盒子定位要变 */
+        
+        .tb {
+            position: absolute;
+            right: 79px;
+            /* 一定不要用bottom，因为city通用属性设置的是top，这里要层叠原来的定位值，必需top才能层叠 */
+            top: 498px;
+        }
+        /* gz盒子定位也要变 */
+        
+        .gz {
+            position: absolute;
+            right: 192px;
+            top: 542px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 打字机效果，字一个一个显示出来 -->
+    <div class="box1">今天下雨了啊河水好大</div>
+    <!-- 地图热点效果 -->
+    <div class="box2">
+        <div class="city">
+            <div class="dotted"></div>
+            <div class="pulse1"></div>
+            <div class="pulse2"></div>
+            <div class="pulse3"></div>
+        </div>
+        <!-- 用多类名，一个类名city设置通用属性，一个类名tb改变定位的值 -->
+        <div class="city tb">
+            <div class="dotted"></div>
+            <div class="pulse1"></div>
+            <div class="pulse2"></div>
+            <div class="pulse3"></div>
+        </div>
+        <div class="city gz">
+            <div class="dotted"></div>
+            <div class="pulse1"></div>
+            <div class="pulse2"></div>
+            <div class="pulse3"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

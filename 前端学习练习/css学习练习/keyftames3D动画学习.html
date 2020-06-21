@@ -1,0 +1,249 @@
+<!-- 3D动画(animation)效果，实现步骤：
+    1. 规定动画（定义一个动画，供元素调用）@keyframes。
+       动画序列：0%是动画的开始（也可以用关键词from），100%是动画的完成（也可以用关键词to），
+
+       动画序列可以分很多步完成，比如绕着屏幕转一圈：共需要4步来实现，0% 100%之间可以加25% 50% 75%，每一步里都可以写各种样式。
+
+       语法：
+            @keyframes 动画名称 {
+                0% {
+                    样式
+                }
+                100% {
+                    样式
+                }
+            }
+
+    2. 调用动画 animation-name(name是@keyframes定义的动画名字)这个是必须属性
+       规定动画从开始到完成的话费时间（持续时间）animation-duration （必须属性）
+       哪个标签调用动画，这两个属性写在哪个标签里
+
+    animation的属性共有10种：
+                    1.@keyframes（关键帧） 规定动画
+
+                    2.animation 所有动画属性的简写，除了animation-play-state属性不能写在一起，其它属性都可以一起简写在这里。
+                    简写顺序：animation: name duation timing-function delay iteration-count direction fill-mode;                   
+
+                    3.animation-name 调用动画时规定动画的名称（必需属性），
+                    如果一个元素调用多个动画用,隔开
+
+                    4.animation-duration(持续时间) 规定动画的花费周期，单位s或ms，默认是0（必需属性）
+
+                    5. animation（动画）-timing(定时)-function（运行、活动）规定动画的速度曲线，此属性共有6个值：
+                        ease 默认值，低速开始-加快-结束前变慢
+                        linear（直线的） 匀速
+                        ease-in 以低速开始
+                        ease-out 以低速结束
+                        ease-in-out 以低速开始和结束
+                        steps(n) 步长，指定的动画开始到完成花费周期时间分成多少步完成。
+
+                    6.animation-delay(延迟时间) 规定动画何时开始，默认值是0s，不设置这个就直接开始，设置了就按这个延迟时间比如1s，那就1s后再开始动画效果。
+
+                    7. animation-iteration(重复的)-count(计数) 规定动画播放次数，默认是1，可以选infinite(无限的)，这个值是无限重播
+
+                    8. animation-direction(方向) 规定动画是否逆播放返回，默认是normal(正常的)，就是不逆播放，直接返回动画开始位置；可以选alternate逆播放，从完成位置播放这动画返回开始位置,播放次数只有默认的一次时，这个倒放无效，因为开始z走到完成一次，完成回到开始也是一次，所以要设置播放次数在一次以上，才能用。
+                    
+                    9. animation-fill-mode 规定动画结束后的状态，停在什么位置。forwards（向前）是停在结束位置，backwards(倒放)是回到开始位置
+
+                    10. animation-play-state（状态） 规定动画是否正在运行或暂停，默认是running（运转）；可以选paused（暂停），这个一般和hover一起用，鼠标经过暂停，鼠标移开继续播放
+
+
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 定义一个动画,名字叫box1，和盒子box1这个名字没有任何关系 */
+        
+        @keyframes box1 {
+            /* 从0开始，括号里可以空着 ，也可以把这个0%{}都省略不写*/
+            0% {
+                transform: translate(0, 0);
+            }
+            /* x轴走1200像素，从左走到右的效果 */
+            100% {
+                transform: translate(1200px, 0);
+            }
+        }
+        
+        .box1 {
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+            /* 调用box1这个动画 */
+            animation-name: box1;
+            animation-duration: 2s;
+        }
+        /* 动画运行的曲线速度 */
+        
+        @keyframes box2 {
+            100% {
+                transform: translate(1200px, 0);
+            }
+        }
+        
+        .box2 {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            animation-name: box2;
+            animation-duration: 2s;
+            /* 匀速播放动画 */
+            animation-timing-function: linear;
+            /* 5步播完动画 */
+            animation-timing-function: steps(5);
+        }
+        /* 设置延迟时间，延迟开始播放动画 */
+        
+        @keyframes box3 {
+            100% {
+                transform: translate(1200px, 0);
+            }
+        }
+        
+        .box3 {
+            width: 100px;
+            height: 100px;
+            background-color: rgb(0, 255, 42);
+            animation-name: box3;
+            animation-duration: 2s;
+            /* 延迟开始播放动画的时间 */
+            animation-delay: 2s;
+        }
+        /* 循环播放 */
+        
+        @keyframes box4 {
+            100% {
+                transform: translate(1200px, 0);
+            }
+        }
+        
+        .box4 {
+            width: 100px;
+            height: 100px;
+            background-color: rgb(208, 255, 0);
+            animation-name: box4;
+            animation-duration: 2s;
+            /* 无限重复播放动画 */
+            animation-iteration-count: infinite;
+            /* 重复3次 */
+            animation-iteration-count: 3;
+        }
+        /* 返回开始播放位置时逆播放动画返回来 */
+        
+        @keyframes box5 {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(1200px, 0);
+            }
+        }
+        
+        .box5 {
+            width: 100px;
+            height: 100px;
+            background-color: rgb(25, 0, 255);
+            animation-name: box5;
+            animation-duration: 2s;
+            /* 重复播放4次 */
+            animation-iteration-count: 4;
+            /* 返回时，逆方向播放,只播放一次时，这个属性不起效果 */
+            animation-direction: alternate;
+        }
+        /* 播放完成停在结束位置 */
+        
+        @keyframes box6 {
+            100% {
+                transform: translate(1200px, 0);
+            }
+        }
+        
+        .box6 {
+            width: 100px;
+            height: 100px;
+            background-color: rgb(0, 255, 42);
+            animation-name: box6;
+            animation-duration: 1s;
+            /* 播放完成停在结束位置 */
+            animation-fill-mode: forwards;
+        }
+        /* 鼠标经过暂停播放 */
+        
+        .box7 {
+            width: 100px;
+            height: 100px;
+            background-color: rgb(0, 162, 255);
+            animation-name: box7;
+            animation-duration: 3s;
+        }
+        
+        .box7:hover {
+            /* 播放过程中可以暂停播放 */
+            animation-play-state: paused;
+        }
+        
+        @keyframes box7 {
+            100% {
+                transform: translate(1200px, 0);
+            }
+        }
+        /* 围着屏幕四角转一圈 */
+        
+        @keyframes box8 {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(1200px, 0);
+            }
+            50% {
+                transform: translate(1200px, 300px);
+            }
+            75% {
+                transform: translate(0, 300px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+        
+        .box8 {
+            width: 100px;
+            height: 100px;
+            background-color: rgb(255, 0, 76);
+            animation-name: box8;
+            animation-duration: 10s;
+            /* 无限的循环播放 */
+            animation-iteration-count: infinite;
+        }
+        /* 属性简写 */
+    </style>
+</head>
+
+<body>
+    <!-- 从左走到右 -->
+    <div class="box1">默认速度曲线</div>
+    <!-- 动画运行的速度曲线 -->
+    <div class="box2">匀速播放和步长播放</div>
+    <!-- 动画延迟多少秒才开始播放 -->
+    <div class="box3">延迟播放</div>
+    <!-- 播放次数 -->
+    <div class="box4">重复循环播放</div>
+    <!-- 动画播放完成后再倒播放回来 -->
+    <div class="box5">回来也播放动画</div>
+    <!-- 播放完成后停在结束位置 -->
+    <div class="box6">播放完停在结束位置</div>
+    <!-- 设置播放过程中的暂停播放 -->
+    <div class="box7">鼠标经过暂停播放</div>
+    <!-- 围着屏幕四角走一圈 -->
+    <div class="box8">屏幕四个角转一圈</div>
+    <div class="box9"></div>
+    <div class="box10"></div>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 背景图冰山 */
+        
+        body {
+            width: 100%;
+            height: 625px;
+            /* 背景图一定要水平方向平铺，才能移动后不间断，不然背景图移动后就显示空白了,要让背景图底边和浏览器底部对齐，就设置背景定位的y轴值为289px，浏览器高625px，背景图高336px，所以y轴向下移动289px就到底了 */
+            background: url(../../html学习练习/image/冰山.png) repeat-x 0 289px;
+            animation: binshan 30s linear infinite;
+            /* 不需要延迟冰山移动 */
+            /* animation-delay: 2.8s; */
+            /* 因为图片宽度比整个屏幕大，有滚动条，用溢出隐藏解决这个问题 */
+            overflow: hidden;
+        }
+        
+        @keyframes binshan {
+            0% {
+                /* x轴不变，y轴289px是图片定位到底部的y轴距离，也保持不变，所以要写289px，写其它值会替换上面定位的值 */
+                background-position: 0 289px;
+            }
+            100% {
+                /* x轴向左移动这个图片的宽度，y轴还是定位到屏幕下边不变，这样背景图向左移动，盒子向右移动，看起来停在动画完成位置的熊也一直在奔跑 */
+                background-position: -3840px 289px;
+            }
+        }
+        /* 小熊奔跑 */
+        
+        .box3 {
+            /* 定位改变laft值来移动图片到屏幕中间 */
+            position: absolute;
+            /* 让熊在冰山的下面一点跑 */
+            bottom: 30px;
+            width: 200px;
+            height: 100px;
+            /* 用背景图做 */
+            background: url(../../html学习练习/image/小熊.png) no-repeat;
+            overflow: hidden;
+            /* 调用两个动画，两个动画中间用,隔开 */
+            animation: pao 1s steps(8) infinite, xiong 3s linear forwards;
+        }
+        /* 盒子移动到屏幕中间 */
+        
+        @keyframes xiong {
+            0% {
+                /* 用left移动，不用算 */
+                left: 0;
+                /* transform: translate(0, 0); */
+            }
+            100% {
+                /* 盒子跑到屏幕中间位置 */
+                left: 50%;
+                transform: translateX(-50%);
+                /* transform: translate(660px, 0); */
+            }
+        }
+        /* 小熊奔跑动画 */
+        
+        @keyframes pao {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                /* 每走一步改变背景图的定位，8步走完整个图片的宽度，因为是从右往左移，所以给负值 */
+                background-position: -1600px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 小熊奔跑 -->
+
+    <div class="box3"></div>
+</body>
+
+</html>
