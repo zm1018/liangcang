@@ -11,6 +11,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 设置html文件的网页的标题 -->
     <title>这是网页的名字</title>
+    <!-- 改变a标签的超链接行为的base标签要写在这里,设置这个target属性后，点击html文件里的所有链接都会在新的页面打开 -->
+    <base target="_blank">
+
+    <!-- 
+        引入外部样式表的两种方法:
+            1. link标签的作用是当前页面与外部资源的映射，也就是引入外部资源，rel属性指定资源和页面的关系，属性值stylesheet是文档的外部样式表。href属性写外部资源的地址url。
+            2.在内部样式表style标签里写 @import url(外部资源的地址);这种方法毛病多不建议使用。
+        -->
+    <link rel="stylesheet" href="">
 </head>
 
 <!-- 显示整个网页内容的区域  -->
@@ -160,7 +169,11 @@
 
     <!-- 表格标签 -->
     <h3>下面是表格标签table</h3>
-    <!-- 表格标签里有三个语义化标签：tHead/tBody/tFood,没什么作用，是为了使书写更规范 -->
+    <!-- 表格标签共8个：<table>、<caption>、<th>、<tr>、<td>、 <colgroup span="">。
+        表格标签里有三个语义化标签：tHead/tBody/tFood,没什么作用，是为了使书写更规范，一个table中tHead和tFood只能出现一次，tBody可以多次出现。
+    表格属性共个：cellpadding 、cellspacing 、colspan、 rowspan 、align 、valign、 border、width、height.
+    -->
+
     写法：
     <table>
         <caption>我是表格标题</caption>
@@ -196,7 +209,7 @@
         <tr>
             <!-- td标签是单元格，也就是表格数据，一行需要多少单元格就要写多少td标签，单词是table data，表格数据的意思 -->
             <!-- height设置行高度，否则是默认的内容文字多高，单元格就多高，
-                align是设置左右对齐方式的，3个参数：left（左）/center（中）/right（右） ,(align='center'内容居中);
+                align是设置左右对齐方式的，3个参数：left（左）/center（中）/right（右） ,(align='center'内容居中); 例如：值center让每格单元格的字都居中，可以直接在tr行标签写align属性，此只能设置在行标签或每个单元格标签里，如果设置在table标签，是让整个表在页面中居中。
                 valign是设置上下对齐方式的,3个参数，top（上）/middle（中）/bottom（下） -->
             <td>合并单元格有两种：跨行合并和跨列合并，要合并的行或列的单元格里的第一个是目标单元格</td>
             <td>跨行合并在目标单元格里写属性rowspan="数字"，要把几个单元格合并成一个就写几"</td>

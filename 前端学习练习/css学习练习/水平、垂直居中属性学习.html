@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 
+        元素垂直居中：
+            line-height（和字体尺寸相关，设置在父元素身上，让里面的行内或行内块子元素垂直居中，设置在子元素身上设置的这个子元素实现居中。）
+            vertical-align:middle;(对行内或行内块元素有效，不能继承，必需设置在子元素身上，父元素必需设置了行高属性)
+            多行文字的行内元素居中：给父元素设置display:table-cell;和vertical-align: middle;即可。
+
+        元素水平居中：
+            text-align:center;(设置在父元素身上，父元素必需是块级元素才有效，让里面的行内或行内块子元素（例如：文字、文本、图片等）水平居中。
+            如果子元素也是块级元素，没给宽度，默认继承父元素宽高，必需先转换子元素的类型为行内或行内块元素，才有效。) 
+
+            margin:0 auto;（对块级元素有效，前提是给了宽度，设置在谁身上谁居中）
+
+        通用设置水平或垂直居中：
+            position：父相对定位，子绝对定位，定位是对什么类型的子元素都有效。
+            子元素给了宽高，写top: 0; right: 0; bottom: 0; left: 0; margin: auto; 或left: 50%; top: 50%; margin-left: --元素宽度的一半px; margin-top: --元素高度的一半px;都能实现居中。
+            子元素没给宽高，left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%);实现居中。
+
+           flex弹性盒子：把块级元素的父元素转换成 display: flex; justify（两端的意思）-content: center（水平）; align-items（垂直）: center; 里面的块级子元素给不给宽都能居中。
+
+    -->
+
+    <!-- line-height行高实现垂直居中的2种方法：
+            1.指定子元素的行高为父元素的高度，精确单位px，子元素不用设置高度直接设置行高，就可以实现居中，因为行高除了精确单位，其它都是参考字体大小计算出来的。 
+            2.设置父元素的行高，子元素不用设置，都会自动继承 。
+行高：浏览器的字体默认大小是16px,行高是21px；      
+    line-height的定义就是两基线的间距，行高的大小与font-size息息相关，除了指定line-height为多少px，剩下的设置方式都是基于font-size算出来的。下面逐个讲一讲~
+
+        inherit 这个其实没什么说的，继承父元素line-height的值，所以父元素的是多少就是多少。 如果其后代元素不设置line-height 的话，也会是这个值。
+
+        length 假设设置 line-height 为20px，那么该行的该行的行高就是20px，与 font-size 无关，不会随着 font-size 做相应比例的缩放。 这个长度值（20px）会被后代元素继承，所有的后代元素会使用这个相同的、继承的 line-height (20px)，除非后代元素设定 line-height 。
+
+        百分比 假设自身的 font-size 为16px，line-height 设为120%。那么其行高为：16 * 120% = 19.2px。即 line-height 是根据自身的 font-size 计算出来的。 子元素会继承父元素的line-height，那么它继承的是什么呢，百分比（120%）？还是19.2px？ 答案是后者，19.2px，即父元素line-height计算后的最终值。
+
+        normal line-height 设置为 normal 的时候，行高取决于浏览器的解析，一般是1.2。 与前面不同的是，line-height 设置为 normal 的元素，其子元素不再继承其line-height计算后的最终值，而是根据子元素自身的 font-size 进行计算。见下表~-->
+    继承总结如下：
+    </span>
+    </p>
+    <table style="height: 247px; width: 1117px;" border="1px" cellspacing="0">
+        <tbody>
+            <tr style="text-align: left; ">
+                <th>设置方式</th>
+                <th>父元素line-height</th>
+                <th>父元素计算后的line-height</th>
+                <th>子元素继承的line-height</th>
+            </tr>
+            <tr>
+                <td>inherit</td>
+                <td>父元素的line-height值</td>
+                <td>不用计算</td>
+                <td>父元素的line-height值</td>
+            </tr>
+            <tr>
+                <td>length</td>
+                <td>20px</td>
+                <td>不用计算</td>
+                <td>20px</td>
+            </tr>
+            <tr>
+                <td>%(font-size:16px)</td>
+                <td>120%</td>
+                <td>自身font-size (16px) * 120% = 19.2px</td>
+                <td>继承父元素计算后的line-height值 19.2px，而不是120%</td>
+            </tr>
+            <tr>
+                <td>normal(font-size:16px)</td>
+                <td>1.2</td>
+                <td>自身font-size (16px) * 1.2 = 19.2px</td>
+                <td><strong><span style="color: #ff0000; ">继承1.2</span></strong>，line-height = 自身font-size(32px) * 1.2 = 38.4px</td>
+            </tr>
+            <tr>
+                <td>纯数字(font-size:16px)</td>
+                <td>1.5</td>
+                <td>自身font-size (16px) * 1.5 = 24px</td>
+                <td><strong><span style="color: #ff0000; ">继承1.5</span></strong>，line-height = 自身font-size(32px) * 1.5 = 48px</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>那么，哪一种是最好的方式呢？ 一般来数，设置行高的值为&nbsp;<code>纯数字</code>&nbsp;是最推荐的方式，因为其会随着对应的 font-size 而缩放。</p>
+
+
+    <!--vertical-align是用来设置行内元素对齐方式的。说白了就是display属性值为inline、inline-block、inline-table另加一个table-cell的元素.
+
+    vertical-align属性值：
+
+    /* 关键字值 */
+        vertical-align: baseline;（默认值，字母x的下边缘(线)就是我们的基线，在各种内联相关模型中，凡是涉及到垂直方向的排版或者对齐的，都离不开最最基本的基线，line-height和vertical-align都是以基线实现对齐功能.
+
+            基线的位置并不是固定的：
+
+                在文本之类内联元素中，基线是字符x的下边缘位置
+
+                在像img元素中基线就是下边缘。
+
+                在inline-block元素中，也分两种情况
+
+                如果该元素中有内联元素，基线就是最后一行内联元素的基线。
+
+                如果该元素内没有内联元素或者overflow不是visible，其基线就是margin的底边缘，也就是元素底边。
+        vertical-align: sub;（元素的基线为参考向下移动，值给多少就下移多少）
+        vertical-align: super;（元素的基线为参考向上移动）
+        vertical-align: text-top;（元素顶边和父级的内容区域顶边对齐）
+        vertical-align: text-bottom;（元素底部和父级的内容区域底部对齐）
+        vertical-align: middle;（此属性并不是绝对的垂直居（中对齐，而是近似，是视觉看上去对齐的，而且会受字体大小的影响偏移，因为不同字体在行内元素中的位置是不一样的，一张图片要想在一个盒子里完全没有底部间隙，可以把font-size设置为0，就能完全居中对齐了，当然前提是盒子里不要直接写文字放图片啊，否则文字没尺寸看不见了。 
+        middle是中间的意思，指的是基线往上1/2 "x-height"高度。我们可以近似脑补成字母x交叉点那个位置。
+        median中线的意思是字母x的高度。）
+
+        vertical-align: top;（是指盒子里的其它元素是和同一个盒子里最高元素的顶边对齐，最高元素的高度要算上margin和padding值，其它元素如果是文字高度要算上行高的，顶边一定不是行高里的字的顶边，除非给字去除了行高，所以top的对齐是最高元素和其它元素的高度的顶边对齐。）
+
+        vertical-align: bottom;（元素的底边和行的底边对齐）
+
+        /* <长度> 值 */
+        vertical-align: em;
+        vertical-align: px;
+
+        /* <百分比> 值  vertical-align的百分比值不是相对于字体大小或者其他什么属性计算的，而是相对于line-height计算的，是：行高 * % = 最终结果就是vertical-align的值 ，但必须是在文档声明是html5的前提下：文件的头一行是这个<!doctype html> */
+        vertical-align: %;
+
+        /* 全局值 */
+        vertical-align: inherit;（这个值没用，对任何浏览器都没效果，不支持继承）
+        vertical-align: initial;
+        vertical-align: unset;
+     -->
+</body>
+
+</html>

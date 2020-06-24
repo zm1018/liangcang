@@ -104,16 +104,25 @@
         .aaa {
             overflow: auto;
         }
+        /* 聊天对话框 */
         
         ul {
             /* position: relative; */
             width: 600px;
-            height: 500px;
+            /* 不要设高度，用溢出，高度随子元素的多少自动撑大盒子，如果设了高度再设溢出，就会有滚动条 */
+            /* height: 500px; */
             background: lightblue;
             border-style: solid;
             border-width: 1px;
             border-color: black;
             margin-left: 30px;
+            margin-bottom: 30px;
+            overflow: auto;
+        }
+        
+        li {
+            margin: 20px 20px 0 20px;
+            /* white-space: normal; */
         }
         
         #ul1 .bbb1 {
@@ -142,7 +151,6 @@
         
         ul li:nth-child(odd) {
             float: right;
-            margin-right: 20px;
         }
         /* .bbb3,
         .bbb5 {
@@ -221,8 +229,8 @@
         <li class="bbb2">对话内容2</li>
         <li class="bbb3">对话内容3</li>
         <li class="bbb4"><img src="../html学习练习/image/news1.jpg"><br> 对话内容4 </li>
-        <li class="bbb5">对话内容5</li>
-        <li class="bbb6">对话内容6</li>
+        <li class="bbb5">对话内容5呜呜呜呜呜呜呜呜无无无无无无无无无无</li>
+        <li class="bbb6">对话内容6哈哈哈哈哈哈哈哈哈哈或或或或或或或</li>
     </ul>
 
 </body>

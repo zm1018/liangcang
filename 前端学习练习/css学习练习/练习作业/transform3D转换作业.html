@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 给.box的父盒子加透视 */
+        
+        body {
+            perspective: 1000px;
+        }
+        
+        .box {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 100px auto;
+            /* 行高除了精确单位，其它都是参考字体大小计算出来的,这是一行文字的行高200px，如果是多行文字，第二行文字行高也是200px，就不能用这个方法让文字居中了,除非把溢出的文字隐藏不要了 */
+            line-height: 200px;
+            transition: all .5s;
+            /* 给父盒子添加3d呈现属性，里面的子元素就能保留立体空间 */
+            transform-style: preserve-3d;
+        }
+        
+        .box:hover {
+            /* 父盒子沿着y轴旋转实现看到两面的效果 */
+            transform: rotateY(180deg);
+        }
+        
+        .box div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            text-align: center;
+        }
+        
+        .box .front {
+            background-color: #147a99;
+            /* 底下一面的盒子旋转180度，刚好可以和上面的盒子背对背显示 */
+            transform: rotateY(180deg);
+        }
+        
+        .box .back {
+            background-color: pink;
+        }
+        /* 3d导航栏 */
+        /* ul不给高度，下面的section盒子会上来占它的位置影响布局 */
+        
+        ul {
+            height: 40px;
+            list-style: none;
+            margin: 100px;
+        }
+        
+        li {
+            float: left;
+            /* 为什么不给li指定宽高，里面的盒子会歪？ */
+            width: 110px;
+            height: 40px;
+            margin-right: 10px;
+            perspective: 500px;
+        }
+        
+        ul li .box2 {
+            position: relative;
+            width: 110px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            line-height: 40px;
+            transform-style: preserve-3d;
+            transition: all 3s;
+        }
+        
+        ul li:hover .box2 {
+            transform: rotateX(360deg);
+        }
+        
+        li .box2 div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 110px;
+            height: 40px;
+        }
+        /* 第一个面，往眼前z轴移动20px，才能实现和第二面的顶边对齐，沿着中心点旋转，转的时候盒子不歪*/
+        
+        ul li .qian {
+            background-color: pink;
+            transform: translateZ(20px);
+        }
+        /* 第二个面 */
+        
+        ul li .bottom {
+            background-color: rgb(34, 190, 86);
+            /* 书写顺序一定要先写移动再写旋转,往y轴移动第一个盒子高度的一半，和第一个面的底边对齐,旋转朝前倒，文字才是正的 */
+            transform: translateY(20px) rotateX(-90deg);
+        }
+        /* 第三个面 ，转180度刚好转到第一面对面背靠背*/
+        
+        ul li .hou {
+            background-color: blue;
+            transform: translateZ(-20px) rotateX(180deg);
+        }
+        /* 第四个面 */
+        
+        .top {
+            background-color: yellow;
+            /* 沿x轴往后倒90度，刚好把贴着第一面的那个第四面翻转朝上，此时第四面对着第一面的正中间位置，再沿x轴往上移20px，才能和第一面的顶部对齐 */
+            transform: translateY(-20px) rotateX(90deg);
+        }
+        /* 旋转木马 */
+        /* 中间那张图片也可以给section加背景图，我是专门加个img标签 */
+        
+        section {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin: 200px auto;
+            /* div的父盒子添加保留3d空间 */
+            transform-style: preserve-3d;
+            animation: 5s rotate linear infinite;
+        }
+        
+        section:hover {
+            /* 鼠标放上去暂停动画 */
+            animation-play-state: paused;
+        }
+        /* 动画效果是沿着y轴旋转360度 */
+        
+        @keyframes rotate {
+            0% {
+                transform: rotateY(0deg);
+            }
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+        
+        section div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 200px;
+            background: url(../../html学习练习/image/小图2.jpg) no-repeat;
+        }
+        /* 第一张图往z轴正方向移动300px，就是往眼前移动，视觉上图片被放大 */
+        
+        section div:nth-child(1) {
+            transform: translateZ(300px);
+        }
+        /* 第二张图沿着y轴旋转60度，再沿z轴往眼前移动300px。先旋转调整好图片摆放的角度，再移动距离 */
+        
+        section div:nth-child(2) {
+            transform: rotateY(60deg) translateZ(300px);
+        }
+        /* 共6张图依次往下每张图均匀旋转60度，刚好围成一个圆圈 */
+        
+        section div:nth-child(3) {
+            transform: rotateY(120deg) translateZ(300px);
+        }
+        
+        section div:nth-child(4) {
+            transform: rotateY(180deg) translateZ(300px);
+        }
+        
+        section div:nth-child(5) {
+            transform: rotateY(240deg) translateZ(300px);
+        }
+        
+        section div:nth-child(6) {
+            transform: rotateY(300deg) translateZ(300px);
+        }
+        /* 中间那张图 */
+        
+        section img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 200px;
+            /* 缩小0.7倍 */
+            transform: scale(0.7);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 两面翻转的盒子 -->
+    <div class="box">
+        <div class="front">黑马程序员</div>
+        <div class="back">我在这里等你</div>
+
+    </div>
+    <!-- 3d导航栏 -->
+    <ul>
+        <li>
+            <div class="box2">
+                <div class="qian">黑马程序员</div>
+                <div class="bottom">我在这里等你</div>
+                <div class="hou">我是第三面</div>
+                <div class="top">我是第四面</div>
+            </div>
+        </li>
+        <li>
+            <div class="box2">
+                <div class="qian">黑马程序员</div>
+                <div class="bottom">我在这里等你</div>
+                <div class="hou">我是第三面</div>
+                <div class="top">我是第四面</div>
+            </div>
+        </li>
+        <li>
+            <div class="box2">
+                <div class="qian">黑马程序员</div>
+                <div class="bottom">我在这里等你</div>
+                <div class="hou">我是第三面</div>
+                <div class="top">我是第四面</div>
+            </div>
+        </li>
+        <li>
+            <div class="box2">
+                <div class="qian">黑马程序员</div>
+                <div class="bottom">我在这里等你</div>
+                <div class="hou">我是第三面</div>
+                <div class="top">我是第四面</div>
+            </div>
+        </li>
+        <li>
+            <div class="box2">
+                <div class="qian">黑马程序员</div>
+                <div class="bottom">我在这里等你</div>
+                <div class="hou">我是第三面</div>
+                <div class="top">我是第四面</div>
+            </div>
+        </li>
+        <li>
+            <div class="box2">
+                <div class="qian">黑马程序员</div>
+                <div class="bottom">我在这里等你</div>
+                <div class="hou">我是第三面</div>
+                <div class="top">我是第四面</div>
+            </div>
+        </li>
+
+    </ul>
+    <!-- 旋转木马 -->
+    <section>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <img src="../../html学习练习/image/小图.jpg" alt="">
+    </section>
+</body>
+
+</html>
