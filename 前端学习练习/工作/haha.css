@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    line-height: 24px;
+    font: 14px Helvetica Neue, Helvetica, PingFang SC, \5FAE\8F6F\96C5\9ED1, Tahoma, Arial, sans-serif;
+}
+
+.WJYYGJ_16_Box {
+    width: 800px;
+    border: 1px solid #D2D2D2;
+    margin: 2.5% auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#h2 {
+    width: 800px;
+    height: 110px;
+    background: url(6.png) no-repeat center;
+}
+
+.banner {
+    width: 800px;
+    height: 242px;
+    text-align: center;
+}
+
+.banner img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.sectionZBox1 {
+    font-size: 21px;
+    color: #666666;
+    padding: 20px 0 12px;
+    margin-bottom: 6px;
+    text-align: center;
+    line-height: 26px;
+}
+
+.ql-editor {
+    width: 640px;
+    height: 190px;
+    margin: 0 auto;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.ql-editor p {
+    color: #666666;
+    line-height: 26px;
+    margin-bottom: 6px;
+    padding: 0 50px;
+}
+
+.pline {
+    width: 762px;
+    margin: 0 auto;
+    border-bottom: 1px solid #d2d2d2;
+}
+
+form {
+    width: 800px;
+}
+
+.formGroup {
+    width: 638px;
+    margin: 0 auto;
+}
+
+.formGroup label {
+    /* height: 42px; */
+    display: block;
+    font-size: 16px;
+    color: #666666;
+    padding-top: 21px;
+}
+
+.formGroup b {
+    width: 4px;
+    height: 5px;
+    margin-left: 7px;
+    color: #f00;
+}
+
+.formGroup[id^="text"] input {
+    width: 628px;
+    height: 39px;
+    color: #868585;
+    border: 1px solid #dfdfdf;
+    padding-left: 10px;
+    margin-top: 16px;
+    outline: none;
+}
+
+.formGroup input::-webkit-input-placeholder {
+    color: #BDBDBD;
+}
+
+.formGroup .formGroup_AN {
+    width: 638px;
+    height: 50px;
+    font-size: 16px;
+    color: #fff;
+    background: #00ba97;
+    line-height: 50px;
+    text-align: center;
+    margin: 16px 0;
+    padding-left: 10px;
+    outline: none;
+    border: none;
+}
+
+
+/* input单选按钮的默认颜色需要js才能改 */
+
+
+/* .XQAndCon3 .choice-box_hind {
+    width: 15px;
+    height: 20px;
+    background: url(B.png) no-repeat center center;
+} */
+
+
+/* .formGroup .XQAndCon3 span {
+    
+    margin-left: 10px;
+    color: #868585;
+   
+} */
+
+.ft {
+    font-size: 14px;
+    color: #999999;
+    padding: 20px 0 10px;
+    text-align: center;
+    line-height: 24px;
+    background-color: #F4F4F4;
+}

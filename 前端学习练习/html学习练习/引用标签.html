@@ -1,0 +1,47 @@
+<!-- 和浏览器优化有关的，更具有语义，常用的有：
+        <blockquote></blockquote> 引用大段的段落解释。
+        <q></q> 引用小段的短语解释。
+        <abbr title=""></abbr> 缩写或首字母略缩词。
+        <address></address> 引用文档地址信息。
+        <cite></cite> 引用著作的标题。
+    
+    -->
+演示：
+<q>“欲速则不达”出自于《论语·子路》：</q>
+<blockquote>“子夏为苣父宰，问政。子曰：“无欲速，无见小利，欲速则不达，见小利则大事不成。”</blockquote>
+<cite>《论语》</cite>由孔子编写。
+<abbr title="世界卫生组织">WHO</abbr>成立于1948年。
+<br> 百度公司地址：
+<address>中国北京海淀区上地十街10号百度大厦</address>
+
+<!-- 
+    iframe标签是在当前html文件中嵌入其它外部html文件的，一个文件中可以写多个iframe标签，来引入多个html文件，可以设置其它html在当前文件页面是否显示、显示窗口宽高和是否有滚动条等等。。它的宽高大小是控制它引入的html文件在当前html文件用浏览器显示时的可视区大小。
+    作用：数据传输（比如点淘宝这个软件的支付，会跳出支付宝这个软件的界面，就是把淘宝的数据传给支付宝了）；
+          共享代码（比如整个页面的公用框架头部尾部等地方不变，部分内容有变化的区域可以用iframe来引入）；
+          局部刷新（比如页面里嵌入了iframe，可以通过js控制只刷新iframe嵌入的局部页面）；
+          第三方介入（比如页面的广告，是个第三方文件，引入在页面里，浏览器上就会显示广告）
+
+    很多网站会设置屏蔽这个标签，如果没有特殊需求除了放广告尽量少用这个标签。
+
+    参数：
+        src：写引入文件的url地址的
+        name：设置iframe叫什么名字，可以和a标签的锚点配合用
+        frameborder:设置边框的
+        width：设置iframe的宽
+        height：设置iframe的高
+        scrolling：设置是否显示滚动条，默认值是yes，去掉写no。
+        srcdoc：设置在iframe中显示的页面内容，可以直接写代码，会自动渲染，也可以直接写文字。
+
+ -->
+html文件嵌套演示：
+<!-- 嵌入外部html文件 -->
+<iframe src="https://www.taobao.com/" frameborder="0" scrolling=no></iframe>
+<br>
+
+<!-- 嵌入自己写的html文件 -->
+<iframe src="锚点链接学习.html" frameborder="1" width="50%" height="300"></iframe>
+<!-- srcdoc属性和src属性同时出现，srcdo属性有效，只会显示它控制的内容，src属性就失效了 -->
+srcdoc属性直接写内容演示：
+<iframe srcdoc="hello world" src="https://www.baidu.com/" frameborder="1" name="baidu"></iframe>
+<br> srcdoc属性写代码，演示
+<iframe srcdoc="<h1>hello world</h1>" src="https://www.baidu.com/" frameborder="1" name="baidu"></iframe>

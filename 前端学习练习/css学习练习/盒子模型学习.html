@@ -475,6 +475,18 @@
     -->
     <!-- transition过渡属性演示： -->
     <div class="guodu">看我的动画效果</div>
+
+
+    <!-- 最大和最小宽高 ：
+            最大：max-width；max-height；
+            最小：min-width；min-height；
+            百分比单位： 都是以父级容器的宽高进行换算的，只参考亲父级，如果父级没设置，它就没有宽高。
+            一个容器怎么适应屏幕的高度：html,body {height:100%;} 容器自己 {height：100%;}
+    -->
+    <div class="max" style="max-width: 200px; max-height: 200px; border: 1px solid;">最大宽和高都是200px，宽度就被固定，内容长或短都不变了，高度则是如果内容少就会按内容撑开高度，内容多也只有200px高，装不下就会溢出</div>
+    <div class="fuhe" style="width: 100px;">
+        <div class="min" style="border: 1px solid; min-width: 50px; min-height: 50px;">最小宽和高都是50px，宽度会按父盒子的宽度显示，高度则是如果内容少就会按内容撑开，内容多按内容自动适应来调整</div>
+    </div>
 </body>
 
 </html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新东方信阳学校6月27日开业</title>
+    <link rel="stylesheet" href="haha.css">
+</head>
+
+<body>
+    <div class="WJYYGJ_16_Box">
+        <div class="sectionZBox">
+            <h2 id="h2"></h2>
+            <div class="banner"><img src="5.png" alt=""></div>
+            <div class="BT">
+                <p class="sectionZBox1">新东方信阳学校6月27日开业</p>
+            </div>
+            <div class="ql-container ql-snow">
+                <div class="ql-editor">
+                    <p>开业优惠规则：报2科学3科</p>
+                    <p>凡报名即送新东方纪念书包1个</p>
+                    <p>开业测评专享</p>
+                    <p>测试成绩满分享受全额奖学金</p>
+                    <p>测试成绩达到志高班享受100元奖学金</p>
+                </div>
+            </div>
+        </div>
+        <p class="pline"></p>
+        <div class="formAll">
+            <form class="form" method="POST" action="{% url 'register' %}" enctype="multipart/form-data" id="collectionForm">
+                <!-- {% csrf_token %} -->
+                <div class="formGroup clear" id="text6">
+                    <label for="name">姓名<b>*</b></label>
+                    <input onblur="leave()" type="text" name="s_name" placeholder="孩子姓名">
+                </div>
+                <div class="formGroup clear" id="text7">
+                    <label for="name">手机号<b>*</b></label>
+                    <input onblur="leave()" type="text" name="s_telephone" placeholder="家长手机号">
+                </div>
+                <div class="formGroup clear" id="text8">
+                    <label for="name">英语成绩<b>*</b></label>
+                    <input onblur="leave()" type="text" name="s_score" placeholder="孩子英语成绩">
+                </div>
+                <div class="formGroup clear" id="text9">
+                    <label for="name">学生年级<b>*</b></label>
+                    <input onblur="leave()" type="text" name="s_grade" placeholder="孩子年级">
+                </div>
+                <!-- <div class="mychoise">
+                    <div class="formGroup clear">
+                        <div class="formGroup_YHFWTK clear">
+                            <input onblur="leave()" type="checkbox" id="userlicense_check" class="choice-box_hind">
+                            <label for="userlicense_check" class="choice-box-XQ"></label>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="formGroup clear" id="radio10">
+                    <label for="nan">年级<b></b>（单选）</label>
+                    <div class="XQAndCon3 clear">
+                        <div>
+                            <input type="radio" name="radio10" id="radio10-radio-0" class="choice-box_hind" value="2年级">
+                            <label for="radio10-radio-0" class="checked choice-box-NJDX1"></label><span>2年级</span>
+                        </div>
+                        <div>
+                            <input type="radio" name="radio10" id="radio10-radio-1" class="choice-box_hind" value="3年级">
+                            <label for="radio10-radio-1" class="checked choice-box-NJDX1"></label><span>3年级</span>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="formGroup clear">
+                    <input type="submit" name="" value="提交按钮" class="formGroup_AN">
+                </div>
+                <div class="ft">
+                    哈哈教育有限公司
+                    <br>咨询热线： 0000-111111
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

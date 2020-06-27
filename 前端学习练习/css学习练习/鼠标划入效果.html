@@ -140,6 +140,16 @@
             /* 禁止 */
             cursor: not-allowed;
         }
+        
+        .li6 {
+            /* 帮助 手+？ */
+            cursor: help;
+        }
+        
+        .li7 {
+            /* 自定义鼠标光标形状 */
+            cursor: url(手势.ico), auto;
+        }
     </style>
 </head>
 
@@ -170,12 +180,17 @@
         <a href="#" class="p4"></a>
     </div>
 
-    <!-- 鼠标样式cursor(光标)属性实现鼠标划入改变光标形状，5种参数：
+    <!-- 鼠标样式cursor(光标)属性实现鼠标划入改变光标形状，多种参数：
             defaut(默认的形状，白箭头)
             pointer(小手)
             move(移动 十字架) 
             text（文本 I）
             not-allowed(禁止 红色圆圈中间一条杠)   
+            help（一个小手加问号）
+
+            还可以自定义手势：
+                1.准备图片，必需是.cur或.ico格式，存到同级目录下
+                2.样式语法：cursor：url（图片路径）,auto;
         -->
     <ul>
         <li class="li1">我是默认白箭头形状</li>
@@ -183,6 +198,8 @@
         <li class="li3">我是十字架形状</li>
         <li class="li4">我是文本形状</li>
         <li class="li5">我是禁止形状</li>
+        <li class="li6">我是帮助形状，小手加问号</li>
+        <li class="li7">我是自定义形状</li>
     </ul>
 
 </body>

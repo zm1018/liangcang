@@ -60,6 +60,8 @@
     <br>
     <center>这是居中标签</center>
     <hr>
+    <br>换行标签；<wbr>软换行标签，一个比较长的单词自动换行时会给不够显示的地方留出比较大的位置，在这个长单词中间加<wbr>把长单词分成几段短的，如果位置不够显示换行时，也不会留很大的位置。
+
 
     <!-- 盒子标签 -->
     <h3>下面两组布局用的标签，就是一个盒子样的容器，没有语义</h3>
@@ -309,6 +311,35 @@
     -->
     <!-- 音频标签使用演示： -->
     <audio src="media/想见你.mp3" autoplay="autoplay" controls="controls"></audio>
+
+    <!-- 
+        pre标签是在网页展示源代码时保留格式化的文本，是外层容器，能保留代码的换行、缩进等格式，
+        里面不能写可以导致段落断开的标签（例如标题、<p> 和 <address> 标签）绝不能包含在 <pre> 所定义的块里，不然浏览器也不知道是该原样显示，还是渲染代码。
+            一般和code标签配合使用，主要作用是让code标签里写的代码在网页中显示。
+
+        code标签是放要在网页中显示的代码的;
+        code和pre之间的关系
+        共同点：都主要应用于浏览器显示计算机中的源代码。
+        不同点： code标签的一个功能是暗示浏览器code标签所包围的文本是计算机源代码，浏览器可以做出自己的 样式处理，pre标签则没有这项功能，但是pre标签可以保留文本中的空格和换行符，保留文本中的空格和换行符是计算机源代码显示 所必须的样式。code标签和pre标签是 可以嵌套使用的，但是必须注意两者的嵌套顺序。
+     -->
+    <br> pre标签和code标签，演示：
+    <pre>
+        只转义了一行
+        所以只有二行能正常显示
+        <code>
+            &lt;!DOCTYPE html&gt;
+            &lt;html lang="en"&gt;
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Document</title>
+            </head>
+            <body>
+                
+            </body>
+            </html>
+        </code>
+    </pre>
 
 
 </body>
