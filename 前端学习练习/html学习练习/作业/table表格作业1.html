@@ -5,6 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>table标签学习</title>
+    <style>
+        /* 做条分割线分割单元格成两个三角 */
+        /* div {
+            边框做去不掉颜色，换旋转rotate做
+            border-left: 204px solid red;
+            border-top: 45px solid transparent;
+        } */
+        /* rotate旋转，瞬间实现分割单元格 */
+        
+        div {
+            /* div就只做一条边框，默认与父盒子单元格同宽的 */
+            border-bottom: 1px solid;
+            /* 逆时针旋转5度 */
+            transform: rotate(-5deg);
+        }
+        
+        .fenge {
+            position: relative;
+        }
+        
+        i,
+        span {
+            position: absolute;
+        }
+        
+        i {
+            left: 20px;
+            bottom: 0;
+        }
+        
+        span {
+            right: 30px;
+            top: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,7 +48,13 @@
     <table border="1px" cellspacing="0">
         <tr>
             <!-- 属性width设置每格的宽度相同，每个的大小(高)默认是内容的大小-->
-            <th width="200px" align="center">这是表头</th>
+            <th width="200px" align="center" class="fenge">
+                <!-- 把单元格分成两个斜线三角 -->
+                <div>
+                    <i>这是</i>
+                    <span>表头</span>
+                </div>
+            </th>
             <th width="200px" align="center">初级</th>
             <th width="200px" align="center">中级</th>
             <th width="200px" align="center">高级</th>

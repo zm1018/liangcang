@@ -316,19 +316,31 @@
 </html>
 
 <!-- 伪元素选择器权重值是1。
-    伪元素选择器是css创建的元素，不会在html文件的结构里显示，是行内元素类型，里面必需有content属性，否则伪元素选择器无效，要显示的内容都是写在content属性里的。
-        常用于做清除浮动和字体图标插入或视频遮罩层的效果。
+    伪元素选择器是css创建的元素，相当于创建了一个虚拟容器，不会在html文件的结构里显示。
 
-    共2种：before是在父元素的其它子元素前面创建一个元素插入进去；after是在父元素的其它子元素后面创建一个元素插入。
+        ::selection伪元素，定义用户鼠标选中的内容的样式，可以改颜色、背景色等等。
+
+        ::first-line 伪元素，只能用于块级元素，作用是向文本的首行设置特殊样式,只对文本的第一行有用，可以设置的样式有：
+                font（字体） /color（颜色） /background（背景） /word-spacing（单词之间的间距） /letter-spacing（字与字之间的间距） /text-decoration（文字装饰） /vertical-align（垂直对齐） /text-transform （英文字母大小写）/line-height（行高） /clear（清除）。
+        ::first-letter 伪元素,只能用于块级元素，用于向文本的首字母设置特殊样式,只对文本的第一个字有用，可以设置的样式有：
+            font /color /background /margin /padding /border /text-decoration /vertical-align (仅当 float 为 none 时有用，也就是没有浮动时有用) /text-transform /line-height /float /clear
+    
+        试了一下，first-line伪元素和first-letter伪元素同时设置时，first-letter伪元素不生效。
+
+    ::before是在父元素的其它子元素前面创建一个元素插入进去；::after是在父元素的其它子元素后面创建一个元素插入，是行内元素类型，可以用display转换元素类型。
+    before和after伪元素里面必需有content属性，否则伪元素选择器无效，要显示的内容都是写在content属性里的。
     语法：父元素::before {
-                    content="内容"；
+                    content:"内容"；
                     样式。。。
                 }
          父元素::after {
-                    content="";
+                    content:url();
                     其它样式。。
                 }
-    注意：content的属性值一定要加“ ” 伪元素和父元素直接一定不能有空格，标准写法是：：低版本的浏览器可以写一个： 。
+    注意：content的属性值如果要写文本之类的，一定要加“ ”，也可以写url（图片路径），还可以写content："center";实现大小不固定的图片在父盒子里居中。
+    例如：
+        div:after{display:inline-block; width:0; height:100%; content:"center"; vertical-align:middle; overflow:hidden;}
+     伪元素和父元素直接一定不能有空格，标准写法是：：低版本的浏览器可以写一个： 。
 -->
 
 <!-- 伪元素演示： -->
@@ -340,6 +352,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        /* selection伪元素，鼠标选中的内容改变颜色 */
+        
+        .pp::selection {
+            color: seagreen;
+            background-color: rgb(235, 135, 205);
+        }
+        /* first-letter伪元素演示，让首字母变大 */
+        
+        .pp::first-letter {
+            font-size: 30px;
+            color: blue;
+            text-decoration: underline;
+        }
+        
+        .p1 {
+            width: 500px;
+            border: 1px solid;
+        }
+        /* first-line伪元素演示，让首行变颜色 */
+        
+        .p1::first-line {
+            color: tomato;
+        }
         /* 字体图标声明 */
         
         @font-face {
@@ -412,6 +447,8 @@
 </head>
 
 <body>
+    <p class="pp">我是selection伪元素选择器，我能改变鼠标选中的内容的样式，顺便把first-letter伪元素选择器的作用一起演示：</p>
+    <p class="p1">默认正常样式，不用selection伪元素选择器的样式，鼠标选中是蓝底白字，顺便把::first-line伪元素选择器的作用一起演示：</p>
     <div class="div66">是</div>
     <div class="div55">我后面图标</div>
 </body>

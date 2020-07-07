@@ -13,7 +13,7 @@
         /* 翻页按钮的2d效果 */
         
         .div1,
-        ul {
+        .ul1 {
             width: 500px;
             height: 60px;
             border: 1px solid;
@@ -22,7 +22,7 @@
         /* li标签是块级元素，可以直接浮动到一行显示，不用转换类型，这里我使用并集选择器，懒得再单独写 */
         
         span,
-        li {
+        .li1 {
             display: inline-block;
             width: 40px;
             height: 40px;
@@ -37,7 +37,7 @@
         /* 等比放大1.2倍，一定不要带单位，  */
         
         span:hover,
-        li:hover {
+        .li1:hover {
             transform: scale(1.2);
         }
         /* 以父盒子左下角为参照点旋转180度子盒子 */
@@ -127,7 +127,16 @@
             height: 100px;
             background-color: rgb(160, 145, 95);
             margin: 100px;
-            transform: skew(50deg);
+            transition: 1s;
+        }
+        
+        .box5:hover {
+            /* 正值向左倾斜 */
+            /* transform: skew(50deg); */
+            /* 负值向右倾斜 */
+            /* transform: skew(-30deg); */
+            /* x和y轴同时设置，盒子会扭曲 */
+            transform: skew(30deg, 30deg);
         }
         
         .box6 {
@@ -140,6 +149,72 @@
         
         .box6:hover {
             transform: translate(150px, 50%) rotate(360deg) scale(2);
+        }
+        /* 鼠标滑过显示图片上的遮罩 */
+        
+        .ss {
+            list-style: none;
+        }
+        
+        .ss .ls {
+            width: 400px;
+            height: 200px;
+            margin: 30px;
+            /* 移出去的遮罩和字都藏起来，鼠标经过再复位 */
+            overflow: hidden;
+        }
+        
+        .ss .ds {
+            position: relative;
+            float: left;
+            width: 300px;
+            height: 200px;
+        }
+        /* 先用定位固定好遮罩的位置 */
+        
+        .ds::before {
+            content: "";
+            /* display: block; */
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            width: 250px;
+            height: 150px;
+            border: 1px solid #fff;
+            background: rgba(0, 0, 0, .1);
+            transition: 1s;
+            /* 用位移和选择给它移到li标签外面隐藏起来 */
+            transform: translate(0, -200px) rotate(-180deg);
+        }
+        
+        .ls:hover .ds::before {
+            transform: translate(0, 0) rotate(0deg);
+        }
+        
+        .ds::after {
+            content: "演示文字";
+            /* 用定位就不用再转换成块元素 */
+            /* display: block; */
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            /* 让字在div盒子里居中 */
+            transform: translate(-50%, -50%);
+            color: #fff;
+            transition: 1s;
+            /* 移到li标签外面藏起来，鼠标经过再回原位 */
+            transform: translate(0, 200px) rotate(180deg);
+        }
+        
+        .ls:hover .ds::after {
+            /* 鼠标经过回到原位时，之前设置居中位移了-50%，回原位必需是-50%才是原位，而不是0 */
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+        
+        .ss p {
+            padding-left: 10px;
+            color: #888888;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -155,14 +230,14 @@
         <span>6</span>
     </div>
     第二种，用li标签写
-    <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li>7</li>
+    <ul class="ul1">
+        <li class="li1">1</li>
+        <li class="li1">2</li>
+        <li class="li1">3</li>
+        <li class="li1">4</li>
+        <li class="li1">5</li>
+        <li class="li1">6</li>
+        <li class="li1">7</li>
     </ul>
     盒子里的子盒子旋转180度
     <div class="box1">
@@ -179,6 +254,16 @@
     <div class="box5"> 盒子倾斜，会改变盒子形状</div>
     <!-- 简写演示，一定要注意顺序 -->
     <div class="box6">综合写法演示</div>
+    <!-- 鼠标滑过显示图片上的遮罩  -->
+    <ul class="ss">
+        <li class="ls">
+            <div class="ds">
+                <img src="../image2/11.gif" alt="">
+            </div>
+            <p>撕逼也阻止不了我上市</p>
+        </li>
+    </ul>
+
 </body>
 
 </html>

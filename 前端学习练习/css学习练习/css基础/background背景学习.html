@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*  body标签也是一个容器，默认宽度占满整个页面，没有高度的，这时设置高度100%也没用，因为元素宽高的百分比是相对于父元素的，父元素是0，所以没用  */
+        
+        html,
+        body {
+            /* 给父元素和子元素都设置高度，这时body才会撑满整个屏幕，但侧边会出现滚动条 */
+            height: 100%;
+            /* 去掉滚动条 */
+            margin: 0;
+        }
+        /* 给body标签设置背景图，直接用backround-image属性，url里填路径 */
+        
+        body {
+            /* 背景图默认平铺整个页面的 */
+            background-image: url(../html学习练习/image/python_logo.gif);
+            /* 取消平铺,就是取消重复，repeat重复的意思，取消重复后图片默认居左 */
+            background-repeat: no-repeat;
+            /* position位置的意思，作用是固定图片位置，参数要写两个：X Y 轴。
+            1图片在水平位置的对齐方式，2图片在垂直位置的对齐方式,bottom底部的意思*/
+            /* background-position: right bottom; */
+            background-position: center center;
+        }
+    </style>
+</head>
+<!-- background属性 ，设置盒子背景的，常用属性有：  
+
+    background-color/背景颜色，可以设置的值有三类：
+        transparent(透明)、
+
+        rgba（0, 0, 0, .5）/背景色半透明，这是一个常用特殊值：rgba(0, 0, 0, 0.3)半透明, 最后的a是alpha（透明度）取值范围是0~1之间（0全透明，1不透明）、
+
+        其它各种颜色（单词、rgb三原色数组、16进制），
+    
+    background-image/背景图，优点：比插入图片更好控制图片位置，可以设置的值有：尺寸、大小、内外边距、边框粗细、线条等、定位、填充位置、裁切方式。。。 
+    参数:
+        url(图片路径)
+
+        linear-gradient(线性渐变)，3个参数用,隔开：
+            direction（方向）：定义渐变的方向，表示从哪里开始(默认是从上到下渐变to bottom),
+        取值可以是方位单词、角度；
+            方位单词:top/ right/ bottom/ left 四个值(linear线性时没有 center这个值），也可以组合使用: background-image:linear-gradient(to top left, red, blue); 表示从左上角开始. 
+            角度<angle>：通过角度来确定渐变的方向。单位deg必需带，0deg表示渐变方向从下向上，90deg表示渐变方向从左向右。如果取值为其它值，其角度按顺时针方向旋转。    
+            两种值的对应关系：“to top”、“to right”、“to bottom”和“to left”。这些关键词对应的角度值为“0deg”、“90deg”、“180deg”和“270deg”。
+
+            co1or1 position1,color2 position2 ...... 第二个和第三个参数，表示起始颜色和颜色的位置点——终点颜色和颜色的结束位置点。这两个参数之间可以插入更多的颜色值和颜色位置点值。（两个或两个以上的颜色，第一个是起点颜色，最后一个是终点颜色，它们中间可以插入很多个颜色，看自己需求，
+        颜色取值可以是：单词、16进制数组、rgb（）、rgba（）
+
+            颜色位置点position是颜色过渡的位置点指定：写在要设置的颜色后面，用空格隔开，
+            颜色位置点取值单位可以是：px、percentage(百分比的意思 )，渐变区域是一个颜色的百分比到另一个颜色的百分比的差。
+            百分比如果是两种颜色各百分之50%的话，就没有过渡效果，两个颜色各占盒子的一半，50%如不指定，第一个颜色默认为0%，最后一个颜色默认为100%）;
+            如果两个以上的颜色不要过渡效果，需要给颜色指定开始到结束的百分比，例如：linear-gradient(135deg,orange 33%,red 33%,red 66%,yellow 66%,yellow 100%)
+
+        语法简写：background: linear-gradient(direction,co1or1 position1,color2 position2 ...); 
+
+            radial-gradient(径向渐变)，三个值：方向、形状（形状加在颜色前面用,隔开） 颜色 颜色位置点，径向渐变由它的中心点定义，
+            默认的渐变的中心点是 center，渐变的形状是 ellipse（表示椭圆形，在正方形里默认为圆形，在长方形里默认椭圆形），渐变的大小是 farthest-corner（表示到最远的角落）。
+            
+            语法：background-image：radial-gradient（direction,co1or1 position1,color2 position2）
+            
+        线性渐变和径向渐变混合使用时要写：background-blend（混合）-mode:exclusion（排除）;给它们混合到一起。
+
+    background-repeat/背景图平铺，可以设置的值有：repeat(平铺)、repeat-x水平平铺、repeat-y垂直平铺、 norepeat（不平铺） 
+
+    background-position ：X Y /背景图定位，根据xy轴来固定图片的位置，可以设置的值有3种：方位名词、精确单位、混合单位。 
+        方位名词：top上，center中，bottom下，left左，right右，两个值写的时候不用管顺序的，
+        如果只写一个参数，第二个没写的值都是居中显示的 
+
+        精确单位：两个值写的时候一定要有顺序，先 X 后 Y ,长度（px单位的像素或者 %百分比值）,
+        如果只写一个值，一定是 X ，默认没写的y会垂直居中
+
+        混合单位：两个值写的时候一定要有顺序，先 X 后 Y ，例如：20px center
+
+        sprites精灵图：精灵图主要是使用在背景图，因为不经常换。一张大图，里面有很多小的背景图，用background-position:x y（x和y轴的值一般都是负值）单位px来实现精灵图定位，想要哪个小图片，就设置盒子的大小和小背景图的大小一样，再给出准确的x y轴，就会让这张小图片正确显示在盒子里了。
+
+    background-attachment/背景附着，背景图默认是滚动的，作用是设置背景图片是否固定或随着页面的滚动条内容滚动，制作视差滚动效果，
+        可以设置的值有2个：
+            scroll（滚动）默认值。如果还设置了背景定位属性，背景附着的值是scroll时，是以装背景图的盒子为参考，背景图位置是按照当前元素进行偏移的。
+
+            fixed（固定），背景图位置是按照浏览器进行偏移的。值是固定时是以浏览器为参考，因为以浏览器为参考坐标，背景图就会溢出盒子跑到盒子外面，就看不见了，如果把装背景图的盒子宽高改大，就能看见了。
+    
+    background-size：设置背景图的尺寸，值有：
+        正常的宽高设置，也可以设置，但会拉伸图片，使图片变形，所以主要用下面这两个属性。
+
+        cover(覆盖)，设置这个值会让背景图等比例缩放，和盒子一样大，把装图的盒子元素全部盖住，图片大小变成盒子的大小，溢出盒子的部分自动隐藏。
+
+        contain(包含)，设置这个值会让背景图等比例缩放，和盒子的宽或高里最小的那个值一样大，
+        比如：盒子宽100px,高200px，图片不管原来的尺寸是多少，因为等比缩放，就会变成宽高都是100px的图片，取的是装图的盒子宽或高的最小值，图片永远在盒子里面，被盒子包含，不会溢出其它地方，如果没设置平铺就会空白，出现平铺图片就以以盒子宽或高的最小值作为图片的大小来铺满盒子。
+    
+    background-origin:背景图的填充位置，值有：
+        padding-box(默认值),以盒子的内边距开始填充，就是图片在盒子里的显示位置默认是以内边距的位置为基点显示的。图片平铺时以内边距为基点向盒子其它地方平铺的；
+        border-box（盒子边框），以盒子的边框开始填充，就是图片在盒子里的显示位置是以盒子边框为基点显示的，会紧贴盒子左上角和边框左边和上边重叠，重叠部分的图片会被边框覆盖，尺寸就是边框的粗细尺寸，造成图片显示不完整。图片平铺时以边框为基点向盒子其它地方平铺的；
+        content-box（盒子内容区域），从内容位置开始填充，盒子设置了内边距，图片和盒子边框之间就有缝隙，没设置就是图片挨着边框开始显示，在内容区域里显示，图片平铺时以内容区域为基点向盒子其它地方平铺的；
+
+    background-clip：背景图的裁切方式，值有：
+        border-box（默认值）,以边框开始裁切图片，超出边框的部分切掉不显示
+        padding-box以内边距开始裁切图片,超出内边距的部分切掉不显示,平铺在内边距区域开始匹配
+        content-box（以内容区域开始裁切图片,图片只在内容区域显示,图片如果比内容区域大，显示不完的就裁切掉,平铺也只在内容区域平铺
+
+    background-blend-mode：背景的混合模式，可以是背景图片与背景图片的混合，也可以是背景图片和背景色的之间的混合。
+        值有：
+            normal;     正常
+            multiply;   正片叠底
+            screen;     滤色
+            overlay;    叠加
+            darken;     变暗
+            lighten;    变亮
+            color-dodge;颜色减淡
+            color-burn; 颜色加深
+            hard-light; 强光
+            soft-light; 柔光
+            difference; 差值
+            exclusion;  排除
+            hue;        色相
+            saturation; 饱和度
+            color;      颜色
+            luminosity; 亮度
+            initial;    初始
+            inherit;    继承
+            unset;      复原
+     
+复合写法：background：有5个属性没有顺序要求，origin和clip这两个属性顺序有要求,origin写前面,clip写后面,习惯约定顺序是：颜色/地址/平铺/滚动/固定位置/背景图填充位置/背景图裁切方式
+
+
+-->
+
+
+<body>
+
+</body>
+
+</html>

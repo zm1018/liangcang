@@ -1,4 +1,4 @@
-<!-- transform(2D转换)，都不会影响其他元素:
+<!-- transform(2D转换)，都不会影响其他元素,只能给块元素使用，对内联元素和内联块元素都无效:
 
     4种常用值，因为都是函数，要带（）用，隔开：
         translate(位置，2种单位：px和百分比，)/scale(缩放倍数，不带单位)/rotate(旋转多少度，单位deg，规定只有一个参数)/skew(倾斜，用,隔开，单位deg，两个参数，也可以写一个参数，第二个默认为0)
@@ -14,24 +14,26 @@
             transform: scale(1,1); 默认值，自身大小，没缩没放
             transform: scale(2,1); x放大2倍,y没变
             transform: scale(2); 等于xy轴一样，等比放大
+            transform: scale(0); 等于xy轴一样，等比缩小到消失，此时在屏幕上看不见了
             transform: scale(-0.5); 翻转元素后缩小元素自身的一半
+            transform: scale(-1); 翻转元素，可以做图片的倒影效果
         
         3. 旋转，只有一个值，正数是顺时针，负数是逆时针，不会改变元素的形状,默认以中心点旋转，想要改变旋转的基点，用origin设置。
             transform: rotate(0deg); 回原位
             transform: rotate(数字deg); 顺时针
             transform: rotate(—数字deg); 逆时针
             
-        4.倾斜，单位是deg，用,隔开，让元素倾斜显示,会改变元素的形状。它可以将一个对象以其中心位置围绕着X轴和Y轴按照一定的角度倾斜。
+        4.倾斜，单位是deg，用,隔开，让元素倾斜显示,会改变元素的形状。它可以将一个对象以其中心位置围绕着X轴和Y轴按照一定的角度倾斜.正值向左，负值向右倾斜。
             transform: skew(数字deg); 一个值是x的，y的就默认为0
-            transform: skew(xdeg,ydg);
+            transform: skew(xdeg,ydeg);
                 
-        5. 设置中心点的位置，用空格隔开。
+        5. 设置中心点的位置，用空格隔开，如果xy的值设置的比元素本身大，它会以外xy值的地方做中心点，把元素拉过去。
             transform-origin: 50% 50%; 默认值
             transform-origin: 数字px 数字px;
             transform-origin: left top;
 综合写法：transform:translate() rotate() scale() ...等等
-        有顺序要求。
-        当有translate()属性时，一定要放到最前面写，否则会影响效果。
+        写法有顺序要求，因为执行顺序是从后往前执行的。
+        当有translate()属性时，一定要放到最前面写，否则会被其它三个属性影响效果。
         例如：先旋转再移动，坐标轴会朝相反方向跑偏
 -->
 <img src="../html学习练习/image/translate.png" alt="">

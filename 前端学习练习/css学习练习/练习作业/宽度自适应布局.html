@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        /* 双飞翼布局 */
+        
+        .div1 {
+            height: 200px;
+            border: solid 1px;
+        }
+        
+        .div1 div {
+            float: left;
+        }
+        /* 要先设置宽度自适应的盒子 */
+        
+        .div1 div:nth-child(1) {
+            height: 100%;
+            width: 100%;
+        }
+        
+        .div1 div:nth-child(1) p {
+            /* 往右移左边盒子的宽度，所以是正值，往左移右边盒子的宽度，所以是负值，这样自适应盒子的内容区域才不会被覆盖 */
+            margin: 0 -150px 0 100px;
+            /* 要个高度与父盒子一样高，不然就是靠内容撑开高度的 */
+            height: 100%;
+            background-color: yellow;
+        }
+        
+        .div1 div:nth-child(2) {
+            height: 100%;
+            width: 100px;
+            background-color: rgb(255, 72, 0);
+            /* 第二个盒子需要放在最左边，把 margin-left: -100%来移动盒子位置到父盒子的最左边，覆盖在宽度自适应的盒子上面，这时它会盖住自适应盒子最左边的内容，需要给自适应盒子里面的标签设置margin值来把内容挪到不被覆盖的区域显示 */
+            margin-left: -100%;
+        }
+        
+        .div1 div:nth-child(3) {
+            height: 100%;
+            width: 150px;
+            background-color: rgb(140, 0, 255);
+            /* 第三个盒子需要放最右边，margin-left: -150px移动与它自身宽度相等的负值，刚好贴在父盒子的最右边，覆盖在宽度自适应的盒子上面 */
+            margin-left: -150px;
+        }
+        /* 圣杯布局，和双飞翼布局一样，就是不用在宽度自适应的元素里再加标签包裹内容了，把包裹内容的标签的样式直接加给它们的父元素，少写一个标签让html的结构更简单 */
+        
+        .div2 {
+            /* 可以设置父元素相对定位子元素绝对定位，也可以不设置父元素，直接给子元素相对定位 */
+            position: relative;
+            /* 如果子元素高度设置的100%，父元素一定要设置高度，否则子元素继承的高度也是0，只能靠内容撑开高度，如果子元素里没内容，子元素就看不见了，如果子元素设置了高度，就需要给父元素清浮动，否则浮动元素不占空间，父元素的高度还是0 */
+            height: 200px;
+            /* 去掉左右两个子盒子的宽度，相当于把父元素缩小不被左右两个元素覆盖，来装内容部分，让内容正常显示，但是父盒子可视区域缩小后，里面的子元素都会往可视区域挤，所以要给子元素设置定位，来把子元素定位到父盒子外面显示。 */
+            margin: 0 150px 0 100px;
+            background-color: yellow;
+            margin-top: 50px;
+        }
+        /* 给父元素清浮动 */
+        /* .clear::after {
+            content: "";
+            display: block;
+            clear: both;
+        } */
+        
+        .div2 div {
+            float: left;
+        }
+        /* 要先设置宽度自适应的盒子，宽度100%继承父元素的宽度，和父元素一样宽，其它子元素覆盖在它上面，实现宽度自适应的布局 */
+        
+        .div2 div:nth-child(1) {
+            height: 100%;
+            width: 100%;
+            background-color: rgb(71, 111, 116);
+        }
+        
+        .div2 div:nth-child(2) {
+            height: 100%;
+            width: 100px;
+            background-color: rgb(255, 72, 0);
+            /* 第二个盒子需要放在最左边，把 margin-left: -100%来移动盒子位置到父盒子的最左边，覆盖在宽度自适应的盒子上面，这时它会盖住自适应盒子最左边的内容，需要给它们的父盒子设置margin值来把内容挪到不被覆盖的区域显示 */
+            margin-left: -100%;
+            position: relative;
+            /* 如果父元素没设置相对定位，就要给子元素设置相对定位，因为相对定位会保留位置，定位到父元素的可视区域外面显示，给自己宽度的负值，和父元素的margin-left的值抵消，也就可以紧贴左边了 */
+            left: -100px;
+        }
+        
+        .div2 div:nth-child(3) {
+            /* 父元素设置了相对定位，子元素设置绝对定位，设置自己宽度的负值，和父元素设置的margin-left的正值抵消，这样右外边距就是0了，就能紧贴右边了 */
+            /* position: relative; */
+            position: absolute;
+            right: -150px;
+            height: 100%;
+            width: 150px;
+            background-color: rgb(140, 0, 255);
+            /* 第三个盒子需要放最右边，margin-left: -150px移动与它自身宽度相等的负值，刚好贴在父盒子的最右边，覆盖在宽度自适应的盒子上面 */
+            margin-left: -150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div1">
+        <!-- 要把宽度自适应的盒子写在第一个，这样下面的盒子调整margin-left时才能覆盖它 -->
+        <div>
+            <p>我是双飞翼布局的宽度自适应，不管浏览器窗口放大还是缩小，我都跟着变</p>
+        </div>
+        <div></div>
+        <div></div>
+    </div>
+    <!-- 如果不设置父元素的高度，需要给父元素清浮动，让自适应宽度的子元素高度正常显示出来，而不是只显示被内容撑开的高度 -->
+    <div class="div2 clear">
+        <!-- 要把宽度自适应的盒子写在第一个，这样下面的盒子调整margin-left时才能覆盖它 -->
+        <div>
+            我是圣杯布局的宽度自适应，我不用再加标签包裹内容，直接用父元素包裹内容，不管浏览器窗口放大还是缩小，我都跟着变
+        </div>
+        <div></div>
+        <div></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+        /* 视频太大了，把它设置宽高，和父盒子一样大 */
+        
+        video {
+            /* 直接这样写，它会在父盒子里等比缩放，不会占满父盒子 */
+            /* width: 100%;
+            height: 100%; */
+            /* 写精确单位也没用。还是等比缩放 */
+            /* width: 1000px;
+            height: 300px; */
+            /* 写最小宽高，用百分比，视频还是会显示原本的宽高，设置父盒子溢出隐藏，能看见的就是填满父盒子的区域，但播放控件在底部也和视频一起隐藏了，可以用定位看到想看的视频部位。 */
+            min-width: 100%;
+            min-height: 100%;
+            /* 让视频显示下面带有播放控件的部分 */
+            position: absolute;
+            bottom: 0;
+        }
+        
+        div::before {
+            /* 可以在content里传图片，写文字，但不能设置图片的大小 */
+            content: url(../image/暂停.png)"\A视频播放遮罩";
+            /* content的文字里写\A是换行符，再设置white-space的属性值pre，可以让content里的文字的换行 */
+            white-space: pre;
+            /* 让遮罩显示在视频上面 */
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            /* 遮罩上面加个按钮图片，这种方法可以设置背景图的大小 */
+            /* background: url(../image/暂停.png) no-repeat center center; */
+            /* 单一属性一定要写在简写属性下面，不然背景颜色会被简写里的默认值替代 */
+            background-color: rgba(0, 0, 0, .3);
+            /* 为了让content里的字也在中间显示 */
+            text-align: center;
+            color: #ffffff;
+            /* content的内容换行后，这个行高就不适合用了，不然第二行和第一行之间200的行高，第二行都跑到盒子外面去了，还可以怎么解决呢？ */
+            /* line-height: 300px; */
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <!-- 加载播放控件 -->
+        <video src="../media/视频.mp4" controls autoplay loop></video>
+    </div>
+
+</body>
+
+</html>

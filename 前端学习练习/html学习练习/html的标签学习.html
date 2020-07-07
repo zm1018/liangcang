@@ -6,7 +6,9 @@
 <!-- html文件的头部 -->
 
 <head>
-    <!-- 元信息，作用是编写网页中的一些赋值信息。charset是指定编码 -->
+    <!-- 元信息，作用是编写网页中的一些赋值信息，辅助信息。
+        meta标签常用于做SEO优化，也可以自定义描述信息。
+        charset是指定编码 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 设置html文件的网页的标题 -->
@@ -82,6 +84,51 @@
     <br>
     <!-- img有一个css3的样式属性，filter是让图片模糊的，语法：filter:blur(数字px)；blur是函数，括号里面的值必需带单位px ，数字越大图片越模糊,演示： -->
     <div><img src="image/python_logo.gif" width="50%" style="filter: blur(5px);">50%是撑满窗口的一半</div>
+    <br>
+    <!-- map标签是做图像映射的，area标签是热区，这两个标签是成套的，要与img标签绑定使用，作用是让一张图变成带有可点击区域的图。
+    使用方法：要给map标签添加ID和name属性，让img标签中的usemap属性引用map标签中的id或者name属性（由于浏览器的不同，usemap属性接收二者之一的值，写法：#wap的name属性值，所以通常name和id属性二者都写，值相同），并配合area标签进行使用.
+        area标签的属性：
+            1、alt属性：规定区域的替代文本。
+                说明：如果写href属性，则alt属性是必写的
+
+            2、cooreds属性：定义相关区域的坐标
+                    说明：和shape属性搭配使用
+
+            　　（1）当shape属性为rect时，代表相关区域为矩形，则cooreds属性值为(x1,y1,x2,y2),其中x1,y1为左上角的坐标，x2,y2为右下角的坐标；
+
+            　　（2）当shape属性为circle时，代表相关区域为圆形，则cooreds属性值为(x,y,radius),其中x,y为圆形的中心坐标，radius为圆形的半径；
+
+            　　（3）当shape属性为poly时，代表相关区域为多边形，则cooreds属性值为(x1,y1,x2,y2,x3,y3......xn,yn),规定了多边形各个顶点的坐标，由于浏览器会自动闭合多边形，所以尾部坐标不必与第一个坐标相等。
+
+            3、href属性：定义了相关区域所连目标
+                说明：href属性一般有三种值
+
+            　　（1）绝对路径：通常用来指向其他的网站如（href="https://www.baidu.com"）
+
+            　　（2）相对路径：通常用来指向自身网站内的某个文件如（href="//favicon.ico"）
+
+            　　（3）锚链接：通常用来指向页面中的锚如（href="#header"）
+
+            4、shape属性：定义了相关区域的形状
+                说明:（1）默认值（default）:规定全部区域
+                    （2）rect:规定相关区域为矩形
+                    （3）circle:规定相关区域为圆形
+                    （4）poly:规定先关区域为多边形
+
+            5、target属性：定义了在何处打开目标链接
+                说明：（1）_blank:在新窗口打开被链接的文档
+                    （2）_self:默认，在相同框架中打开被链接的文档
+                    （3）_parent:在父框架集中打开被链接的文档
+                    （4）_top：在整个窗口中打开被链接文档
+                    （5）framename:在指定框架中打开被链接文档
+
+            说明：area标签有些时候也可以当做a标签的替代品，因为a标签并不能直接嵌套a标签，在某些情况下，我们又不得不用，那么我们可以把a标签替换为area标签，使布局更加简单。
+-->
+    图像热区演示：
+    <img src="image/taobao3.jpg" alt="" usemap="#requ">
+    <map name="requ">
+        <area shape="circle" coords="155 78 50" href="https://www.cnblogs.com/okgoodman/p/8586524.html" alt="">
+    </map>
     <hr>
 
     <!-- 超链接标签 -->
@@ -173,7 +220,7 @@
     <h3>下面是表格标签table</h3>
     <!-- 表格标签共8个：<table>、<caption>、<th>、<tr>、<td>、 <colgroup span="">。
         表格标签里有三个语义化标签：tHead/tBody/tFood,没什么作用，是为了使书写更规范，一个table中tHead和tFood只能出现一次，tBody可以多次出现。
-    表格属性共个：cellpadding 、cellspacing 、colspan、 rowspan 、align 、valign、 border、width、height.
+    表格属性：cellpadding 、cellspacing 、colspan、 rowspan 、colgroup、align 、valign、 border、width、height.
     -->
 
     写法：
@@ -197,25 +244,35 @@
         </tbody>
 
     </table>
-    <!-- border属性是设置显示边框的，不设置这个属性就看不见边框线，cellspacing(单元格之间的间距)是去除单元格之间的间隙的，cellpadding（单元格内边距）是内容到单元格边框的距离，默认值是1 -->
+    <!-- border属性是设置显示边框的，不设置这个属性就看不见边框线，
+        可以利用border属性做三角形的方法，做出把一个单元格用一条斜线分成两格三角形状的分类，但边框颜色不能去掉，不然就看不出来了。
+        也可以用2d转换的rotate选择属性。
+        斜线分割单元格不能直接在目标单元格上设置，要在单元格里面写个容器div之类的，设置那个div，再往div里添加两个容器，写两个三角里的内容，再用定位把内容（绝对定位定）到单元格（相对定位）合适位置显示。
+    
+    cellspacing(单元格之间的间距)是去除单元格之间的间隙的，变成单线框；cellpadding（单元格内边距）是内容到单元格边框的距离，默认值是1 -->
     <table border="1px" cellspacing="0" cellpadding='20'>
         <caption>是表格标题</caption>
         <!-- col表示一列，需要设置width属性让单元格大小一致，有多少列就写多少个col标签，这是个单标签,单词column -->
         <col width="200px">
         <!-- colgroup是把很多相同的列标签简写合成一句代码，属性span=数字，有几列一样的要简写，数字就写几，再设置宽度width属性 -->
-        <!-- 单元格内的文字自动换行：先table标签写style="table-layout:fixed";再td标签写：style="word-wrap:break-word"; 如果给td标签设置了宽度，里面的文字就需要自动换行 -->
         <colgroup span="6" width="100px"></colgroup>
+
         <!-- th标签是表头，单词table head,一般用于表的第一行，主要实现文字加粗的效果 -->
         <th></th>
         <!-- tr标签是行，表格要画多少行就要写多少个tr标签，tr单词是table row，表格行的意思，align属性设置单元格内容对齐方式 -->
         <tr>
-            <!-- td标签是单元格，也就是表格数据，一行需要多少单元格就要写多少td标签，单词是table data，表格数据的意思 -->
+            <!-- td标签是单元格，也就是表格数据，一行需要多少单元格就要写多少td标签，
+                单词是table data，表格数据的意思 -->
             <!-- height设置行高度，否则是默认的内容文字多高，单元格就多高，
                 align是设置左右对齐方式的，3个参数：left（左）/center（中）/right（右） ,(align='center'内容居中); 例如：值center让每格单元格的字都居中，可以直接在tr行标签写align属性，此只能设置在行标签或每个单元格标签里，如果设置在table标签，是让整个表在页面中居中。
                 valign是设置上下对齐方式的,3个参数，top（上）/middle（中）/bottom（下） -->
             <td>合并单元格有两种：跨行合并和跨列合并，要合并的行或列的单元格里的第一个是目标单元格</td>
             <td>跨行合并在目标单元格里写属性rowspan="数字"，要把几个单元格合并成一个就写几"</td>
             <td>跨列合并在目标单元格写colspan='数字'，合并完一定要删除多余的单元格</td>
+            <!-- 单元格内的文字自动换行：先table标签写css样式：style="table-layout:fixed";再td标签写：style="word-wrap:break-word"; 如果给td标签设置了宽度，里面的文字就需要自动换行；
+            
+            隐藏空的没写内容的单元格，css里写：table{empty-cells:hide}，空单元格的边框就看不见了。
+            -->
         </tr>
     </table>
 
@@ -236,14 +293,46 @@
 
 
     <!-- 下面是html5新增标签，有兼容性问题，支持IE9及以上的版本或移动端，不考虑兼容性问题就尽量用新增标签，这些新标签主要就是优化搜索引擎的。更好识别模块 。IE9中使用需要把它们转换成块级元素，移动端随便用-->
-    <!-- 布局标签 -->
-    <header>头部标签</header>
+    <!-- 布局标签，header和main和footer标签一个html文件只能出现一次，h1标签也是 -->
+    <header>头部标签（页眉）</header>
+    <main>主体</main>
     <nav>导航栏</nav>
-    <article>内容标签</article>
+    <hgroup>标题组合，一个大标题下面还有小标题，就可以用这个标签包起来</hgroup>
+    <article>独立的内容标签</article>
     <section>定义文档某个区域（类似于更大的div）</section>
     <aside>侧边栏标签</aside>
     <footer>尾部标签</footer>
+    <figure>描述图像或视频的标签</figure>
+    <figcaption>描述图像或视频的标题部分，写在figure标签里面</figcaption>
+    <datalist>选项列表，给输入框添加提示信息的，要用 id属性取个和input的list属性值相同的名字建立连接</datalist>
+    <details>
+        文档细节，这个标签会显示summary标签的内容，旁边会出现一个折叠三角
+        <summary>文档标题，写在details标签里使用的</summary>
+    </details>
+    <progress min="0" max="10" value="5">定义进度条，表示加载进度的，会在网页上显示一个进度条，可以用属性设置它的显示进度</progress>
+    <meter>定义度量范围，表示测量的</meter>
+    <time>定义时间或日期，日期或时间用这个标签包起来，更语义化</time>
+    <mark>带有记号的文本，这个标签包裹的文本会有背景色，背景色也可自定义</mark>
 
+    <br> datalist标签，点击输入框输入下面列表里相关的内容，就有快捷的提示，演示：
+    <input type="text" list="tishi">
+    <datalist id="tishi">
+        <option value="提示"></option>
+        <option value="提示信息"></option>
+        <option value="abv"></option>
+        <option value="aacc"></option>
+    </datalist>
+    <br>details和summary标签，details标签生成的三角默认是折叠的，可以添加open属性设置成打开，演示：
+    <details open>
+        <summary>静夜思</summary>
+        <p>床前明月光<br>疑是地上霜</p>
+    </details>
+    <br>metea标签，常用来测量，比如统计多少人完成任务，value值变化时，它的进度条会参考low和high属性做计算，进度会增或减，进度条颜色会变，演示：
+    <meter min="0" max="100" value="30" low="10" high="60"></meter>
+    <meter min="0" max="100" value="80" low="10" high="60"></meter>
+    <meter min="0" max="100" value="100" low="10" high="60"></meter>
+    <br>
+    <hr>
     <!-- 多媒体标签，使用方法基本一样的 -->
 
     <!--视频标签：
@@ -252,7 +341,7 @@
             2. WebM格式（IE不支持，谷歌支持，火狐支持，苹果的Safari不支持，欧朋Opera支持）
             3. Ogg格式（IE不支持，谷歌支持，火狐支持，苹果的Safari不支持，欧朋Opera支持）
 
-            （使用中为了浏览器兼容性，可以上传多种格式的文件，让浏览器选，可以这样写：
+            （使用中为了浏览器兼容性，可以上传多种格式的文件，让浏览器选，可以在video标签里用source标签写备选文件格式，这样写：
                 <video>
                     <source src="文件.mp4" type="video/mp4">
                        <source src="文件.ogg" type="video/ogg">
@@ -330,18 +419,33 @@
             &lt;!DOCTYPE html&gt;
             &lt;html lang="en"&gt;
             <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Document</title>
             </head>
-            <body>
-                
-            </body>
-            </html>
         </code>
     </pre>
+    <!-- ruby标签是使用来定义ruby注释（中文注音或字符）,就是给汉字上面加拼音，必需和rt标签一起使用，还可以搭配rp标签，rt标签用来提供注释信息（如：拼音），rp标签用来定义浏览器不支持ruby标签时所显示的内容。 -->
+    ruby和rt标签演示：
+    <!-- 注音的四声和三声那些要去点输入法的键盘，去里面选择特殊符号，拼音注音里输入 -->
+    <ruby>下<rt>xià</rt>雨<rt>yǚ</rt></ruby>
 
-
+    <!-- bdo（Bi-Directional Override）标签：覆盖默认文字的排列方向，
+        <bdo>标签中文本内容的方向由“dir”属性规定；
+            “dir”属性值可以是ltr和rtl，分别代表不同的方向；
+            “ltr”是英文“left to right”的缩写，即“从左到右”；
+            “rtl”是英文“right to left”的缩写，即“从右到左”
+        
+        css里要使用这个标签的功能，写法：
+        随便什么标签的标签名 {
+            direction:rtl; 规定排列方向的
+            unicode-bidi:bidi-override;  指定unicode编码方式
+        }
+    -->
+    <br> bdo标签演示：
+    <br>
+    <bdo dir="">演示不设置dir属性值的，排列方向不变</bdo>
+    <br>
+    <bdo dir="rtl">演示设置dir属性值为rtl的，排列方向反过来了</bdo>
+    <p>css写法让文字的<span style="direction: rtl; unicode-bidi: bidi-override;">“排列顺序”</span>反过来的写法</p>
 </body>
 
 </html>

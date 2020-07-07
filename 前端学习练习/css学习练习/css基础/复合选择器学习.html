@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 复合选择器学习 -->
+    <style>
+        /* 后代选择器，可以选择父标签下的所有子标签，用空格隔开，效果如下： */
+        
+        ul li {
+            color: blue;
+        }
+        
+        .two li {
+            color: green;
+        }
+        
+        ol li {
+            color: red;
+        }
+        /* 后代选择器可以进入到最里层，只要是被父类包裹的，都可以选，这里选择a标签，效果如下 */
+        
+        ol li a {
+            color: rgb(9, 6, 43);
+        }
+        /* 子选择器，只能选择父元素最近的一级子元素，用>隔开，效果如下： */
+        
+        div>a {
+            font-weight: 700;
+            text-decoration: none;
+        }
+        /* 并集选择器，可以选多个标签，同时为他们定义相同的样式，用，隔开，整个页面所有的这几种标签都会被选择，效果如下： */
+        
+        .san,
+        p,
+        h3 {
+            text-align: center;
+        }
+        /* 伪类选择器：链接伪类选择器、focus伪类选择器，都用：隔开 */
+        /* 链接伪类选择器，4种，书写顺序一定要按L V H A来写 ，link和visited这两种选择器只能给a标签用，后两种hover和active哪个标签都可以使用，如下：*/
+        /* link是没被点击的链接 */
+        
+        .lianjie:link {
+            text-decoration: none;
+            color: black;
+        }
+        /* visited是点击过的链接 */
+        
+        .lianjie.visited {
+            color: red;
+        }
+        /* hover是鼠标经过时的链接 */
+        
+        .lianjie:hover {
+            color: violet;
+            text-decoration: underline;
+        }
+        /* active是鼠标点着没松开时的链接 */
+        
+        .lianjie:active {
+            color: yellow;
+        }
+        /* focus伪类选择器，主要是获取焦点（鼠标光标）的表单元素，一般是input标签用的，鼠标一点input的输入框，框里就会显示focus选择器设置的pink色效果 */
+        
+        input:focus {
+            background: pink;
+        }
+        /* empty伪类选择器，获取空元素的，只针对没有子元素的元素进行样式修改。(子元素可以是元素节点（就是标签）或文本、空格；注释或处理指令都不会产生影响)。
+        触发条件：当当前元素不存在任何子元素（DOM节点，DOM是Document Object Model（文档对象模型）的缩写）及空格时，可以使用:empty修改其自身样式 */
+        
+        .div8 {
+            width: 300px;
+            height: 200px;
+            margin: 50px;
+            background-color: seagreen;
+        }
+        
+        .div8 div {
+            /* 这个标签本来的设置 */
+            height: 50px;
+            background-color: #fff;
+        }
+        
+        .div8 div:empty {
+            /* 因为这个是空标签，所以empty伪类选择器生效，本来的设置被这个伪类选择器改了 */
+            width: 100px;
+            height: 100px;
+            background-color: rgb(121, 29, 29);
+        }
+        /*清除浮动的两种方法： after和before伪元素，主要是清除浮动的，一般写在css代码的上几行，做公用的，取个类名，谁需要清除浮动就调用那个类名就行。 */
+        /* 这是after，在浮动代码后面加一堵墙清除浮动效果的作用 */
+        
+        .clearfix:after {
+            content: '';
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+        
+        .clearfix {
+            *zoom: 1;
+        }
+        /* 这是after和before一起用，在浮动代码前后各加一堵墙清除浮动效果的作用，开发中规范的取名字最好叫clearfix ，这里区别于和上面的after重名，所以取个别的名字*/
+        
+        .aaa：before,
+        .aaa:after {
+            content: '';
+            display: table;
+        }
+        
+        .aaa:after {
+            clear: both;
+        }
+        
+        .aaa {
+            *zoom: 1;
+        }
+        
+        .ul0 {
+            width: 1226px;
+            /* height: 120px; */
+            margin: 0 auto;
+            /* 因为ul盒子没设置高度，它里面的li元素的高度就是它的高度，但它的实际高度是0，所以设置的白色背景看不见，当它下面有标准流的元素时，那个标准流元素会自动上移占它的位置，为了让那个标准流能正常在自己的位置显示，就需要给ul盒子清除浮动  */
+            background-color: #fff;
+            /* 清除ul列表里li前面那个小点 */
+            list-style: none;
+        }
+        
+        .ul0 li {
+            float: left;
+            width: 300px;
+            height: 120px;
+            background-color: blue;
+            margin-top: 10px;
+            margin-right: 10px;
+            color: #000;
+            font-size: 20px;
+        }
+        
+        .qingchu {
+            height: 200px;
+            background-color: yellow;
+        }
+        /* not伪类选择器,可以筛选不符合表达式的元素，这里除了第一个选中的li，其它的都是红色 */
+        
+        .uln li:not(:first-child) {
+            color: red;
+        }
+        /* li里包裹的不是i标签的字体都会变大，li标签和not伪元素中间要空一格，
+        因为页面里有多个ul标签，.uln li是指定在这个ul里选择li里的子元素， ：not（i）是选择不是i的标签字体都设置成20px */
+        
+        .uln li :not(i) {
+            font-size: 20px;
+        }
+        /* 叠加使用：选择的是不包含类名为jd的li标签和最后一个li标签，把这两个除外的文字加粗 */
+        
+        .uln li:not(.jd):not(:last-child) {
+            font-weight: 700;
+        }
+        /* checked伪类选择器，两种效果演示：*/
+        
+        label div {
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+        }
+        /* 一种方法可以直接设置成默认显示，选中时隐藏 */
+        /* label input:checked+div {
+            display: none;
+        } */
+        /* 第二种方法设置默认隐藏，也就是没有选中时隐藏 */
+        
+        label input:not(checked)~div {
+            display: none;
+        }
+        /* 选中时显示 */
+        
+        label input:checked+div {
+            display: block;
+        }
+        /* 兄弟选择器 （~）,选所有的，选出前面那个标签后面的所有h6兄弟标签，设置h6标签的字体颜色*/
+        
+        .box66~h6 {
+            color: red;
+        }
+        /* 相邻兄弟选择器（+），选单个的， 相邻兄弟选择器可选择紧接在另一个元素后的元素，且二者具有相同的父亲元素。 */
+        
+        .box66+h6 {
+            /* 只对第一个挨着.box66的h6标签有效，下面另一个h6标签字体就没变大 */
+            font-size: 30px;
+        }
+        /*并列选择器 ，标签和自己的名字，标签和名字之间没有空隙*/
+        
+        div.box55 {
+            font-style: italic;
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 后代选择器，选择ul里的所有li标签，演示 -->
+    <ul>
+        <li>后代选择器演示</li>
+        <li>后代选择器演示</li>
+    </ul>
+
+    <!-- style="list-style: none;"去除前面的小圆点 -->
+    <ul class="two" style="list-style: none;">
+        <li>后代选择器演示两个ul标签可以通过类名选择里面的li标签，演示1</li>
+        <li>后代选择器演示两个ul标签可以通过类名选择里面的li标签，演示2</li>
+        <li>后代选择器演示两个ul标签可以通过类名选择里面的li标签，演示3</li>
+    </ul>
+    <ol>
+        <li>后代选择器演示1</li>
+        <li>
+            <p>哈哈哈</p>
+        </li>
+        <li>后代选择器演示2</li>
+        <li><a href="">后代选择器演示选择a标签</a></li>
+    </ol>
+    <!-- 子选择器，这里选择div里的a标签，只会对第一级的a有效，演示 -->
+    <div>
+        <a href="">a标签子选择器演示1</a>
+        <p><a href="">a标签子选择器演示2</a> p标签并集选择器演示</p>
+    </div>
+    <!-- 并集选择器，同时选择多组标签 -->
+    <p>并集选择器演示</p>
+    <h3>并集选择器演示</h3>
+    <div class="san">并集选择器演示</div>
+
+    <!-- 链接伪类选择器，演示-->
+    <a href="#" class="lianjie">链接伪类选择器1</a><br>
+    <a href="#" class="lianjie">链接伪类选择器2</a><br>
+    <a href="#" class="lianjie">链接伪类选择器3</a><br>
+    <a href="#" class="lianjie">链接伪类选择器4</a><br>
+    <!-- focus伪类选择器，用来获取鼠标焦点的，演示 -->
+    <input type="text" value="focus伪类选择器，演示">
+    <input type="text">
+    <input type="text">
+    <!-- empyt伪类选择器演示： -->
+    <div class="div8">
+        empty伪类选择器，针对空标签有效，所以里面这个没内容也没有换行的div才会生效，演示：
+        <div></div>
+    </div>
+    <!-- after伪元素，和before伪元素，用来清除浮动的，演示 -->
+    <!-- ul是第一层大盒子，它里面的子盒子浮动，才会影响下面的标准流盒子，如果ul外面还有层大盒子，是不会影响标准流的显示位置的。为了after伪类选择器的效果，我把ul外面的大盒子div注释掉 -->
+    <!-- <div class="div0"> -->
+    <!-- 调用清除浮动的伪类选择器类名clearfix或aaa来清除浮动对下面的标准流的影响（类名是qingchu） -->
+    <ul class="ul0 aaa">
+        我是ul盒子,调用取消浮动的伪元素选择器,演示：
+        <li class="li0">我是浮动的li盒子</li>
+        <li class="li2">我是浮动的li盒子</li>
+    </ul>
+    <!-- </div> -->
+
+    <!-- not伪类选择器， 这个选择器里含的都会被排除，类似反选的功能，可以一次写多个not（）叠加使用，更好的过滤元素，
+        语法：标签名：not（筛选条件）{样式;} 
+    -->
+    not伪类选择器，演示
+    <ul class="uln">
+        <li>1</li>
+        <li>
+            2
+            <i>我是段落</i>
+            <span>我是span</span>
+        </li>
+        <li>3</li>
+        <li class="jd">4</li>
+        <li>5</li>
+    </ul>
+    <!-- checked伪类选择器：用于选择匹配所有被选中的单选按钮(radio)或复选框(checkbox),只适用于单选按钮或则复选框，
+        可以结合:checked伪类选择器和:not选择器来匹配选择没有被选中的单选按钮或复选框。 -->
+    checked伪类选择器演示：
+    <label for="cd">
+            <input type="checkbox" id="cd">
+            <div>点击input按钮让我隐藏</div>
+    </label>
+
+    <div class="qingchu">我是标准流盒子</div>
+    <!-- 兄弟选择器演示： -->
+    <div class="box66"></div>
+    <h6>我是兄弟选择器</h6>
+    <p>兄弟选择器</p>
+    <h6>我是兄弟选择器</h6>
+    <!-- 并列选择器演示： -->
+    <div class="box55">并列选择器</div>
+    <div class="box55">并列选择器</div>
+
+</body>
+
+</html>

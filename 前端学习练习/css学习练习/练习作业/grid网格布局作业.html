@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            /* 视距 */
+            perspective: 500px;
+            /* 视距的位置，也就是观察角度 */
+            /* perspective-origin: top right; */
+            width: 300px;
+            height: 300px;
+            margin: 200px;
+        }
+        
+        section {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            /* 3d空间 */
+            transform-style: preserve-3d;
+            /* 改变骰子旋转的中心点，默认以第一个面为中心点旋转的 */
+            transform-origin: center center -50px;
+            /* 过渡 */
+            transition: all 2s;
+        }
+        
+        header:hover section {
+            /* 鼠标经过沿Y轴旋转360度 */
+            transform: rotateY(360deg);
+        }
+        /* 写成通用的样式，下面的都不用再设置宽高边框等了，也可以给所有容器直接设置3*3的网格，再划分区域，在项目上用grid-area属性把每个项目定位到指定位置，我这里分开设置的容器的网格 */
+        
+        div {
+            /* 6个面叠在一起 */
+            position: absolute;
+            display: grid;
+            width: 100px;
+            height: 100px;
+            border: 1px solid;
+            border-radius: 10px;
+            /* 让所有的点都在所在单元格内居中显示 */
+            /* justify-items: center;
+            align-items: center; */
+            /* 居中简写 */
+            place-items: center center;
+            /* 背面隐藏 */
+            backface-visibility: hidden;
+        }
+        /* 第一个只有一个点*/
+        
+        .div1 {
+            /* 就一个单元格，直接设置内容居中显示 */
+            justify-content: center;
+            align-content: center;
+        }
+        
+        span {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #000000;
+        }
+        /* 两个点 */
+        
+        .div2 {
+            grid-template-rows: repeat(2, 1fr);
+            grid-template-columns: repeat(2, 1fr);
+            top: 0;
+            left: -100px;
+            /* 第二面中心点移到右边，紧贴第一面 */
+            transform-origin: right;
+            transform: rotateY(-90deg);
+        }
+        /* .div2 span:nth-child(1) {
+        第一个点就在左上角，容器上设置了项目在单元格内居中，这里就不用设置了，
+            justify-self: center;
+            align-self: center;
+        } */
+        
+        .div2 span:nth-child(2) {
+            /* 把第二个点定位到右下角 */
+            grid-area: 2 / 2 / 3 / 3;
+        }
+        /* 三个点 */
+        
+        .div3 {
+            /* 划分成3*3的网格 */
+            grid-template-rows: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr);
+            left: 100px;
+            top: 0;
+            transform-origin: left;
+            transform: rotateY(90deg);
+        }
+        
+        .div3 span:nth-child(2) {
+            grid-area: 2 / 2 / 3 / 3;
+        }
+        
+        .div3 span:nth-child(3) {
+            grid-area: 3 / 3 / 4 / 4;
+        }
+        /* 四个点,划分成2*2的单元格，可以和两个点的div使用并集选择器，这里为了更清楚这是四个点的，没有写两个点那里去 */
+        
+        .div4 {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            top: -100px;
+            transform-origin: bottom;
+            transform: rotateX(90deg);
+        }
+        /* 五个点 ,容器设置成3*2的网格，3行2列 */
+        
+        .div5 {
+            grid-template-rows: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
+            top: 100px;
+            transform-origin: top;
+            transform: rotateX(-90deg);
+        }
+        
+        .div5 span:nth-child(3) {
+            /* 把5个点的第3个点位置设置占第二行的水平方向两个单元格，通用样式那里已经设置了项目在单元格内居中，所以第3个点会在两个单元格中间居中显示 */
+            grid-column: span 2;
+        }
+        /* 六个点 */
+        
+        .div6 {
+            grid-template-rows: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
+            top: 0;
+            left: 0;
+            /* 一定要用复合写法，不然translate会被rotate影响 */
+            transform: translateZ(-100px) rotateY(180deg);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 制作骰子 -->
+    <header>
+        <section>
+            <div class="div1">
+                <span></span>
+            </div>
+            <div class="div2">
+                <span></span>
+                <span></span>
+            </div>
+            <div class="div3">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="div4">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="div5">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="div6">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </section>
+    </header>
+</body>
+
+</html>

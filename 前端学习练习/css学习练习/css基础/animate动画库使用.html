@@ -1,0 +1,36 @@
+<!-- 
+    animate.css是一款强大的预设css3动画库，想知道动画效果，去官网首页点击动画名字查看效果。
+    地址：https://daneden.github.io/animate.css/
+
+    使用方法：
+        1.第一种直接在html文件里用link标签引入：<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+
+        或者第二种下载安装：
+            先输入：$ npm install animate.css --save
+            再输入：$ yarn add animate.css
+
+        或者第三种，把它库里的css文件复制存下来，直接link标签引入自己保存的文件路径
+
+    2.在任何需要动画的标签上写class属性，每个属性值都要写前缀animate__，不然不生效，前两个值必须写:
+        语法：class="animate__animated animate__动画名称 animate__循环播放"
+        animate__animated（基类，就是动画的基础样式，每个动画效果都必须写这个属性才能使用） 
+        animate__动画名称（名称去它官网上复制，有好多种） 
+        animate__infinite（无限循环可以按自己需求决定是否设置，不设置时动画默认播放一次）
+    3.每种动画效果官网首页都有演示，可以去选择自己喜欢的，在名字那里复制过来就能用，我是直接把它的css文件复制了一份，更方便
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" /> -->
+    <link rel="stylesheet" href="animate动画库的css文件.css">
+</head>
+
+<body>
+    <h1 class="animate__animated animate__backInUp animate__infinite">引用动画库里的动画效果，演示</h1>
+</body>
+
+</html>

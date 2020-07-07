@@ -45,3 +45,16 @@ srcdoc属性直接写内容演示：
 <iframe srcdoc="hello world" src="https://www.baidu.com/" frameborder="1" name="baidu"></iframe>
 <br> srcdoc属性写代码，演示
 <iframe srcdoc="<h1>hello world</h1>" src="https://www.baidu.com/" frameborder="1" name="baidu"></iframe>
+
+<!-- object和embed标签是用来嵌入一个多媒体对象，就是引入flash动画、视频等，
+    object元素中一般会包含<param>标签，<param>标签可用来定义播放参数，object标签内除了param标签外，其它的内容将在浏览器不支持objcet标签时显示。
+
+<object>和<embed>标签的区别：两者都是用来播放多媒体文件的对象，object元素用于IE浏览器，embed元素用于非IE浏览器，为了保证兼容性，通常我们同时使用两个元素，浏览器会自动忽略它不支持的标签。同时使用两个元素时，应该把<embed>标签放在<object>标签的内部。 -->
+<br>
+<a href="https://blog.csdn.net/as3166073/article/details/101661532?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase">这都是不常用的标签，详见博客</a>
+<br> 语法：
+<embed src="media/视频.mp4" type="" width="500px" height="300px">
+<br>
+<object data="media/想见你.mp3" type="">这个位置写文字就是替换文本，如果多媒体对象加载失败会显示这行文字，这里加载成功，不会显示这行文字</object>
+<br>
+<object data="" type=""><param name="movie" value="media/想见你.mp3"></object>

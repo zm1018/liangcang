@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 立方体制作 */
+        
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .box1 {
+            width: 300px;
+            height: 300px;
+            border: 1px solid;
+            margin: 0 auto;
+            /* 透视加给最外层父盒子 */
+            perspective: 200px;
+            /* 看不见上面和下面，改变透视的观察角度，可以看见立方体的每个面 */
+            perspective-origin: top left;
+        }
+        
+        .ul1 {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 100px;
+            /* 3d空间加给父盒子,也就是观察盒子，它作为父容器观察它里面的子元素 */
+            transform-style: preserve-3d;
+            transition: 2s;
+            /* 改变3d旋转的基点（中心点），默认以第一个面作为中心点旋转，改成以立方体的中心作为中心点旋转， */
+            transform-origin: center center -50px;
+            /* 缩放写在这里鼠标经过旋转就失效了 */
+            /* transform: scaleZ(2); */
+        }
+        
+        .ul1 li {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            font-size: 30px;
+            color: #ffffff;
+            /* 透明度加给元素本身 */
+            opacity: .8;
+            backface-visibility: hidden;
+        }
+        
+        .box1:hover ul {
+            /* 如果缩放属性不写到hover，写到ul身上，这里的鼠标经过旋转就会失效 */
+            transform: rotateY(360deg) scaleZ(2);
+        }
+        
+        .ul1 li:nth-child(1) {
+            left: 0;
+            top: 0;
+            background-color: salmon;
+            /* z-index: 1; */
+        }
+        
+        .ul1 li:nth-child(2) {
+            left: 100px;
+            top: 0;
+            background-color: rgb(123, 114, 250);
+            /* 折起来需要旋转，旋转的基点是每个面的中心点，需要移到贴着第一面的边缘进行选择，才会挨着第一面折叠 ,2面是左边贴着1面的，所以中心点移到左边*/
+            transform-origin: left;
+            transform: rotateY(90deg);
+        }
+        
+        .ul1 li:nth-child(3) {
+            right: 100px;
+            top: 0;
+            background-color: rgb(250, 114, 166);
+            transform-origin: right;
+            transform: rotateY(-90deg);
+        }
+        
+        .ul1 li:nth-child(4) {
+            left: 0;
+            bottom: 100px;
+            background-color: rgb(209, 250, 114);
+            transform-origin: bottom;
+            transform: rotateX(90deg);
+        }
+        
+        .ul1 li:nth-child(5) {
+            top: 100px;
+            left: 0;
+            background-color: rgb(114, 250, 159);
+            transform-origin: top;
+            transform: rotateX(-90deg);
+        }
+        
+        .ul1 li:nth-child(6) {
+            left: 0;
+            top: 0;
+            background-color: rgb(250, 168, 114);
+            transform: translateZ(-100px) rotateY(180deg);
+        }
+        /* 翻书效果制作 */
+        
+        .box2 {
+            width: 300px;
+            height: 200px;
+            margin: 100px auto;
+            border: 1px solid #858485;
+            /* 景深视距 */
+            perspective: 700px;
+        }
+        
+        .ul2 {
+            position: relative;
+            /* 给3d空间 */
+            transform-style: preserve-3d;
+        }
+        
+        .ul2 li {
+            position: absolute;
+            /* 定位到右对齐，翻页时翻到左边 */
+            right: 0;
+            top: 0;
+            width: 150px;
+            height: 200px;
+            text-align: center;
+            line-height: 200px;
+            border: 1px solid rgb(0, 217, 255);
+            /* 设置白色背景色，不然翻页后停在结束位置是透明的，看不见 */
+            background-color: #fff;
+            /* 把旋转坐标轴移到以左边为中心点 */
+            transform-origin: left;
+            /* 动画结束停在结束位置 */
+            animation: fanye 1s linear forwards;
+        }
+        
+        .ul2 li:nth-child(1) {
+            background-color: rgb(0, 217, 255);
+        }
+        /* 设置延迟时间必需是前面一个li动画完成时间，让前面一个li把动画做完，第二个再开始动画，以此类推 */
+        
+        .ul2 li:nth-child(2) {
+            animation-delay: 1s;
+            /* 翻过去了第一页封面会在最上面，没有被覆盖，因为层级原因，但把其它li层级都加高，还是解决不了，先不管了？？？ */
+            /* z-index: 4; */
+        }
+        
+        .ul2 li:nth-child(3) {
+            animation-delay: 2s;
+            /* z-index: 3; */
+        }
+        
+        .ul2 li:nth-child(4) {
+            animation-delay: 3s;
+            /* z-index: 2; */
+        }
+        
+        .ul2 li:nth-child(5) {
+            animation-delay: 4s;
+            /* z-index: 1; */
+        }
+        
+        @keyframes fanye {
+            0% {
+                transform: rotateY(0);
+                /* 动画开始前隐藏背面，除了对着屏幕的一面能看见，其它的都看不见 */
+                /* backface-visibility: hidden; */
+            }
+            100% {
+                /* 翻页 */
+                transform: rotateY(-180deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box1">
+        <ul class="ul1">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+        </ul>
+    </div>
+    <div class="box2">
+        <ul class="ul2">
+            <li>封面</li>
+            <li>第1页</li>
+            <li>第2页</li>
+            <li>第3页</li>
+            <li>第4页</li>
+
+        </ul>
+    </div>
+</body>
+
+</html>

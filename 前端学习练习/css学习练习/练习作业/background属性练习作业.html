@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            /* background-color: #000; */
+        }
+        
+        .div1 {
+            width: 600px;
+            height: 500px;
+            border: 30px solid rgba(133, 79, 79, .3);
+            padding: 50px;
+            box-sizing: border-box;
+            /* padding: 10px 5px 5px 0; */
+            background: url(../../html学习练习/image/taobao2.jpg);
+            /* 背景图大小和盒子的宽或高里最小的值一样大 */
+            /* background-size: contain; */
+            /* 背景图大小和盒子一样大 */
+            /* background-size: cover; */
+            /* 从边框开始填充背景图，就是图片挨着边框开始显示，把边框也占了，和边框重叠的部分会被边框覆盖，图片显示不完整 */
+            /* background-origin: border-box; */
+            /* 从内边距开始填充，就是图片挨着内边距开始显示，在边框里面显示 */
+            /* background-origin: padding-box; */
+            /* 从内容位置开始填充，盒子设置了内边距就有缝隙，没设置就是图片挨着边框开始显示，在内边距里面显示 */
+            /* background-origin: content-box; */
+            /* 图片只在内容区域显示,图片如果比内容区域大，显示不完的就裁切掉,平铺也只在内容区域平铺 */
+            /* background-clip: content-box; */
+            /* 以边框开始裁切图片，超出边框的部分切掉不显示 */
+            background-clip: border-box;
+            /* 以内边距开始裁切图片,超出内边距的部分切掉不显示,平铺在内边距区域开始匹配*/
+            /* background-clip: padding-box; */
+        }
+        
+        .div2 {
+            width: 200px;
+            height: 300px;
+            margin: 100px;
+            /* 开始颜色红色，结束颜色蓝色，默认从上到下渐变 */
+            /* background-image: linear-gradient(red, blue); */
+            /* background-image: linear-gradient(#e01919, #1d29ca); */
+            /* 颜色的半透明效果 */
+            /* background-image: linear-gradient(rgba(228, 20, 20, .3), rgba(29, 29, 204.3)); */
+            /* 设置渐变方向为从左到右 */
+            /* background-image: linear-gradient(to right, red, blue); */
+            /*  设置渐变方向为从左上角到右下角 */
+            /* background-image: linear-gradient(to right bottom, red, blue); */
+            /* 设置渐变方向为角度值，0deg是从下到上渐变，其它角度值都是顺时针旋转*/
+            /* background-image: linear-gradient(0deg, red, blue); */
+            /* 左下角到右上角 */
+            /* background-image: linear-gradient(30deg, red, blue); */
+            /* 设置颜色位置点，表示红色从25%的位置开始渐变到蓝色80%的位置结束，0-25部分是纯红，80-100是纯蓝，（各50%也是等比例分割，没有渐变效果）值加起来一定要等于100%才会有渐变效果，否则就是几种颜色把盒子按比例分割了，不会有渐变效果 */
+            /* background-image: linear-gradient(red 20%, blue 80%); */
+            /* background-image: linear-gradient(red 50%, blue 50%); */
+            /* 大的百分比值后面跟小的百分比值，小的百分比值会自动替换成大的百分比值，如果它后面没有颜色了，这个颜色会填充盒子剩余空白部分，比如pink色的82%比前面的yellow92%小，程序会自动把pink色视为92%，它们之间没有值的差就没有过渡，如果pink色后面没有颜色，默认用pink色从92%的位置开始实色填充到100%，但pink色后面还有个green色也是从92%开始的，所以pink色就看不见了，green会把剩余空白区域实色填充。 */
+            background-image: linear-gradient(red 0%, blue 50%, black 70%, yellow 92%, pink 82%, green 92%);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 背景图大小设置、填充位置、裁切方式演示： -->
+    <div class="div1"></div>
+    <!-- 背景图线性渐变效果演示 -->
+    <div class="div2"></div>
+    <!-- 背景图径向渐变效果演示 -->
+    <div class="div3"></div>
+</body>
+
+</html>

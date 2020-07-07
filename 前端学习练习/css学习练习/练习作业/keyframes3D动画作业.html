@@ -17,20 +17,25 @@
                 width: 0;
             }
             100% {
+                /* 字体大小20px，10个字，盒子开始时宽度0，结束时盒子宽200px刚好装下10个字 */
                 width: 200px;
             }
         }
         
         .box1 {
+            /* 刚开始宽度是0，再设置溢出隐藏，这样就看不见文字 */
             width: 0;
             height: 30px;
             font-size: 20px;
             color: #fff;
             overflow: hidden;
+            /* 强制不换行 */
             white-space: nowrap;
             animation-name: box1;
             animation-duration: 3s;
+            /* 10个字设置10步显示出来，每步刚好显示一个字 */
             animation-timing-function: steps(10);
+            /* 动画停在结束位置 */
             animation-fill-mode: forwards;
             /* animation-iteration-count: infinite; */
         }
@@ -126,12 +131,46 @@
             right: 192px;
             top: 542px;
         }
+        /* 导航条鼠标移动时图片在上面消失下面出现  */
+        
+        li {
+            width: 63px;
+            height: 64px;
+            /* 图片灰色的，不弄个白色背景和地图的灰色放一块看不见 */
+            background-color: #fff;
+            overflow: hidden;
+        }
+        
+        li:hover img {
+            animation: move 1.5s linear;
+        }
+        
+        @keyframes move {
+            0% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(0, -64px);
+                opacity: 0;
+            }
+            51% {
+                transform: translate(0, 64px);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
     </style>
 </head>
 
 <body>
     <!-- 打字机效果，字一个一个显示出来 -->
     <div class="box1">今天下雨了啊河水好大</div>
+    <!-- 导航条鼠标移动时在上面消失下面出现 -->
+    <ul>
+        <li><img src="../image2/x.png" alt=""></li>
+    </ul>
     <!-- 地图热点效果 -->
     <div class="box2">
         <div class="city">

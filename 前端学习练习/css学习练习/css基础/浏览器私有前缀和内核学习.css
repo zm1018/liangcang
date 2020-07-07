@@ -19,3 +19,13 @@ div {
     /* 正常样式 */
     border-radius: 10px;
 }
+
+
+/* 浏览器内核是浏览器内部如何解析我们的代码，相当于渲染引擎
+浏览器内核：
+    IE: Trident
+    Firefox: Gecko
+    Opera： Presto;Blink  
+    Chrome: Webkit;Blink;
+    Safari: Webkit
+*/

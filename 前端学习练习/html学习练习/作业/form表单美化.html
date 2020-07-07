@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 先把input标签隐藏，让它原本的控件样子不显示出来 */
+        
+        .input1 {
+            display: none;
+        }
+        /* 给div标签设置替换input控件样式的图片，替换图片里有两个按钮，宽度设置成图片的一个按钮的大小，默认显示出来的是没选中的那一张， */
+        
+        .div1 {
+            width: 20px;
+            height: 18px;
+            background: url(../image/24.png);
+        }
+        /* 用checked伪类选择器实现选中的时候触发input的兄弟标签div，设置div里的图片用定位切换，鼠标点击选中时就换成选中状态图片 */
+        
+        label .input1:checked~.div1 {
+            background-position: -27px 0;
+        }
+        /* 美化上传文件的按钮 */
+        
+        .input2 {
+            /* 隐藏文件上传按钮原来的样子 */
+            display: none;
+        }
+        /* 替换文件上传按钮的图片 */
+        
+        .div2 {
+            width: 40px;
+            height: 20px;
+            background: url(../image/上传按钮.png);
+        }
+        /* 第二种方法，用定位和透明度实现替换 */
+        
+        .div3 {
+            position: relative;
+            width: 40px;
+            height: 20px;
+        }
+        /* 替换图片 */
+        
+        .div4 {
+            width: 40px;
+            height: 20px;
+            background: url(../image/上传按钮.png);
+        }
+        
+        .div3 input {
+            /* 定位到替换图片的上面，再设置成透明的 */
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 两种美化form表单控件的方法:
+            1.用label标签绑定表单元素,扩大点击触发表单控件的范围.只要和input通过id和for属性绑定了,这样在label标签里的所有都是鼠标点击能触发input的区域,所以可以在label标签里放其它标签存图片替换input原有的控件样子,再把input原有的样子隐藏,就完成了替换,显示在页面上的就是替换图片,达到美化效果.
+
+            2.用position和opacity替换表单控件原有的样子，给个父盒子，两个子元素，一个替换装图片的盒子，一个input，再把input定位到和替换的盒子重叠，再把input设置成透明的，其实点击的还是input，只是透明的看不见，看得见的是替换图，视觉上完成替换，达到美化效果。
+
+    -->
+    <!-- 第一种方法，演示： -->
+    美化表单控件多选按钮，用自定义的图片替换控件原来的样子,演示:
+    <label for="nan">
+        <input type="checkbox" id="nan" class="input1">
+        <div class="div1" ></div>点击选中
+    </label>
+    <br>
+    <br> 美化文件按钮，演示：
+    <label for="shangchuan">
+        <input type="file" class="input2" id="shangchuan">
+        <div class="div2"></div>
+        点击上传文件
+    </label>
+
+
+    <br>
+    <br>第二种方法，定位和透明度美化，演示：
+    <div class="div3">
+        <input type="file">
+        <div class="div4"></div>
+    </div>
+</body>
+
+</html>

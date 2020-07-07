@@ -1,0 +1,44 @@
+<!-- 
+    mask遮罩，可以实现各种特别的形状，其实是利用png格式的图片，让不透明的部分遮住物体，透明的部分物体透出来显示。参数之间用空格隔开，可以同时设置多个遮罩，遮罩之间用,隔开，
+    值有：
+        url(图片路径)；
+        repeat(是否平铺，默认平铺的)，可以设置no-repeat不平铺；
+        x y轴（遮罩的位置，可以是精确单位px或方位单词）；
+        w h (宽和高)，宽高写在xy坐标之后，用/隔开。
+
+    语法：mask：url() no-repeat x y / w h;
+    多个遮罩语法：mask：url() no-repeat x y / w h , url() no-repeat x y / w h;
+
+
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 504px;
+            height: 506px;
+            /* overflow: hidden; */
+            color: #fff;
+            /* 遮罩效果无效，图片怎么都显示不出来，不知道怎么回事？？ */
+            -webkit-mask-image: url(image2/x.png) 10px 10px;
+            mask-image: url(image2/x.png);
+        }
+        
+        div {
+            /* 倒影也没用，应该是没这个属性了吧 */
+            -webkit-box-reflect: below 20px url(image2/x.png);
+        }
+    </style>
+</head>
+
+<body>
+    <div><img src="../html学习练习/image/小图.jpg" alt=""></div>
+    <!-- <div><img src="image2/x.png" alt=""></div> -->
+</body>
+
+</html>

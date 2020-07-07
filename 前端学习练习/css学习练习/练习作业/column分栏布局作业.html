@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        /* 文字分栏 */
+        
+        .div1 {
+            width: 500px;
+            /* 分成3列 */
+            column-count: 3;
+            /* 每列之间的分割线 */
+            column-rule: 1px dashed red;
+            /* 默认是每列之间有间距的，值是多少不知道，设置为0，间距消失，这里设置宽一点 */
+            column-gap: 30px;
+            border: 1px solid red;
+            padding: 10px;
+        }
+        
+        .div1 h2 {
+            /* 合并分栏 */
+            column-span: all;
+            text-align: center;
+        }
+        /* 图文分栏布局，不用算每个小div盒子具体多宽，多高，分栏布局设置在父盒子上，它会按分栏最小宽度自动计算里面子盒子的宽度 */
+        
+        .div2 {
+            width: 700px;
+            /* 这个列宽是最小宽度 */
+            column-width: 200px;
+            margin: 30px;
+        }
+        
+        .div2 div {
+            border: 1px solid #ccc;
+            text-align: center;
+            padding: 10px;
+            /* 这是给h4标签设的行高，懒得再写h4标签，所以设置在父盒子上，所以下面的p标签要改行高 */
+            line-height: 34px;
+        }
+        
+        .div2 div img {
+            /* 分栏布局里装图片的盒子比图片本身宽度小，所以要改图片的宽度（最好方法），或者直接给装图片的盒子设置溢出隐藏，但这时图片到盒子的右边距是没用的，因为图片还没显示完，没到图片右边，和盒子自然就没办法产生边距 */
+            width: 200px;
+        }
+        
+        .div2 div p {
+            font-size: 14px;
+            text-align: left;
+            line-height: 21px;
+        }
+        /* 古寺词分栏 */
+        
+        .div3 {
+            width: 100px;
+            /* 高度8个字，刚好排下一句诗，还要算一句诗几个字，太不智能 */
+            height: 8em;
+            /* 分栏5栏，栏宽度1个字的大小，一个字16px */
+            columns: 5 1em;
+            /* 分栏的分割线 */
+            column-rule: 1px dashed #ccc;
+            /* 文字排列方向设置rtl从右到左 */
+            direction: rtl;
+            margin: 0 auto;
+            /* 强制换行 */
+            word-wrap: break-word;
+        }
+        
+        .div3 h4 {
+            /* 这个标题必需要设置成文字大小的2倍，才能自己占一列 */
+            font-size: 24px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div1">
+        <h2>王一博简介</h2>
+        <p>
+            王一博（YiBo），1997年8月5日出生于中国河南省洛阳市，中国流行乐男歌手、演员、主持人，男子演唱组合UNIQ成员，职业摩托车赛车手 [1] 。
+            <br>2014年9月15日，以UNIQ组合成员身份正式出道；12月，组合获得尖叫爱奇艺之夜颁奖礼最具期待组合奖 [2] 。
+            <br>2015年，主演青春励志电影《梦想合伙人》 [3] ；同年，随组合获得酷音乐亚洲盛典年度内地最佳新人奖和尖叫爱奇艺之夜颁奖礼年度音乐大奖 [4] 。
+            <br>2016年3月，随组合凭借歌曲《EOEO》获得美国International-K Music Awards最佳编舞奖 [5] ；4月29日，正式成为综艺节目《天天向上》主持团“天天兄弟”成员；12月，领衔主演都市爱情励志喜剧《人间至味是清欢》</p>
+    </div>
+
+    <div class="div2">
+        <div>
+            <img src="../../html学习练习/image/小图.jpg" alt="">
+            <h4>穿雨衣的小女孩</h4>
+            <p>好可爱啊，鲜艳夺目的黄色，让她成了一道亮丽的风景线</p>
+        </div>
+        <div>
+            <img src="../../html学习练习/image/小图.jpg" alt="">
+            <h4>穿雨衣的小女孩</h4>
+            <p>好可爱啊，鲜艳夺目的黄色，让她成了一道亮丽的风景线</p>
+        </div>
+        <div>
+            <img src="../../html学习练习/image/小图.jpg" alt="">
+            <h4>穿雨衣的小女孩</h4>
+            <p>好可爱啊，鲜艳夺目的黄色，让她成了一道亮丽的风景线</p>
+        </div>
+    </div>
+    <!-- 古寺词分栏 -->
+    <div class="div3">
+        <h4>静夜思</h4>
+        <p>床前明月光，疑是地上霜，举头望明月，低头思故乡。</p>
+    </div>
+</body>
+
+</html>
