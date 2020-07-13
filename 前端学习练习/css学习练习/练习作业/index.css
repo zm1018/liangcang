@@ -1,0 +1,228 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+}
+input {
+  outline: none;
+  border: none;
+}
+ul {
+  list-style: none;
+}
+a,
+body {
+  color: #333;
+}
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+a,
+img {
+  -webkit-touch-callout: none;
+}
+img {
+  vertical-align: middle;
+}
+html {
+  font-size: 50px;
+}
+@media screen and (min-width: 320px) {
+  html {
+    font-size: 21.33333333px;
+  }
+}
+@media screen and (min-widht: 360px) {
+  html {
+    font-size: 24px;
+  }
+}
+@media screen and (min-width: 375px) {
+  html {
+    font-size: 25px;
+  }
+}
+@media screen and (min-width: 384px) {
+  html {
+    font-size: 25.6px;
+  }
+}
+@media screen and (min-width: 400px) {
+  html {
+    font-size: 26.66666667px;
+  }
+}
+@media screen and (min-width: 414px) {
+  html {
+    font-size: 27.6px;
+  }
+}
+@media screen and (min-width: 424px) {
+  html {
+    font-size: 28.26666667px;
+  }
+}
+@media screen and (min-width: 480px) {
+  html {
+    font-size: 32px;
+  }
+}
+@media screen and (min-width: 540px) {
+  html {
+    font-size: 36px;
+  }
+}
+@media screen and (min-width: 720px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (min-width: 750px) {
+  html {
+    font-size: 50px;
+  }
+}
+/* 设置body的样式 */
+body {
+  min-width: 320px;
+  /* 单位都用rem */
+  width: 15rem;
+  /* 行高，设置成字体大小的1.5倍 */
+  line-height: 1.5;
+  /* 在网页中居中显示 */
+  margin: 0 auto;
+  font-family: Arial, Helvetica, STHeiTi, sans-serif;
+  background: #f2f2f2;
+}
+.search-wrap {
+  width: 15rem;
+  height: 1.76rem;
+}
+.search-wrap .search-content {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%);
+  width: 15rem;
+  height: 1.76rem;
+  background-color: #FFDB47;
+  justify-items: space-between;
+}
+.search-wrap .search-content a {
+  width: 0.88rem;
+  height: 1.4rem;
+  margin: 0.22rem 0.5rem 0.14rem;
+}
+.search-wrap .search-content a img {
+  width: 0.72rem;
+  height: 1.2rem;
+}
+.search-wrap .search-content .search {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 0.66rem;
+  background-color: #fff;
+  margin: 0.3rem 0.4rem 0.2rem 0.3rem;
+}
+.search-wrap .search-content .search::before {
+  content: "";
+  position: absolute;
+  left: 0.48rem;
+  top: 0.34rem;
+  width: 0.72rem;
+  height: 0.6rem;
+  background: url(../image2/jd-sprites.png) no-repeat -3.2rem 0;
+  background-size: 8rem;
+}
+.search-wrap .search-content .search input {
+  width: 100%;
+  height: 100%;
+  padding-left: 1.4rem;
+  font-size: 0.56rem;
+  vertical-align: top;
+  cursor: pointer;
+}
+.banner {
+  width: 15rem;
+  height: 5.2rem;
+  background: url(../image2/snbg.png) no-repeat;
+  background-size: 100%;
+}
+.banner a {
+  display: block;
+  width: 14.04rem;
+  height: 5.2rem;
+  overflow: hidden;
+  margin: 0 auto;
+  border-radius: 0.3rem;
+}
+.banner a img {
+  width: 15rem;
+  height: 7.36rem;
+}
+.ad {
+  display: flex;
+  width: 15rem;
+  height: 4.2rem;
+}
+.ad a {
+  flex: 1;
+}
+.ad a img {
+  width: 100%;
+}
+nav {
+  width: 15rem;
+}
+nav a {
+  float: left;
+  width: 3rem;
+  height: 2.8rem;
+  text-align: center;
+}
+nav a img {
+  display: block;
+  width: 1.68rem;
+  height: 1.68rem;
+  margin: 0 auto;
+}
+nav a span {
+  font-size: 0.44rem;
+  vertical-align: top;
+}
+.new {
+  display: flex;
+  width: 15rem;
+  height: 4.68rem;
+}
+.new a {
+  flex: 1;
+}
+.new a img {
+  width: 100%;
+}
+.new a:nth-child(1) {
+  flex: 2;
+}
+.new a:nth-child(1) img {
+  width: 100%;
+}
+.new::before,
+.new::after {
+  position: relative;
+  content: "";
+  display: inline-block;
+  width: 0.04rem;
+  background-color: #f2f2f2;
+}
+.new::before {
+  left: 50%;
+}
+.new::after {
+  right: 25%;
+}

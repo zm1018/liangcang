@@ -1,0 +1,136 @@
+body {
+    min-width: 320px;
+    /* 单位都用rem ，淘宝的适配库是把屏幕分成10等份的*/
+    width: 10rem;
+    /* 自己设置最大宽度750px，就能在屏幕居中 */
+    max-width: 750px;
+    /* 行高，设置成字体大小的1.5倍 */
+    line-height: 1.5;
+    /* 在网页中居中显示 */
+    margin: 0 auto;
+    font-family: Arial, Helvetica, STHeiTi, sans-serif;
+    background: #f2f2f2;
+    /* 提高权重，覆盖初始化css的字体大小 */
+    font-size: .293333rem!important;
+}
+
+input {
+    border: none;
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+
+/* js文件里字体大小会根据屏幕尺寸变化，不管多大的屏幕尺寸都能自适应，想做出屏幕尺寸大于750px的也以750px的html字体大小显示，需要设置这个媒体查询样式，但这个代码的权重没有js文件的权重高，所以需要加权重 */
+
+@media screen and (min-width:750px) {
+    html {
+        /* 用!important加权重 */
+        font-size: 75px!important;
+    }
+}
+
+
+/* 套个标准流盒子，解决固定定位脱标的问题 */
+
+.sc {
+    width: 10rem;
+    height: 1.173333rem;
+}
+
+.search-content {
+    display: flex;
+    /* 固定定位的盒子必需要给宽度 */
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    /* 宽度10rem，js文件会自动根据屏幕的宽度来渲染，所以会以当前屏幕尺寸，也就是电脑屏幕尺寸来渲染，元素宽度会占满整个屏幕，如果想让它超过750px也按750px的html字体大小渲染，需要写媒体查询，设置html字体大小 */
+    width: 10rem;
+    height: 1.173333rem;
+    background-color: #FFDB47;
+}
+
+.search-content a {
+    width: .586667rem;
+    height: .933333rem;
+    margin: .146667rem .333333rem .093333rem;
+    background: url(../image2/sn1.png) no-repeat;
+    /* 缩放背景图尺寸和盒子一样大，这两种写法都行 */
+    background-size: .586667rem .933333rem;
+    /* background-size: 100% 100%; */
+}
+
+.search-content a:last-child {
+    background: url(../image2/sn2.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.search {
+    position: relative;
+    flex: 1;
+    border-radius: .4rem;
+    overflow: hidden;
+    margin: 0.3rem 0.4rem 0.2rem 0.3rem;
+}
+
+.search input {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    padding-left: .933333rem;
+}
+
+.search::before {
+    content: "";
+    position: absolute;
+    left: .32rem;
+    top: .16rem;
+    width: .48rem;
+    height: .4rem;
+    background: url(../image2/jd-sprites.png) no-repeat -2.133333rem 0;
+    /* 精灵图的大小，不需要缩放 */
+    background-size: 5.333333rem;
+}
+
+
+/* 广告 */
+
+.banner {
+    width: 10rem;
+    height: 3.466667rem;
+    background: url(../image2/snbg.png);
+    /* overflow: hidden; */
+}
+
+
+/* 背景图用伪元素做出来的 */
+
+
+/* .banner::before {
+    content: "";
+    position: absolute;
+    width: 130%;
+    height: 100%;
+    background: #FFDB47;
+    border-bottom-left-radius: 100%;
+    border-bottom-right-radius: 100%;
+    margin-left: -15%;
+} */
+
+.banner a {
+    display: block;
+    width: 9.36rem;
+    height: 3.466667rem;
+    border-radius: .4rem;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.banner img {
+    width: 10rem;
+    height: 3.466667rem;
+}

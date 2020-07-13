@@ -1,0 +1,124 @@
+.div1 {
+  /* 调用变量 */
+  color: #53bb34;
+  font-size: 14px;
+}
+nav {
+  color: red;
+}
+nav p {
+  width: 30px;
+  /* 作用域，代码执行顺序是遵循就近原则，两个相同的变量，值不同，哪个离调用它的元素近哪个生效，另一个被层叠。*/
+  height: 30px;
+  /* 设置运算符不转义 */
+  padding: 10px / 1.5;
+  /* 字体大小和行高的css写法就是这样，所以这里不转义，默认编译成css写法 */
+  font: 10px / 1.5;
+}
+/* 调用插值 */
+.div2 {
+  color: #53bb34;
+  margin: auto;
+}
+.div2:hover {
+  color: gold;
+}
+.div3 {
+  width: 10rem;
+  height: 5rem;
+  color: #444444;
+  border: solid 20px;
+  padding: 24px;
+  padding: 6px;
+  padding: 11px;
+  padding: 3px;
+  border: 5px;
+  border: 0.6rem solid;
+}
+div {
+  /* 调用内置的函数，这个是四舍五入 */
+  width: 3px;
+  width: 4px;
+  /* 这是转换百分比的函数  */
+  height: 20%;
+  /* 没有生成随机数的函数 */
+  /* 开平方 */
+  padding: 5%;
+}
+/* 混入，不同选择器的样式可以互相调用，还可以传参，设置混入，如下：*/
+.show {
+  display: inline;
+}
+div {
+  width: 100px;
+  /*调用混入，调用这个选择器名字，会把它的css样式传过来*/
+  display: inline;
+  /* 调用时不加括号，也能正常传递 */
+  /* 调用时加括号，能正常传递 */
+  display: none;
+  padding: 5px;
+  color: blue;
+}
+/* 命名空间,不会编译到css文件里显示，sess没有这个功能*/
+/*调用命名空间,调用的样式相同，应该用并集选择器，但这里自动生成的是各自单独的选择器，没有继承智能*/
+div {
+  display: grid;
+}
+span {
+  display: grid;
+}
+/* 设置继承*/
+.line,
+div,
+span {
+  display: inline;
+}
+/* 继承样式,一定要带;不然报错*/
+/* 属性合并 */
+div {
+  background: url(a.png), url(b.png);
+  transform: scale(2) translate(20px);
+}
+/* 媒体查询，通过不同宽度时设置根元素字体大小来改变使用rem单位的所有元素的大小*/
+@media screen and (min-width: 320px) {
+  html {
+    font-size: 20px;
+  }
+}
+@media screen and (min-width: 690px) {
+  html {
+    font-size: 40px;
+  }
+}
+@media screen and (min-width: 980px) {
+  html {
+    font-size: 50px;
+  }
+}
+.containter {
+  width: 750px;
+}
+@media screen and (min-width: 320px) {
+  .containter {
+    width: 320px;
+  }
+}
+@media screen and (min-width: 690px) {
+  .containter {
+    width: 680px;
+  }
+}
+/* 判断 */
+div {
+  width: 17px;
+}
+/* 循环，递归实现的 */
+.div-2 {
+  width: 102px;
+}
+.div-1 {
+  width: 101px;
+}
+.div-0 {
+  width: 100px;
+}

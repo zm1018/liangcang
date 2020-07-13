@@ -1,0 +1,29 @@
+<!-- 
+    媒体查询会自动检测设备的宽度尺寸。当样式比较繁多时，可以针对不同的媒体使用不同的stylesheets（样式表）。
+    也就是说如果屏幕大时可以写一套css样式，设置一排放几个元素，宽高占屏幕多少比例，屏幕小时，写一套css样式，设置一排放几个元素，宽高占屏幕多少比例。通过引入媒体查询资源，判断屏幕的尺寸是大还是小，决定什么时候渲染哪个css样式文件。
+
+    原理：通过link标签引入不同设备尺寸的媒体查询，程序在执行link标签时，直接在link中判断设备的尺寸，通过尺寸执行渲染对应的css文件。
+
+    语法：
+        <link rel="stylesheet" media="mediatype and|not|only (media feature)" href="不同尺寸的css文件路径">
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximun-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <!-- 因为最小屏幕是320px，所以设置可以从320px开始，如果屏幕宽度大于等于320px，执行这个css文件 -->
+    <link rel="stylesheet" href="style320.css" media="screen and (min-width: 320px)">
+    <!-- 如果屏幕宽度大于等于640px，执行这个css文件 -->
+    <link rel="stylesheet" href="style640.css" media="screen and (min-width: 640px)">
+</head>
+
+<body>
+    <!-- link引入媒体查询资源学习，屏幕宽度大于640px，一排显示两个，屏幕宽度小于640大于等于320时，一排显示一个盒子。演示 -->
+    <div>1</div>
+    <div>2</div>
+</body>
+
+</html>

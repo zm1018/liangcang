@@ -1,0 +1,58 @@
+<!-- 
+    流式布局（百分比布局、非固定像素布局）：
+        通过盒子的宽度设置成百分比，来根据屏幕的宽度进行伸缩，不受固定像素的限制，内容向两侧填充。是web开发中比较常见的布局方式。
+        fluid文字流式：大屏下显示的行数少，一行的内容多；屏幕变小显示的行数变多，一行的内容变少。
+        flexible控件弹性，也就是元素和元素之间的间距会随着屏幕的大小变化，但元素是固定不变的。
+        图片会随着屏幕大小等比缩放，为了图片高清效果，尺寸都比盒子要大一倍，也就是二倍图，放大时才会清楚。
+        优点：大屏幕下可以显示更多的内容。缺点：可能会造成部分内容的比例不协调。
+    两种效果：    
+        1.父元素宽度设置为100%,只给高度固定。里面的子元素平分父元素的100%宽度，实现子元素宽度自适应；
+        2.父元素不设置宽度，子元素给固定宽度，子元素的宽度不会随着屏幕缩放，但子元素之间的间距自适应，会随着屏幕缩放。需要在一行显示的子元素可以设置浮动到一行显示，或者用flex布局，默认一行显示。  
+    为了父元素不受限制的缩放影响到子元素里的内容，需要让内容在合理范围内显示，就给父元素设置最大宽度max-width和最小宽度min-width:320px;(一般都设置为320px，是手机里最小的屏幕了)         
+
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 设置移动端视口的标签 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Document</title>
+    <style>
+        section {
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 980px;
+            min-width: 300px;
+            height: 320px;
+            border: dashed 1px;
+            margin: 0 auto;
+        }
+        
+        div {
+            float: left;
+        }
+        
+        section div:first-child {
+            width: 50%;
+            height: 100%;
+            background-color: pink;
+        }
+        
+        section div:last-child {
+            width: 50%;
+            height: 100%;
+            background-color: rgb(190, 43, 43);
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div></div>
+        <div></div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!-- 
+    1.先去建个公共css样式的less文件，叫common.less,里面主要设置好屏幕划分份数，每种屏幕尺寸的html字体大小
+    2.再建个less文件，这里叫index.less,导入公共样式的common.less文件，再去编译好的同名index.css文件里首先设置body的css样式，以750px宽度为标准，设置最小宽度320px，宽度15rem（份数乘以字体大小的结果），行高1.5，在电脑屏幕中居中。
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimun-scale=1.0, maximun-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <link rel="stylesheet" href="../移动端学习/normalize.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <!-- 苏宁首页制作 -->
+    <!-- 搜索框 -->
+    <!-- 为了清除固定定位脱标给下面盒子带来的影响，套个标准流父盒子 -->
+    <div class="search-wrap">
+        <div class="search-content">
+            <a href="" class="classify"><img src="../image2/sn1.png" alt=""></a>
+            <div class="search"><input type="text" placeholder="家装比价日"></div>
+            <a href="" class="login"><img src="../image2/sn2.png" alt=""></a>
+        </div>
+    </div>
+    <!-- 主体部分 -->
+    <main>
+        <!-- 广告图 -->
+        <div class="banner">
+            <ul>
+                <li>
+                    <a href="#"><img src="../image2/sn3.jpg" alt=""></a>
+                </li>
+            </ul>
+        </div>
+        <!-- 动图 -->
+        <div class="ad">
+            <a href="#">
+                <img src="../image2/sn4.gif" alt="">
+            </a>
+            <a href="#"><img src="../image2/sn5.gif" alt=""></a>
+            <a href="#"><img src="../image2/sn6.gif" alt=""></a>
+        </div>
+        <!-- 导航 -->
+        <nav>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+            <a href="#"><img src="../image2/sn7.webp" alt=""><span>天天低价</span></a>
+        </nav>
+        <div class="new">
+            <a href="#"><img src="../image2/sn8.png" alt=""></a>
+            <a href="#"><img src="../image2/sn9.gif" alt=""></a>
+            <a href="#"><img src="../image2/sn10.gif" alt=""></a>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!-- 
+    rem(root em)是一个相对单位，rem是参考html这个最大的跟标签的字体大小。类似于em，不同的是em是参考父元素字体大小。
+
+将px转换成rem方法，3种：
+    vscode里的cssrem插件可以自动把px单位转换成rem单位，但此插件默认的字体大小是16px,可以自己设置其他的值，设置方法：
+        1.点击vscode的设置，搜索css root
+        2.会出现cssrem:Root Font Size ，直接把框框里的值改成设计稿需要的html字体大小，再重启vscode就行了。
+        3.写代码时输入多少px，下面就会有可选的转换好的rem值，直接选rem值就实现转换。
+    vscode里的px to rem插件可以自动把px单位转换成rem单位，比cssrem更强大的是这个插件可以批量将px转换成rem单位。
+    设置默认字体大小的方法，2种：
+        1.按alt+s快捷键会弹出框框，直接在里面输入设计稿的html字体大小的值，按enter确定，就可以了。
+        2.点击px to rem插件的设置图标——点击扩展设置——找到这两行内容
+            Px-to-rem: Px-per-rem
+            Number of pixels per 1rem.——把框框里的值改成设计稿的html字体大小就行了。
+    转换方法：
+        单个：选中已经输入好的px值或rem值按住Alt+Z （可以把Px转换成rem, 或rem转换成Px。）
+        批量：选定的区域或整个css文件批量转换：按ctrl+a全选，再按alt+z转换。可以实现选定的文本从px到rem，和rem到px的转换。
+
+    用less预处理器也可以通过运算计算出rem值，但要也计算公式加减乘除之类的，没有cssrem和px to rem插件方便。
+
+动态设置html字体大小的方法，3种：
+    通过js设置设计稿的html字体大小，在不同屏幕尺寸下除以设计稿的html字体大小，不同屏幕尺寸得到的1个字体大小的值就不同，来动态改变字体大小。
+
+    通过在css里设置设计稿的html的字体大小是vw单位，在不同屏幕下1vw的值就不同，来动态改变html字体大小。写法：html {font-size:计算后的数字值vw;}只需要在css里写这一句代码就可以用纯css来动态设置不同屏幕尺寸的html字体大小
+        vw：把屏幕分成100份，1vw等于屏幕宽度的1%。
+        vh：把屏幕分成100份，1vh等于屏幕高度的1%。
+        换算：例如想设置设计稿的html字体大小100px，以iPhone6的屏幕375px宽为标准，屏幕宽度375px / 屏幕份数100vw = 一份vw值是3.75vw,再想设置的字体大小100px / 一份vw值3.75 = 26.6666667vw。这个26.6666667vw就等价于100px。
+
+    通过媒体查询，把每个屏幕尺寸下的html字体大小都设置一遍，也可以纯css动态设置html字体大小。
+
+    media query 媒体查询：
+        媒体查询是css3新语法，响应式布局.
+        作用是根据不同屏幕的尺寸设置不同的样式。
+        媒体查询一般按照从小到大，或从大到小的顺序来写，习惯常用从小到大。
+        媒体查询要写在正常模式的css样式下面。
+    语法：
+        @media mediatype and|not|only (media feature) {标签{样式;}}
+        取反值的not要写在这个位置：
+            @media not mediatype and (media feature) {标签{样式;}}
+        设置横竖屏的特性要写在括号里,例如：
+            @media screen and (orientation:landscape) {标签{样式;}}
+
+
+        @media表示媒体查询
+        mediatype 媒体类型，是将不同的终端设备划分成不同的类型，有3个值：
+            all 所有设备
+            print 用于打印机和打印预览
+            screen 用于电脑屏幕、平板电脑、智能手机等
+            speech 用于屏幕阅读器等发声设备
+        and或not或only 关键字，将媒体类型或多个媒体特性连接到一起作为媒体查询的条件：
+            and 将多个媒体特性连接到一起，与的意思。
+            not 排除某个媒体类型，非的意思。
+            only 指定某个特定的媒体类型。
+        
+        media feature（特征、特性）媒体特性，就是查询条件，条件必需用（）括起来，条件后面不带分号：
+            width 宽度
+            max-width 最大宽度 （包含等于）
+            min-width 最小宽度 （包含等于）   
+            orientation（方向）设置竖屏和横屏：
+            orientation:portrait(竖屏)
+            orientation:landscape(横屏)
+        
+            
+    rem适配方案：
+        1.按照设计稿（市场上主流的设计稿都是750px的宽度）与设备宽度（设备的屏幕宽度各不相同）的比例，用媒体查询动态计算并设置html根标签的字体大小，
+        2.css中，设计稿元素的宽、高、相对位置等取值，按照同等比例换算成以rem为单位的值。
+        3.市场上主流的rem适配方案技术，两种：
+            less + 媒体查询 + rem ；
+            flexble.js(淘宝推出的) + rem; 推荐用这种技术，更简单。
+                flexible.js是移动端适配库，不用再自己写不同屏幕尺寸的媒体查询了，
+                下载地址：https://github.com/amfe/lib-flexible
+    动态设置html标签的font-size大小：
+        1.假设设计稿是750px，也就是设备屏幕宽度以750px为标准。
+        2.假设把整个屏幕宽度划分成15等份，划分标准可以自己按需求定，也可以是20或者10份，没有强制要求，但要是确定了划分多少份后，所有屏幕的宽度都要除以此份数，得到不同的html字体大小值。
+        3.计算出不同屏幕宽度的html字体大小，屏幕宽度 / 划分份数 = html字体大小，也就是相除得到的每一份的值就是html标签字体大小。
+    元素大小取rem值方法：
+        1.元素的rem值 = 页面元素px值 / html字体大小
+
+    网页布局时，用html的font-size来换算成rem值控制元素的大小；用body的font-size来控制网页里字体大小，所以必须要给body重新设置字体大小，一般为14px或16px大小。
+
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <title>Document</title>
+    <style>
+        /* rem单位演示：改这个字体大小，下面的div大小就会跟着改变 */
+        
+        html {
+            font-size: 14px;
+        }
+        
+        div:nth-child(1) {
+            /* 1rem等于一个根标签的字体大小，这里是140px宽高 */
+            width: 10rem;
+            height: 10rem;
+            background-color: pink;
+        }
+        
+        div:nth-child(2) {
+            width: 5rem;
+            height: 6rem;
+            background-color: #ccc;
+        }
+        /* 媒体查询 */
+        /* 屏幕最大宽度539时，body标签的背景颜色变成蓝色 */
+        
+        @media screen and (max-width: 539px) {
+            body {
+                background-color: blue;
+            }
+        }
+        /* 屏幕最小宽度在540以上到最大宽度969之间，是红色的，可以利用css代码样式层叠性，简写代码，把max-width:969px省略，因为第三个媒体查询条件与第二个后面的重叠，会被覆盖 */
+        
+        @media screen and (min-width: 540px) and (max-width:969px) {
+            body {
+                background-color: rgb(153, 43, 43);
+            }
+        }
+        /* 取反，屏幕最小宽度970以下的背景色黄色 */
+        
+        @media not screen and (min-width: 970px) {
+            body {
+                background-color: yellowgreen;
+            }
+        }
+        /* vw单位不同屏幕尺寸下动态设置html字体大小演示 */
+        
+        html {
+            /* 屏幕宽750px，字体大小50px，计算得到vw值如下： */
+            font-size: 6.666667vw;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 当屏幕宽度为750px时，div1的大小10rem * 50px字体大小 = 500px -->
+    <div></div>
+    <div></div>
+
+</body>
+
+</html>

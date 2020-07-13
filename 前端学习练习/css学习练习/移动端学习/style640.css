@@ -1,0 +1,15 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+div {
+    /* link标签引入媒体查询，一行显示两个，元素宽度是屏幕的一半 */
+    float: left;
+    box-sizing: border-box;
+    width: 50%;
+    height: 300px;
+    background-color: rgb(173, 57, 57);
+    border: 1px solid;
+    color: #fff;
+}

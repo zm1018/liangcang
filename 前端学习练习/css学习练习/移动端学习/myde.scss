@@ -1,0 +1,204 @@
+// sass代码的执行顺序是从上到下。
+// 定义变量
+$num: 75px;
+// 定义插值
+$key:margin;
+$i:3;
+div#{$i} {
+    /* 调用变量 */
+    width: $num;
+    /* 调用插值 */
+    #{$key}: auto;
+    /* 作用域，两个相同的变量，值不同，每个变量都只会对它下面的代码生效，直到遇到下个相同的变量开始，被层叠 */
+    $num: 100px;
+    height: $num;
+}
+
+// 选择器嵌套：
+ul {
+    outline: none;
+    li {
+        width: 20px;
+        div {
+            height: 30px;
+        }
+        p {
+            text-align: center;
+            // 伪类或伪元素的写法
+            &:hover {
+                background-color: pink;
+            }
+        }
+    }
+}
+
+// 属性嵌套,属性后面一定要有冒号，不然就识别成后代子元素了：
+div {
+    /* 属性嵌套 */
+    font: {
+        size: 16px;
+        weight: bold;
+        family: 宋体;
+    }
+}
+
+// 运算
+div {
+    // 只有一个单位，运算结果默认为此单位
+    width: $num + 20;
+    // 不同的单位不能运算，会报错
+    // height: 100px - 1rem;
+    height: 10rem - 1rem;
+    color: #012345 * 2;
+    // 默认除号为分隔符，不运算，直接输出成css代码
+    padding: 10px / 5;
+    // 除法运算需要用括号括起来
+    padding: (10px / 5);
+    // 运算优先级
+    padding: (10px + 2) * 2;
+    padding: (10px + 2) / 2;
+    padding: 10px + 2 / 2;
+    padding: 10px / 2 - 2;
+}
+
+// 函数
+
+/* 调用内置的函数，这个是四舍五入 */
+
+div {
+    width: round(3.4px);
+    width: round(3.5px);
+    // 这是转换百分比的函数
+    height: percentage(0.2);
+    // 生成随机数,值是0-1之间的小数
+    padding: random();
+    // 开平方，sass没有这个函数
+    // padding: sqrt(25%);
+}
+
+// 自定义函数
+@function sum($n, $m) {
+    @return $n+$m;
+}
+
+div {
+    // 调用自定义函数，定义多少参数，就要传多少参数， 参数用，隔开。
+    font-size: sum(4px, 5px);
+}
+
+// 混入
+
+/* 混入，不同选择器的样式可以互相调用，还可以传参，设置混入，如下：*/
+
+@mixin show {
+    display: inline;
+}
+
+@mixin hide() {
+    display: none;
+}
+
+// 接收小括号的参数的选择器需要定义个变量名，再调用这个变量名，下面小括号里参数是blue蓝色，这里调用就能得到blue值,此选择器不会显示到同名css文件里，会把样式传给调用它的选择器。
+@mixin box($color) {
+    padding: 5px;
+    color: $color;
+}
+
+// 调用混入
+div {
+    width: 100px;
+    /*调用混入，调用这个选择器名字，会把它的css样式传过来*/
+    @include show;
+    // 小括号里还可以传参数，接收的选择器后面也要写括号，并定义变量名。
+    @include box(blue);
+}
+
+// 继承
+
+/* 设置继承，可以给前面的.换成%表示占位，调用时也用%，这样.line这个选择器就不会显示到css文件里，只会显示调用继承的选择器 */
+
+.line {
+    display: inline;
+}
+
+
+/* 继承样式,一定要带;不然报错*/
+
+div {
+    @extend .line;
+}
+
+span {
+    @extend .line;
+}
+
+// 设置继承，不显示到css里
+%line {
+    display: inline;
+}
+
+// 继承样式,一定要带;不然报错
+div {
+    @extend %line;
+}
+
+span {
+    @extend %line;
+}
+
+// 属性合并
+
+/* 设置属性合并，要先定义变量，在变量里用小括号括起来写键值对 */
+
+$background: ( a: url(a.png), b: url(b.png));
+$transform: ( a: scale(2), b: rotate(30deg));
+// 调用属性合并
+div {
+    // 这种生成用，隔开的合并属性
+    background: map-values($background);
+    // 这种生成用空格隔开的合并属性，后面的...不能省略
+    transform: zip(map-values($transform)...);
+}
+
+// 媒体查询
+.containter {
+    width: 750px;
+    @media screen and (min-width: 320px) {
+        width: 320px;
+    }
+    @media screen and (min-width:690px) {
+        width: 680px;
+    }
+}
+
+
+/* 判断 */
+
+// 先定义个变量
+$count: 3;
+div {
+    // 判断条件是否满足，如果满足返回这行代码的运算结果，如果不满足继续向下执行代码
+    @if($count > 4) {
+        width: 100px + $count;
+    }
+    // 如果不满足上面的条件，执行这行代码并返回运算结果。
+    @else {
+        width: 10px * 2 - $count;
+    }
+}
+
+
+/* 循环 */
+
+// for循环，$i是计数器，from是从...开始，through是到..之间结束（包含结束值），{循环的代码体}
+@for $i from 0 through 2 {
+    // 拼接要用-#{每次循环后的计数器值作为参数}
+    div-#{$i} {
+        width: 100px + $i;
+    }
+}
+
+
+/* 导入另一个sass文件 */
+
+@import "wo.scss";

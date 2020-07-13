@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximun-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <style>
+        body {
+            width: 100%;
+            max-width: 640px;
+            min-width: 320px;
+            background-color: #f6f6f6;
+            font-size: 14px;
+            /* 第一个字体是苹果手机的字体 */
+            font-family: -apple-system, Helvetica, sans-serif;
+            line-height: 1.5;
+            color: #666;
+            margin: 0 auto;
+        }
+        
+        div {
+            box-sizing: border-box;
+        }
+        
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        img {
+            /* 去除图片缝隙 */
+            vertical-align: middle;
+        }
+        /* 去掉a标签默认样式 */
+        
+        a {
+            text-decoration: none;
+            color: #666666;
+            /* 取消鼠标点击时高亮 */
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            font-size: 12px;
+        }
+        
+        input {
+            /* 取消input的边框 */
+            border: none;
+            /* 取消鼠标点击时高亮 */
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            /* 取消点击输入时的边框 */
+            outline: 0;
+        }
+        /* 头部 */
+        
+        .app {
+            height: 45px;
+            background-color: #333;
+            text-align: center;
+            line-height: 45px;
+        }
+        
+        .app ul li {
+            float: left;
+            color: #fff;
+        }
+        
+        .app ul li:nth-child(1) {
+            width: 8%;
+        }
+        
+        .app ul li:nth-child(1) img {
+            /* 图片会等比缩小，所以高度不用设置 */
+            width: 10px;
+        }
+        
+        .app ul li:nth-child(2) {
+            width: 10%;
+        }
+        
+        .app ul li:nth-child(2) img {
+            width: 30px;
+            /* 垂直居中，不然光设置行高是没用的，因为图片比文字大，默认基线对齐的，设置成中线对齐，才能居中 */
+            vertical-align: middle;
+        }
+        
+        .app ul li:nth-child(3) {
+            width: 57%;
+        }
+        
+        .app ul li:nth-child(4) {
+            width: 25%;
+            background-color: #F63515;
+        }
+        /* 搜索 */
+        
+        .search {
+            /* 固定定位 */
+            position: fixed;
+            /* 固定定位的盒子一定要设置宽度 */
+            width: 100%;
+            max-width: 640px;
+            min-width: 320px;
+            height: 44px;
+            overflow: hidden;
+            /* 级别要比渐变背景高，不然被覆盖了 */
+            z-index: 1;
+        }
+        
+        .search-btn,
+        .search-login {
+            position: absolute;
+            width: 40px;
+            height: 44px;
+        }
+        
+        .search-btn {
+            top: 0;
+            left: 0;
+        }
+        
+        .search-btn span {
+            display: inline-block;
+            width: 20px;
+            height: 18px;
+            background: url(../image2/jd4.png) no-repeat;
+            background-size: 100% 100%;
+            margin: 14px 0 0 15px;
+        }
+        
+        .search .input {
+            /* 搜索框要用相对定位，保留原来位置，不能用绝对定位，否则不占位置，宽度只剩内容宽度 */
+            position: relative;
+            height: 30px;
+            /* 上外边距塌陷，会把父盒子带下来7px，去给父盒子写溢出隐藏 */
+            margin: 7px 50px 0 50px;
+            border-radius: 15px;
+            /* background: #f7f7f7; */
+            overflow: hidden;
+            background-color: #f6f6f6;
+        }
+        
+        .search .input input {
+            position: absolute;
+            left: 70px;
+            top: 7.5px;
+            width: 75%;
+            height: auto;
+            padding-left: 5px;
+            font-size: 12px;
+            /* vertical-align: middle; */
+            /* 溢出的文字用省略号表示 */
+            text-overflow: ellipsis;
+            /* 不换行 */
+            white-space: nowrap;
+            line-height: 16px;
+            background-color: #f6f6f6;
+        }
+        
+        .search .input i {
+            display: inline-block;
+        }
+        
+        .search .input i:nth-child(1) {
+            width: 20px;
+            height: 15px;
+            background: url(../image2/jd3.png);
+            background-size: 100% 100%;
+            margin: 8px 8px 0 15px;
+        }
+        /* 搜索框里的竖线 */
+        
+        .search .input i:nth-child(1)::after {
+            content: "";
+            position: absolute;
+            left: 40px;
+            top: 7.5px;
+            height: 15px;
+            border: 1px solid #DDDDDD;
+        }
+        
+        .search .input i:nth-child(2) {
+            width: 18px;
+            height: 15px;
+            /* 定位值也要比实际量的距离缩小一半  */
+            background: url(../image2/jd-sprites.png) no-repeat -80px 0;
+            /* 把精灵图缩小一半 */
+            background-size: 200px;
+            margin: 8px 0 0 5px;
+        }
+        
+        .search-login {
+            right: 0;
+            top: 0;
+            font-size: 14px;
+            color: #fff;
+            line-height: 44px;
+        }
+        /* 主体 */
+        
+        .slider-box {
+            position: relative;
+            width: 100%;
+            /* 装渐变背景和滑动图的父盒子要给高度，不然图片显示不完整 */
+            height: 185px;
+            /* 渐变背景的宽是大于100%的，子元素的溢出要在父元素设置溢出隐藏 */
+            overflow: hidden;
+        }
+        /* 滑动图的渐变背景 */
+        
+        .bg {
+            /* 要用相对定位，保留原先位置，不然会覆盖上面的盒子 */
+            position: relative;
+            top: 0;
+            left: -25%;
+            /* 取中间圆角比较平缓的部分，所以宽度写大，但是默认左对齐，所以还要左边给负值，让它移到多出宽度的一半位置 */
+            width: 150%;
+            height: 150px;
+            /* 线性渐变，从下到上 */
+            background-image: linear-gradient(0deg, #f1503b, #c82519 50%);
+            /* 底部左右都变成圆角的 */
+            border-bottom-left-radius: 100%;
+            border-bottom-right-radius: 100%;
+        }
+        
+        .slider a {
+            position: absolute;
+            /* 把滑动图的位置定在渐变背景的下面一点位置 */
+            top: 45px;
+            height: 140px;
+            margin: 0 12.5px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        /* 滑动图的宽和高是等比例缩放的，所以只用设置宽度 */
+        
+        .slider img {
+            width: 100%;
+        }
+        /* 导航栏 */
+        
+        nav {
+            /* 清除浮动给下面盒子带来的影响 */
+            overflow: hidden;
+        }
+        
+        nav a {
+            float: left;
+            width: 20%;
+            text-align: center;
+        }
+        
+        nav a img {
+            width: 40px;
+            height: 40px;
+            margin-top: 10px;
+        }
+        
+        nav a span {
+            display: block;
+            width: 100%;
+            height: 18px;
+            margin-top: 6px;
+        }
+        /* 秒杀 */
+        
+        .seckill {
+            margin: 10px;
+            border-radius: 15px;
+            background-color: #fff;
+        }
+        
+        .title-wrap {
+            width: 100%;
+            height: 40px;
+            background: url(../image2/jd9.png) no-repeat;
+            background-size: cover;
+        }
+        
+        .more {
+            float: left;
+        }
+        
+        .more div {
+            display: inline-block;
+        }
+        
+        .more div:nth-child(1) {
+            margin: 8px 5px 0 10px;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .more div:nth-child(2) {
+            position: relative;
+            /* 要和前面的元素对齐 */
+            top: 2px;
+            height: 16px;
+            margin-top: 8px;
+            border-radius: 7px;
+            border: 1px solid #f2270c;
+            font-size: 12px;
+            font-family: PingFangSC-Regular;
+        }
+        
+        .more div:nth-child(2) span:nth-child(1) {
+            /* 要用相对定位，保留原来位置 */
+            position: relative;
+            top: -2px;
+            height: 100%;
+            margin-right: 4px;
+            padding: 0 5px;
+            background-image: linear-gradient(90deg, #f10001, #fe4e18);
+            border-radius: 7px;
+            color: #fff;
+        }
+        
+        .more div:nth-child(2) span:nth-child(2) {
+            position: relative;
+            top: -2px;
+            color: #f2270c;
+            font-weight: 700;
+            margin-right: 4px;
+        }
+        
+        .title-wrap a:nth-child(2) {
+            position: relative;
+            float: right;
+            line-height: 40px;
+            text-align: right;
+            vertical-align: middle;
+            padding-right: 22px;
+            font-size: 12px;
+            color: #f2270c;
+        }
+        
+        .title-wrap i {
+            position: absolute;
+            right: 7px;
+            top: 14px;
+            width: 12px;
+            height: 12px;
+            background: url(../image2/jd10.png) no-repeat;
+            background-size: 100%;
+        }
+        /* 秒杀图片 */
+        
+        .seckill-slid {
+            width: 100%;
+            height: 116px;
+        }
+        
+        .seckill-slid li {
+            /* 加了内边距，转换成css3盒子模型，不然一排放不下5个 */
+            box-sizing: border-box;
+            float: left;
+            width: 20%;
+            padding: 0 5px;
+        }
+        
+        .seckill-slid img {
+            width: 66px;
+            height: 66px;
+        }
+        
+        .seckill-item-price {
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            font-family: JDZhengHT-EN-Regular;
+            line-height: 14px;
+            margin-top: 10px;
+        }
+        
+        .seckill-item-price span:nth-child(1) {
+            color: #f2270c;
+            font-weight: 700;
+        }
+        
+        .seckill-item-price span:nth-child(2) {
+            color: #999;
+            font-size: 12px;
+        }
+        /* 新人专享 */
+        
+        .xr {
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px;
+        }
+        
+        .xr img {
+            width: 50%;
+        }
+        
+        .xrs {
+            margin: 10px;
+        }
+        
+        .xrs img:nth-child(1) {
+            width: 100%;
+        }
+        
+        .xrs img:nth-child(2) {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 京东移动端，头部 -->
+    <header class="app">
+        <ul>
+            <li><img src="../image2/jd1.png" alt=""></li>
+            <li><img src="../image2/jd2.png" alt=""></li>
+            <li>打开京东App，购物更轻松</li>
+            <li>立即打开</li>
+        </ul>
+    </header>
+    <!-- 搜索 -->
+    <div class="search">
+        <!-- 可以把span标签换成伪元素，让结构更简洁 -->
+        <div class="search-btn"><span></span></div>
+        <div class="input"><i></i><i></i><input type="text" placeholder="暗影游戏本"></div>
+        <div class="search-login">登录</div>
+    </div>
+    <!-- 主体内容 -->
+    <main>
+        <div class="slider-box">
+            <!-- 渐变背景 -->
+            <div class="bg"></div>
+            <!-- 滑动广告图 -->
+            <div class="slider">
+                <a href="#"><img src="../image2/jd5.jpg.dpg" alt=""></a>
+            </div>
+        </div>
+        <!-- 导航栏 -->
+        <nav>
+            <!-- span标签最好换成p标签，不用转换成块元素，能自己在一行显示 -->
+            <a href="#"><img src="../image2/jd6.png.webp" alt=""><span>京东超市</span></a>
+            <a href="#"><img src="../image2/jd7.png.webp" alt=""><span>数码电器</span></a>
+            <a href="#"><img src="../image2/jd8.png.webp" alt=""><span>京东服饰</span></a>
+            <a href="#"><img src="../image2/jd8.png.webp" alt=""><span>京东生鲜</span></a>
+            <a href="#"><img src="../image2/jd8.png.webp" alt=""><span>京东到家</span></a>
+            <a href="#"><img src="../image2/jd8.png.webp" alt=""><span>充值缴费</span></a>
+            <a href="#"><img src="../image2/jd8.png.webp" alt=""><span>9.9元拼</span></a>
+            <a href="#"><img src="../image2/jd8.png.webp" alt=""><span>领券</span></a>
+            <a href="#"><img src="../image2/jd8.png.webp" alt=""><span>领金贴</span></a>
+            <a href="#"><img src="../image2/jd8.png.webp" alt=""><span>PLUS会员</span></a>
+        </nav>
+        <!-- 秒杀 -->
+        <div class="seckill">
+            <div class="title-wrap">
+                <a href="#" class="more">
+                    <div class="tit">京东秒杀</div>
+                    <div class="nth">
+                        <span>12点场</span><span>00:00:00</span>
+                    </div>
+                </a>
+                <a href="#">更多秒杀<i></i></a>
+            </div>
+            <div class="seckill-slid">
+                <ul>
+                    <li>
+                        <a href="">
+                            <img src="../image2/jd11.jpg.dpg" alt="">
+                        </a>
+                        <div class="seckill-item-price">
+                            <span>￥&nbsp;1699</span>
+                            <span>￥&nbsp;1899</span>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img src="../image2/jd11.jpg.dpg" alt="">
+                        </a>
+                        <div class="seckill-item-price">
+                            <span>￥&nbsp;1699</span>
+                            <span>￥&nbsp;1899</span>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img src="../image2/jd11.jpg.dpg" alt="">
+                        </a>
+                        <div class="seckill-item-price">
+                            <span>￥&nbsp;1699</span>
+                            <span>￥&nbsp;1899</span>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img src="../image2/jd11.jpg.dpg" alt="">
+                        </a>
+                        <div class="seckill-item-price">
+                            <span>￥&nbsp;1699</span>
+                            <span>￥&nbsp;1899</span>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img src="../image2/jd11.jpg.dpg" alt="">
+                        </a>
+                        <div class="seckill-item-price">
+                            <span>￥&nbsp;1699</span>
+                            <span>￥&nbsp;1899</span>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <!-- 新人专享 -->
+        <div class="xr"><img src="../image2/jd12.jpg.dpg" alt=""><img src="../image2/jd12.jpg.dpg" alt=""></div>
+        <div class="xrs"><img src="../image2/jd13.png.webp" alt=""><img src="../image2/jd14.jpg.dpg" alt=""></div>
+    </main>
+</body>
+
+</html>

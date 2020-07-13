@@ -1,0 +1,170 @@
+// 导入common.less文件
+@import "common";
+
+/* 设置body的样式 */
+
+body {
+    min-width: 320px;
+    /* 单位都用rem */
+    width: 15rem;
+    /* 行高，设置成字体大小的1.5倍 */
+    line-height: 1.5;
+    /* 在网页中居中显示 */
+    margin: 0 auto;
+    font-family: Arial, Helvetica, STHeiTi, sans-serif;
+    background: #f2f2f2;
+}
+
+// 750px宽度下的html字体大小，写成变量，方便调用
+@baseFont:50;
+// 搜索框
+.search-wrap {
+    // 为了清除固定定位脱标给下面盒子带来的影响，套个标准流父盒子
+    width: 15rem;
+    height: 88rem / @baseFont;
+    .search-content {
+        // 弹性盒子布局
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 50%;
+        // 让固定定位居中
+        transform: translate(-50%);
+        width: 15rem;
+        // 高度用量出的高度除以字体大小，转换成rem值
+        height: 88rem / @baseFont;
+        background-color: #FFDB47;
+        justify-items: space-between;
+        a {
+            width: 44rem / @baseFont;
+            height: 70rem / @baseFont;
+            margin: 11rem / @baseFont 25rem /@baseFont 7rem / @baseFont;
+            img {
+                width: 36rem / @baseFont;
+                height: 60rem / @baseFont;
+            }
+        }
+        .search {
+            position: relative;
+            // 占全部剩余空间，自适应宽度
+            flex: 1;
+            overflow: hidden;
+            // align-self: center;
+            border-radius: 33rem / @baseFont;
+            background-color: #fff;
+            margin: 15rem / @baseFont 20rem / @baseFont 10rem / @baseFont 15rem / @baseFont;
+            &::before {
+                content: "";
+                position: absolute;
+                left: 24rem / @baseFont;
+                top: 17rem / @baseFont;
+                width: 36rem / @baseFont;
+                height: 30rem / @baseFont;
+                background: url(../image2/jd-sprites.png) no-repeat -160rem / @baseFont 0;
+                background-size: 400rem / @baseFont;
+
+            }
+            input {
+                width: 100%;
+                height: 100%;
+                padding-left: 70rem / @baseFont;
+                font-size: 28rem / @baseFont;
+                vertical-align: top;
+                cursor: pointer;
+            }
+        }
+    }
+}
+// 主体部分
+// 广告图
+.banner {
+    width: 750rem / @baseFont;
+    height: 260rem / @baseFont;
+    background: url(../image2/snbg.png) no-repeat;
+    background-size: 100%;
+    a {
+        display: block;
+        width: 702rem / @baseFont;
+        height: 260rem / @baseFont;
+        overflow: hidden;
+        margin: 0 auto;
+        border-radius: 15rem / @baseFont;
+        img {
+            width: 750rem / @baseFont;
+            height: 368rem / @baseFont;
+        }
+    }
+    
+}
+// 动图
+.ad {
+    display: flex;
+    // 也可以不设置宽高，里面的图片默认等比缩放，因为苏宁原版是高210，所以这里设置为固定高度
+    width: 750rem / @baseFont;
+    height: 210rem / @baseFont;
+    a {
+        // 三张图片每个占1份空白空间
+        flex: 1;
+        img {
+            width: 100%;
+            // height: 100%;
+        }
+    }
+    
+}
+nav {
+    width: 750rem / @baseFont;
+    a {
+        float: left;       
+        width: 150rem / @baseFont;
+        height: 140rem / @baseFont;
+        text-align: center;
+        img {
+            display: block;
+            width: 84rem / @baseFont;
+            height: 84rem / @baseFont;
+            margin: 0 auto;
+        }
+        span {  
+            // width: 150rem / @baseFont;
+            // height: 28rem / @baseFont;
+            font-size: 22rem / @baseFont;
+            // line-height: 28rem / @baseFont;
+            // 不知道什么问题，渲染时文字在a标签的底端对齐，不设置这个顶端对齐，图片和文字间有很大空隙
+            vertical-align: top;            
+        }
+    }
+}
+.new {
+    display: flex;
+    width: 750rem / @baseFont;
+    height: 234rem / @baseFont;
+    a {
+        flex: 1;
+        img {
+            width: 100%;
+        }
+    }
+    a:nth-child(1) {
+        flex: 2;
+        img {
+            width: 100%;
+        }
+    }
+    // 图片中间的白色间隙，直接设置margin
+    &::before,
+    &::after {
+        position: relative;
+        content: "";
+        display: inline-block;
+        width: 2rem / @baseFont;
+        background-color: #f2f2f2;
+    }
+    &::before {
+        left: 50%;
+    }
+    &::after {
+        right: 25%;
+    }
+}
+

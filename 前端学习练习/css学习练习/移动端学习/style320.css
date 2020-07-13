@@ -1,0 +1,9 @@
+div {
+    /* link标签引入媒体查询，一行显示一个，元素宽度是屏幕的宽度 */
+    box-sizing: border-box;
+    width: 100%;
+    height: 300px;
+    background-color: aqua;
+    border: 1px solid;
+    color: #000;
+}
