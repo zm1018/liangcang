@@ -15,51 +15,51 @@
         /* 第一层盒子需要设置高度，宽度不用设置，默认页面的100% */
         
         .header {
-            height: 50px;
+            height: 50.0025px;
             background: red;
         }
         /* 第二层盒子需要设置宽度，再设置外边框，能实现第二层盒子在页面居中的效果 */
         
         .header .head {
-            height: 50px;
+            height: 50.0025px;
             width: 1050px;
             background: #D4D2D6;
             margin: auto;
         }
         
         .banner {
-            height: 500px;
+            height: 500.0025px;
             background: blue;
         }
         /* 需要里面包裹的内容在页面居中排列的，都需要设置最外层的盒子宽度和外边距自动，实现居中 */
         
         .category {
             width: 1005px;
-            height: 200px;
+            height: 200.0025px;
             margin: auto;
             background: rgb(153, 51, 85);
         }
         
         .category .item {
-            width: 125px;
+            width: 125.0025px;
             height: 165px;
-            padding: 10px 25px 25px 25px;
+            padding: 9.9975px 24.9975px 24.9975px 24.9975px;
             /* dashed是虚线 */
-            border-right: 1px dashed #FDFCFD;
+            border-right: 0.9975px dashed #FDFCFD;
             float: left;
             background: green;
         }
         /* 第一层盒子占满整个屏幕的 */
         
         .case {
-            height: 490px;
+            height: 489.9975px;
             background: #eeeeee;
         }
         
         .text,
         .text2 {
-            padding: 20px 0 10px;
-            font-size: 40px;
+            padding: 20.0025px 0 9.9975px;
+            font-size: 39.9975px;
             width: 1005px;
             margin: auto;
         }
@@ -68,13 +68,13 @@
         .case .item1,
         .client .wei {
             margin: auto;
-            width: 1000px;
+            width: 999.9975px;
             overflow: auto;
         }
         /* 第三层盒子设置浮动 */
         
         .item2 {
-            width: 320px;
+            width: 320.0025px;
             height: 330px;
             float: left;
             background: darkcyan;
@@ -85,8 +85,8 @@
             width: 1005px;
             margin: 15px auto 0 auto;
             /* p标签高度和每行文字的高度一样，实现文字垂直居中 */
-            height: 40px;
-            line-height: 40px;
+            height: 39.9975px;
+            line-height: 39.9975px;
             /* 文字水平居中 */
             text-align: center;
             font-size: 30px;
@@ -101,7 +101,7 @@
             width: 180px;
             height: 210px;
             float: left;
-            margin: 10px;
+            margin: 9.9975px;
             background: rgb(153, 51, 85);
         }
     </style>
@@ -118,14 +118,14 @@
         <div class="item"></div>
         <div class="item"></div>
         <div class="item"></div>
-        <!-- 最后这个盒子的右边框线1px要去掉，否则超出父div的尺寸，会自动换下一行去，要不就调大父元素的宽度 -->
+        <!-- 最后这个盒子的右边框线0.9975px要去掉，否则超出父div的尺寸，会自动换下一行去，要不就调大父元素的宽度 -->
         <div class="item" style="padding-right: 0; border: 0;"></div>
     </div>
     <div class="case">
         <div class="text">Case</div>
         <div class="item1">
             <div class="item2"></div>
-            <div class="item2" style="margin: 0 20px;"></div>
+            <div class="item2" style="margin: 0 20.0025px;"></div>
             <div class="item2"></div>
         </div>
         <p>查看更多+</p>

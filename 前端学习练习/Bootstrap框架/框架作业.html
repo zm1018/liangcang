@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.css">
+    <title>Document</title>
+    <style>
+        /* 引入字体图标 */
+        
+        @font-face {
+            font-family: 'icomoon';
+            src: url('fonts/icomoon.eot?ezpc1');
+            src: url('fonts/icomoon.eot?ezpc1#iefix') format('embedded-opentype'), url('fonts/icomoon.ttf?ezpc1') format('truetype'), url('fonts/icomoon.woff?ezpc1') format('woff'), url('fonts/icomoon.svg?ezpc1#icomoon') format('svg');
+            font-weight: normal;
+            font-style: normal;
+            font-display: block;
+        }
+        
+        header span:nth-child(3) a:nth-child(1) {
+            /* position: absolute; */
+            font-family: 'icomoon';
+            /* width: 20px;
+            height: 20px; */
+            margin: 0 15px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 版心响应式的在576-1200px之间分4个响应截点，也就是适应4种不同尺寸的屏幕 -->
+    <div class="container">
+        <!-- 类名：
+                row：一个flex盒子，自动换行，外边距左右各-15px；
+                py-3:padding在y轴上下各1rem；
+                flex-nowrap：不换行；
+                还有3个是flex盒模型的元素对齐方式,和下边框线。
+         -->
+        <header class="row py-3 flex-nowrap justify-content-between align-items-center border-bottom">
+            <!-- 类名：col是响应式的宽度，一行里3个col，一个col占4个单元格；
+                        px-0是取消x轴的内边距 -->
+            <span class="col px-0"><a href="#" class="text-muted text-decoration-none">Subscribe</a></span>
+            <!-- text-dark黑色 -->
+            <span class="col text-center"><a href="#" class="h2 text-dark text-decoration-none">Large</a></span>
+            <!-- text-muted是灰色 -->
+            <span class="col px-0 text-right"><a href="#"class="align-bottom text-muted text-decoration-none"></a><a href="#"class="btn btn-sm btn-outline-secondary text-decoration-none">Sign up</a></span>
+        </header>
+
+    </div>
+</body>
+
+</html>

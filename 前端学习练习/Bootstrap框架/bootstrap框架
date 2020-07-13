@@ -1,0 +1,31 @@
+bootstrapBootstrap是Twitter开源的基于HTML、CSS、JavaScript的前端框架。
+是目前最受欢迎的html、css、js框架，用于开发响应式布局、移动设备优先的web项目，它是为实现快速开发Web应用程序而设计的一套前端工具包。
+官网：https://getbootstrap.com/
+使用方法：
+    去官网下载压缩文件——解压——把dist文件夹打开——要用的是bootstrap.css（包含所有css样式，如果只用部分样式，可以引入后面两种文件）/bootstrap-grid.css（flex盒子的网格布局）/bootstrap-reboot.css（css重置默认的样式）这三个文件——在html里用link标签引入——所有的样式都是直接调用类名。
+
+Bootstrap使用ems或rems来定义大多数大小，而pxs则用于网格断点和容器宽度。这是因为视口宽度以像素为单位，并且不会随字体大小而变化。
+
+特色：
+    1.响应式布局，4个响应截点：
+        @media (min-width: 576px) { ... }
+
+        @media (min-width: 768px) { ... }
+
+        @media (min-width: 992px) { ... }
+
+        @media (min-width: 1200px) { ... }
+    五个默认响应层。
+        例如列的前缀.col-	.col-sm-	.col-md-	.col-lg- .col-xl-对应的是5种屏幕尺寸，尺寸见文件夹里的图片。	
+    2.十二列系统，也就是基于flex的栅格系统，把宽度分成12个单元格，一行超过12列会自动换行显示，单元格默认有左右内边距各15px。
+    3.丰富的组件和工具方法，在vscode里安装Bootstrap 4, Font awesome 4, Font Awesome 5 Free & Pro snippets插件，输入b4就会自动生成组件的html代码和css样式。
+    4.它支持响应式布局，并且在V3版本之后坚持移动设备优先。
+    5.它把全局的box-sizing值设置border-box，如果需要改变盒子模型，代码如下：
+    .selector-for-some-widget {
+        box-sizing: content-box;
+        }
+    6.布局中，想让列换行显示，通过插入一个.w-100设置列换行的位置来创建跨多行的等宽列。 .w-100这个类表示width：100%；
+    7. 使用方法：在 .container 里创建.row ，在.row里创建.col ，在.col里写各类标签元素。
+    8.Bootstrap 将全局 font-size 设置为 14px，line-height 设置为1.5;
+    9.Bootstrap字体图标库的使用方法：
+        下载——解压——将icons文件夹拖到项目文件夹中，写url路径就可以了。
