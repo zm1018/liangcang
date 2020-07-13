@@ -14,7 +14,7 @@ const stylelint = require('stylelint');
 const sprites = require('postcss-sprites');
 
 // 提供接口
-module.exports = {
+/* module.exports = {
     // 使用插件的列表，里面可以写多个插件
     plugins: [
         // 兼容浏览器，添加前缀插件
@@ -40,3 +40,4 @@ module.exports = {
         }),
     ]
 };
+*/
