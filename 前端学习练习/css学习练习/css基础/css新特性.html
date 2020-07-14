@@ -1,0 +1,154 @@
+<!-- 
+    Shapes布局，是实现不规则形状的文字环绕布局，需要和浮动一起使用。 
+    属性：
+        shape-outside
+        shape-margin
+        shape-image-threshold 
+
+    shape-outside是不规则形状环绕布局的核心，属性值分为如下四大类：
+        none – 默认值，表示就是普通的矩形环绕，沿着外边距margin-box环绕。
+        shape-box 图形盒子，指定文字环绕的时候是依照盒子的哪个边缘来计算。值：
+            margin-box：默认值，在图形的外边距环绕。
+            border-box：在图形的边框环绕。
+            padding-box：在图形的内边距环绕。
+            content-box：文字挨着图形的内容部分环绕。
+        basic-shape基本图形函数，绘制不规则图形的，有四个基本的形状函数：
+            circle() – 圆
+            ellipse() – 椭圆
+            inset() – 内矩形（包括圆角矩形）
+            polygon() – 多边形。
+        image 图像类。
+
+    这两个属性是来给整个图形区域设置背景的。
+        shape-outside: url() ：定义区域内背景图。
+        shape-outside: linear-gradient() ：定义区域内背景渐变色。
+
+    -->
+
+<!-- 
+
+clip-path 裁剪路径的意思，可以用来设置一个元素的剪切区域，让我们可以很便捷的生成各种几何图形。区域内的部分显示，区域外的部分隐藏。
+
+clip-path: none
+clip-path: fill-box
+clip-path: border-box
+clip-path: padding-box
+clip-path: content-box
+clip-path: circle()
+clip-path: ellipse()
+clip-path: inset()
+
+     -->
+
+<!-- 
+    scrollbar:自定义页面的滚动条样式,可以给任何元素使用，仅仅在支持WebKit的浏览器 (例如, 谷歌Chrome, 苹果Safari)可以使用.该特性是非标准的，了解即可，尽量不要在开发项目的生产环境中使用它！3个属性：
+        ::-webkit-scrollbar{
+            设置滚动条的宽或高样式
+        }
+        ::-webkit-scrollbar-thumb{
+            设置滚动条的颜色、形状等样式
+        }
+        ::-webkit-scrollbar-track{
+            设置装滚动条的容器的样式
+        }
+        ::-webkit-scrollbar — 整个滚动条.
+        ::-webkit-scrollbar-button — 滚动条上的按钮 (上下箭头).
+        ::-webkit-scrollbar-thumb — 滚动条上的滚动滑块.
+        ::-webkit-scrollbar-track — 滚动条轨道.
+        ::-webkit-scrollbar-track-piece — 滚动条没有滑块的轨道部分.
+        ::-webkit-scrollbar-corner — 当同时有垂直滚动条和水平滚动条时交汇的部分.
+        ::-webkit-resizer — 某些元素的corner部分的部分样式(例:textarea的可拖动按钮).
+
+Scroll Snap 设置一个滚动条滚动时的捕捉点，捕捉滚动时里面的元素的滚动位置，让最终的滚动位置附着于就近或特定类型的捕捉点中，以达到更好的滚动体验，属性：
+    scroll-snap-type 给父元素添加的属性。
+        通过设置 scroll-snap-type 将一个滚动容器转变为一个滚动捕捉容器，并且可以控制捕捉的严格度，如果没有指定严格度，默认为非精确的捕捉（proximity），两个参数，第一个为捕捉轴向，第二个参数为捕捉严格度（可省略）：
+            捕捉轴向：x, y, block, inline 以及 both 数值。
+
+                x: 捕捉影响捕捉视口 x 轴方向
+
+                y: 捕捉影响捕捉视口的 y 轴方向
+
+                block: 捕捉影响块轴方向
+
+                inline: 捕捉影响行轴方向
+
+                both: 捕捉分别影响所有方向
+
+            捕捉严格度：
+                none: 不捕捉
+
+                mandatory：精确捕捉
+
+                proximity：非精确捕捉
+
+scroll-padding 指定了捕捉视口的与滚动容器之间的内边距，能够使得开发者更好的控制进行捕捉的区域。参数与我们常见的 padding 参数形式相同，同时也有 padding 一样的 scroll-padding-top 等属性。
+
+scroll-margin 则是指定了捕捉区域与捕捉元素之间的边距。例如对捕捉区域设置了 scroll-margin: 20px; 那么实际上生成的捕捉区域会比捕捉元素的尺寸大。 scroll-margin 的参数与我们常见的 margin 参数形式相同，同时也有 margin 一样的 scroll-margin-top 等属性。
+
+scroll-snap-align 属性指定了滚动区域和捕捉视口的捕捉位置，并且作为所有捕捉区域相对与捕捉视口的对齐位置。例如设置 scroll-snap-align 为 center 时，滚动区域的捕捉位置位于中心位置，捕捉视口的捕捉位置则为 scroll-snap-type 中指定方向的中心位置。
+
+scroll-snap-align 给所有子元素添加的属性，也就是设置滚动时子元素在父元素里的对齐方式，可以分别设置 x、y 或是 行、块 方向上的捕捉对齐。如果第二个参数忽略，那么 x、y 方向的值均为第一个参数指定的值。属性值：
+
+    none: 未定义
+
+    start: 对齐开始位置
+
+    end: 对齐结束位置
+
+    center: 对齐中心位置
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 自定义滚动条演示：  */
+        
+        body {
+            height: 2000px;
+        }
+        /* 对整个页面设置自定义滚动条无效 */
+        
+        html::-webkit-scrollbar-track {
+            background-color: #f90;
+        }
+        
+        div {
+            width: 100px;
+            height: 100px;
+            border: 1px solid;
+            /* 必需要设置溢出显示滚动条，否则下面的自定义滚动条属性无效 */
+            overflow: scroll;
+        }
+        
+        div::-webkit-scrollbar {
+            /* 设置垂直的滚动条的宽度 */
+            width: 10px;
+            /* 把水平的滚动条宽度设置为0，让它看不见 */
+            height: 0;
+        }
+        
+        div::-webkit-scrollbar-thumb {
+            background-color: #f90;
+            border-radius: 15px;
+            /* 设置滚动条上的滑块长度 */
+            height: 50px;
+        }
+        
+        div::-webkit-scrollbar-track {
+            background-color: rgb(198, 226, 236);
+            box-shadow: 0 0 10px inset rgba(0, 0, 0, .3);
+        }
+    </style>
+</head>
+
+<body>
+    <div>首先打开前端开发工具,新建一个HTML代码页面。 2.在html代码页面上创建,同时给这两个div添加一个... 3.给子 添加内容,为了让滚动条可以实现,尽量多添加一些内容。 4.设置scroll-box、scroll类样式。给scroll-box设置一个高度和内容... 5.最后保存html代码,然后使用浏览器打开,这个时候会发现滚动条已经不显示出来,但是页面...
+    </div>
+
+</body>
+
+</html>
