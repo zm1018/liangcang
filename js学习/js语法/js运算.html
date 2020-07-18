@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 递增运算，前递增和后递增单独写时结果一样，和其它表达式一起运算时，结果不同。
+        var num = 5;
+        ++num; //前递增，结果是6，是num = num + 1;的简写。
+        num++; //后递增，结果是6。
+        num = 10;
+        console.log(++num + 2); //先自加，再和其它表达式运算，结果是13
+        num = 10;
+        console.log(num++ + 2); //先和其它表达式运算，并返回结果，再自加，结果是12，并且num变成了11。
+        num = 10;
+        console.log(num++ + ++num); //运算结果是22=10+ 11+1。
+
+        // 逻辑运算&&，值为true时会继续向下运算，运算结束后返回最后一个表达式的值
+        console.log(123 && 456 && 789 && 1 + 8); //结果是9
+        // 逻辑运算&&，值为false时会逻辑中断，直接返回为false的这个值
+        console.log(null && 123 && 345); //结果是null
+        // 逻辑运算||，只要有一个值满足true的条件，就会逻辑中断，直接返回这个值，下面的代码不再执行。
+        console.log('' || 0 || 123 || 456); //结果是123
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

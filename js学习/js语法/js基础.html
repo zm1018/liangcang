@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 弹出警示框
+        alert('我是警示框');
+        // 弹出输入框，并把输入框的内容作为变量的值
+        var age = prompt('我是输入框，请输入内容');
+        // 接收用户在输入框输入的内容，并弹出警示框确认用户输入的内容。
+        alert(age);
+        // 声明变量，并初始化,再交换两个变量的值
+        var apple1 = '青苹果',
+            apple2 = '红苹果';
+        temp = apple1;
+        apple1 = apple2;
+        apple2 = temp;
+        // 在控制台输出交换后的变量值
+        console.log(apple1);
+        console.log(apple2);
+        // 弹出一个输入框，用户输入年龄后，弹出一个警示框显示字符串拼接的结果，你今年xx岁啦
+        var age = prompt('请输入您的年龄');
+        alert('你今年' + age + '岁啦');
+        // 输入出生年份，计算出年龄输出
+        var year1 = prompt('请输入出生年份'),
+            year = 2020,
+            age = year - year1;
+        alert('你今年' + age + '岁啦');
+        // 运算，弹出2个输入框，把输入框里的数据相加，计算结果返回给用户
+        var num1 = prompt('请输入第一个数字'),
+            num2 = prompt('请输入第二个数字'),
+            // 把pronpt方法得到的值都转换成数字类型，每个值都要用转换函数括起来，太麻烦
+            num3 = Number(num1) + Number(num2);
+        // console.log(num3);
+        alert('运算结果是' + num3);
+        // 转换数据类型
+        // 转换成数字类型
+        console.log(parseInt(2.6));
+        console.log(typeof parseFloat(2.6));
+        var a = 2.6;
+        parseFloat(a);
+        console.log(typeof a);
+        console.log(parseFloat(a));
+        // 转换成布尔类型
+        var b = '';
+        console.log(Boolean(b));
+        // 转换成字符串类型
+        var c = 3;
+        console.log(c + '');
+        console.log(c.toString());
+        console.log(String(c));
+        //获取用户输入的姓名、性别、年龄，再打印出来让用户确认
+        var yourName = prompt('请输入姓名：'),
+            age = prompt('请输入年龄：'),
+            sex = prompt('请输入性别：');
+        alert('您的姓名是：' + yourName + '\n您的年龄是：' + age + '\n您的性别是：' + sex);
+    </script>
+</head>
+
+<body>
+    <!-- <input type="text" onclick="alert('我是行内式js写法')"> -->
+</body>
+
+</html>
