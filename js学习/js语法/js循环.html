@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        for (var i = 1; i <= 10; i++) {
+            console.log('你好，我是for循环');
+        }
+        // 输入每次循环时不同的岁数
+        var num = prompt('请输入岁数');
+        for (var i = 1; i <= num; i++) {
+            if (i == 1) {
+                console.log('这个人今年1岁了，他出生了');
+            } else if (i == 100) {
+                console.log('这个人今年100岁了，他老了');
+            } else {
+                console.log('这个人今年' + i + '岁了');
+            }
+        }
+        // 循环求1加到100的和
+        var he = 0;
+        for (var i = 1; i <= 100; i++) {
+            he += i;
+        }
+        // 输出结果写在循环体外面，才会只打印一次，写在循环体里面循环一次打印一次。
+        console.log(he);
+        // 求1~100的平均值
+        var a = 0;
+        for (var i = 1; i <= 100; i++) {
+            a += i;
+        }
+        console.log(a / 100);
+        // 求1~100之间所有偶数和奇数的和
+        var even = 0, //存每次的计算结果的变量，初始值都设置为0
+            odd = 0;
+        for (var i = 1; i <= 100; i++) {
+            if (i % 2 == 0) {
+                even += i;
+            } else {
+                odd += i;
+            }
+
+        }
+        console.log('100以内偶数和是：' + even);
+        console.log('100以内奇数和是：' + odd);
+
+        // 求1~100之间所有能被3整除的数的和
+        var c = 0;
+        for (i = 1; i <= 100; i++) {
+            if (i % 3 == 0) {
+                c += i;
+            }
+        }
+        console.log('100以内能整除3的数的和是：' + c);
+        // 输入几个学生弹出几个输入框，再求用户输入成绩计算出成绩总和的平均值
+        var fen = 0, //存学生每次输入的分数初始值
+            he = 0, //存分数总和的初始值
+            grade = prompt('请输入有多少个学生'); //用户输入的学生个数作为循环终止条件
+        for (var i = 1; i <= grade; i++) {
+            fen = prompt('请输入第' + i + '个学生的成绩'); //得到的分数是字符串类型
+            he += parseFloat(fen); //一定要转换数据类型,否则结果是字符串拼接，而不是数字相加
+        }
+        alert('班级总成绩是：' + he);
+        alert('学生们的平均成绩是：' + he / grade); //总成绩的平均值
+        // 一行打印5颗星
+        var b = '',
+            num = prompt('请输入需要打印的星星个数'); //存星星的初始空字符串
+        for (var i = 1; i <= num; i++) {
+            b += '☆';
+
+        }
+        console.log(b);
+        // 双重for循环做乘法表排版的星星,第一种倒着排列：
+        for (var i = 1; i <= 9; i++) {
+            //存星星的初始变量要放在外层for循环里，这样初始变量才能在每次外层循环时都从新清空里面储存的星星。
+            var a = '';
+            // console.log('这是第' + i + '次循环');
+            for (var j = 1; j <= 10 - i; j++) {
+                //j后面的终止条件一定要是动态的，外层i在每次循环时由小到大递增，内层for每循环一次，终止条件就减少i次，这样内层循环就会逐次减少，第一次循环i是1，内层需要循环9才次退出内层循环，第二次循环i是2，内层需要循环8次....
+                a += '☆'
+            }
+            console.log(a);
+        }
+        // 也可以把j=i(i是记录外层循环次数的，每次外层循环变量i都会变，j=i动态实现计数器j的初始值变化，来判断循环条件是否满足。)
+        for (var i = 1; i <= 9; i++) {
+            var str = '';
+            for (j = i; j <= 9; j++) {
+                str += '★';
+            }
+            console.log(str);
+        }
+
+        // 第二种正着排列
+        for (var i = 1; i <= 9; i++) {
+            var a = '';
+            for (var j = 1; j <= i; j++) {
+                a += '☆';
+            }
+            console.log(a);
+        }
+        console.log('----------------------');
+        // 还可以把存星星的初始变量放在外层循环外面，内层循环完毕的星星用\n换行，例如：
+        var row = prompt('请输入打印的行数'),
+            col = prompt('请输入打印的列数'),
+            str = '';
+        for (var i = 1; i <= row; i++) {
+            for (var j = 1; j <= col; j++) {
+                str += '☆';
+            }
+            str += '\n'; //每次内层循环完成后字符串用换行符换行
+        }
+        console.log(str); //里面有换行，这样可以一次性所有循环结束后再输出结果，和没有换行输出写在内层循环结束后一样。
+        //九九乘法表
+        for (var i = 1; i <= 9; i++) {
+            var ji = 1, //乘法的存积初始变量
+                str = ''; //显示乘法格式的初始字符串变量
+            for (j = 1; j <= i; j++) {
+                ji = j * i; //求出i * j 的积，赋值给变量ji
+                str += j + '*' + i + '=' + ji + '\t'; //用字符串拼接，把乘法的格式写出来，并且把每次内层循环的乘法格式都拼接在一起，把每个乘法格式用\t这个缩进隔开
+            }
+            console.log(str);
+        }
+
+        // while循环
+        // 输出1-10岁的年龄
+        var i = 1; //初始化变量，计数器
+        while (i <= 10) {
+            console.log('你今年' + i + '岁了');
+            i++; //累加器必需写，否则i永远等于1，永远满足循环终止条件，会无限循环下去，死循环
+        }
+        // 计算1-100的整数和
+        var i = 1,
+            he = 0;
+        while (i <= 100) {
+            he += i;
+            i++;
+        }
+        console.log(he);
+        // 弹出提示框，问‘你爱我吗’如果输入‘我爱你’就结束提问，否则一直重复提问
+        // var a = prompt('你爱我吗？');
+        /* 
+        js里var声明的变量会提升到作用域的最顶端，不管写在代码的哪个位置都会提升到作用域的顶端。
+        如果循环条件为 while (aa == 'undefined'){}，是无法进入循环体的。
+        如果循环条件为 while (aa == undefined){}，就能进入循环体,
+            因为没进入循环体前aa是声明了未赋值的变量，会被自动赋值undefined。
+            进入循环体后,通过var aa = prompt()用户输入的内容，aa才被赋值，任何值都不能满足==undefined的判断条件，所以循环会因不满足条件而结束循环。
+        如果循环条件为 while (aa !== undefined){}，就不能进入循环体。
+        如果循环条件为 while (aa !== xxx){}，就能进入循环体，其中，xxx代表undefined之外的任何值。
+         */
+        while (aa == undefined) {
+            /* 
+            因为声明了aa这个变量还未赋值，js会自动将变量aa赋值为undefined，所以能够进入循环体，
+            注意：这里的undefined不是字符串undefined，
+            */
+            console.log(aa);
+            // 因为变量aa未赋值，所以typeof aa的输出结果是undefined。
+            console.log(typeof aa);
+            console.log('haha');
+            //js里var声明的变量会提升到作用域的最顶端，不管写在代码的哪个位置都会提升到作用域的顶端。
+            // 变量aa在这里才被赋值，用户输入什么赋值给变量aa都是字符串类型，不能满足循环判断条件，判断条件不能成立，就无法进入循环。
+            var aa = prompt('输入什么赋值给变量aa都不能满足循环判断条件，会结束循环');
+            // 如果声明变量不赋值，值默认是undefined，永远满足while (aa == undefined){}，会进入死循环。
+            // var aa;
+        }
+
+
+        var a = prompt('你爱我吗？');
+        while (a != '我爱你') {
+            var a = prompt('你爱我吗？');
+        }
+
+
+        // do...while
+        do {
+            var bb = prompt('你喜欢我吗？');
+        } while (bb != '我爱你')
+        alert('我也爱你啊');
+
+        // continue和break
+        //求1-100之间，除了能被7整除的数的和
+        var he = 0;
+        for (var i = 1; i <= 100; i++) {
+            if (i % 7 == 0) {
+                continue;
+            }
+            he = he + i;
+        }
+        alert(he);
+
+        // break退出循环
+        for (var i = 1; i <= 5; i++) {
+            if (i == 3) {
+                break;
+            }
+            console.log('循环第' + i + '次');
+        }
+        // break退出内层循环,外层for会继续循环
+        for (var i = 1; i <= 5; i++) {
+            console.log('外层循环第' + i + '次');
+            for (j = 1; j <= 3; j++) {
+                if (j == 2) {
+                    break;
+                }
+                console.log('这是内层循环第' + j + '次');
+            }
+        }
+        console.log('-------------------');
+
+        // break退出外层循环,就会退出所有循环，内层for循环也不会再执行。
+        for (var i = 1; i <= 5; i++) {
+            if (i == 2) {
+                break;
+            }
+            for (j = 1; j <= 3; j++) {
+                console.log('这是内层循环第' + j + '次');
+            }
+            console.log('外层循环第' + i + '次');
+        }
+        // 接收用户输入的用户名和密码，如果用户名admin，密码1234567，提示登录成功，否则一直让用户输入
+
+        do {
+            var username = prompt('请输入用户名：'),
+                password = prompt('请输入密码：');
+        } while (username !== 'admin' && password !== '123456')
+        alert('登录成功');
+        // 求整数1~100的和，但要求跳过所有个位数为3的数
+        var num = 0,
+            j = 0;
+        for (i = 1; i <= 100; i++) {
+            // 一个数除以10，并且余数为3的数就是个位数为3的数。因为余数的取值范围在0-除数之间（不含除数）
+            if (i % 10 == 3) {
+                // console.log(i); 打印出所有个位数为3的数；
+                // console.log(j += i); 算出所有个位数为3的数的和，得到480；
+                continue;
+            }
+            num += i;
+        }
+        console.log(num);
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

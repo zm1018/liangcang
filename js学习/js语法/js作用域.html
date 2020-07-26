@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 变量的作用域
+        // 全局变量,在整个script标签里都有效，浏览器关闭才被销毁，占内存
+        var a = 2;
+        // 调用的是全局变量
+        console.log(a);
+
+
+        function fn() {
+            // 局部变量，只在fn函数里有效，函数执行完毕，就被销毁，节约内存
+            var a = 5;
+            // 调用的是局部变量
+            console.log(a);
+
+        }
+        fn();
+
+
+
+        // 调用的是全局变量
+        if (a > 1) {
+            console.log(a);
+        }
+
+        // 作用域链，也就是就近原则,函数嵌套时，并且变量名冲突，输出结果是离那行代码最近的变量值。
+        var b = 7;
+
+        function fn1() {
+            var a = 3,
+                b = 4;
+            fn2();
+
+            function fn2() {
+                fn3();
+
+                function fn3() {
+                    var a = 6;
+                    console.log(a);
+                    console.log(b);
+                }
+            }
+        }
+        fn1();
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

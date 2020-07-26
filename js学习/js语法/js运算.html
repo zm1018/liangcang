@@ -23,6 +23,18 @@
         console.log(null && 123 && 345); //结果是null
         // 逻辑运算||，只要有一个值满足true的条件，就会逻辑中断，直接返回这个值，下面的代码不再执行。
         console.log('' || 0 || 123 || 456); //结果是123
+        // 三元运算符
+        var a = 10;
+        // 判断条件为true，返回？后面的第一个结果
+        result = a > 5 ? '是的' : '不是的';
+        console.log(result);
+        // 判断条件为false，返回？后面的第二个结果
+        result = a < 5 ? '是的' : '不是的';
+        console.log(result);
+        // 判断如果用户输入的数字小于10，在数字前面补0,如果大于10，正常输出数字
+        var time = prompt('请输入0~59之间的数字'),
+            time1 = time < 10 ? '0' + time : time;
+        alert(time1);
     </script>
 </head>
 

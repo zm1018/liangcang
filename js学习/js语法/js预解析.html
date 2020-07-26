@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // js预解析，两种：变量提升和函数提升
+
+        // 变量提升，将var 变量名提升到当前作用域的最前面，但不提升赋值操作。
+        console.log(a); // 这里a会输出undefined
+        var a = 2;
+        // 这两行代码的预解析如下：
+        // 第一步执行：将变量提升到当前作用域的最前面，这里是全局变量，所以提升到script标签的最上面，但不提升赋值操作，所以这里是声明了变量但未赋值，未赋值的变量值默认是undefined。
+        var a;
+        console.log(a); // 第二步执行
+        a = 2; // 第三步执行将变量赋值操作。
+
+
+
+        // 函数提升，将function声明的函数提升到script标签的最上面，但不调用函数。
+        f1();
+        console.log(c); // 这里输出结果是9
+        console.log(b); // 这里输出结果是9
+        console.log(a); // 这里报错，变量a未被定义
+
+        function f1() {
+            var a = b = c = 9; // 这变量是连续赋值操作，所以值都是9
+            console.log(a); // 这里输出结果是9
+            console.log(b); // 这里输出结果是9
+            console.log(c); // 这里输出结果是9
+        }
+
+        // 预解析如下：
+        // 第一步：先提升function声明的函数，
+        function f1() {
+            // 第二步：提升var声明的变量，只有a前面有var，所以只提升var a;这里提升到函数的第一行
+            // 因为变量a是函数内声明的变量，所以是局部变量，只能在函数内使用，所以导致函数外面的a不能调用而报错未定义。
+            // b = 9; c = 9;都是没有var声明的，函数内未用var声明，直接赋值的变量是全局变量。
+            var a;
+            // 第四步，执行函数体，按书写顺序依次给变量赋值
+            a = 9;
+            b = 9;
+            c = 9;
+            // 第五步,按书写顺序从上到下输出函数体里的代码
+            console.log(a); // 函数内部调用变量a，正常输出
+            console.log(b);
+            console.log(c);
+        }
+        // 第三步调用函数
+        f1();
+        // 第六步,按书写顺序从上到执行下面的代码
+        console.log(c); // 因为c是全局变量,这里输出结果是9
+        console.log(b); // 因为b是全局变量,这里输出结果是9
+        console.log(a); // 因为a是局部变量,这里报错a未被定义
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 模仿atm机
+        var yuE = 100,
+            j = '',
+            // i = prompt('请输入您要的操作：\n1.存钱\n2.取钱\n3.显示余额\n4.退出');
+            i = '';
+        while (i <= 4) {
+            i = prompt('请输入您要的操作：\n1.存钱\n2.取钱\n3.显示余额\n4.退出');
+            if (i == 1) {
+                // parseFloat(j) = prompt('请输入存款金额');
+                j = prompt('请输入存款金额');
+                yuE += parseFloat(j);
+                alert('您的账户余额是' + yuE + '元');
+            } else if (i == 2) {
+                // 这里是取款后余额不允许为负的
+                if (yuE != -yuE) {
+                    j = prompt('请输入取款金额');
+                    yuE -= parseFloat(j);
+                    alert('您的账户余额是' + yuE + '元');
+                }
+                // 这里是余额为0时告知用户无法取款
+                else if (yuE == 0) {
+                    alert('您的账户余额为0元，无法取款')
+                };
+                // continue;
+            } else if (i == 3) {
+                alert('您的账户余额是' + yuE + '元');
+                // continue;
+            } else if (i == 4) {
+                alert('您正在退出账户');
+                break;
+            }
+            // i++;
+        }
+        // 第二种方法
+
+        var balance = 100,
+            sum = '';
+        do {
+            var i = prompt('输入您要的操作：\n1.存钱\n2.取钱\n3.显示余额\n4.退出');
+            // parseInt(i) 这样转换数据类型无效，必需前面写i=，来存储转换数据类型后的i变量值。
+            i = parseInt(i); // 这里转换i的数据类型为整数，下面的循环条件和case值就不用写成字符串类型了。可以直接写数字。
+            // console.log(i);
+
+            switch (i) {
+                // case '1':
+                case 1:
+                    sum = prompt('请输入存款金额');
+                    balance += parseFloat(sum);
+                    alert('您的账户余额是' + balance + '元');
+                    break;
+                case 2:
+                    // case '2':
+                    if (balance != -balance) {
+                        sum = prompt('请输入取款金额');
+                        balance -= parseFloat(sum);
+                        alert('您的账户余额是' + balance + '元');
+                    } else if (balance == 0) {
+                        alert('您的余额为0，余额不足无法取款');
+                    }
+                    break;
+                case 3:
+                    // case '3':
+                    alert('您的账户余额是' + balance + '元');
+                    break;
+                default:
+                    alert('您正在退出账户');
+                    break;
+            }
+            // balance;
+            //while (i != '4') // 因为prompt接收的i是字符串类型，所以这里的循环条件一定要是字符串4，否则会死循环。
+            // 也可以把prompt接收的用户输入在赋值给i时，转换i的数据类型，如下：
+        } while (i != 4)
+        // 第三种方法
+        var sum = '',
+            balance = 100;
+        for (var i = 1; i <= 4; i++) {
+            i = prompt('请您输入您要的操作：\n1.存钱\n2.取钱\n3.显示余额\n4.退出');
+            i = parseInt(i);
+            switch (i) {
+                case 1:
+                    sum = prompt('请输入存款金额');
+                    balance += parseFloat(sum);
+                    alert('您的账户余额是' + balance + '元');
+                    break;
+                case 2:
+                    if (balance != -balance) {
+                        sum = prompt('请输入取款金额');
+                        balance -= parseFloat(sum);
+                        alert('您的账户余额是' + balance + '元');
+                    } else if (balance == 0) {
+                        alert('您的余额为0，余额不足无法取款');
+                    }
+                    break;
+                case 3:
+                    alert('您的账户余额是' + balance + '元');
+                    break;
+                default:
+                    alert('您正在退出账户');
+                    break;
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

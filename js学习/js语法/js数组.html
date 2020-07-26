@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 遍历数组
+        var arr = ['关羽', '张飞', '马超', '赵云', '黄忠', '刘备', '姜维']
+        for (var i = 0; i < arr.length; i++) {
+            console.log(arr[i]);
+        }
+        // 求数组里的元素的和以及平均值
+        var arr = [2, 6, 1, 7, 4],
+            sum = 0,
+            averageValue = 0;
+        for (var i = 0; i < arr.length; i++) {
+            // 数组里元素的和，把每次遍历的元素存到求和变量里，并相加。
+            sum += arr[i];
+        }
+        console.log(sum);
+        // 把数组里元素的和除以数组的长度（也就是数组里元素的个数），得到的就是每个元素的平均值
+        averageValue = sum / arr.length;
+        console.log(averageValue);
+
+
+        // 得到数组中最大的元素值，输出
+        var list = [2, 6, 1, 77, 52, 25, 7],
+            // max = 0, 写0不合适，要把数组中第一个元素取出来赋值给max变量作为初始值最合适
+            max = list[0];
+        // min = 0;
+        // for (var i = 0; i < list.length; i++){}，max变量存的已经是数组的索引为0的值了，索引为0的值就不用再比较一次大小，所以这里i可以从索引1开始，i=1。
+        for (var i = 1; i < list.length; i++) {
+            // min = list[i];
+            // max = max < list[i];
+            // 如果数组里的元素比max值大，就把它赋值给max，否则继续循环
+            if (list[i] > max) {
+                max = list[i];
+            }
+            // max = min;
+            // max < list[i];
+        }
+        console.log(max);
+
+        // 找出数组里最小的元素，输出
+        var arr = [5, 6, 8, 33, 66, 9, 2],
+            min = arr[0];
+        // console.log(typeof(arr));
+
+        for (var i = 1; i < arr.length; i++) {
+            if (min > arr[i]) {
+                min = arr[i];
+            }
+        }
+        console.log(min);
+        // 将数组转换成字符串，并把每个元素用|隔开。
+        var arr = ['red', 'green', 'blue', 'pink'],
+            str = '';
+        for (var i = 0; i < arr.length; i++) {
+            // 把每次遍历数组的元素存给str变量，并且拼接每次存在str里的元素，再把每个元素之间用|隔开
+            str = str + arr[i] + '|';
+        }
+        console.log(str);
+
+
+        // 用for循环增加数组元素
+        // 先创建一个为空的新数组
+        var arr = [],
+            str = '';
+        for (var i = 0; i < 10; i++) {
+            // str += i + ',';
+            // str = parseFloat(str);
+            // 追加数组索引 = 计数器里存的数组元素，后面的+1是数组里的元素从1开始存入，不要第一个值0，程序自己会在每个元素后面添加逗号。
+            arr[i] = i + 1;
+        }
+        // arr = [parseFloat(str)]; 
+        // arr = [str];
+        // 数组里是一个字符串，数组只有一个元素，而不是10个元素，不对，代码还要改善
+        console.log(arr, typeof(arr));
+
+        // 将数组里大于10的元素取出来，存入新数组
+        var arr1 = [2, 0, 6, 1, 77, 0, 52, 0, 25, 7],
+            max = 10,
+            arr2 = [];
+        // j = 0; // 新数组的索引号初始化，不能直接把索引号写成i。
+        for (var i = 0; i < arr1.length; i++) {
+            if (max < arr1[i]) {
+                // 新数组的索引号不能是i，否则会产生很多空元素，旧数组里不大于10的元素，不会被存入新数组，但索引i会从0开始存入新数组，所以在新数组里产生空元素。
+                // arr2[i] = arr1[i];
+
+                // 新数组的索引号从新定义个初始值为0的变量j，因为索引从0开始。
+                // arr2[j] = arr1[i];
+                // j++;
+
+                // 或者用新数组的长度作为索引，因为程序会自动检测数组长度。
+                arr2[arr2.length] = arr1[i];
+            }
+        }
+        console.log(arr2);
+
+        // 去掉数组中为0的元素，并组成一个新数组
+        // 先创建一个为空的新数组
+        var newArr = new Array(),
+            arr = [2, 0, 6, 1, 77, 0, 52, 0, 25, 7];
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == 0) {
+                // 如果arr数组索引为i的元素==0，就跳出本次循环，否则就存到新数组里。
+                // 或者判断条件写成！= 0 的存到新数组里，代码更简洁。
+                continue;
+            } else {
+                newArr[newArr.length] = arr[i];
+            }
+        }
+        console.log(newArr);
+
+        // 将数组里的内容反过来存进数组里，两种方法，一：
+        var arra = ['red', 'green', 'blue', 'pink', 'purple'],
+            arr = [],
+            // 空数组的初始索引，为旧数组的长度，这样循环时旧数组的索引为0的元素是新数组索引为4的元素。实现将内容反过来的目的，因为索引从0开始，长度从1开始，所以索引要-1，否则会多出一个空元素。
+            j = arra.length - 1;
+        for (var i = 0; i < arra.length; i++) {
+            // 空数组的初始索引是旧数组的长度，
+            arr[j] = arra[i];
+            j--;
+        }
+        console.log(arr);
+
+        // 二
+        var arra = ['red', 'green', 'blue', 'pink', 'purple'],
+            arr = [];
+        // 循环条件，计数器i从数组长度-1开始，也就是从最后一个索引开始，i>=0判断条件i第一次循环是大于0的，循环到数组长度为1-1时，也就是索引为0时，最后一次循环，后面i--,每次循环时自减1，0-1为负，不满足循环判断条件，退出循环
+        for (var i = arra.length - 1; i >= 0; i--) {
+            // 每次循环的arra[i]存到新数组里，第一次i是4存到新数组索引为0的位置，到循环结束完成将内容反过来。
+            arr[arr.length] = arra[i];
+        }
+        console.log(arr);
+
+        // 冒泡排序，是一种算法，就是将数组里的元素按照从小到大或从大到小的顺序排列
+        // 从大到小排序
+        var a = [6, 1, 7, 2, 3, 4, 5],
+            b = [];
+        // c = [];
+        // for (var i = 0; i < a.length; i++) {
+        //     b = a[i];
+        //     // if (b < a[i]) {
+        //     //     c[c.length] = a[i];
+        //     // } else if (b== a[i]) {
+        //     //     c[c.length] = b;
+        //     // } else if (b > a[i]) {
+        //     //     c[c.length] = b;
+        //     // }
+        //     if (b < a[i]) {
+        //         c = a[i];
+        //     } else if (c < b) {
+        //         c = b;
+        //     }
+        //     a[a.length] = c;
+        // }
+        // console.log(c);
+        for (var i = 0; i <= a.length - 1; i++) {
+            for (var j = 0; j <= a.length - i - 1; j++) {
+                if (a[j] < a[j + 1]) {
+                    b = a[j];
+                    a[j] = a[j + 1];
+                    a[j + 1] = b;
+                }
+            }
+        }
+        console.log(a);
+        // 冒泡排序：从小到大
+        var a = [6, 1, 7, 2, 3, 4, 5],
+            b = [];
+        // 要用双重for循环，外层的for遍历数组的每个元素，控制交换顺序，当前元素只需要与其余元素进行交换顺序，不需要与自身交换顺序，所以i <= a.length-1;表示减掉当前元素与自身的交换。
+        for (var i = 0; i <= a.length - 1; i++) {
+            // 内层的for控制元素之间大小的比较次数，也就是把每次外层循环遍历的索引为i的数组元素，与数组里其它的元素，依次进行大小比较，有多少个其它元素，就比较多少次。
+            for (var j = 0; j <= a.length - i - 1; j++) {
+                // 如果a的前一个元素大于a的后一个元素
+                if (a[j] > a[j + 1]) {
+                    // 把大的那个元素存到临时变量b里
+                    b = a[j];
+                    // 把后一个索引位置存的小元素存到原来存大的元素的那个前索引位置
+                    a[j] = a[j + 1];
+                    // 再把临时变量里存的小的值，存到后一个索引位置上，原来前一个位置存大的值，后一个索引位置存小值，现在就换成了前一个位置存小值，后一个索引位置存大值。排列顺序就调换成功了。
+                    a[j + 1] = b;
+                }
+            }
+        }
+        console.log(a);
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

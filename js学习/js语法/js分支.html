@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // if分支
+        var age = 18,
+            jin = prompt('请输入你的年龄：');
+        if (age <= jin) {
+            alert('网吧欢迎你');
+        } else {
+            alert('你未满18岁，不能进入网吧');
+        }
+        // 判断是不是闰年
+        var year = prompt('请输入需要检测的年份：');
+        if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+            alert(year + '年是闰年');
+        } else {
+            alert(year + '年是平年');
+        }
+        // 判断是否中奖
+        var yourname = prompt('请输入你的名字：');
+        if (yourname == '刘德华') {
+            alert('恭喜你，中了5元钱');
+        } else {
+            alert('请再接再厉,下次一定能中');
+        }
+        // 判断分数等级
+        var grade = prompt('请输入分数');
+        if (grade >= 90) {
+            alert('等级是A');
+        } else if (grade >= 80) {
+            alert('等级是B');
+        } else if (grade >= 70) {
+            alert('等级是C');
+        } else if (grade >= 60) {
+            alert('等级是D');
+        } else {
+            alert('等级是E')
+        }
+
+        // switch分支
+        var fruits = prompt("请输入需要查询价格的水果名称");
+        switch (fruits) {
+            case '苹果':
+                alert('苹果3.5元一斤');
+                break;
+            case '梨':
+                alert('梨2元一斤');
+                break;
+            case '榴莲':
+                alert('榴莲68元一斤');
+                break;
+            default:
+                alert('没有此水果');
+
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
