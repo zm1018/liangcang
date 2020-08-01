@@ -63,11 +63,23 @@
         console.log(aaa.indexOf('2')); // 返回1，从前往后查，返回找到的第一个字符2所在的索引号，表示字符2在字符串a里索引号为1的位置。
         console.log(aaa.lastIndexOf(2)); // 返回3，从后往前查，返回找到的第一个字符2所在的索引号，表示字符2在字符串a里索引号为3的位置。
 
+        // 判断一个字符串是否包含在另一个字符串里，返回true或flase
+        var a1 = 'abc,123,Red';
+        console.log(a1.includes('abc')); // 返回true
+        console.log(a1.includes('red')); // 返回flase,因为red的R不是大写的
+        // 返回flase,因为第二个参数从索引为7的位置开始查找，没有字符串123
+        console.log(a1.includes('123', 7));
+
         // 根据索引查找字符串中的字符，返回值是索引号对应的字符
-        var bbb = 'a13d';
+        var bbb = 'a13du';
+        console.log(bbb.charAt()); // 不传参数索引默认值为0，返回索引为0的字符a
+        console.log(typeof bbb.charAt(-2)); // 此方法没有负值参数，传负值参数索引返回空字符串
         console.log(bbb.charAt(3)); // 返回值是'd',表示字符串b中索引号3对应的字符是d
         console.log(bbb[3]); // 返回值是'd',表示字符串b中索引号3对应的字符是d
         console.log(bbb.charCodeAt(3)); // 返回值是100,是字符'd'对应的ASCII编码,表示字符串b中索引号3对应的字符是d的ASCII码100。
+
+        // 返回使用UTF-16编码的给定位置的值的非负整数，常用来给字符转码。
+        console.log(bbb.codePointAt(3)); // 返回值是100,是字符'd'对应的ASCII编码,表示字符串b中索引号3对应的字符是d的ASCII码100。
 
         // concat()方法拼接字符串
         console.log(aaa.concat(bbb)); // 得到字符串1232a13d，谁调用此方法，谁的字符就排在前面。
@@ -81,8 +93,12 @@
         console.log(ccc); // 得到'abcdef'，字符串ccc的值没变，因为字符串具有不可变的特性。
 
         // substring(start,end)两个参数都是索引号，截取时不含第二个参数，返回截取到的字符串。
-        console.log(ccc.substring(2, 3)); // 得到字符串c。从索引2开始到索引3结束不含索引3所对应的字符。
-        console.log(ccc.substring(2)); // 得到字符串cdef。截取从索引2开始到字符串结束的全部字符。
+        // 得到字符串c。从索引2开始到索引3结束不含索引3所对应的字符。
+        console.log(ccc.substring(2, 3));
+        // 得到字符串cdef。截取从索引2开始到字符串结束的全部字符。
+        console.log(ccc.substring(2));
+        // 得到字符串ab。第一个参数小于0，会被默认成0，截取从索引0开始到索引2结束的字符。
+        console.log(ccc.substring(-1, 2));
         ddd = ccc.slice(3, 4); // 得到字符串d。
         console.log(ddd);
         // 得到字符串cdef。 只传一个参数表示从这个参数开始，截取从索引2开始到字符串结束的全部字符。
