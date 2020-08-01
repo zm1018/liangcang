@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // Date对象是构造函数，功能是获取当前时间日期的，构造函数必需用new操作符来调用
+
+        var date = new Date(); // 调用Date构造函数创建一个获得当前系统时间的date对象。
+        console.log(date); // 输出当前系统时间，得到Tue Jul 28 2020 13:05:09，这种格式不利于看
+
+        // 调用Date构造函数创建一个date1对象，参数是数字类型,参数之间用,隔开。
+        var date1 = new Date(2020, 10, 01);
+        // 输出当前时间，得到Data构造函数的参数，Sun Nov 01 2020 00:00:00，但月份是错的Nov11月，不是Oct10月，因为月份从0开始，所以都比当前月份小一个月，必须加1才能得到正确的月份，而且返回结果的这种格式不利于看
+        console.log(date1);
+
+        // 调用Date构造函数创建一个date2对象， 参数是字符串类型, 参数年月日之间用-隔开,时分秒之间用: 隔开,年月日和时分秒中间必须有一个空格。
+        var date2 = new Date('2020-05-20 08:18:08');
+        // 输出当前时间，得到Data构造函数的参数，Wed May 20 2020 08:18:08，月份能正确输出，May5月，但输出结果的这种格式不利于看
+        console.log(date2);
+
+        console.log(date.getFullYear()); // 使用getFullYear()方法获得当前年份，得到2020。
+
+        // getMonth()方法得到的月份是从0月开始——11月结束的，切记使用的时候要在后面+1。
+        console.log(date.getMonth()); // 使用getMonth()方法获得当前月份，得到6，但当前是7月。
+        console.log(date.getMonth() + 1); // 使用getMonth()方法 + 1获得当前月份，得到7月。
+        console.log(date.getDate()); // 使用getDate()方法获得当前日，得到28日。
+
+        // 星期是从星期日开始的，0——6，星期日是0。
+        console.log(date.getDay()); // 使用getDay()方法获得当前星期几，得到2。
+        console.log(date.getHours()); // 使用getHours()方法获得当前小时，得到13。
+        console.log(date.getMinutes()); // 使用getMinutes()方法获得当前分钟，得到5。
+        console.log(date.getSeconds()); // 使用getHours()方法获得当前秒，得到3。
+
+
+        // 写一个格式化年月日、时分秒，让输出的结果格式便于看
+        function format_date() {
+            var date = new Date(),
+                year = date.getFullYear(),
+                month = date.getMonth(),
+                // 月份如果小于10，月份前面补个0，不小于10就直接返回当前月份
+                month = month < 10 ? '0' + month : month,
+                dates = date.getDate(),
+                dates = dates < 10 ? '0' + dates : dates,
+                // 星期默认输出的是数字，这里用一个数组，将获得星期几的方法作为参数，方法的返回值作为索引，输出对应的数组元素。0是星期日，索引从0开始，所以星期日必需写最前面。
+                arr = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                // getDay()方法得到当前星期，作为arr数组的索引使用
+                day = arr[date.getDay()],
+                hours = date.getHours(),
+                hours = hours < 10 ? '0' + hours : hours,
+                minutes = date.getMinutes(),
+                minutes = minutes < 10 ? '0' + minutes : minutes,
+                seconds = date.getSeconds();
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            return year + '年' + month + '月' + dates + '日' + ' ' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+
+        }
+        console.log(format_date()); // 得到2020年06月28日 星期二 14:21:19
+
+        // 总毫秒数（时间戳）获取的4种方式,是从1970.1.1到当前时间的总毫秒数：
+        var time = new Date();
+        console.log(time.valueOf()); // 第一种，得到1595940049138毫秒，不传参数获得的毫秒精确
+        console.log(time.getTime()); // 第二种
+        var millisecond = +new Date(); // 第三种，最常用
+        console.log(millisecond);
+        console.log(Date.now()); // 第四种，h5新增的，要考虑浏览器兼容问题，这个方法没有参数。
+
+        // 如果给括号里传参数，字符串类型的时间， 就是从1970 .1 .1 到传入的参数时间的总毫秒数,但传参数的计算结果不精确，后面都用0代替了。
+        var time1 = +new Date('2020-07-28 20:40:00');
+        console.log(time1); // 得到1595940000000毫秒，传参数获得的毫秒不精确
+
+        var time1 = new Date('2020-07-28 20:40:00');
+        console.log(time1.getTime());
+
+        console.log(time1.valueOf());
+
+
+        // 倒计时案例
+        // 定义一个倒计时功能的函数，
+        function conutDown(time) {
+            // 得到当前的时间戳
+            var nowTime = +new Date(),
+                // 得到用户输入的时间戳
+                inputTime = +new Date(time);
+            // console.log(inputTime); 时间戳的取值是后面好几个0
+
+            // 时间转换规则是：剩下的时间戳总毫秒数所代表的时间长度 = 天数 + 小时数 + 分钟数 + 秒数 总和的时间长度。
+            // 转换得到总秒数，用户输入的时间戳 - 当前的时间戳 = 剩下的时间戳，再把剩下的总毫秒转换成秒
+            var times = (inputTime - nowTime) / 1000,
+                // 转换得到天数，剩余的总秒数除以60得到总分钟数，分钟除以60得到总小时数，小时除以24得到总天数，结果转换成整数类型，把总天数去掉的小数部分继续向下转换成时分秒数。
+                day = parseInt(times / 60 / 60 / 24),
+                // 天数小于10，就在前面加个0
+                day = day < 10 ? '0' + day : day,
+                // 转换得到小时数，
+                // 剩余的总秒数除以60得到总分钟，分钟除以60得到总小时数，
+                // 取余运算除以24，得到的商是总天数，把商舍掉，只取余数部分，得到一个取值范围为 0<=余数>除数 的余数值, 
+                // 余数部分没有除以24，余数就没被转换成天数，还是小时数。
+                hour = parseInt(times / 60 / 60 % 24),
+                hour = hour < 10 ? '0' + hour : hour,
+                // 转换得到分钟数
+                minute = parseInt(times / 60 % 60),
+                minute = minute < 10 ? '0' + minute : minute,
+                // 转换得到秒数
+                second = parseInt(times % 60),
+                second = second < 10 ? '0' + second : second;
+            return day + '天' + hour + '时' + minute + '分' + second + '秒';
+        }
+        // 调用倒计时函数，传入用户输入的时间参数，在控制台输出返回值
+        console.log(conutDown('2020-7-30 13:00:00'));
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

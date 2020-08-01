@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 将字符串里所有的o字符都找出来，返回它的索引位置和一共出现多少次
+        var str = 'abcdooeofgon',
+            sum = 0, // 存o总共出现的次数的初始值变量
+            // 因为indexOf()方法调用只能查找一次，只会返回o字符所在位置的第一个索引号，所以要循环，并且每次循环查找的开始位置索引，都是上一次返回的索引+1的位置。
+            index = str.indexOf('o'); // o第一次出现的索引赋值给index，
+        // 第一次index存的是4，4 !== -1，进入循环
+        while (index !== -1) {
+            // 输出循环查找到的当前index的值，也就是查找字符串中的o的每次出现的第一个索引值，必需要先输出，因为声明index变量时第一个查找到的索引值还没有输出，所以这里要先写输出代码。
+            // 因为sum从0开始计数，这里拼接字符串第一次输出的结果是：第0个"o"的索引是4，不符合阅读，所以给sum在输出的时候写个(sum + 1)的计算表达式，让它第一次输出结果为: 第1个"o"的索引是4，更便于阅读理解。
+            console.log('第' + (sum + 1) + '个"o"的索引是' + index);
+
+            // 把每次循环查找o得到的索引号存给index变量，把变量值+1，作为下次循环查找o的开始索引位置。
+            index = str.indexOf('o', index + 1);
+
+            // 每满足循环条件循环一次就把sum + 1，计算一共循环了多少次，得到o一共出现多少次，也就是字符串里一共有多少个o。
+            // sum = sum + 1;
+            sum++;
+        }
+        console.log('字符串str里一共有' + sum + '个字符"o"');
+
+        // 统计字符串里出现次数最多的字符，和它出现的次数（也就是字符串里这个字符的个数）
+        var str = 'abocdaoabef',
+            o = {}, // 把字符串str的每个字符作为属性存到对象o里。
+            max = 0, // 把遍历对象时得到的key最大的值（也是字符出现的次数）存到max变量里。
+            ch = ''; // 把遍历对象时得到的值最大的key（也是出现次数最多的字符）存到变量ch里。
+        for (var i = 0; i < str.length; i++) {
+            // 把字符串的每个字符取出来，通过循环遍历字符串，再用charAt()方法是根据参数索引号i，返回对应的字符。
+            var chars = str.charAt(i);
+            // 把chars变量存的字符串的每个字符作为对象o的属性存入对象o里，
+            // 判断条件是判断此属性是否已经在o对象里存在
+            if (o[chars]) {
+                // 存在就把此属性的属性值+1
+                o[chars]++;
+            } else {
+                // 此属性不存在就将它的属性赋值为1，存入对象o里。
+                o[chars] = 1;
+            }
+        }
+        console.log(o);
+        // 遍历对象o的所有属性，
+        for (var k in o) {
+            // max = o[k];
+            // 找出它里面属性值最大的那个属性，
+            if (o[k] > max) {
+                // 将最大的属性值 赋值给变量max。
+                max = o[k];
+                // 将存有最大值的这个属性赋值给变量ch。
+                ch = k;
+            }
+        }
+        console.log('字符串str中出现最多的字符是：' + ch, '出现了' + max + '次');
+
+        // 判断字符是否在字符串里
+        var aaa = '1232';
+        console.log(aaa.indexOf('2')); // 返回1，从前往后查，返回找到的第一个字符2所在的索引号，表示字符2在字符串a里索引号为1的位置。
+        console.log(aaa.lastIndexOf(2)); // 返回3，从后往前查，返回找到的第一个字符2所在的索引号，表示字符2在字符串a里索引号为3的位置。
+
+        // 根据索引查找字符串中的字符，返回值是索引号对应的字符
+        var bbb = 'a13d';
+        console.log(bbb.charAt(3)); // 返回值是'd',表示字符串b中索引号3对应的字符是d
+        console.log(bbb[3]); // 返回值是'd',表示字符串b中索引号3对应的字符是d
+        console.log(bbb.charCodeAt(3)); // 返回值是100,是字符'd'对应的ASCII编码,表示字符串b中索引号3对应的字符是d的ASCII码100。
+
+        // concat()方法拼接字符串
+        console.log(aaa.concat(bbb)); // 得到字符串1232a13d，谁调用此方法，谁的字符就排在前面。
+
+        // substr(start,length)截取字符串，返回截取到的字符串。
+        var ccc = 'abcdef',
+            // 第一个参数是索引2，第二个参数是截取2个字符。
+            ddd = ccc.substr(2, 2);
+
+        console.log(ddd); // 得到截取的字符cd。
+        console.log(ccc); // 得到'abcdef'，字符串ccc的值没变，因为字符串具有不可变的特性。
+
+        // substring(start,end)两个参数都是索引号，截取时不含第二个参数，返回截取到的字符串。
+        console.log(ccc.substring(2, 3)); // 得到字符串c。从索引2开始到索引3结束不含索引3所对应的字符。
+        console.log(ccc.substring(2)); // 得到字符串cdef。截取从索引2开始到字符串结束的全部字符。
+        ddd = ccc.slice(3, 4); // 得到字符串d。
+        console.log(ddd);
+        // 得到字符串cdef。 只传一个参数表示从这个参数开始，截取从索引2开始到字符串结束的全部字符。
+        console.log(ccc.slice(2));
+        console.log(ccc.slice(1, -1)); // 得到字符串bcde，从索引为1的字符截取到最后一个索引为-1的字符为止，不含最后一个字符。
+
+        // 替换字符串中的字符，返回替换后的字符串
+        console.log(ccc.replace('d', '我')); // 得到字符串abc我efd
+
+        // 将字符串转换为数组
+        var aa = 'h123w678';
+        console.log(aa.split()); // 不传参数，得到["h123w678"]，数组里只有一个元素
+        // 得到["h", "1", "2", "3", "w", "6", "7", "8"]，传''会将每个字符都变成数组的每个元素，数组长度是8。
+        console.log(aa.split(''));
+
+        aa = "h, 1, 2, 3, w, 6, 7, 8";
+        // 得到["h", " 1", " 2", " 3", " w", " 6", " 7", " 8"],字符之间的空格也转换到元素的引号里了。
+        console.log(aa.split(','));
+
+        aa = "h&1&2&3&w&6&7&8";
+        // 得到["h", "1", "2", "3", "w", "6", "7", "8"]，传''会将每个字符都变成数组的每个元素，数组长度是8。
+        console.log(aa.split('&'));
+
+        // 将字符转换成大写
+        var bb = 'ab23c3d';
+        console.log(bb.toUpperCase()); // 得到字符串AB23C3D
+        // 将大写字符转换成小写
+        bb = 'AB1C22D';
+        console.log(bb.toLowerCase()); // 得到字符串ab1c22d
+
+        // 输出字符串的长度、查找指定字符是否在字符串中存在、取出、替换指定位置的字符、截取指定开始到结束的字符、统计出现次数最多的字符和出现次数
+        var arr = 'abaasdffggghhjkjjgfddssiss33666'
+            // 输出字符串的长度
+        console.log(arr.length); // 结果是31
+        // 查找指定字符i是否在字符串arr中
+        console.log(arr.indexOf('i')); // 得到i的索引号23
+        // 取出指定位置的字符
+        console.log(arr.charAt(3)); // 得到索引为3的位置上是字符a
+        console.log(arr[3]); // 得到索引为3的位置上是字符a
+        // 替换指定的字符
+        console.log(arr.replace('g', '我')); // 得到字符串'abaasdff我gghhjkjjgfddssiss33666'
+        // 截取字符串
+        console.log(arr.slice(1, 5)); // 得到截取的字符串'baas'
+        // 找出字符串中出现次数最多的字符和出现的次数
+        var cha = '', // 存出现最多次数的字符的初始化变量
+            max = 0, // 存字符出现最多的次数的初始化变量
+            obj = {}; // 将每个字符作为对象的属性存储的初始化对象
+        // 遍历字符串的每个字符
+        for (var i = 0; i < arr.length; i++) {
+            // 将每个字符依次存到临时变量里
+            var chas = arr[i];
+            // 判断对象里是否有每次循环得到的字符作为属性，有就给属性值 + 1
+            if (obj[chas]) {
+                obj[chas]++;
+            } else {
+                // 对象里没有每次循环得到的字符作为属性，就将此字符作为属性，并给属性值1，一起存到对象里
+                obj[chas] = 1;
+            }
+        }
+        // console.log(obj);
+        // 遍历对象中的每个属性
+        for (k in obj) {
+            // 如果每次得到的属性的属性值比max变量里存的值大
+            if (obj[k] > max) {
+                // 将大的那个值存到max变量里
+                max = obj[k];
+                // 将最大的那个值的键，也就是出现次数最多的字符，存到cha变量里
+                cha = k;
+            }
+        }
+        // 输出出现最多的字符和它出现的次数
+        console.log(cha, max);
+
+
+        // 遍历字符串，输出每个字符和字符的索引号
+        for (var i = 0; i < arr.length; i++) {
+            // 通过索引输出每个字符
+            console.log('第' + i + '个字符是：' + arr[i]);
+            // 通过每个字符输出字符所在的索引,indexOf(arr[i], i)第一个参数是要查找索引号的字符，第二个参数是从什么位置开始查找的索引号。
+            console.log('第' + i + '个字符' + arr[i] + '的索引是:' + arr.indexOf(arr[i], i));
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

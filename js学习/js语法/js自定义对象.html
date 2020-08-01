@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 共三种创建对象的方法：
+        // 一、用var 对象名 = {}来创建一个对象（object）
+        var obj = {
+                // 对象的属性，取名常用名词，用于描述特征,写法是：属性名:属性值,
+                uname: '可可',
+                type: '阿拉斯加犬',
+                age: '5岁',
+                color: '棕红色',
+                // 对象的方法，取名常用动词，用于表示行为或功能，写法是：方法名：匿名函数，
+                bark: function() {
+                    return '汪汪汪';
+                },
+                showFilm: function() {
+                    return '演电影';
+                }
+            }
+            // 使用对象的属性，两种方式：
+        console.log(obj.uname);
+        console.log(obj['age']);
+
+        // 使用对象的方法，因为是函数，一定要写（）
+        console.log(obj.showFilm());
+
+        // 二、用new Object创建对象，O一定要大写
+        var ob1 = new Object(); // 先创建了一个空对象
+        ob1.uname = '鸣人'; // 用追加赋值的方式创建空对象里的属性，对象.属性名 = 值，用;结尾
+        ob1.sex = '男';
+        ob1.age = '19岁';
+        // 用写函数表达式的方式来创建空对象的方法，对象.方法名 = 函数表达式。
+        ob1.skill = function() {
+                return '影分身术';
+            }
+            // 使用对象的属性
+        console.log(ob1.uname);
+        console.log(ob1['sex']);
+        // 使用对象的方法
+        console.log(ob1.skill());
+
+
+        // 三、构造函数，用来把相同的对象的属性或方法封装到一个特殊的函数里，这个函数称为构造函数，对象只是构造函数的一个实例，构造函数名首字母必需大写,所有的属性或方法都必须this.开头，形参是属性值，传给形参的实参是将属性值实例化，这里只写属性的属性值（形参），不写方法的形参。
+        function Hero(uname, type, blood) {
+            // 必需用this.属性名开头，再将构造函数的形参赋值给this.属性名，用;结尾
+            this.name = uname;
+            this.type = type;
+            this.blood = blood;
+            // 在方法这里写方法的形参。
+            this.attack = function(att) {
+                // return att;
+                console.log(att);
+            }
+        }
+        // 使用new 构造函数名 来创建不同的对象：
+
+        // 这里创建了一个名为lp的对象，创建对象时，构造函数里传的实参是lp对象的属性值。
+        var lp = new Hero('廉颇', '力量型', '500血量');
+        // 调用对象.方法时传构造函数里方法的形参
+        // console.log(lp.attack('近战'));
+        lp.attack('近战');
+        // 输出lp对象的三个属性
+        console.log(lp.name, lp.type, lp.blood);
+
+        // 这里创建一个名为hy的对象
+        var hy = new Hero('后羿', '射手型', '100血量');
+        console.log(hy.name, hy.blood);
+        hy.attack('远程');
+
+        // 遍历一个对象，通过for .. in.. （在..里面）
+        // 通过键找值，对象的键 在 对象里面，每循环一次取出一个键并输出它的值
+        for (key in obj) {
+            // 输出对象的键
+            console.log(key);
+            // 输出对象里的值
+            console.log(obj[key]);
+        }
+
+
+        // 作业，创建一个电脑对象
+        var computer = {
+            color: 'pink',
+            weight: '1.5g',
+            brand: '联想',
+            film: function() {
+                return '看电影';
+            },
+            music: function(listen) {
+                // 不能直接在方法里面给形参赋值，会报未定义错误，前面加var声明也一样报未定义错误
+                // var listen = '听音乐';
+                return listen;
+            },
+            game: function() {
+                return '打游戏';
+            },
+            pro: function() {
+                console.log('敲代码');
+            }
+        }
+        console.log(computer.color);
+        console.log(computer.music('听音乐'));
+
+        // 创建一个按钮对象
+        var but = new Object();
+        but.width = '10px';
+        but.height = '20px';
+        but.bcg = 'red';
+        but.hover = function() {
+            console.log('blue');
+        }
+        console.log(but.width);
+        but.hover();
+
+        // 创建一个车对象
+        function Car(weight, color, brand) {
+            this.weight = weight;
+            this.color = color;
+            this.brand = brand;
+            this.manned = function(man) {
+                return man;
+            };
+            this.pick = function(pi) {
+                console.log(pi);
+            };
+            this.ploughing = function(plou) {
+                return plou;
+            }
+        }
+        // 创建bm这个对象
+        var bm = new Car('1.5吨', 'black', '宝马');
+        // 输出bm这个对象
+        console.log(bm);
+        // 使用bm对象的方法，并给此方法传实参。
+        var a = bm.manned('载人');
+        console.log(a);
+        bm.pick('挖地');
+        console.log(bm.ploughing('耕田'));
+
+        // 简易计算器
+        function Calculator() {
+            this.add = function(a, b) {
+                // for (var i = 0; i < arguments[i].length; i++) {
+                //     var a = arguments[0] + argunments[i];
+                // }
+                // return a;
+                return a + b;
+            }
+            this.subt = function(a, b) {
+                return a - b;
+            }
+        }
+        var cal = new Calculator();
+        do {
+            var result = prompt('欢迎使用简易计算器：\n1.加法运算；\n2.减法运算；\n3.退出'),
+                re,
+                re1 = 0,
+                re2 = 0;
+
+            if (result == 1) {
+                re1 = prompt('请输入第一个数字');
+                re1 = parseFloat(re1);
+                re2 = prompt('请输入第二个数字');
+                re2 = parseFloat(re2);
+                re = cal.add(re1, re2);
+                alert(re);
+            } else if (result == 2) {
+                re1 = prompt('请输入第一个数字');
+                re1 = parseFloat(re1);
+                re2 = prompt('请输入第二个数字');
+                re2 = parseFloat(re2);
+                re = cal.subt(re1, re2);
+                alert(re);
+            } else if (result == 3) {
+                break;
+            }
+        } while (result != 3)
+
+        // 实现翻转任意数组功能的函数
+
+        function reverse(arr) {
+            // 先判断用户输入的参数是不是数组类型的,两种方式：
+            // 第一种：
+            // if (arr instanceof Array) {
+            // 第二种
+            if (Array.isArray(arr)) {
+                // 存反转元素的新数组初始变量一定要写在函数内部，作为局部变量，才能每次传不同参数时更新，
+                // 否则每次传的参数都会在之前的参数元素后面拼接，让数组长度变长，
+                // 比如第一次传[1,2]，第二次传[3,4],第二次反转后输出了错的结果，变成了数组长度是4，结果是[4,3,2,1]，
+                // 而不是正确的结果，长度是2，结果是[4,3]。
+                var arr1 = [];
+                for (var i = arr.length - 1; i >= 0; i--) {
+                    arr1[arr1.length] = arr[i];
+                }
+                return arr1;
+            } else {
+                return 'Error:您输入的不是数组格式\n要求必需输入数组格式，例如：[1,2,3]'
+
+            }
+        }
+        arr = ['red', 'blue', 'pink'];
+        console.log(reverse(arr));
+        arr = [1, 3, 5, 6];
+        console.log(reverse(arr));
+        console.log(reverse([9, 8, 7]));
+        console.log(reverse(7, 8, 9)); // 报错，因为输入的不是数组格式
+
+
+
+        // 对数组里的元素进行从小到大排序的函数
+        function sort(ar) {
+            var a = [];
+            for (var i = 0; i <= ar.length - 1; i++) {
+                for (var j = 0; j <= ar.length - i - 1; j++) {
+                    if (ar[j] > ar[j + 1]) {
+                        a = ar[j];
+                        ar[j] = ar[j + 1];
+                        ar[j + 1] = a;
+                    }
+                }
+            }
+            return ar;
+        }
+        ar = [33, 2, 53, 1, 6];
+        console.log(sort(ar));
+
+        console.log(sort([3, 2, 5, 1, 6]));
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

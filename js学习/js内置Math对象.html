@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // Math库的方法的参数要求是数字，或能隐式转换成数字的参数，否则返回NaN；
+
+        // Math库的round是四舍五入的功能， 有一点特殊的是 .5 会取大的那个值， 所以 - 0.5 取-0， - 1.5 取 - 1
+        console.log(Math.round(-0.5)); // 结果是-0
+
+        console.log(Math.round(-1.9)); // 结果正常四舍五入，是-2
+
+        // Math库的floor是向下取整功能
+        console.log(Math.floor(2.1)); // 结果是2
+        console.log(Math.floor(2.9)); // 结果是2
+        console.log(Math.floor('3')); // 隐式转换数据类型，结果是3
+
+        // Math库的ceil是向上取整
+        console.log(Math.ceil(5.1)); // 结果是6
+        console.log(Math.ceil(5.9)); // 结果是6
+
+        // trunc是取一个数的整数部分，把小数点和小数点后面的全都删掉
+        console.log(Math.trunc(3.2)); // 结果是3
+        console.log(Math.trunc(3.9)); // 结果是3
+
+
+
+        // Math库的random是生成一个0-1之间的随机数，含0不含1
+        console.log(Math.random());
+        // 得到一个两个数之间的随机整数的公式,MDN里写好的，直接复制过来用，但要记住怎么写。
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min; //不含最大值，含最小值
+        }
+        console.log(getRandomInt(1, 10)); // 结果是1-10之间的随机整数，可能会等于1，但小于10；
+        // 随机点名演示：
+        var arr = ['张三', '李四', '王二', '隔壁老王'];
+        console.log(arr[getRandomInt(0, 3)]); // 参数是数组的索引，从0开始到3结束，不等于3。
+        // 参数是数组的索引，从0开始到数组的长度-1结束，这种写法更动态，不管数组长度是多少都满足。
+        console.log(arr[getRandomInt(0, arr.length - 1)]);
+        // 猜数字游戏，1~10之间的整数，演示：
+        var a = getRandomInt(1, 10);
+        while (a != b) {
+            var b = prompt('你来猜？请输入一个1~10之间的数字');
+            if (a > b) {
+                alert('数字小了，继续猜');
+            } else if (a < b) {
+                alert('数字大了，继续猜');
+            } else if (a == b) {
+                alert('猜对了');
+            }
+        }
+        // 或者这么写
+        var random = getRandomInt(1, 10);
+        while (true) { // 死循环，里面一定要写退出循环的代码。
+            var num = prompt('猜？请输入一个1~10之间的数字');
+            if (random > num) {
+                alert('数字小了，继续猜');
+            } else if (random < num) {
+                alert('数字大了，继续猜');
+            } else {
+                alert('猜对了'); // 除了大于小于就是等于，所以等于直接else，不用再写判断条件。
+                break; // 退出循环的条件，否则是死循环
+            }
+        }
+
+        // 猜一个1~50之间的数字，只有10次机会
+        var randomInt = getRandomInt(1, 50);
+        for (var i = 0; i < 10; i++) {
+            var numb = prompt('猜？只有10次机会哦！请输入一个1~50之间的数字');
+            if (i == 9) {
+                alert('您已经猜错10次了，下次继续努力');
+            } else if (randomInt > numb) {
+                alert('数字小了，继续猜');
+            } else if (random < num) {
+                alert('数字大了，继续猜');
+            } else {
+                alert('猜对了');
+                break;
+            }
+        }
+
+
+
+
+        // Math库的abs是返回一个数值的绝对值,正数的绝对值是它本身，负数的绝对值是它去掉负号后的数值
+        console.log(Math.abs(2.3)); // 结果是2.3
+        console.log(Math.abs(-2.3)); // 结果是2.3
+        console.log(Math.abs(10)); // 结果是10
+        console.log(Math.abs(-10)); // 结果是10
+
+        // Math库的max是取一组数值中的最大值
+        console.log(Math.max()); // 结果是-Infinity
+        console.log(Math.max(3, 5, 7)); // 结果是7
+        console.log(Math.max([3, 5, 7])); // 结果是NaN,因为只能传数值，不能传数组
+
+        // Math库的min是取一组数值中的最小值
+        console.log(Math.min()); // 结果是-Infinity
+        console.log(Math.min(3, 5, 7)); // 结果是3
+        console.log(Math.min([3, 5, 7])); // 结果是NaN,因为只能传数值，不能传数组
+
+        // Math库的pow是给两个参数数值进行幂运算，第一个参数是基数，第二个参数是指数
+        console.log(Math.pow(2, 3)); // 表示2的3次方，结果是8
+        console.log(Math.pow(2, )); // 不传参数和一个参数都返回NaN
+        console.log(Math.pow(3, 3, 5)); // 表示3的3次幂，结果是27，5是多余的参数，不报错，也不运算。
+
+        // Math库的sqrt是给一个参数数值开平方
+        console.log(Math.sqrt(8)); // 结果是2.8几的数，就是两个相同的2.8几的数相乘等于8。
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
