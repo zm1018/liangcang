@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1 {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            margin-top: 50px;
+        }
+        
+        input {
+            autocomplete: off;
+            outline: none;
+        }
+    </style>
+    <script>
+        // // window.onload 表示的是窗口加载完成这个事件，匿名函数function表示窗口加载完成后要执行的代码函数
+        window.onload = function() {
+
+            // 通过标签名控制标签,
+            // 同一个input标签，标签名控制的代码要写在最上面，才能各自执行，如果标签名写在id名下面，id名的代码会被覆盖掉，执行标签名。标签名控制的正确的应该执行的那个标签不执行了。
+
+            // 先获得html页面的元素，通过元素名（标签名）获得此元素，返回一个对象集，再通过此标签属性的索引号获得要操作的对象属性（标签）
+            var button = document.getElementsByTagName('button')[0];
+            // console.log(button);
+            // 给button按钮添加鼠标左键点击事件
+            button.onclick = function() {
+                alert('我是通过标签名直接控制的');
+            };
+            // 给button按钮添加鼠标右键点击事件
+            button.oncontextmenu = function() {
+                alert('我被鼠标右键单击了');
+                // 函数返回值是false，就取消单击鼠标右键时弹出的默认下拉菜单
+                return false;
+            }
+
+
+            // 通过标签的id名控制标签：
+            // 先获取html页面的元素，通过id属性获得这个标签
+            var myButton = document.getElementById("myButton");
+            // console.log(typeof myButton);
+            // 得到id名是myButton的标签对象，对这个对象添加鼠标左键点击事件
+            myButton.onclick = function() {
+                // 点击这个标签会弹出提示框
+                alert('我被点击了,我是通过id名控制的');
+            }
+
+
+            // 通过标签的类名控制标签
+            // 先获取html页面的元素，通过class名获得这个标签，返回一个对象集,再通过查看此标签对象集的索引号获得自己要操作的对象标签。
+            var myButton2 = document.getElementsByClassName('myButton2')[0];
+            // console.log(myButton2);
+            // console.log(typeof myButton2);
+            myButton2.onclick = function() {
+                alert('我是通过类名控制的');
+            }
+
+
+            // 用js设置鼠标移入和鼠标移出控制元素的css样式
+            var div1 = document.getElementById('div1');
+            // 鼠标移入时
+            div1.onmouseover = function() {
+                    // 修改id名为div1的标签的css背景色属性值，把red改成yellow,
+                    // 可以用this指向，谁调用函数就指向谁，也可以直接写div1.style..
+                    this.style.backgroundColor = 'yellow';
+                }
+                // 鼠标移出时
+            div1.onmouseout = function() {
+                // 将移入时修改的颜色恢复成red色
+                div1.style.backgroundColor = 'red'
+            }
+
+
+            // 获取鼠标光标的焦点、失去焦点
+            var uname = document.getElementById('uname');
+            // 获得焦点，鼠标点击时input框背景色变成粉色
+            uname.onfocus = function() {
+                this.style.backgroundColor = 'pink';
+            }
+            uname.onblur = function() {
+                this.style.backgroundColor = 'transparent';
+
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!-- js通过标签名控制此标签 -->
+    <button>点击按钮3</button>
+    <!-- js通过id名控制此标签 -->
+    <button id="myButton">点击按钮1</button>
+    <!-- js通过类名控制此标签 -->
+    <button class="myButton2">点击按钮2</button>
+    <div id="div1">js控制鼠标移入时修改css样式变色</div>
+    <input type="text" id="uname">
+
+</body>
+
+</html>

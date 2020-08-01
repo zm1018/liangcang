@@ -1,0 +1,39 @@
+文档对象模型 (DOM) 将 web 页面与到脚本或编程语言连接起来。
+
+获取html页面元素的3种方式：
+    获取html标签的id属性名：
+        document.getElementById("");
+        得到一个对象
+    获取html标签的class属性名：
+        document.getElementsByClassName("")
+        参数是字符串类型的，多个参数之间用空格隔开，
+        得到一个对象集，需要通过索引来操作里面的对象
+    获取html标签：
+        document.getElementsByTagName("")
+        得到返回带有指定标签名的对象的集合，需要通过索引来操作里面的对象
+
+控制html标签的属性：
+    理论上可以通过 （.）点 语法,访问标签上的任意属性，
+    class属性是个例外，需要className访问。
+控制html标签包裹的内容：
+    innerHTML可以读取或者设置标签包裹的内容。
+
+this指向，谁调用function匿名函数，this就指向谁。
+
+鼠标事件：
+    onclick 鼠标左键单击事件
+    oncontextmenu() 点击鼠标右键
+    onmouseout 鼠标移开
+    onmouseover 鼠标经过
+表单事件：
+    onfocus 获取光标焦点
+    onblur 失去光标焦点
+    onchange 文本框内容改变
+    onselect 内容选中
+    onload 加载
+    onunload 页面卸载
+
+css代码通过控制的标签.style来控制，通过style.样式属性='值'来修改css样式。
+css样式属性名在js里采用小驼峰命名规范：
+    例如：text-align应该写成textAlign,
+        background-color应该写成backgroundColor,
