@@ -5,10 +5,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #div1 {
+            width: 100px;
+            height: 30px;
+            border: 1px solid;
+            text-align: center;
+            line-height: 30px;
+        }
+        
+        #div2 {
+            width: 300px;
+            height: 200px;
+            border: 1px solid;
+        }
+    </style>
+    <script>
+        // 生成随机验证码
+        function testCode(n) {
+            var arr = [];
+            for (var i = 0; i < n; i++) {
+                var num = parseInt(Math.random() * 123);
+                if (num >= 0 && num <= 9) {
+                    arr.push(num);
+                } else if (num >= 97 && num <= 122 || num >= 65 && num <= 90) {
+                    arr.push(String.fromCharCode(num));
+                } else {
+                    i--;
+                }
+            }
+            return arr.join("");
+        }
+        // 点击button按钮，将验证码在div标签里输出
+
+        function btnClick() {
+            var div1 = document.getElementById('div1');
+            div1.innerHTML = testCode(6);
+        }
+
+        // 敏感词过滤
+        function btnOnClick() {
+            // 获取到文本域标签
+            var text1 = document.getElementById('text1');
+            // 获取到div2标签
+            var div2 = document.getElementById('div2');
+            // 通过文本域标签的value属性获得内容，得到一个字符串，赋值给变量oValue
+            var oValue = text1.value;
+            // 将需要过滤的敏感词写成全局匹配的正则表达式，存到一个数组里备用
+            var arr = [/靠/g, /tmd/gi, /nmd/gi];
+            // 遍历存敏感词的数组
+            for (var i = 0; i < arr.length; i++) {
+                // 将字符串中出现的敏感词数组中索引为i的元素替换成*，并赋值给原字符串，因为任何方法都不能改变原字符串的值，只有对原字符串重新赋值。
+                oValue = oValue.replace(arr[i], '*');
+            }
+            // 点击发布时，将过滤后的字符串，存到div标签的内容区域显示
+            div2.innerHTML = oValue;
+            // 点击发布后将文本域标签里的内容清空
+            text1.value = '';
+        }
+    </script>
 </head>
 
 <body>
+    <!-- 点击button按钮，刷新div里面的内容 -->
+    <div id="div1">000000</div>
+    <!-- 给按钮添加点击事件，执行按钮的点击事件调用btnClick()函数 -->
+    <button onclick="btnClick();">点击刷新验证码</button>
+    <br>
 
+    <!-- 敏感词过滤 -->
+    请输入内容：
+    <br>
+    <textarea name="" id="text1" cols="30" rows="10"></textarea>
+    <button onclick="btnOnClick();">发布</button>
+    <div id="div2"></div>
 </body>
 
 </html>

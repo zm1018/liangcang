@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        #ul1 {
+            /* 绝对定位的父级定位一定要是html标签，才能在窗口的任意地方获取点击鼠标右键时的x、y坐标 */
+            position: absolute;
+            /* 不需要在这里设置定位的坐标值，可以直接在js里设置 */
+            /* left: 0px;
+            top: 0px; */
+            width: 120px;
+            background-color: skyblue;
+            line-height: 35px;
+            /* 加载页面时隐藏ul1标签，在鼠标右键点击时通过js控制显示 */
+            display: none;
+        }
+        
+        #ul1 li {
+            border-bottom: 1px solid pink;
+            padding-left: 20px;
+        }
+        
+        #nav {
+            width: 300px;
+            height: 50px;
+            margin: 0 auto;
+            /* padding: 10px; */
+            text-align: center;
+            line-height: 50px;
+            vertical-align: middle;
+            background-color: #ccc;
+            font-size: 20px;
+        }
+        
+        #nav>li {
+            float: left;
+            width: 100px;
+            /* margin: 0 auto; */
+            /* text-align: center; */
+        }
+        
+        #nav>li:nth-child(2) ul {
+            display: none;
+            background-color: #ccc;
+            border-top: 1px solid #918f8f;
+        }
+        
+        #nav>li:nth-child(2) ul li {
+            border-bottom: 1px solid #918f8f;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // 获取点击右键时的x、y坐标
+            document.oncontextmenu = function(e) {
+                // 这个函数得到整个鼠标右键事件
+                console.log(e);
+                // 通过鼠标右键事件里的clientX属性获取鼠标右键点击时坐标x的值
+                var x = e.clientX,
+                    // 通过clientY获取鼠标右键点击时坐标y的值
+                    y = e.clientY;
+
+                // 获取id名为ul1的标签
+                var ul1 = document.getElementById('ul1');
+                // 鼠标右键点击时显示ul1标签
+                ul1.style.display = 'block';
+                // 每次点击右键时对ul标签的坐标位置值进行调整，实现在什么位置点击，菜单就在什么位置显示。
+                // 修改ul1标签的css样式，这里修改的是定位的x和y坐标的值，因为值返回的是数字，所以要拼接上px单位。
+                ul1.style.left = x + "px";
+                ul1.style.top = y + "px";
+                // 取消点击右键时默认弹出的下拉菜单
+                // return false;
+            };
+
+
+            // 鼠标经过时显示导航栏第2个li的子下拉菜单
+            var li2 = document.getElementById('li2');
+            // console.log(li2);
+            var list = document.getElementById('list');
+            // 鼠标经过时显示
+            li2.onmouseover = function() {
+                    list.style.display = 'block';
+                }
+                // 鼠标离开时隐藏
+            li2.onmouseout = function() {
+                list.style.display = 'none';
+            }
+
+            // 获取input里用户输入的内容
+            var username = document.getElementById('username');
+            // console.log(username);
+            // 捕捉输入框的文本内容改变
+            username.onchange = function() {
+                // 得到id名为username的input输入框里用户输入的内容，这个内容存在value属性里，所以this指向value，也可以写成username.value
+                console.log(this.value);
+                console.log(username.value);
+            };
+            // 获取下拉菜单option标签的value属性值和option标签包裹的内容
+            var address = document.getElementById('address');
+            // onchange是获取表单里文本框改变事件的，文本框一变它就能捕捉到
+            address.onchange = function() {
+                // 得到下拉菜单里的value属性值
+                console.log(this.value);
+                // 通过selectedIndex得到select标签的每个元素的索引号,每个元素是指option标签
+                console.log(this.selectedIndex);
+                // 获取option标签包裹的文本，先获取id名为address的select标签的option属性（也就是option标签），得到一个数组类型，再获取想得到的那个option标签的索引号，得到option标签后再获取它存文本的text属性，返回值是text属性的值，也就是文本内容。
+                console.log(address.options); // 这里得到所有select标签里的option标签
+                // 这里得到选择哪个option标签就返回它的索引号，根据索引号得到此option标签，再得到它的text属性值。
+                console.log(address.options[this.selectedIndex].text);
+                // 或者用innerHTML属性也可以得到option标签包裹的文本
+                console.log(address.options[address.options.selectedIndex].innerHTML);
+                // this指向，谁调用就指向谁，所以这里是address.options调用，可以简写成
+                console.log(address.options[this.selectedIndex].innerHTML);
+            }
+
+
+            // 点击父下拉菜单生成子下拉菜单
+            var address2 = document.getElementById('address2'),
+                sub = document.getElementById('sub'),
+                arr = [
+                    ['沈阳', '大连'],
+                    ['成都', '绵阳', '德阳'],
+                    ['长沙', '株洲'],
+                    ['石家庄', '保定']
+                ];
+            address2.onchange = function() {
+                var index = this.value;
+                // 必须要判断,并把满足条件的代码写在判断条件控制的里面,否则执行到value值等于空字符串的,表示获取不到正确的数字类型作为索引号，会报错。
+                if (index !== "") {
+                    // 获取数组arr的索引号，参数索引号是option标签的value值，赋值给变量city
+                    var city = arr[index],
+                        // str变量，存的是生成select标签的初始化值。
+                        str = "<select>";
+                    // 遍历city数组里的每个元素
+                    for (var i = 0; i < city.length; i++) {
+                        // 将生成select标签的变量str拼接上要显示的子项option标签和每个生成的option标签里要显示的文本内容，文本内容是city数组的每个元素。
+                        str += "<option>" + city[i] + "</option>";
+                    }
+                    // 再追加str变量存的字符串，因为select标签是双标签，这里是闭合select标签
+                    str += "</select>";
+                    // 将str变量存的字符串赋值给id名为sub的span标签的innerHTML属性，这个属性是获取标签包裹的内容部分的，所以就把一个js生成的子下拉菜单作为span标签的内容部分显示到页面上。
+                    sub.innerHTML = str;
+                } else {
+                    // 因为文本内容是请选择的那个option标签的value属性值是""，如果这里不设置成空字符串，那再点击其它option标签后,再点击请选择,后面显示的子菜单也不会消失,依旧是显示之前点击生成的子菜单.
+                    sub.innerHTML = "";
+                }
+            }
+
+
+
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- 自定义鼠标右键的下拉菜单  -->
+    <ul id="ul1">
+        <li>内容1</li>
+        <li>内容2</li>
+        <li>内容3</li>
+        <li>内容4</li>
+        <li>内容5</li>
+    </ul>
+
+    <!-- 点击导航栏，显示子下拉菜单 -->
+    <ul id="nav">
+        <li>首页</li>
+        <li id="li2">课程
+            <ul id="list">
+                <li>js</li>
+                <li>css</li>
+                <li>html</li>
+            </ul>
+        </li>
+        <li>经典案例</li>
+    </ul>
+
+    <!-- 通过用户选择下拉菜单的子项，获取select下拉菜单中的value属性值和option标签包裹的内容 -->
+    <form action="">
+        <input type="text" id="username" style="margin-top: 300px;"> <br> 地址：
+        <select name="" id="address">
+            <option value="beijing">北京</option>
+            <option value="shanghai">上海</option>
+            <option value="guangzhou">广州</option>
+        </select>
+        <br>
+        <br>
+        <!-- 下拉菜单联动，点击父下拉菜单中的元素，生成另一个子下拉菜单 -->
+        <select name="" id="address2">
+            <option value="">请选择</option>
+            <option value="0">辽宁</option>
+            <option value="1">四川</option>
+            <option value="2">湖南</option>
+            <option value="3">河北</option>
+        </select>
+        <!-- 这个span标签用来存js生成的子下拉菜单，控制它的显示位置是在select标签的后面，在一行上显示 -->
+        <span id="sub"></span>
+    </form>
+</body>
+
+</html>

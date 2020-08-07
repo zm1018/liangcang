@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
+        // js里除法运算，除数可以为0，不会报除0错误，会得到特殊数字类型的运算结果值。
+        var numb = 10 / 0;
+        console.log(numb); // 得到Infinity
+        numb = -10 / 0;
+        console.log(numb); // 得到-Infinity
+
         // 递增运算，前递增和后递增单独写时结果一样，和其它表达式一起运算时，结果不同。
         var num = 5;
         ++num; //前递增，结果是6，是num = num + 1;的简写。

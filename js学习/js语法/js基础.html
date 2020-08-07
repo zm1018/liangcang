@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
+        // 在页面输出内容
+        document.write('hello world');
+        // 参数里面含有标签，会自动解析标签
+        document.write('<h1>hello world</h1>');
+        // 不想自动解析参数里面含有标签，需要用转义符&lt;&gt;将标签转义
+        document.write('&lt;h1&gt;hello world&lt;/h1&gt;');
+
         // 弹出警示框
         alert('我是警示框');
         // 弹出输入框，并把输入框的内容作为变量的值

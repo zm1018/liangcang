@@ -14,7 +14,6 @@
         }
         
         input {
-            autocomplete: off;
             outline: none;
         }
     </style>
@@ -65,26 +64,35 @@
             var div1 = document.getElementById('div1');
             // 鼠标移入时
             div1.onmouseover = function() {
-                    // 修改id名为div1的标签的css背景色属性值，把red改成yellow,
-                    // 可以用this指向，谁调用函数就指向谁，也可以直接写div1.style..
-                    this.style.backgroundColor = 'yellow';
-                }
-                // 鼠标移出时
+                // 修改id名为div1的标签的css背景色属性值，把red改成yellow,
+                // 可以用this指向，谁调用函数就指向谁，也可以直接写div1.style..
+                this.style.backgroundColor = 'yellow';
+                // 修改div1标签包裹的内容
+                div1.innerHTML = '我是被js修改的内容';
+            };
+            // 鼠标移出时
             div1.onmouseout = function() {
                 // 将移入时修改的颜色恢复成red色
-                div1.style.backgroundColor = 'red'
-            }
+                div1.style.backgroundColor = 'red';
+                // 将修改的div1标签包裹的内容恢复
+                div1.innerHTML = 'js控制鼠标移入时修改css样式变色';
+            };
+            // 查看div1标签里包裹的内容
+            console.log(div1.innerHTML);
+            // // 把div标签替换成别的标签，执行结果并没替换，而是在div内生成了这个span标签
+            // div1.innerHTML = '<span>怎么没替换啊</span>'
+
 
 
             // 获取鼠标光标的焦点、失去焦点
             var uname = document.getElementById('uname');
             // 获得焦点，鼠标点击时input框背景色变成粉色
             uname.onfocus = function() {
-                this.style.backgroundColor = 'pink';
-            }
+                    this.style.backgroundColor = 'pink';
+                }
+                // 失去焦点，就是鼠标点击输入框之外的其它任何区域，输入框就失去了焦点，背景色变成透明色。
             uname.onblur = function() {
                 this.style.backgroundColor = 'transparent';
-
             }
         }
     </script>
@@ -98,7 +106,8 @@
     <!-- js通过类名控制此标签 -->
     <button class="myButton2">点击按钮2</button>
     <div id="div1">js控制鼠标移入时修改css样式变色</div>
-    <input type="text" id="uname">
+    <!-- autocomplete: off;是input标签的属性，不是css样式的属性 -->
+    <input type="text" id="uname" autocomplete="off" ;>
 
 </body>
 

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        span {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+        }
+        
+        input {
+            margin-left: 20px;
+            margin-bottom: 10px;
+            width: 230px;
+        }
+        
+        #username {
+            width: 130px;
+            margin-bottom: 0;
+        }
+        
+        select {
+            width: 84px;
+        }
+        
+        #u_validation {
+            margin-left: 120px;
+            margin-bottom: 10px;
+            padding-left: 5px;
+            width: 230px;
+            font-size: 14px;
+            text-align: left;
+            color: red;
+            /* border: 1px solid red; */
+        }
+    </style>
+    <script>
+        // 事件驱动函数onblur是鼠标失去焦点时才会触发这个函数
+        function func() {
+            // 获取邮件地址输入框里用户输入的内容
+            var username = document.getElementById('username'),
+                // 获取用户输入邮件地址后，鼠标失去焦点时，显示提示信息的span标签
+                u_s = document.getElementById('u_validation'),
+                // 将用户输入的内容字符串赋值给一个变量
+                oValue = username.value;
+            // 判断用户输入的长度是否是6~18的长度
+            if (oValue.length < 6 || oValue.length > 18) {
+                // 如果满足if判断条件，表示用户输入的长度是不符合要求的，提示用户按要求输入
+                u_s.innerHTML = '!长度应为6~18个字符';
+                // 判断用户输入的第一个字符是不是字母
+            } else if (!isABC(oValue[0])) {
+                // 如果满足else if判断条件，表示用户输入的第一个字符不是字母，提示用户按要求输入
+                u_s.innerHTML = '!邮件地址必需是英文字母开头';
+                // 判断用户输入的是不是
+            } else {
+                // 假设用户输入的每个字符都是符合数字、字母、下划线要求的
+                var isYes = true;
+                // 将用户输入的所有字符遍历
+                for (var i = 0; i < oValue.length; i++) {
+                    // 如果有一个字符不是数字、字母、下划线的，退出循环，让isYes = false; 否则把每个字符都判断一遍。
+                    if (!isDEF(oValue[i])) {
+                        isYes = false;
+                        break;
+                    }
+                }
+                // 如果循环完的isYes = true,就提示用户邮件地址正确
+                if (isYes) {
+                    // 要把其它判断条件提示的颜色改成red,否则这个green触发了,不刷新页面提示就都是绿色了,懒得改,以后看看有没有别的快捷方法
+                    u_s.style.color = 'green';
+                    u_s.innerHTML = '√ 该邮件地址可以注册!'
+                } else {
+                    // 否则提示用户按要求输入
+                    u_s.innerHTML = '邮件地址需由字母、数字、下划线组成';
+                }
+            }
+
+        }
+        // 判断字符是不是字母的函数,是返回true,不是返回false
+        function isABC(charStr) {
+            if (charStr >= 'a' && charStr <= 'z' || charStr >= 'A' && charStr <= 'Z') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // 判断字符是不是非法字符的函数,是返回true,不是返回false
+        function isDEF(charStr) {
+            if (charStr >= 0 && charStr <= 9 || charStr >= 'a' && charStr <= 'z' || charStr >= 'A' && charStr <= 'Z' || charStr === '_') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // alert(isABC('12'));
+    </script>
+</head>
+
+<body>
+    <form action="">
+        <ul>
+            <li>
+                <span>* 邮件地址</span><input type="email" id="username" onblur="func();">@<select name="">
+            <option value="">163.com</option>
+            <option value="">qq.com</option>
+                </select>
+                <br><span id="u_validation">6~18个字符,可以使用字母、数字、下划线，须以字母开头</span>
+            </li>
+            <li><span>* 密码</span><input type="password"></li>
+            <li><span>* 确认密码</span><input type="password"></li>
+            <li><span>* 验证码</span><input type="text"></li>
+            <li><span>* 手机号码</span><input type="tel"></li>
+        </ul>
+
+
+    </form>
+</body>
+
+</html>
