@@ -9,7 +9,8 @@
         // Date对象是构造函数，功能是获取当前时间日期的，构造函数必需用new操作符来调用
 
         var date = new Date(); // 调用Date构造函数创建一个获得当前系统时间的date对象。
-        console.log(date); // 输出当前系统时间，得到Tue Jul 28 2020 13:05:09，这种格式不利于看
+        // 输出当前系统时间，得到js内置Date对象.html:12 Fri Aug 07 2020 20:13:23 GMT+0800 (中国标准时间)，GMT是格林尼治时间,全球的时间都要用格林尼治时间进行换算,这种格式不利于看
+        console.log(date);
 
         // 调用Date构造函数创建一个date1对象，参数是数字类型,参数之间用,隔开。
         var date1 = new Date(2020, 10, 01);
@@ -39,7 +40,7 @@
         function format_date() {
             var date = new Date(),
                 year = date.getFullYear(),
-                month = date.getMonth(),
+                month = date.getMonth() + 1,
                 // 月份如果小于10，月份前面补个0，不小于10就直接返回当前月份
                 month = month < 10 ? '0' + month : month,
                 dates = date.getDate(),
@@ -59,6 +60,31 @@
         }
         console.log(format_date()); // 得到2020年06月28日 星期二 14:21:19
 
+        // 定时器,第一个参数是匿名函数,在页面上实时显示当前时间,1秒更新一次时间
+        setInterval(function() {
+            var div1 = document.getElementById('div1');
+            div1.innerHTML = format_date();
+        }, 1000)
+
+        // 定时器第二种写法,在外面封装一个函数,定时器第一个参数直接调用这个函数,1秒更新一次时间,更新5秒后停止
+        var i = 0;
+
+        function show() {
+            // 5秒时
+            if (i == 5) {
+                // 调用timer变量,停止定时器
+                clearInterval(timer);
+            }
+            var div2 = document.getElementById('div2');
+            div2.innerHTML = format_date();
+            // 计数器i自加到5时,满足if控制的条件,停止定时器
+            i++;
+        }
+        // 调用定时器,并将定时器的返回值(编号)赋值给timer变量,调用时参数函数不带括号
+        var timer = setInterval(show, 1000);
+
+
+
         // 总毫秒数（时间戳）获取的4种方式,是从1970.1.1到当前时间的总毫秒数：
         var time = new Date();
         console.log(time.valueOf()); // 第一种，得到1595940049138毫秒，不传参数获得的毫秒精确
@@ -66,8 +92,9 @@
         var millisecond = +new Date(); // 第三种，最常用
         console.log(millisecond);
         console.log(Date.now()); // 第四种，h5新增的，要考虑浏览器兼容问题，这个方法没有参数。
+        console.log('第五种' + Date.parse(Date())); // 第五种必需传时间对象作为参数,否则返回NaN.
 
-        // 如果给括号里传参数，字符串类型的时间， 就是从1970 .1 .1 到传入的参数时间的总毫秒数,但传参数的计算结果不精确，后面都用0代替了。
+        // 如果给括号里传参数，字符串类型的时间， 就是从1970 .1 .1 到传入的参数时间的总毫秒数,但传参数的计算结果不精确，后面都用6个0代替了,有几秒误差。
         var time1 = +new Date('2020-07-28 20:40:00');
         console.log(time1); // 得到1595940000000毫秒，传参数获得的毫秒不精确
 
@@ -113,7 +140,8 @@
 </head>
 
 <body>
-
+    <div id="div1"></div>
+    <div id="div2"></div>
 </body>
 
 </html>

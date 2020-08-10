@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1,
+        #div2 {
+            width: 200px;
+            height: 240px;
+            text-align: center;
+            padding-top: 20px;
+            margin-bottom: 10px;
+            background-color: skyblue;
+        }
+        
+        button {
+            width: 80px;
+            height: 30px;
+            margin: 20px;
+            color: #fff;
+            background-color: #000;
+        }
+    </style>
+    <script>
+        // 封装获取标签id的函数,因为所有添加了id属性的标签都要通过document.getElementById()来获取标签,为了获取每个标签时不用重复写这么长一串,就将它封装成一个名字短的函数,调用函数传入id名当参数,就能和document.getElementById()来获取标签实现的功能一样
+        function $(id) {
+            return document.getElementById(id);
+        }
+        // 封装只要一个数小于10就在数字前面补个0的函数,给显示的时间前面补0
+        function zeroize(n) {
+            if (n < 10) {
+                return '0' + n;
+            } else {
+                return n;
+            }
+        }
+
+        // 页面程序执行完后再执行此函数里的代码
+        window.onload = function() {
+            // 存总秒数
+            var i = 0,
+                // 存定时器的返回值的初始化变量
+                times = null;
+            /* 
+            给id名为start的标签添加点击事件,执行开始定时器的功能,
+            这里有一个问题,用户点击几次开始,就会开启几个定时器,
+            几个定时器同时执行,时间会几倍速的变化,
+            此时按暂停按钮,无法暂停定时器,因为点击暂停按钮只能暂停一个定时器,
+            解决办法:
+                让开始按钮只能点击一次,
+                需要将开始按钮和暂停按钮合并成一个按钮,
+                点击开始,显示暂停,执行定时器,
+                点击暂停,显示开始,关闭定时器 
+            */
+            $('start').onclick = function() {
+                // 使用定时器方法,将定时器的返回值(编号)赋值给times变量
+                times = setInterval(function() {
+                    // 每一秒钟让i自加1,秒钟是由定时器的第二个参数毫秒数得到的,每1000毫秒调用一次第一个参数函数.
+                    i++;
+                    // 将span标签包裹的内容00修改成总秒数i换算的时间值
+                    $('sec').innerHTML = zeroize(parseInt(i % 60));
+                    $('min').innerHTML = zeroize(parseInt(i / 60) % 60);
+                    $('hour').innerHTML = zeroize(parseInt(i / 3600) % 24);
+                    // 1000是第二个参数,毫秒数
+                }, 1000)
+            };
+            // 给id名为pause的标签添加点击事件,执行关闭定时器的功能
+            $('pause').onclick = function() {
+                // 使用关闭定时器方法,参数是定时器的返回值(编号)
+                clearInterval(times);
+            };
+            // 给id名为reset的标签添加点击事件,执行关闭定时器,将总秒数和span标签显示的时间都清零的功能
+            $('reset').onclick = function() {
+                /* 
+                关闭定时器,
+                如果当前是开始按钮,启动了定时器,需要先关闭定时器再清零,
+                不管用户是按了暂停还是开始按钮,都再执行一遍关闭定时器,就不用判断当前是开始还是暂停按钮了 
+                */
+                clearInterval(times);
+                // 将总秒数清零,以便再次按开始按钮时从0开始计数
+                i = 0;
+                // 将所有显示时间的span标签的显示内容都清零
+                $('sec').innerHTML = '00';
+                $('min').innerHTML = '00';
+                $('hour').innerHTML = '00';
+            }
+
+
+            // 解决开始按钮可以点击多次,同时开启多个定时器的问题
+            var j = 0, // 总秒数
+                times2 = null, // 定时器的返回值
+                // 代表当前定时器是否运行,页面加载完是没有运行的,所以初始值是false,等于true是运行
+                isRunning = false;
+            // 将执行开始按钮的功能封装成函数
+            function start2() {
+                // 执行开始功能的时候,开启定时器
+                times2 = setInterval(function() {
+                    // 每1000毫秒时给总秒数j自加1
+                    j++;
+                    $('sec2').innerHTML = zeroize(parseInt(j % 60));
+                    $('min2').innerHTML = zeroize(parseInt(j / 60) % 60);
+                    $('hour2').innerHTML = zeroize(parseInt(j / 3600) % 24);
+                }, 1000)
+            }
+            // 将执行暂停按钮的功能封装成函数
+            function pause2() {
+                // 关闭定时器
+                clearInterval(times2);
+            }
+            // 给id名为btn的按钮添加点击事件
+            $('btn').onclick = function() {
+                // 当isRunning=false取反,表示等于true
+                if (!isRunning) {
+                    // 将id名为btn的按钮包裹的内容修改成 '暂停'显示
+                    $('btn').innerHTML = '暂停';
+                    // 将isRunning=true,表示定时器是运行状态
+                    isRunning = true;
+                    // 调用执行开始按钮的函数
+                    start2();
+                } else {
+                    // 将id名为btn的按钮包裹的内容修改成 '开始'显示
+                    $('btn').innerHTML = '开始';
+                    // 将isRunning=true,表示定时器是关闭状态
+                    isRunning = false;
+                    // 调用执行暂停按钮的函数
+                    pause2();
+                }
+            };
+            // 执行复位按钮的函数,也就是将所有显示都恢复初始化的样子.
+            $('reset2').onclick = function() {
+                clearInterval(times2);
+                j = 0;
+                isRunning = false;
+                $('btn').innerHTML = '开始';
+                $('sec2').innerHTML = '00';
+                $('min2').innerHTML = '00';
+                $('hour2').innerHTML = '00';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="div1">
+        <span id="hour">00</span>
+        <span>:</span>
+        <span id="min">00</span>
+        <span>:</span>
+        <span id="sec">00</span>
+        <br>
+        <button id="start">开始</button><br>
+        <button id="pause">暂停</button><br>
+        <button id="reset">复位</button>
+    </div>
+    <!-- 解决开始按钮可以点击多次,同时开启多个定时器的问题  -->
+    <div id="div2">
+        <span id="hour2">00</span>
+        <span>:</span>
+        <span id="min2">00</span>
+        <span>:</span>
+        <span id="sec2">00</span>
+        <br>
+        <!-- 将开始和暂停功能合并到一个按钮上 -->
+        <button id="btn">开始</button><br>
+        <!-- <button id="pause2">暂停</button><br> -->
+        <button id="reset2">复位</button>
+    </div>
+</body>
+
+</html>

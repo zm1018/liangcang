@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1,
+        .div2 {
+            color: blue;
+        }
+        
+        .span1 {
+            background-color: #ccc;
+        }
+    </style>
+    <script>
+        // 因为通过getElementByClassName()获取节点有兼容性问题,所以自己封装一个没有兼容性问题,但功能一样的函数.
+        // 参数node表示从哪个标签开始获取,
+        // 参数classStr表示获取哪个标签,
+        function elementsByClassName(node, classStr) {
+            // 参数 * 是通配符,表示node开始的所有符合条件的classStr(标签)
+            var nodes = node.getElementsByTagName('*'),
+                // 存符合条件的标签
+                arr = [];
+            // 遍历所有符合条件的标签
+            for (var i = 0; i < nodes.length; i++) {
+                // 如果符合条件(条件是函数传入的第二个参数classStr)的标签的类名,全等于需要获取的标签
+                if (nodes[i].className === classStr) {
+                    // 将这个标签存到数组里
+                    arr.push(nodes[i]);
+                }
+            }
+            // 返回所有符合条件的标签
+            return arr;
+        }
+        // 调用上面的自定义通过类名获取标签的函数
+        window.onload = function() {
+            // 先获取id名为div1的标签
+            var div1 = document.getElementById('div1');
+            // 调用自定义函数,获取div1标签里所有类名为span1的标签
+            var span1 = elementsByClassName(div1, 'span1');
+            alert(span1.length);
+            // 遍历每个类名是span1的标签
+            for (var i = 0; i < span1.length; i++) {
+                // 将每个类名是span1的标签修改成块元素
+                span1[i].style.display = 'block';
+
+                // 通过.style只能获取行内css样式,所以输出空的,而不是输出blue
+                // alert(span1[i].style.color);
+
+                // 在谷歌等浏览器上获取css内部或外部样式,在IE浏览器上报错
+                // alert(getComputedStyle(span1[i])['color']);
+
+                // 在IE浏览器上获取css内部或外部样式,在谷歌等浏览器上报错
+                // alert(span1[i].currentStyle['color']);
+
+                // 通过调用封装的跨浏览器函数获取css内部或外部样式的函数,得到样式的值;
+                // alert(getStyle(span1[i], 'color'));
+                // alert(getStyle(span1[i], 'backgroundColor'));
+
+                // 通过.style可以修改css样式,修改后的css样式变成行内样式,权重最高
+                // 将每个类名是span1的标签文字颜色修改成红色
+                span1[i].style.color = 'red';
+
+                // 修改后可以通过.style获取样式
+                // alert(span1[i].style.color);
+            }
+            var div2 = elementsByClassName(document, 'div2');
+            console.log(div2);
+            console.log(getStyle(div2[0], 'color'));
+        }
+
+        // 封装一个跨浏览器获取内部或外部css样式的函数
+        // node表示变量名(标签),是获取到的标签赋值给变量
+        // cssStyle表示标签的样式属性
+        function getStyle(node, cssStyle) {
+            return node.currentStyle ? node.currentStyle[cssStyle] : getComputedStyle(node)[cssStyle];
+        }
+    </script>
+</head>
+
+<body>
+    <div id="div1">
+        <span class="span1">没有兼容问题的自定义通过类名获取标签的方法</span>
+        <span class="span1">没有兼容问题的自定义通过类名获取标签的方法</span>
+        <span class="span1">没有兼容问题的自定义通过类名获取标签的方法</span>
+    </div>
+    <div class="div2">哈哈</div>
+</body>
+
+</html>

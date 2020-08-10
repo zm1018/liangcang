@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            line-height: 300px;
+            font-size: 16px;
+            border: 1px solid #000;
+        }
+    </style>
+    <script src="tool.js"></script>
+    <script>
+        window.onload = function() {
+                var speed = 2; // 字体每次变化的大小是2px
+                var count = 0; // 计数器,计算字体增大和减小是否满3次
+                // 开启定时器
+                setInterval(function() {
+                    // 获取div标签
+                    var div1 = document.getElementById('div1');
+                    // 调用随机颜色函数,每秒钟改变一次div文本的颜色
+                    div1.style.color = randomColor();
+                    // 调用随机透明度的颜色函数,每秒钟改变一次div文本的颜色
+                    div1.style.color = randomOpcityColor()
+                        // 将当前字体大小取出,并取整去掉px单位,拿到整数的部分
+                    var size = parseInt(getStyle(div1, 'fontSize'));
+                    // 计算每秒钟应该显示的字体大小,将当前字体大小 + 每次变化的大小,再拼接上单位px,赋值给div的字体样式
+                    div1.style.fontSize = speed + size + 'px';
+                    // 计数器每一秒自加1
+                    count++;
+                    // 计数器加到3时,要减小字体尺寸
+                    if (count % 3 == 0) {
+                        // 将字体每次变化的大小通过*-1运算变成负数,这样在计算每秒钟应该显示的字体大小时,就变成 当前字体大小 + 负数的每次变化的大小,得到比当前字体大小小的数值,来缩小字体了
+                        speed *= -1;
+                    }
+                    // console.log(randomOpcityColor());
+                }, 1000)
+            }
+            // 将一个大于0小于1的随机小数保留小数点后的一位小数
+        console.log(Math.random().toFixed(1));
+    </script>
+</head>
+
+<body>
+    <div id="div1">div改变颜色和字体大小演示</div>
+</body>
+
+</html>

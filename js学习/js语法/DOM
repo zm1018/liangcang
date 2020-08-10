@@ -1,0 +1,235 @@
+DOM文档对象模型 (document object model) 将 web 页面与到脚本或编程语言连接起来。
+document表示从html标签开始到html标签结束的全部内容,包含全局的标签;
+
+页面上的节点类型,3种:
+    元素(标签)节点,例如<div></div>;
+    属性节点,例如id,class属性;
+    文本节点,例如标签里包裹的文本内容;
+
+    以上3种节点类型拥有相同的3个属性,表里是它们的返回值:
+                nodeType   nodeName   nodeValue
+    元素节点        1        标签名       null
+    属性节点        2        属性名       属性值
+    文本节点        3        #text      文本内容
+
+获取页面上节点的方式：
+    部分方式除了可以从document全局获取,还可以从任意节点(node)开始获取标签;
+
+    元素节点:
+        通过标签名获取标签:
+            document.getElementsByTagName("标签名")
+            或node.getElementsByTagName("标签名")
+            得到返回带有指定标签名的对象的集合(伪数组)，需要通过索引来操作里面的对象;
+
+    属性节点:    
+        通过id属性名获取标签：
+            document.getElementById("id名");
+            得到一个符合条件的对象;
+        通过class属性名获取标签,IE8以下不兼容：
+            document.getElementsByClassName("类名");
+            或node.getElementsByClassName("类名");
+            参数是字符串类型的，多个参数之间用空格隔开，
+            得到一个对象集(伪数组)，需要通过索引来操作里面的对象;
+        通过name属性值获取标签,一般用来获取表单元素:
+            document.getElementsByName('name属性的值');
+            返回带有指定名称的对象的集合(伪数组),需要通过索引来操作里面的对象。
+
+    另外两种获取标签的方式,IE8以下不兼容:
+        参数是特殊的字符串,是css选择器写法的字符串,怎么通过css选择器给标签添加样式,这里参数选择器就怎么写;
+        document.querySelector()
+            获取符合条件的第一个标签;
+            返回值:
+                返回一个元素节点,是符合条件的第一个元素节点;
+                例如:
+                    document.querySelector('ul [name=hello]');
+                    是获取ul标签里第一个name属性值是hello的标签;
+        
+        document.querySelectorAll()
+            获取所有符合条件的标签;
+            返回值:
+                一个对象集(伪数组),需要通过索引来操作里面的对象;
+            例如:
+                document.querySelectorAll('.div1 #span2');
+                是获取所有类名叫div1标签里的id名叫span2的标签;
+
+    文本节点:
+        获取双标签包裹的内容,或通过 = 重新赋值来替换标的内容：
+            innerHTML可以读取或者设置标签间的内容,替换时会解析标签渲染到页面;
+            innerText 获取标签间的纯文本,替换时不会解析标签;
+            outerHTML 获取标签全部内容,从最外层标签开始到最外层标签结束,会替换原来的外层标签和外层标签包裹的所有子标签及内容,并解析标签渲染到页面;
+
+        获取单标签包裹的内容：
+            .value可以读取或者设置标签包裹的内容。
+
+    设置这几类节点的赋值取值都是都是通过 = 号;  
+
+    获取标签里嵌套的子标签:
+        系统提供的元素节点的属性,获取子节点的方式,2套:
+            包含文本节点的属性如下(缩进、空格、换行这些看不见的字符也属于文本):
+                childNodes 访问当前节点下的所有子节点; 
+                    返回值:
+                        节点对象(伪数组),需要通过索引操作里面的对象;
+                    length属性可以查看返回值的长度,返回数字类型;
+                firstChild 访问当前节点下的第一个子节点;
+                    返回值:
+                        节点对象,需要通过 对象.属性来获取内容;
+                lastChild 访问当前节点下的最后一个子节点;
+                    返回值:
+                        和firstChild一样;
+                nextSibling 访问当前节点的下一个兄弟节点;
+                    返回值:
+                        和firstChild一样;
+                previousSibling 访问当前节点的上一个兄弟节点;
+                    返回值:
+                        和firstChild一样;
+
+            只获取子节点的元素节点(标签),不获取文本节点,IE8以下不兼容:
+                children 访问当前节点下的所有子元素节点;
+                firstElementChild 访问当前节点下的第一个子元素节点;
+                lastElementChild 访问当前节点下的最后一个子元素节点;
+                nextElementSibling 访问当前节点兄弟节点中的下一个元素节点;
+                previousElementSibling 访问当前节点兄弟节点中的上一个元素节点;
+
+        也可以先通过获取到父标签,
+            再 父标签.getElementById(id名)
+            或getElementsByClassName('类名')
+            或getElementsByTagName(标签名)
+            或getElementByName('name属性的值')等方式来获取子标签;
+
+     
+
+    访问获取到的标签的属性:
+        理论上都可以通过 （.）点 语法,访问标签上的任意属性，
+        class属性是个例外，因为class是个关键字,要想得到class属性的值,需要className访问;
+
+        系统提供的方法,除索引外的参数都是字符串类型: 
+            attributes 获取当前元素节点上的所有属性节点;
+                返回值:
+                    一个属性对象集合,集合是键值对的形式存数据,特点是无序、不重复;
+            attributes.length	返回属性节点集合的节点个数。 
+
+            查:
+                getAttribute('属性');
+                    获取标签的属性值;
+                    返回值:
+                        属性值,一个字符串;
+
+                getAttributeNode("属性名"）
+                    获取标签的属性;
+                    返回值:
+                        属性节点，是一个对象;
+
+                attributes.getNamedItem('属性名'),
+                可以简写成:attributes['属性名'],或attributes[索引号]
+                    获取其中的某一个属性;
+                    返回值:
+                        键值对,属性名 = 值,
+                        属性对象,要通过 对象.属性获取属性的内容(属性值或类型等);             
+
+                attributes.item(索引号) 
+                    获取属性对象集合里下标为参数的属性;
+                    返回值:
+                        键值对,属性名 = 值,
+                        节点集合中处于指定索引号的属性节点。
+
+                attributes[要查的属性名或索引号].name
+                查属性集合里的某个索引位置是什么属性	
+                返回值:
+                    属性名;
+
+                attributes[要查的属性名或索引号].value	
+                    查属性的值;
+                返回值:
+                    属性值;
+
+            增、改:
+                setAttribute('属性','属性值');
+                    设置标签的属性或属性值,;
+                    支持自定义属性和属性值,并显示在标签上,没有返回值;
+                
+                setAttributeNode('属性名');
+                    设置或更新当前元素bai属性为参数属性节点;
+                    如果元素中已经存在指定名称的属性，那么该属性将被新属性替代。
+                    如果新属性替代了已有的属性，则返回被替代的属性，否则返回 NULL。
+
+                createAttribute("属性名")
+                    用于创建一个指定名称的属性，常和setAttributeNode()一起用.
+                    返回值:
+                        属性对象;
+                
+                attributes[要查的属性名或索引号].value = '值';
+                    设置标签的属性值;
+                    返回值:
+                        修改后的属性值;
+
+                attributes.setNamedItem('属性名')这样写报错,不好用,建议用上面那种方法.	
+                    设置指定属性节点(通过名称);
+                    如果节点已经存在，它将被替换，并返回替换节点的值，否则将返回 null。
+                    
+            
+            删:
+                removeAttribute('属性','属性值');
+                    真正的删除标签的属性和属性值;
+                    没有返回值,返回的是undefined;
+
+                attributes.removeNamedItem('属性名')	
+                    删除指定属性节点;
+                    返回值:
+                        删除的节点对象,键值对;
+            
+            attributes[要查的属性名或索引号].isId	
+                如果属性是 ID 类型，返回 true，否则返回 false。
+            
+            attributes[要查的属性名或索引号].specified	
+                如果属性被指定(已存在)返回 true ，否则返回 false;
+                在谷歌浏览器测试,已存在的属性返回true,不存在的属性报未定义的错误,而不是返回false;
+               
+            
+           
+            
+            
+
+
+    访问行内css样式:
+        通过style属性,得到一个style对象,再通过对象.属性或方法访问每种样式;
+
+    访问内部或外部引用css样式,两种方法:
+        先将获取到的标签赋值给变量,
+        1.是IE兼容的方法:
+            变量.currentStyle['样式属性名'];
+                返回值:
+                    样式属性值;
+        2.是其它浏览器兼容的方法,例如谷歌、火狐等:
+            getComputedStyle(变量)['样式属性名'];
+                返回值:
+                    样式属性值;
+                    颜色属性,谷歌返回的颜色是rgb格式的值;
+        让所有浏览器都兼容,需将这两种方法封装成函数,来判断用户使用什么浏览器:
+            function getStyle(node, cssStyle) {
+                return node.currentStyle ? node.currentStyle[cssStyle] : getComputedStyle(node)[cssStyle];
+            }
+
+    修改css样式:
+        直接通过style.样式属性='值'来修改css样式,修改后的样式是行内样式,权重最高。
+
+    css样式属性名在js里采用小驼峰命名规范,如果样式属性有-隔开的,都需要把-后的单词杠去掉,并把首字母大写。
+    例如：text-align应该写成textAlign,
+        background-color应该写成backgroundColor,
+
+
+
+this指向，谁调用function匿名函数，this就指向谁。
+
+鼠标事件：
+    onclick 鼠标左键单击事件
+    oncontextmenu() 点击鼠标右键
+    onmouseout 鼠标移开
+    onmouseover 鼠标经过
+表单事件：
+    onfocus 获取光标焦点
+    onblur 失去光标焦点
+    onchange 文本框内容改变
+    onselect 内容选中
+    onload 加载
+    onunload 页面卸载
+

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1 {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            margin-top: 50px;
+        }
+        
+        input {
+            outline: none;
+        }
+    </style>
+    <script>
+        // // window.onload 表示的是窗口加载完成这个事件，匿名函数function表示窗口加载完成后要执行的代码函数
+        window.onload = function() {
+
+            // 通过标签名控制标签,
+            // 同一个input标签，标签名控制的代码要写在最上面，才能各自执行，如果标签名写在id名下面，id名的代码会被覆盖掉，执行标签名。标签名控制的正确的应该执行的那个标签不执行了。
+
+            // 先获得html页面的元素，通过元素名（标签名）获得此元素，返回一个对象集，再通过此标签属性的索引号获得要操作的对象属性（标签）
+            var button = document.getElementsByTagName('button')[0];
+            // console.log(button);
+            // 给button按钮添加鼠标左键点击事件
+            button.onclick = function() {
+                alert('我是通过标签名直接控制的');
+            };
+            // 给button按钮添加鼠标右键点击事件
+            button.oncontextmenu = function() {
+                alert('我被鼠标右键单击了');
+                // 函数返回值是false，就取消单击鼠标右键时弹出的默认下拉菜单
+                return false;
+            }
+
+
+            // 通过标签的id名控制标签：
+            // 先获取html页面的元素，通过id属性获得这个标签
+            var myButton = document.getElementById("myButton");
+            // console.log(typeof myButton);
+            // 得到id名是myButton的标签对象，对这个对象添加鼠标左键点击事件
+            myButton.onclick = function() {
+                // 点击这个标签会弹出提示框
+                alert('我被点击了,我是通过id名控制的');
+            }
+
+
+            // 通过标签的类名控制标签
+            // 先获取html页面的元素，通过class名获得这个标签，返回一个对象集,再通过查看此标签对象集的索引号获得自己要操作的对象标签。
+            var myButton2 = document.getElementsByClassName('myButton2')[0];
+            // console.log(myButton2);
+            // console.log(typeof myButton2);
+            myButton2.onclick = function() {
+                alert('我是通过类名控制的');
+            }
+
+
+            // 用js设置鼠标移入和鼠标移出控制元素的css样式
+            var div1 = document.getElementById('div1');
+            // 鼠标移入时
+            div1.onmouseover = function() {
+                // 修改id名为div1的标签的css背景色属性值，把red改成yellow,
+                // 可以用this指向，谁调用函数就指向谁，也可以直接写div1.style..
+                this.style.backgroundColor = 'yellow';
+                // 修改div1标签包裹的内容
+                div1.innerHTML = '我是被js修改的内容';
+            };
+            // 鼠标移出时
+            div1.onmouseout = function() {
+                // 将移入时修改的颜色恢复成red色
+                div1.style.backgroundColor = 'red';
+                // 将修改的div1标签包裹的内容恢复
+                div1.innerHTML = 'js控制鼠标移入时修改css样式变色';
+            };
+            // 查看div1标签里包裹的内容
+            console.log(div1.innerHTML);
+            // // 把div标签替换成别的标签
+            // div1.outerHTML = '<span>div标签替换成span标签</span>'
+
+
+
+            // 获取鼠标光标的焦点、失去焦点
+            var uname = document.getElementById('uname');
+            // 获得焦点，鼠标点击时input框背景色变成粉色
+            uname.onfocus = function() {
+                    this.style.backgroundColor = 'pink';
+                }
+                // 失去焦点，就是鼠标点击输入框之外的其它任何区域，输入框就失去了焦点，背景色变成透明色。
+            uname.onblur = function() {
+                this.style.backgroundColor = 'transparent';
+            }
+
+
+
+            var a = document.getElementById('呵呵');
+            // 系统提供的获取标签的属性的方法
+            console.log(a.attributes); // 获得标签的所有属性,返回一个集合,里面是键值对
+
+            // 查
+            // 通过.获取标签的属性
+            console.log('获取title属性:' + a.title);
+            console.log('获取id属性:' + a.id);
+            console.log('获取class属性:' + a.className);
+            // 通过系统内置的方法
+            console.log('获取title属性:' + a.getAttribute('title'));
+            console.log('获取id属性:' + a.getAttribute('id'));
+            // 因为参数是字符串类型,不涉及到关键字,可以直接通过class访问类属性
+            console.log('获取class属性:' + a.getAttribute('class'));
+            // 上面的查,获取属性得到的都是属性值,以下两种是得到属性对象,一个键值对
+            console.log(a.attributes['class']);
+            console.log(a.attributes.item(1));
+            // 查某个属性名
+            console.log(a.attributes[1].name);
+            // 查某个属性值
+            console.log(a.attributes[1].value);
+            // 判断某个属性是否是id属性,是返回true,否则返回false,无法判断,都返回undefined,不知道什么原因
+            var a1 = a.attributes['id'].isId;
+            console.log(a1);
+            // 判断某个属性是否已经存在,是返回true,否则报错未定义
+            console.log(a.attributes['href'].specified);
+
+            // 增
+            // 给标签添加自定义属性并赋值,属性和属性值都不会在标签上显示,但能成功获取属性值
+            a.xxx = 'hhh';
+            // 给标签添加自定义属性bbb并赋值ccc,属性和属性值都会在标签上显示
+            a.setAttribute("bbb", 'ccc');
+            console.log('增加自定义的bbb属性值是:' + a.getAttribute('bbb'));
+            // 这种增加方法太麻烦,要先创建一个属性,在给属性赋值,再添加到标签里,直接传属性名报错,不知道什么原因
+            var typ = document.createAttribute("name");
+            typ.nodeValue = "democlass";
+            a.attributes.setNamedItem(typ);
+            // a.attributes.setNamedItem('name'); //报错
+
+            // 改
+            // 改变属性值
+            a.className = 'yyy';
+            // 改变属性值
+            a.setAttribute('class', 'box1')
+            console.log('改变class属性的值是:' + a.getAttribute('class'));
+            // 将a链接的索引为0的属性(第一个属性)值改成百度网址
+            console.log(a.attributes[0].value = 'https://www.baidu.com');
+            // 将自定义属性bbb的属性值改成111
+            console.log(a.attributes['bbb'].value = '111');
+
+            // 删
+            // 可以完全删除属性和属性值
+            console.log(a.removeAttribute('title'));
+            // 删除class属性,只能将值赋值为空,并不是真正的删除
+            console.log(a.className = '');
+            // 删除自定义的bbb属性,返回键值对
+            console.log(a.attributes.removeNamedItem('bbb'));
+
+
+            // 获取标签间的内容
+            var span = document.getElementsByTagName('span')[0];
+            // 获取标签里的所有子节点
+            alert('所有子节点' + span.childNodes); // 得到[object NodeList]
+            // 查看获取到的所有子节点对象的长度
+            console.log('所有子节点的个数' + span.childNodes.length);
+
+            // 获取标签里的第一个子节点,是文本节点
+            alert('标签里的第一个子节点' + span.firstChild);
+            console.log('标签里的第一个子节点' + span.firstChild); // 得到[object Text],字符串拼接时得到的结果和不拼接得到的结果不一样;
+            console.log(span.firstChild); // 得到'你'字符串,在控制台会直接输出文本内容
+            // 获取文本节点的文本内容
+            alert('标签里的第一个子节点的内容' + span.firstChild.nodeValue); // 得到'你'字符
+
+            // 获取标签里的最后一个子节点,是元素节点
+            alert('标签里的最后一个子节点' + span.lastChild);
+            // 获取元素节点的标签名
+            alert('标签里的最后一个子节点的标签名' + span.lastElementChild.nodeName);
+
+            // // 获取标签的下一个兄弟节点
+            // console.log('标签的下一个兄弟节点' + span.nextSibling);
+            // // 输出兄弟节点名,得到em标签名
+            // document.write('标签的下一个兄弟节点名' + span.nextSibling.nodeName + '<br>');
+            // // 访问兄弟节点的第一个子节点,输出节点名,得到br标签名
+            // alert('标签的下一个兄弟节点的子节点名' + span.nextSibling.firstChild.nodeName);
+
+            // // 获取标签的上一个兄弟节点
+            // console.log('标签的上一个兄弟节点' + span.previousSibling); //得到br标签
+            // // 输出兄弟节点名,得到br标签名
+            // document.write('标签的上一个兄弟节点名' + span.previousSibling.nodeName);
+            // // 输出标签的上一个兄弟节点名
+            // alert('标签的上一个兄弟节点名' + span.previousSibling.nodeName);
+
+
+            // 输出标签间的内容
+            alert(span.innerHTML);
+            // 替换标签间的内容,解析h1标签
+            span.innerHTML = '<h1>hello</h1>';
+            // 获取标签间纯文本内容
+            alert(span.innerText);
+            // 替换标签间的内容,不解析h1标签,让h1标签以文字显示
+            span.innerText = '<h1>hello</h1>';
+            // 从span标签开始获取标签内容
+            alert(span.outerHTML);
+            // 直接将span标签替换成了h1标签,并解析h1标签
+            span.outerHTML = '<h1>hello</h1>';
+
+        }
+    </script>
+</head>
+
+<body>
+    <!-- js通过标签名控制此标签 -->
+    <button>点击按钮3</button>
+    <!-- js通过id名控制此标签 -->
+    <button id="myButton">点击按钮1</button>
+    <!-- js通过类名控制此标签 -->
+    <button class="myButton2">点击按钮2</button>
+    <div id="div1">js控制鼠标移入时修改css样式变色</div>
+    <!-- autocomplete: off;是input标签的属性，不是css样式的属性 -->
+    <input type="text" id="uname" autocomplete="off" ;>
+    <a href="" title="哈哈哈" class="链接" id="呵呵"></a>
+    <br><span>你<em>好</em>啊<strong>哈哈</strong></span><em><br>?</em>?
+
+</body>
+
+</html>

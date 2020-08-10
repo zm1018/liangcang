@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 弹出选择提示框
+        var a = confirm('你确定要下载吗?');
+        // 输出确认提示框的返回值
+        alert(a);
+        // 弹出输入框
+        prompt('请输入', 100) // 第一个参数是要显示给用户的内容,第二个参数是输入框里的默认值
+        function btnClick() {
+            open('https://www.baidu.com', '名字', 'width=300,height=300,top=200,left=200');
+        }
+        // 查看当前窗口的历史记录数量,只要当前窗口不关闭,每次地址栏的url变了就会产生历史记录
+        alert('当前窗口历史记录的条数:' + history.length);
+
+        function btnClick2() {
+            // 后退到上一条历史记录
+            history.back();
+        }
+
+        function btnClick3() {
+            // 前进到下一条历史记录
+            history.forward();
+        }
+
+        // history.go(3); // 前进两条历史记录
+        // history.go(-2); // 后退两条历史记录
+        // history.go(0); // 刷新当前页面
+
+        function btnClick4() {
+            // 在当前窗口替换成参数传的url,并跳转,不会产生窗口的历史记录;
+            location.replace('https:www.baidu.com');
+        }
+
+        function btnClick5() {
+            // 在当前页面进行跳转,会产生窗口的历史记录
+            location.assign('https:www.baidu.com');
+        }
+
+        function btnClick6() {
+            // 刷新当前页面,只在打开窗口时去数据类加载数据,后面的刷新在浏览器缓存数据没过期时,是不会再去数据库里加载数据了,都是直接刷新浏览器的缓存数据
+            location.reload();
+            // 强制刷新当前页面,也就是每次刷新都是去数据库里加载数据的,不在浏览器缓存里加载了;
+            // location.reload(true);
+        }
+        // location属性输出当前窗口地址栏的完整url
+        document.write('当前窗口的url是:<br>' + location + ',<br>location属性的数据类型是:' + typeof location + ';<br>');
+
+        // location.href属性输出当前窗口地址栏的完整url
+        document.write('当前窗口的url是:<br>' + location.href + ',<br>location.href属性的数据类型是:' + typeof location.href + ';<br>');
+
+        // 获取当前窗口的协议
+        document.write('当前窗口的协议是:<br>' + location.protocol + '<br>');
+
+        // 获取当前窗口的IP
+        document.write('当前窗口的IP是:<br>' + location.hostname + '<br>');
+
+        // 获取当前窗口的端口
+        document.write('当前窗口的端口号是:<br>' + location.port + '<br>');
+
+        // 获取当前窗口的路径
+        document.write('当前窗口的文件路径是:<br>' + location.pathname + '<br>');
+
+        // 获取当前窗口的查询字符串
+        document.write('当前窗口的search是:<br>' + location.search + '<br>');
+
+        // 获取当前窗口的锚点
+        document.write('当前窗口的锚点是:<br>' + location.hash + '<br>');
+    </script>
+</head>
+
+<body>
+    <button onclick="btnClick();">open方法演示</button>
+    <button onclick="btnClick2();">back方法演示</button>
+    <button onclick="btnClick3();">forward方法演示</button>
+    <button onclick="btnClick4();">replace方法演示</button>
+    <button onclick="btnClick5();">assign方法演示</button>
+    <button onclick="btnClick6();">reload方法演示</button>
+</body>
+
+</html>
