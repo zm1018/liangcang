@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 匹配16进制颜色
+        var str = '#ffbbad 123#Fc01DF #FFF gffff #ffE';
+        // 第一位是#,第二位是数字字母下划线,第二位可能重复3次或6次,因为16进制颜色只有这两种写法,要么#后面3位的格式要么#后面6位的格式;
+        var re = /#(\w{3,6})/g;
+        // 贪婪匹配,符合第一位是#,第二位是数字字母下划线,后面的*表示尽可能多的匹配数字字母下划线,符合第一位是#的最大位数是6位,它就最多匹配到6位结束;
+        var re3 = /#\w*/g;
+        var re1 = /#([a-zA-Z0-9]{3,6}|[a-zA-Z0-9]{3})/g; // 必需把{3,6}写在|前面,,才能得到正确结果;
+        // var re2 = /#([a-zA-Z0-9]{3}|[a-zA-Z0-9]{3,6})/g; 这种会惰性匹配,只匹配3位,而不是3或6位;
+        console.log(str.match(re));
+        console.log(str.match(re3));
+        console.log(str.match(re1));
+        // console.log(str.match(re2));
+
+        // 匹配时间
+        var str2 = '13:29 02:50';
+        // 数字2位中间的.表示除换行符等空白字符外的任意字符,这里.表示:
+        var re4 = /\d{2}.\d{2}/g;
+        // 第一位表示是0-2的数,第二位是0-9的数,第三位是:,第四位是0-5的数,第五位是0-9的数
+        var re5 = /[0-2][0-9].[0-5][0-9]/g;
+        // 如果第一位是0-1的数,第二位就是0-9的数,如果第一位是2开头的数,第二位就0-3的数,因为最大24小时;
+        var re6 = /[0-1]([0-9]|2[0-3]).[0-5][0-9]/g;
+        console.log(str2.match(re4));
+        console.log(str2.match(re5));
+        console.log(str2.match(re6));
+
+        // 匹配路径
+        // F:\study\javascript\regex\regular expression.pdf这个字符串需要先将\转义才能匹配,否则匹配不到\返回null;
+        var str3 = "F:\\study\\javascript\\regex\\regular expression.pdf F:\\study\\javascript\\regex\\ F:\\study\\javascript F: 1:abcdll";
+        // 这个表达式只匹配到第一个路径,其它的都没有匹配到;
+        var re7 = /\w.\\(\w+\\)*(\w+)?\s?\w*?\.(\w*)?/g;
+        // 这种返回null,盘符后面的\\匹配结果是匹配到一个\,因为字符串里有2个\,第二个\没匹配成功,就中断了,不再向后执行,导致后面的表达式都无法匹配后面的字符串;又因为限定了开头和结束,所以局部能匹配到的内容也不会返回,将\用.代替,匹配成功;
+        // var re8 = /^[a-zA-Z]:\\([^\\:*<>|"'?\r\n]+\\)*([^\\:*<>|"'?\r\n]+)?$/;
+        // 以大小写字母开头,:和至少一个\,组里面的[]是取反的,也就是不能是非法字符,也不能为空,+表示至少得有1个不非法的字符,组外面的?是非贪婪匹配,表示前面这个组可以有也可以没有,$表示以这个表达式书写的匹配规则结尾;但这个表达式不严谨,它会匹配所有合法字符,我想要的是它只匹配符合路径规则的;
+        var re8 = /^[a-zA-Z]:.+([^\\:*<>|"'?\r\n]+\\)*([^\\:*<>|"'?\r\n]+)?$/;
+        console.log(re7.exec(str3));
+        console.log(str3.match(re7));
+        // var re8 = /\\/.exec('\'); 直接匹配字符串里的\会报错,是字符串报错,需要先给字符串里的\转义;
+        console.log(re8.test(str3), re8.lastIndex);
+        re8.lastIndex = 0;
+        console.log(str3.match(re8));
+        // console.log(re8);
+
+        // 将非单词边界都替换成#,单词指的是\w表示数字字母下划线,也就是将\w之间的位置都替换成#;
+        var result = "[JS] Lesson_01.mp4".replace(/\B/g, '#');
+        console.log(result); //得到#[J#S]# L#e#s#s#o#n#_#0#1.m#p#4
+        // 将单词边界都替换成#,也就是\W和\w之间的位置;
+        var result1 = "[JS] Lesson_01.mp4".replace(/\b/g, '#');
+        console.log(result1); //得到[#JS#] #Lesson_01#.#mp4#
+
+        // 预查,也就是4种位置匹配,位置可以理解成空字符,4种预查方式可以理解成 左看看,右看看;
+        // 匹配字母e左边的一个位置,将前面的位置替换成#
+        console.log('hello'.replace(/(?=e)/g, '#')); //得到h#ello
+        // 匹配字母e右边的一个位置,将后面的位置替换成#
+        console.log('hello'.replace(/(?<=e)/g, '#')); // 得到he#llo
+        // 取反,除了字母e左边的一个位置,其它位置都替换成#
+        console.log('hello'.replace(/(?!e)/g, '#')); //得到#he#l#l#o#
+        // 取反,除了字母e右边的一个位置,其它位置都替换成#
+        console.log('hello'.replace(/(?<!e)/g, '#')); //得到#h#el#l#o#
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

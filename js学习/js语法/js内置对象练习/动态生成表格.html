@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #t1 td,
+        #t1 button {
+            width: 80px;
+            height: 30px;
+            border: 1px solid #000;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var row1 = document.getElementById('row');
+            var col1 = document.getElementById('col');
+            var btn1 = document.getElementById('btn1');
+            var t1 = document.getElementById('t1');
+
+            // 声明一个生成表格的函数
+            function createTable(row, col, tableName) {
+                // 判断用户是否输入了要生成的行列值,如果没输入就弹出提示框
+                if (!row.value || !col.value) {
+                    alert('请输入行和列,生成表格');
+                    // 如果输入了,就执行生成表格的代码
+                } else {
+                    // 生成行
+                    for (var i = 0; i < row.value; i++) {
+                        var tr = document.createElement('tr');
+                        // 生成列
+                        for (var j = 0; j < col.value; j++) {
+                            var td = document.createElement('td');
+                            // 将列插入到行里
+                            tr.appendChild(td);
+                        }
+
+                        // 给表格添加个删除按钮,因为表格里其它标签都只能写在td里,所以在一行的末尾生成td标签
+                        var oClose = document.createElement('td');
+                        // 再将末尾的td标签渲染成button按钮
+                        oClose.innerHTML = '<button>删除</button>';
+                        // 将按钮添加在行的末尾
+                        tr.appendChild(oClose);
+
+                        // 将行插入到表格里
+                        tableName.appendChild(tr);
+                    }
+                };
+                // 用事件委托,给祖父标签table添加点击事件,让里面的button按钮执行删除行的功能;
+                tableName.onclick = function(ev) {
+                    var e = ev || window.event;
+                    // 得到触发对象
+                    var target = e.target || window.event.srcElement;
+                    // 判断触发对象是不是table标签里的button标签
+                    if (target.nodeName.toLowerCase() == 'button') {
+                        // 因为button的父级标签td和祖父标签tr都是创建出来的,所以需要用祖祖父table标签调用,执行删除它所在行的祖父标签tr;
+                        tableName.removeChild(target.parentNode.parentNode);
+                    }
+                }
+            }
+            btn1.onclick = function() {
+                // 调用生成表格的函数,传入参数:用户输入的要生成的行/列和要插入到那个表格的名字
+                createTable(row1, col1, t1);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <input type="text" placeholder="行" id="row">
+    <input type="text" placeholder="列" id="col">
+    <button id="btn1">生成</button>
+    <table id="t1"></table>
+</body>
+
+</html>

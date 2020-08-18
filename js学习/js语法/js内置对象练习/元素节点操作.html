@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        section {
+            width: 300px;
+            height: 500px;
+            background-color: rgb(146, 206, 34);
+            text-align: center;
+        }
+        
+        button {
+            margin: 0 5px;
+        }
+        
+        input {
+            width: 90%;
+        }
+    </style>
+    <script src="tool.js"></script>
+    <script>
+        // 点击按钮实现元素节点的增删改查
+        window.onload = function() {
+            var se = document.getElementsByTagName('section')[0];
+            var input = document.getElementsByTagName('input')[0];
+            var div1 = document.getElementById('div1');
+            // 封装一个创建节点的函数
+            function create(node) {
+                // 判断输入框内容是否为空
+                if (!input.value) {
+                    return alert('输入内容不能为空');
+                } else {
+                    // 创建新的元素节点
+                    var tag = document.createElement(node);
+                    // 将新创建的节点生成随机背景颜色
+                    tag.style.backgroundColor = randomColor();
+                    // 设置新创建的节点高度
+                    tag.style.height = '20px';
+                    tag.style.margin = '5px 0';
+                    // 将input输入框的文本内容创建成文本节点
+                    var text = document.createTextNode(input.value);
+                    // 将新创建的文本节点添加到新创建的元素节点里面
+                    tag.appendChild(text);
+                    // 创建完成后将input输入框的内容清空
+                    input.value = '';
+                    return tag;
+                }
+            };
+            append.onclick = function() {
+                // 为什么只能插入一个呢?因为我把创建p标签写在点击事件函数外面了,只能调用一次,现在将创建p标签封装成函数,可以重复调用,插入多个了;
+                // 报错,当input输入框内容为空时,这里调用创建元素的函数会报错,
+                // div1.appendChild(create('div'));
+                // 用判断解决调用create()函数报错的问题,如果用户输入为空,直接弹出提示框,如果用户输入不为空,执行else里的代码,将创建的元素添加到div里面最后面的位置.
+                if (!input.value) {
+                    return alert('输入内容不能为空');
+                } else {
+                    // 在div标签后面插入h1标签,通过div标签的父级标签调用,参数传要插入的标签
+                    // se.appendChild(create('h1'));
+                    // 在div标签里面末尾插入div标签,需要插入子标签的标签调用,参数传要插入的标签;
+                    div1.appendChild(create('div'));
+                    // 在div标签前面插入span标签,通过div标签的父级标签调用,参数1传要插入的标签,参数2传要插入的位置标签
+                    // se.insertBefore(create('span'), div1);
+                }
+            }
+
+            clone.onclick = function() {
+                // 克隆div标签,不含它里面嵌套的元素节点
+                // var newNode = div1.cloneNode();
+                // 克隆div标签的最后一个节点,包含它里面嵌套的文本节点
+                var newNode = div1.lastChild.cloneNode(true);
+                div1.appendChild(newNode);
+            }
+            replace.onclick = function() {
+                input.value = prompt('请在输入框里输入内容');
+                // 将div标签的最后一个子节点替换成span标签,通过父级div标签调用,第一个参数传要替换成的标签,第二个参数传被替换的标签
+                div1.replaceChild(create('p'), div1.lastChild);
+            }
+            remove.onclick = function() {
+                // 删除div标签里面新创建出来的最后一个子标签
+                div1.removeChild(div1.lastChild);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <section>
+        <!-- 点击按钮实现元素节点的增删改查 -->
+        <input type="text" placeholder="请先输入,再点击增加按钮"><br>
+        <button id="append">增加节点</button>
+        <button id="clone">拷贝节点</button>
+        <button id="replace">替换节点</button>
+        <button id="remove">删除节点</button>
+        <div id="div1"></div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 通过事件委托给子节点添加背景色
+        // 事件委托就是:事件添加在父节点上,作用在触发事件的子节点上;
+        window.onload = function() {
+            var ul1 = document.getElementById('ul1');
+            // 点击事件添加在ul上
+            ul1.onclick = function(ev) {
+                var e = ev || window.event;
+                // 获取到触发点击事件的触发者
+                var target = e.target || window.event.srcElement;
+                // 判断触发对象的返回值是不是li元素,返回值是大写的元素名,将返回值都转成小写字母,如果是,是哪个li触发的,就给这个li添加css背景色为红色;
+                if (target.nodeName.toLowerCase() == 'li') {
+                    target.style.background = 'red';
+                }
+            }
+            var btn = document.getElementsByTagName('button')[0];
+            var i = 4;
+            // 点击创建li元素
+            btn.onclick = function() {
+                var newLi = document.createElement('li');
+                newLi.innerHTML = i++ * 1;
+                ul1.appendChild(newLi);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button>点我添加新li元素</button>
+    <ul id="ul1">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+</body>
+
+</html>

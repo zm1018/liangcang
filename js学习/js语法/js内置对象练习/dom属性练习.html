@@ -95,6 +95,20 @@
                 this.style.backgroundColor = 'transparent';
             }
 
+            // 必需添加在form上,并且点击提交或重置按钮才能触发的2个表单事件
+            var f1 = document.getElementById('f1');
+            var input = f1.getElementsByTagName('input');
+            // 点击提交按钮触发onsubmit事件
+            f1.onsubmit = function() {
+                    input[0].value = '提交';
+                    alert('提交');
+                }
+                // 点击重置按钮触发onresert事件
+            f1.onreset = function() {
+                input[0].value = '';
+                alert('重置');
+            }
+
 
 
             var a = document.getElementById('呵呵');
@@ -217,8 +231,15 @@
     <div id="div1">js控制鼠标移入时修改css样式变色</div>
     <!-- autocomplete: off;是input标签的属性，不是css样式的属性 -->
     <input type="text" id="uname" autocomplete="off" ;>
+    <!-- 两个必需绑定在form上的表单事件, 并且点击submit按钮或reset按钮才能触发-->
+    <form action="" id="f1">
+        <input type="text" placeholder="两个绑定在form上的表单事件">
+        <input type="submit">
+        <input type="reset">
+    </form>
     <a href="" title="哈哈哈" class="链接" id="呵呵"></a>
     <br><span>你<em>好</em>啊<strong>哈哈</strong></span><em><br>?</em>?
+
 
 </body>
 

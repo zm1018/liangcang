@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 创建正则表达式3种方式
+        var re = new RegExp('hello', 'i');
+        console.log(typeof re, re);
+        var re3 = new RegExp('\d', 'i') // 得到/d/i,这里表示字符d,而不是字符模式\d匹配数字;
+        var re3 = new RegExp('\\d', 'i') // 得到/\d/i,多一个\是让它转义成字符模式\d匹配数字;
+        console.log(typeof re3, re3);
+        var re1 = RegExp('hello', 'g');
+        console.log(typeof re1, re1);
+        var re2 = /hello/g;
+        console.log(typeof re2, re2);
+
+        // 正则表达式内置的2个方法
+        var str = 'hello word ab hello 12';
+        var reg1 = /hello/g;
+        var reg2 = /ac/;
+        // 正则表达式的方法必需要正则表达式去调用;
+
+        // 检测一个子串是否在原字符串中,
+        // 全局模式下:test()方法查找到匹配项后,改变了lastIndex值,而且不会重新归0,导致下一次用其它方法查找lastIndex值(开始位置发)生了变化,无法得到正确的匹配结果;
+        // 解决办法,手动设置lastIndex的值为0,这样写 reg1.lastIndex = 0;
+        console.log('lastIndex第1次开始查找位置' + reg1.lastIndex);
+        var result1 = reg1.test(str); // 得到true,字符串str里含有hello这个字符串
+        console.log(result1, reg1.lastIndex); // 这时正则表达式的lastIndex值是5;
+
+        var result2 = reg2.test(str); // 得到false,字符串str里没有ac这个字符串
+        console.log(result2);
+
+        //得到数组,里面第一个元素hello是匹配成功返回的结果,表示字符串str里含有hello这个字符串;
+        // 全局模式下,原字符串已经被test方法匹配成功过一次了,匹配结果是第一个hello的o索引号是4,
+        // 所以正则表达式的lastIndex值从0变成5,表示下一次从索引5开始查找,这里就会返回从索引5开始的第一次匹配结果,
+        console.log('lastIndex第2次开始查找位置' + reg1.lastIndex);
+        var result3 = reg1.exec(str);
+        // 匹配结果数组里显示的索引号index是14,因为第2个hello的h索引是14;
+        // 这时lastIndex的值已经变成19了,下次别的方法调用时,开始查找位置从索引号19开始,如果后面还有方法继续用reg1这个正则表达式在原字符串里找,返回结果一定不正确; 
+        console.log(result3, 'lastIndex第3次开始查找位置' + reg1.lastIndex, typeof result3);
+
+        // 因为从新写了个正则表达式,所以匹配word的wo从索引0开始查找,能正常匹配成功;
+        // 数组里面的第1个元素是正则表达式的匹配结果,第2个元素是()分组的匹配结果;
+        var result33 = /(wo)./.exec(str);
+        console.log(result33);
+
+        // 得到null,字符串str里没有ac这个字符串
+        var result4 = reg2.exec(str);
+        console.log(result4, typeof result4);
+
+
+        // 字符串内置的4种方法,必需通过字符串调用,参数可以使用正则表达式:
+
+        // 子串hello第一次出现的位置,匹配到返回索引位置,匹配不到返回-1
+        var result5 = str.search(reg1); // 返回0
+        console.log(result5);
+        // 子串ac第一次出现的位置,str里没有ac这个子字符串
+        var result6 = str.search(reg2); // 返回-1
+        console.log(result6);
+
+        // 字符串中是否含有符合此正则表达式的子串,修饰符g会匹配整个字符串,否则只匹配第一个符合的子串;
+        var result11 = str.match(reg1); //  得到["hello", "hello"]返回数组,元素是匹配到的子串
+        console.log(result11);
+        var result11 = str.match(reg2); //  没匹配到,得到null
+        console.log(result11);
+
+        // 将符合正则表达式的字符替换成其他字符或字符串,返回替换后的新字符串
+        var result7 = str.replace(reg1, '哈哈'); // 哈哈 word ab 哈哈 12,
+        console.log(result7);
+        var result8 = str.replace(reg2, '嘿嘿'); // 没有符合正则表达式的,返回值是调用方这个原字符串,       
+        console.log(result8);
+
+        // 将字符串按正则表达式来进行分割,返回一个数组,里面装的是分割后的子串;
+        // 以正则表达式的主体字符开头或结束的调用方字符串,分割后开头或结束位置会产生一个空字符串,为什么呢?
+        var result9 = str.split(reg1); // 替换成功,得到["", " word ab ", " 12"]
+        console.log(result9);
+        var result10 = str.split(reg2); // 没匹配的项,替换失败,得到["hello word ab hello 12"]
+        // 正则表达式匹配失败,相当于split()没传参数(不传参数是不允许的),返回值是数组,只有1个元素,元素是整个字符串;
+        var result10 = str.split();
+        console.log(result10);
+
+        // 或符号,惰性匹配,
+        var str2 = "goodbye nice good";
+        // 得到["good", "good"],相同开头的表达式只要有符合某一个的匹配,它就返回满足第一个条件的;
+        console.log(str2.match(/good|goodbye/g));
+        //  得到["good", "nice", "good"],全局模式下,不同的表达式,如果字符串里只符合某一个匹配,它会返回满足某一个条件的,如果都含有,它会全部匹配到;
+        var result22 = str2.match(/good|nice/g);
+        console.log(result22);
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background-color: #000;
+        }
+        
+        img {
+            position: absolute;
+        }
+        
+        div {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: red;
+            border-radius: 50%;
+            /* 设置了margin值鼠标转圈时div不跟着转圈 */
+            /* margin: 10px; */
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // 让小精灵跟着鼠标移动
+            var img = document.querySelector('img');
+            window.onmousemove = function(ev) {
+                var e = ev || window.event;
+                // console.log(e.pageX, e.pageY);
+                // - 100是让精灵离鼠标箭头近一点
+                img.style.left = e.clientX - 100 + 'px';
+                img.style.top = e.clientY - 100 + 'px';
+            };
+
+            // 让15个div连成一串跟着鼠标移动
+            for (var i = 0; i < 15; i++) {
+                var div = document.createElement('div');
+                document.body.appendChild(div);
+            }
+            var box = document.getElementsByTagName('div');
+
+            // 测试代码执行完用多长时间
+            console.time('test1');
+            document.onmousemove = function(ev) {
+                var e = ev || window.event;
+                // 从最后一个往前遍历除了下标0的所有div,让后一个div的left和top值等于前一个div的left和top值;
+                // 就像排队一样,最后面的人跟随他前面的人脚步移动,而不是直接跟随第一个人的脚步移动的;
+
+                for (var i = box.length - 1; i > 0; i--) {
+                    // 这种写法执行代码用时比下面的那种长,
+                    // 得到前一个div的css样式的top和left值,赋值给当前div,比如:第8个的值赋值给当前div9;
+                    // box[i].style.left = box[i - 1].style.left;
+                    // box[i].style.top = box[i - 1].style.top;
+
+                    // 这种执行用时短,例如:得到第8个div的距左和距上的距离,赋值给当前div9;
+                    box[i].style.left = box[i - 1].offsetLeft + 'px';
+                    box[i].style.top = box[i - 1].offsetTop + 'px';
+                }
+
+                // 让下标为0的div跟随鼠标移动,其它的div都会跟随它前面一个div移动,实现一串div跟着鼠标移动
+                box[0].style.left = e.clientX + 'px';
+                box[0].style.top = e.clientY + 'px';
+            }
+            console.timeEnd('test1');
+
+        }
+    </script>
+</head>
+
+<body>
+    <img src="./img/5.gif" alt="">
+
+</body>
+
+</html>

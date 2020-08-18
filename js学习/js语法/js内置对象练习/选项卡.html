@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1 div {
+            display: none;
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            line-height: 300px;
+            border: 1px solid;
+        }
+        
+        #div1 button {
+            margin: 0 8px;
+            width: 80px;
+            height: 30px;
+            background-color: rgb(223, 217, 217);
+        }
+        
+        #div1 #active {
+            background-color: rgb(223, 129, 42);
+            color: #fff;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // 先获取到div1里所有的button标签
+            var btn = document.querySelectorAll('#div1 button');
+            // 获取到div1里所有的div标签
+            var div = document.querySelectorAll('#div1 div');
+            // 遍历所有的button标签,也就是获得的btn对象集合
+            for (var i = 0; i < btn.length; i++) {
+                // 给遍历到的每个对象添加index属性,赋值为i,作为遍历到的对象的下标使用
+                btn[i].index = i;
+                // 给每个遍历到的对象添加点击事件
+                btn[i].onclick = function() {
+                    /* 
+                    每个按钮对象点击时都会添加id属性变成橘色,
+                    但取消选中时颜色无法恢复成未选中前的默认颜色,
+                    需要将取消选中的按钮恢复成未选中前的颜色,
+                    又不知道每次选中的是哪个按钮,到底要恢复哪个按钮,所以将所有button标签的id设置为空字符串,全部都恢复默认颜色; */
+                    for (var j = 0; j < btn.length; j++) {
+                        btn[j].id = '';
+                        // 将所有div全部设置为隐藏状态
+                        div[j].style.display = 'none';
+                    }
+                    // 给点击时选中的对象添加id属性,让选中的按钮变橘色
+                    this.id = 'active';
+                    /*  
+                    把与选中的按钮索引号相同的div显示出来,
+                    先将选中按钮的索引作为div标签的索引,这样他们的索引号就相同了,
+                    再把此索引的div标签设置为显示状态 */
+                    div[this.index].style.display = 'block';
+                }
+            }
+
+        }
+    </script>
+
+</head>
+
+<body>
+    <div id="div1">
+        <button id="active">html</button>
+        <button>css</button>
+        <button>javaScript</button>
+        <div style="display: block;">我是html</div>
+        <div>我是css</div>
+        <div>我是JavaScript</div>
+    </div>
+</body>
+
+</html>

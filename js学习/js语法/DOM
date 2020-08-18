@@ -52,6 +52,18 @@ document表示从html标签开始到html标签结束的全部内容,包含全局
                 document.querySelectorAll('.div1 #span2');
                 是获取所有类名叫div1标签里的id名叫span2的标签;
 
+        document.body
+            获取body标签;
+        
+        document.title
+            获取tiele标签;
+
+        var windowWidth = document.documentElement.clientWidth || document.body.clientWidth;
+            获取当前窗口的宽度,这是兼容写法;
+        
+        var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            获取当前窗口的高度,这是兼容写法;
+
     文本节点:
         获取双标签包裹的内容,或通过 = 重新赋值来替换标的内容：
             innerHTML可以读取或者设置标签间的内容,替换时会解析标签渲染到页面;
@@ -63,32 +75,33 @@ document表示从html标签开始到html标签结束的全部内容,包含全局
 
     设置这几类节点的赋值取值都是都是通过 = 号;  
 
-    获取标签里嵌套的子标签:
-        系统提供的元素节点的属性,获取子节点的方式,2套:
-            包含文本节点的属性如下(缩进、空格、换行这些看不见的字符也属于文本):
-                childNodes 访问当前节点下的所有子节点; 
-                    返回值:
-                        节点对象(伪数组),需要通过索引操作里面的对象;
-                    length属性可以查看返回值的长度,返回数字类型;
-                firstChild 访问当前节点下的第一个子节点;
-                    返回值:
-                        节点对象,需要通过 对象.属性来获取内容;
-                lastChild 访问当前节点下的最后一个子节点;
-                    返回值:
-                        和firstChild一样;
-                nextSibling 访问当前节点的下一个兄弟节点;
-                    返回值:
-                        和firstChild一样;
-                previousSibling 访问当前节点的上一个兄弟节点;
-                    返回值:
-                        和firstChild一样;
+    系统提供的元素节点的属性,获取子节点的方式,2套:
+        查:
+        包含文本节点的属性如下(缩进、空格、换行这些看不见的字符也属于文本):
+        
+            childNodes 访问当前节点下的所有子节点; 
+                返回值:
+                    节点对象(伪数组),需要通过索引操作里面的对象;
+                length属性可以查看返回值的长度,返回数字类型;
+            firstChild 访问当前节点下的第一个子节点;
+                返回值:
+                    节点对象,需要通过 对象.属性来获取内容;
+            lastChild 访问当前节点下的最后一个子节点;
+                返回值:
+                    和firstChild一样;
+            nextSibling 访问当前节点的下一个兄弟节点;
+                返回值:
+                    和firstChild一样;
+            previousSibling 访问当前节点的上一个兄弟节点;
+                返回值:
+                    和firstChild一样;
 
-            只获取子节点的元素节点(标签),不获取文本节点,IE8以下不兼容:
-                children 访问当前节点下的所有子元素节点;
-                firstElementChild 访问当前节点下的第一个子元素节点;
-                lastElementChild 访问当前节点下的最后一个子元素节点;
-                nextElementSibling 访问当前节点兄弟节点中的下一个元素节点;
-                previousElementSibling 访问当前节点兄弟节点中的上一个元素节点;
+        只获取子节点的元素节点(标签),不获取文本节点,IE8以下不兼容:
+            children 访问当前节点下的所有子元素节点;
+            firstElementChild 访问当前节点下的第一个子元素节点;
+            lastElementChild 访问当前节点下的最后一个子元素节点;
+            nextElementSibling 访问当前节点兄弟节点中的下一个元素节点;
+            previousElementSibling 访问当前节点兄弟节点中的上一个元素节点;
 
         也可以先通过获取到父标签,
             再 父标签.getElementById(id名)
@@ -96,7 +109,56 @@ document表示从html标签开始到html标签结束的全部内容,包含全局
             或getElementsByTagName(标签名)
             或getElementByName('name属性的值')等方式来获取子标签;
 
-     
+        增:
+            createElement('标签名')
+                创建新的元素节点;
+                格式:document.createElement('标签名');
+                返回值:    
+                    新创建的这个元素节点;
+
+            createTextNode('文本')
+                创建新的文本节点,纯文本;
+                格式:document.createTextNode('文本');
+                返回值:    
+                    新创建的这个文本节点;
+
+            appendChild('要插入的标签')
+                将参数标签插入调用者的子标签末尾;
+                格式:标签1的父级标签.appendChild('要插入的标签');
+                返回值:
+                    插入的标签;
+
+            insertBefore(标签2,标签1)
+                将标签2添加到标签1的前面,此标签需要用父标签调用;
+                格式:标签1的父级标签.insertBefore(标签2,标签1);
+                返回值:
+                    插入的标签;
+
+            cloneNode()
+                复制调用者,生成一个新的和调用者一模一样的节点;
+                格式:
+                    node.cloneNode(); 克隆调用者本身,不含它里面嵌套包含的节点;
+                    node.cloneNode(true); 克隆调用者和它包含的所有子节点;
+                返回值:
+                    克隆生成的新节点;
+
+        改:
+            replaceChild(标签2,标签1)
+                用标签2将标签1替换掉;
+                格式:标签1的父级标签.replaceChild(标签2,标签1);
+                返回值:
+                    被替换下来的旧节点;
+
+            document.write('字符串')
+                把任意字符串(字符串里有标签会自动解析标签)插入到文档中,会替换原先内容;
+
+        删:
+            removeChild('要删除的节点')
+                将参数标签从页面上删除;
+                格式:要删除的标签的父级标签.removeChild(要删除的节点);
+                返回值:
+                    删除的节点;
+        
 
     访问获取到的标签的属性:
         理论上都可以通过 （.）点 语法,访问标签上的任意属性，
@@ -183,11 +245,6 @@ document表示从html标签开始到html标签结束的全部内容,包含全局
             attributes[要查的属性名或索引号].specified	
                 如果属性被指定(已存在)返回 true ，否则返回 false;
                 在谷歌浏览器测试,已存在的属性返回true,不存在的属性报未定义的错误,而不是返回false;
-               
-            
-           
-            
-            
 
 
     访问行内css样式:
@@ -216,20 +273,175 @@ document表示从html标签开始到html标签结束的全部内容,包含全局
     例如：text-align应该写成textAlign,
         background-color应该写成backgroundColor,
 
+    获取元素宽、高、距左、距上的距离：
+        offsetWidth
+        offsetHight
+            获取元素的宽、高,算上boder和padding的;
+            返回值:
+                宽度、高度,数字类型,没有单位,可以直接用于做计算;
+        offsetLeft
+        offsetTop
+            获取元素的距左、距上的距离，从第一个有定位的父级开始算；
+            返回值：
+                距左、距上的距离值，数字类型，没有单位，可以直接用于计算；
 
+事件,由3部分组成:
+    事件类型 + 事件绑定 + 事件处理;
 
-this指向，谁调用function匿名函数，this就指向谁。
+    事件类型的种类,3种:
+        鼠标事件(可以绑定在任意元素节点上)：
+            click 鼠标左键单击事件
+                点击a链接时阻止a链接的默认(跳转)行为:
+                    var preDef = e.preventDefault? e.preventDefault() : window.event.returnValue = false;
+            dblclick 鼠标左键双击事件
+            ctextmenu() 点击鼠标右键
+                调用右键事件,函数内return false,是禁止弹出默认右键菜单;
 
-鼠标事件：
-    onclick 鼠标左键单击事件
-    oncontextmenu() 点击鼠标右键
-    onmouseout 鼠标移开
-    onmouseover 鼠标经过
-表单事件：
-    onfocus 获取光标焦点
-    onblur 失去光标焦点
-    onchange 文本框内容改变
-    onselect 内容选中
-    onload 加载
-    onunload 页面卸载
+            这两种事件即使绑定在父节点上,经过子节点会重复触发:
+                mouseover 鼠标移入
+                mouseout 鼠标移出
+            这两种事件绑定在父节点上,经过子节点不会重复触发,IE8以下不兼容:
+                mouseenter 鼠标移入
+                mouseleave 鼠标移出
+            mousemove 鼠标移动(会不停的触发)
+            mousedown 鼠标按下
+            mouseup 鼠标抬起
+
+        键盘事件(一般绑定在window或表单输入框):
+            keydown 键盘按下(如果按下不松,会一直触发)
+            keyup 键盘抬起
+            keypress 键盘按下(只支持字符键,输入的那部分,ctrl之类的功能键不支持)
+
+            键盘事件的属性,获取键码:
+                只在keydowm事件里生效:
+                    var which = e.which || e.keyCode;
+                        获取用户按下哪个键,返回此键的ASCII码值;
+                        不区分大小写,按下大写字母或小写字母都返回大写字母的ASCII码值;
+                只在keypress事件里生效:
+                    var which = e.which || e.charCode;
+                        获取用户按下哪个字符键,返回此键的ASCII码值,只支持字符键;
+                        区分大小写,按下大写字母或小写字母返回的ASCII码值不一样;
+                
+        html事件,2种:
+            window事件:
+                load 加载,当页面加载完后触发
+                unload 页面解构时触发(刷新/关闭/跳转),IE浏览器生效,其它浏览器都不兼容
+                scroll 页面滚动(滚动条)时触发
+                resize 窗口大小发生变化(拉伸/缩放)时触发
+
+            表单事件：
+                focus 获取光标焦点
+                blur 失去光标焦点
+                change 当输入框中的文本进行修改,并且失去焦点的时候触发;
+                select 当输入框种的文本内容被选中的时候触发
+                必需添加在form元素上,也就是用form元素调用:
+                    sumbit 当点击sumbit按钮的时候才会触发
+                    reset 当点击reset按钮的时候才会触发
+
+    事件绑定,3种:
+        第一种,外联模式/脚本模式(书写尽量用这种):            
+            元素节点.on + 事件类型 = 匿名函数;
+            例如:
+                body里写<div id='div1'></div>,
+                html里写script标签,
+                在标签里写div1.onclick = function(){};
+              
+        第二种,内联模式:
+            例如:<div onclick= '函数'></div>
+
+        第三种,事件监听:
+            由于上面的两种,给一个元素添加多个相同的事件,后面的会覆盖前面的事件,最终只执行一个事件;
+            系统提供两种事件监听器,解决给节点重复添加相同的事件会覆盖的问题,和精确删除某个事件调用的函数:
+                addEventListener() IE8以下不兼容：
+                    必需用当前的元素节点去调用,绑定事件;
+                    参数3个:
+                        第一个参数:事件类型;
+                        第二个参数:绑定函数,函数名或匿名函数都行;
+                        第三个参数:布尔值;
+                            true 事件捕获;
+                            false (默认值)事件冒泡;
+
+                removeEventListener()
+                    必需用当前的元素节点去调用,删除事件监听;
+                    参数2个:
+                        第一个参数:事件类型;
+                        第二个参数:要删除的函数的名字;
+
+                attachEvent() IE低版本有效;
+                    必需用当前的元素节点去调用,绑定事件;
+                    参数2个:
+                        第一个: on + 事件类型;
+                        第二个: 绑定函数;
+
+                detachEvent()
+                    必需用当前的元素节点去调用,删除事件监听;
+                    参数:
+                        第一个: on + 事件类型;
+                        第二个: 要删除的函数名字;
+
+                事件监听兼容写法:
+                function addEvent(node, eventType, funcName) {
+                    if(node.addEventListener) {
+                        node.addEventListener(eventType, funcName, false);
+                    } else {
+                        node.attachEvent('on' + eventType, funcName);
+                    }
+                }
+                删除事件监听的兼容写法:
+                function removeEvent(node, eventType, funcName) {
+                    if(node.removeEventListener) {
+                        node.removeEventListener(enentType, funcName);
+                    } else {
+                        node.detachEvent('on' + eventType, funcName);
+                    }
+                }
+
+        事件对象:
+            系统会在只要完成了事件绑定时,生成一个事件对象;
+            例如:
+                事件对象就像番茄和蛋炒完变成了一个新的东西(就叫番茄炒蛋),这个东西既不是番茄(on),也不是蛋(事件类型);
+            触发事件的时候,系统会自动取调用事件绑定的函数,将事件对象当做函数的第一个参数传入;
+            事件对象的获取方式,是固定写法:
+                var e = 匿名函数的参数 || window.event;
+                也就是匿名函数的参数是事件对象,是触发事件时由系统自动传实参的,上一行是浏览器兼容的写法,获取实参的方式(通过形参获取实参IE8以下不兼容,window.event获取实参IE8以下兼容),得到的实参是一个对象,存到变量里;               
+
+            操作得到的事件对象(实参)的属性:
+                    button 获取用户按的是鼠标哪个键;
+                        返回值:
+                            0 左键
+                            1 滚轮
+                            2 右键
+                获取当前鼠标位置,x/y轴的值,3种(区别是原点位置不一样):
+                    clientX clientY 以可视窗口的左上角为原点
+                    pageX pageY 以整个页面窗口的左上角为原点(包含滚动条滚动出去的距离)
+                    screenX screenY 以电脑屏幕的左上角为原点 
+
+                判断用户按下哪个键的属性:
+                    ctrlKey / shiftKey /altKey / metaKey(windows键,苹果系统是command键) :
+                        这几个属性的默认值是false,按下返回true,否则返回false;
+                        可以用来配合键盘事件的属性使用,设置快捷键;
+
+                目标对象/触发对象, 这个事件是由谁而起的:
+                    var target = e.target || window.event.srcElement;
+                    target IE8以下不兼容,window.event.srcElement兼容;
+                和this的区别是:
+                    this永远指向当前函数的主人; 
+                    target 是谁触发的事件就指向谁;
+                    例如:如果ul是函数的主人,点击里面的li触发的事件,输出this得到ul,输出target得到li;
+                
+                
+                浏览器上的事件有一个天生的特点:事件流;
+                    事件捕获:由外向里逐级触发,事件捕获没有对应的属性或方法,无法演示;
+                    事件冒泡:由里向外逐级触发;
+                    阻止事件冒泡的属性和方法:
+                        e.cancelBubble=true; 
+                        e.stopPropagation(); IE8以下不兼容;
+                    跨浏览器兼容的写法:
+                        var stopBubble = e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
+
+    事件处理:
+        on + 事件类型; 例如onclick;
+
+    
+            
 

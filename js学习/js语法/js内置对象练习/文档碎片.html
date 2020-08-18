@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 创建10000个节点,插入到页面上
+        window.onload = function() {
+            // 测试一下这个程序共需要多少时间
+            console.time('test1');
+            // 每循环一次创建一个div插入页面,相当于每买个东西跑一趟,买盐一趟,买酱油又跑一趟
+            for (var i = 0; i < 10000; i++) {
+                var node = document.createElement('div');
+                document.body.appendChild(node);
+            }
+            // 测试结果 test1: 55.177978515625 ms
+            console.timeEnd('test1');
+
+            // 节点碎片方式要比上面的用时短
+            console.time('test2');
+            // 先创建一个div节点
+            var node = document.createElement('div');
+            for (var i = 0; i < 10000; i++) {
+                // 创建10000个节点
+                var node2 = document.createElement('div');
+                // 将10000个节点插入到一个div节点里
+                node.appendChild(node2);
+            }
+            // 再将存有10000个节点的div插入到页面,相当于买东西列个单子跑一趟买齐
+            document.body.appendChild(node);
+            // 测试结果 test2: 42.77783203125 ms
+            console.timeEnd('test2');
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

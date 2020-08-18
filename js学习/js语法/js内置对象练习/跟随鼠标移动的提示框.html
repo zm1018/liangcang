@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a {
+            display: block;
+            width: 50px;
+            text-decoration: none;
+            font-size: 20px;
+            margin: 50px;
+        }
+        
+        #msg {
+            /* 给div添加绝对定位,让top和left值为鼠标移动位置的x和y轴的值,这样div就跟着鼠标移动了 */
+            position: absolute;
+            /* 先将div隐藏,当鼠标移入到a标签时再将div显示出来 */
+            display: none;
+            width: 100px;
+            border: 1px solid #000;
+            /* 让移入鼠标显示div时,div的文字不会被鼠标的小手遮到 */
+            padding-left: 20px;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // 获取所有的a标签
+            var a = document.querySelectorAll('a');
+            // 获取div标签
+            var msg = document.getElementById('msg');
+            // 存div文本内容的数组,共3个元素
+            var arr = ['我是html', '我是css', '我是js'];
+            // 遍历对象a,给每个a标签添加鼠标移入/移出/移动事件
+            for (var i = 0; i < a.length; i++) {
+                // 给每次循环得到的a标签添加一个index属性,记录当前a标签的索引
+                a[i].index = i;
+                a[i].onmouseover = function() {
+                    // 鼠标移入时div显示
+                    msg.style.display = 'block';
+                    // div的文本内容修改成 数组里对应当前a标签索引的元素,如果当前a标签索引是0,将数组里索引为0的元素赋值给div文本;
+                    msg.innerHTML = arr[this.index];
+                }
+                a[i].onmouseout = function() {
+                    // 鼠标移出时隐藏div
+                    msg.style.display = 'none';
+                }
+                a[i].onmousemove = function(ev) {
+                    // 鼠标移动时获取到事件对象,再通过事件对象的属性获取到鼠标当前位置的坐标值,得到数字类型的值;
+                    var e = ev || window.event;
+                    // 将当前鼠标的坐标值赋值给div的绝对定位top和left值,css样式必需要带单位才生效,所以将数字类型的值加px单位
+                    /* 当鼠标移入时div显示,div标签在a标签上层,就盖住了a标签,表示鼠标离开了a标签,就会触发a标签的鼠标移出事件,
+                    所以短暂的移入显示div后,马上执行鼠标移出隐藏div的代码,导致div不能跟着鼠标移动正常显示,
+                    解决办法:将div定位的left/top值设置的离鼠标位置远一点,比如让鼠标位置和div间隔10px距离,这样在a标签大小范围内,a标签没被显示的div盖住,就不会触发a标签的鼠标移出事件; */
+                    msg.style.left = e.clientX + 10 + 'px';
+                    msg.style.top = e.clientY + +10 + 'px';
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <a href="#">html</a>
+    <a href="#">css</a>
+    <a href="#">javaScript</a>
+    <div id="msg"></div>
+</body>
+
+</html>

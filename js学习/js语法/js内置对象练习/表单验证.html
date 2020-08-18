@@ -43,68 +43,147 @@
             width: 230px;
             font-size: 14px;
             text-align: left;
-            color: red;
+            color: #ccc;
             /* border: 1px solid red; */
+        }
+        
+        .testP {
+            display: inline-block;
+            width: 70px;
+            height: 25px;
+            background-color: #ccc;
+            margin-bottom: 10px;
+            margin-left: 5px;
+            color: #fff;
+            text-align: center;
+            line-height: 25px;
+        }
+        /* 为什么用div.nth-chlid(1)无效? 因为它是选择父元素中的第一个元素,并且这个元素要是div还要是第一个,否则不生效
+        div.nth-of-type(1)是选择父元素中的div元素的第一个 */
+        
+        div:nth-of-type(1) {
+            margin-left: 125px;
         }
     </style>
     <script>
         // 事件驱动函数onblur是鼠标失去焦点时才会触发这个函数
+        /*  function func() {
+             // 获取邮件地址输入框里用户输入的内容
+             var username = document.getElementById('username'),
+                 // 获取用户输入邮件地址后，鼠标失去焦点时，显示提示信息的span标签
+                 u_s = document.getElementById('u_validation'),
+                 // 将用户输入的内容字符串赋值给一个变量
+                 oValue = username.value;
+             // 判断用户输入的长度是否是6~18的长度
+             if (oValue.length < 6 || oValue.length > 18) {
+                 // 如果满足if判断条件，表示用户输入的长度是不符合要求的，提示用户按要求输入
+                 u_s.innerHTML = '!长度应为6~18个字符';
+                 // 判断用户输入的第一个字符是不是字母
+             } else if (!isABC(oValue[0])) {
+                 // 如果满足else if判断条件，表示用户输入的第一个字符不是字母，提示用户按要求输入
+                 u_s.innerHTML = '!邮件地址必需是英文字母开头';
+                 // 判断用户输入的是不是
+             } else {
+                 // 假设用户输入的每个字符都是符合数字、字母、下划线要求的
+                 var isYes = true;
+                 // 将用户输入的所有字符遍历
+                 for (var i = 0; i < oValue.length; i++) {
+                     // 如果有一个字符不是数字、字母、下划线的，退出循环，让isYes = false; 否则把每个字符都判断一遍。
+                     if (!isDEF(oValue[i])) {
+                         isYes = false;
+                         break;
+                     }
+                 }
+                 // 如果循环完的isYes = true,就提示用户邮件地址正确
+                 if (isYes) {
+                     // 要把其它判断条件提示的颜色改成red,否则这个green触发了,不刷新页面提示就都是绿色了,懒得改,以后看看有没有别的快捷方法
+                     u_s.style.color = 'green';
+                     u_s.innerHTML = '√ 该邮件地址可以注册!'
+                 } else {
+                     // 否则提示用户按要求输入
+                     u_s.innerHTML = '邮件地址需由字母、数字、下划线组成';
+                 }
+             }
+
+         }
+         // 判断字符是不是字母的函数,是返回true,不是返回false
+         function isABC(charStr) {
+             if (charStr >= 'a' && charStr <= 'z' || charStr >= 'A' && charStr <= 'Z') {
+                 return true;
+             } else {
+                 return false;
+             }
+         }
+         // 判断字符是不是非法字符的函数,是返回true,不是返回false
+         function isDEF(charStr) {
+             if (charStr >= 0 && charStr <= 9 || charStr >= 'a' && charStr <= 'z' || charStr >= 'A' && charStr <= 'Z' || charStr === '_') {
+                 return true;
+             } else {
+                 return false;
+             }
+         } */
+        // alert(isABC('12'));
+
+        // 改成正则表达式去验证用户名
         function func() {
-            // 获取邮件地址输入框里用户输入的内容
-            var username = document.getElementById('username'),
-                // 获取用户输入邮件地址后，鼠标失去焦点时，显示提示信息的span标签
-                u_s = document.getElementById('u_validation'),
-                // 将用户输入的内容字符串赋值给一个变量
-                oValue = username.value;
-            // 判断用户输入的长度是否是6~18的长度
-            if (oValue.length < 6 || oValue.length > 18) {
-                // 如果满足if判断条件，表示用户输入的长度是不符合要求的，提示用户按要求输入
-                u_s.innerHTML = '!长度应为6~18个字符';
-                // 判断用户输入的第一个字符是不是字母
-            } else if (!isABC(oValue[0])) {
-                // 如果满足else if判断条件，表示用户输入的第一个字符不是字母，提示用户按要求输入
-                u_s.innerHTML = '!邮件地址必需是英文字母开头';
-                // 判断用户输入的是不是
+            var uname = document.getElementById('username');
+            var span = document.getElementById('u_validation');
+            var uValue = uname.value;
+            if (!/^.{6,18}$/.test(uValue)) {
+                span.innerHTML = '!长度应为6~18个字符';
+                span.style.color = 'red';
+            } else if (!/^[a-zA-Z]/.test(uValue)) {
+                span.innerHTML = '!邮件地址必需是英文字母开头';
+                span.style.color = 'red';
+            } else if (/\W/.test(uValue)) {
+                span.innerHTML = '邮件地址需由字母、数字、下划线组成';
+                span.style.color = 'red';
             } else {
-                // 假设用户输入的每个字符都是符合数字、字母、下划线要求的
-                var isYes = true;
-                // 将用户输入的所有字符遍历
-                for (var i = 0; i < oValue.length; i++) {
-                    // 如果有一个字符不是数字、字母、下划线的，退出循环，让isYes = false; 否则把每个字符都判断一遍。
-                    if (!isDEF(oValue[i])) {
-                        isYes = false;
-                        break;
-                    }
-                }
-                // 如果循环完的isYes = true,就提示用户邮件地址正确
-                if (isYes) {
-                    // 要把其它判断条件提示的颜色改成red,否则这个green触发了,不刷新页面提示就都是绿色了,懒得改,以后看看有没有别的快捷方法
-                    u_s.style.color = 'green';
-                    u_s.innerHTML = '√ 该邮件地址可以注册!'
-                } else {
-                    // 否则提示用户按要求输入
-                    u_s.innerHTML = '邮件地址需由字母、数字、下划线组成';
-                }
+                span.innerHTML = '√ 该邮件地址可以注册!';
+                span.style.color = 'green';
             }
 
+            // 我打印看看结果才知道正则写的哪里不完善;
+            // 判断输入的必需是数字字母下划线,用这两种,只要有一个是数字字母下划线,就会返回true,而不会验证用户输入所有的内容;
+            console.log(/\w/.test(uValue));
+            console.log(/\w+/.test(uValue));
+            // 这种,表示必需是至少6位,每位都要是数字字母下划线,才会返回true,但只要18个以内,有一段连续6个不是数字字母下划线的,就会返回true,例如:'aab,bccdefg,1d'这个里面有非法字符,号但是有一段满足了6个都是数字字母下划线,所以它返回true,这结果是错误的,用户输入并不符合要求,但没检测出来;
+            console.log(/\w{6,18}/.test(uValue));
+
+            // 必需写成至少6-18位,都以数字字母下划线开头和结束的,这种写法实现了两个功能,每位都必须是数字字母下划线,还验证了字符串长度必需是6-18位;再将结果用!取反,才和下面这个大W的作用一样;
+            console.log(/^\w{6,18}$/.test(uValue));
+            // 用这个大W取反,更简洁,只要返回true,就表示用户输入的有一个字符不是数字字母下划线;
+            console.log(/\W/.test(uValue));
         }
-        // 判断字符是不是字母的函数,是返回true,不是返回false
-        function isABC(charStr) {
-            if (charStr >= 'a' && charStr <= 'z' || charStr >= 'A' && charStr <= 'Z') {
-                return true;
-            } else {
-                return false;
+
+        // 正则验证密码
+        window.onload = function() {
+            var password = document.getElementById('pw');
+            var div = document.getElementsByClassName('testP');
+
+            // 输入的时候就要进行判断,keydown触发的太早,是文本输入到输入框之前触发,用户输入一个触发一次,所以要用keyup事件,先在输入框输入内容再抬起键盘才会触发;
+            password.onkeyup = function() {
+                // 每次触发键盘事件时,都先将每个div都恢复初始颜色灰色;
+                for (var i = 0; i < div.length; i++) {
+                    div[i].style.backgroundColor = '#ccc';
+                }
+                // 输入必需是6-12位的除下划线外的数字或大小写字母;
+                // /^\w{6,12}[^_]$/这个表达式只是结束位置不能是下划线,怎么才能全局都去掉下划线呢??
+                if (/^\w{6,12}$/.test(this.value)) {
+                    // 如果是纯数字或纯小写或纯大写字母,把div弱变颜色,提示用户密码强度弱
+                    if (/^[a-z]+$/.test(this.value) || /^[A-Z]+$/.test(this.value) || /^\d+$/.test(this.value)) {
+                        div[0].style.backgroundColor = 'red';
+                        // 如果输入的含有一个大写和小写字母和数字,也就是数字大小写字母这3种都有,把div强变颜色,提示用户密码强度强;
+                    } else if (/[a-z]/.test(this.value) && /[A-Z]/.test(this.value) && /\d/.test(this.value)) {
+                        div[2].style.backgroundColor = 'green';
+                        // 否则提示用户密码强度中,这里中是数字大小写字母这3种里,出现了两种,两两组合的,比如数字和大写,或数字和小写,等等;
+                    } else {
+                        div[1].style.backgroundColor = 'orange';
+                    }
+
+                }
             }
         }
-        // 判断字符是不是非法字符的函数,是返回true,不是返回false
-        function isDEF(charStr) {
-            if (charStr >= 0 && charStr <= 9 || charStr >= 'a' && charStr <= 'z' || charStr >= 'A' && charStr <= 'Z' || charStr === '_') {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        // alert(isABC('12'));
     </script>
 </head>
 
@@ -113,12 +192,17 @@
         <ul>
             <li>
                 <span>* 邮件地址</span><input type="email" id="username" onblur="func();">@<select name="">
-            <option value="">163.com</option>
-            <option value="">qq.com</option>
+                    <option value="">163.com</option>
+                    <option value="">qq.com</option>
                 </select>
                 <br><span id="u_validation">6~18个字符,可以使用字母、数字、下划线，须以字母开头</span>
             </li>
-            <li><span>* 密码</span><input type="password"></li>
+            <li><span>* 密码</span><input type="password" id="pw" placeholder="请输入6-12位密码"><br>
+                <div class="testP">弱</div>
+                <div class="testP">中</div>
+                <div class="testP">强</div>
+            </li>
+
             <li><span>* 确认密码</span><input type="password"></li>
             <li><span>* 验证码</span><input type="text"></li>
             <li><span>* 手机号码</span><input type="tel"></li>

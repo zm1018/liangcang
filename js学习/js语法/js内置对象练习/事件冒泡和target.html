@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            padding: 50px;
+        }
+        
+        #div1 {
+            background-color: red;
+        }
+        
+        #div2 {
+            background-color: blue;
+        }
+        
+        #div3 {
+            background-color: greenyellow;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // target指向触发事件的对象,this指向调用函数的对象
+            // var ul = document.querySelector('ul'),
+            //     li = document.querySelectorAll('li');
+            var ul = document.getElementsByTagName('ul')[0];
+            var li = document.getElementsByTagName('li');
+            ul.onmousedown = function(ev) {
+                // alert(this); // 得到[object HTMLUListElement],一个ul元素节点对象
+                // alert(this.innerHTML); // 得到3个li元素节点
+                // alert(this.tagName); // tagName属性获取标识名,得到标识名ul
+                var e = ev || window.event;
+                // alert(e);
+                // alert(e.target); // 得到[object HTMLLIElement],一个li元素节点对象
+                // alert(e.target.innerHTML); // 点击第一个li,得到li元素节点对象的文本1;
+                // alert(window.event.srcElement); // 得到[object HTMLLIElement],一个li元素节点对象
+                // alert(window.event.srcElement.innerHTML); // 点击第一个li,得到li元素节点对象的文本1;
+                // 兼容所有浏览器的写法
+                var target = e.target || window.event.srcElement;
+                console.log(target); // 得到<li id="li2">2</li>,一个li元素节点对象
+            }
+
+            // 事件冒泡
+            // var divs = document.querySelectorAll('div');
+            var divs = document.getElementsByTagName('div');
+            // console.log(divs);
+            for (var i = 0; i < divs.length; i++) {
+                divs[i].onclick = function(ev) {
+                    var e = ev || window.event;
+                    // 因为是标签嵌套,点击最里面的div3时,会先弹出div3,再弹出div2,最后弹出div1,由里向外逐级触发,这就是事件冒泡;
+                    alert(this.id);
+                    // 阻止事件冒泡,点击最里面的div3时,只弹出div3;不再由里向外逐级弹出了,这种IE8以下兼容;(cancel取消的意思,bubble泡泡的意思)
+                    // e.cancelBubble = true;
+                    // 阻止事件冒泡,点击最里面的div3时,只弹出div3;IE8以下不兼容,(propagation是传播的意思)
+                    // e.stopPropagation();
+                    // 让所有浏览器都兼容的写法:
+                    var stopBubble = e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
+
+
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <ul>
+        <li id="li1">1</li>
+        <li id="li2">2</li>
+        <li id="li3">3</li>
+    </ul>
+    <div id="div1">
+        <div id="div2">
+            <div id="div3"></div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

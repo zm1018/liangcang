@@ -64,10 +64,12 @@
     </style>
     <script>
         window.onload = function() {
-            // 获取点击右键时的x、y坐标
-            document.oncontextmenu = function(e) {
-                // 这个函数得到整个鼠标右键事件
-                console.log(e);
+
+            /* // 这个函数得到整个鼠标右键事件,这种写法点击别的键无法让菜单隐藏,下一种写法更好:
+            console.time('test1'); // 用了0.122802734375ms
+            document.oncontextmenu = function(ev) {
+                var e = ev || window.event;
+                // console.log(e);
                 // 通过鼠标右键事件里的clientX属性获取鼠标右键点击时坐标x的值
                 var x = e.clientX,
                     // 通过clientY获取鼠标右键点击时坐标y的值
@@ -82,8 +84,34 @@
                 ul1.style.left = x + "px";
                 ul1.style.top = y + "px";
                 // 取消点击右键时默认弹出的下拉菜单
-                // return false;
+                return false;
             };
+            console.timeEnd('test1'); */
+
+            // 第二种写法:
+            // console.time('test2'); //  用了0.532958984375ms,因为写了事件对象的版本兼容和判断用户按下了鼠标哪个键,比第一种写法耗时;
+            var ul1 = document.getElementById('ul1');
+            // 先取消右键的默认菜单
+            document.oncontextmenu = function() {
+                return false;
+            };
+            // 再执行鼠标按下事件
+            document.onmousedown = function(ev) {
+                    var e = ev || window.event;
+                    // 如果事件对象e的button属性值返回2,表示用户按下了右键;
+                    // if (e.button == 2) {
+                    //     ul1.style.display = 'block';
+                    ul1.style.left = e.clientX + 'px';
+                    ul1.style.top = e.clientY + 'px';
+                    // } else {
+                    //     // 表示用户按下的不是鼠标右键,菜单隐藏
+                    //     ul1.style.display = 'none';
+                    // }
+                    // 把上面的判断简写成三元运算,功能一样;
+                    e.button == 2 ? ul1.style.display = 'block' : ul1.style.display = 'none';
+
+                }
+                // console.timeEnd('test2');
 
 
             // 鼠标经过时显示导航栏第2个li的子下拉菜单
@@ -102,11 +130,12 @@
             // 获取input里用户输入的内容
             var username = document.getElementById('username');
             // console.log(username);
-            // 捕捉输入框的文本内容改变
+            // 捕捉输入框的文本内容的改变,并失去焦点时,触发事件
             username.onchange = function() {
                 // 得到id名为username的input输入框里用户输入的内容，这个内容存在value属性里，所以this指向value，也可以写成username.value
                 console.log(this.value);
                 console.log(username.value);
+                username.value = '';
             };
             // 获取下拉菜单option标签的value属性值和option标签包裹的内容
             var address = document.getElementById('address');
@@ -159,6 +188,15 @@
                 }
             }
 
+            // 阻止a链接的默认跳转行为
+            var a = document.getElementsByTagName('a')[0];
+            a.onclick = function(ev) {
+                var e = ev || window.event;
+                // 简漏的阻止跳转,直接return false就行了,但函数是return后面的代码都不执行,无法实现阻止跳转后的其它代码的功能,所以系统提供了两种阻止办法,有兼容性,这里写成三元运算符的写法,解决兼容性问题;
+                var preDef = e.preventDefault ? e.preventDefault() : window.event.returnValue = false;
+                alert('我成功阻止了a链接跳转,并执行此代码');
+                console.log(preDef); // IE浏览器执行window.event.returnValue = false;输出false,谷歌执行preventDefault(),没有返回值,输出undefined
+            }
 
 
         }
@@ -209,6 +247,7 @@
         </select>
         <!-- 这个span标签用来存js生成的子下拉菜单，控制它的显示位置是在select标签的后面，在一行上显示 -->
         <span id="sub"></span>
+        <br><a href="https://www.baidu.com">点我</a>
     </form>
 </body>
 

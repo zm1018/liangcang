@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // localStorage对象的3种方法的参数都只接受字符串,存储数据是键值对格式的;
+        // 存数据,3种写法,本地存储,永久性存储,只存储字符串类型数据;
+        localStorage.setItem('a', '1');
+        localStorage.b = '2';
+        localStorage['c'] = '3';
+        // 取数据,3种写法;
+        console.log(localStorage.getItem('a'));
+        console.log(localStorage.b);
+        console.log(localStorage['c']);
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

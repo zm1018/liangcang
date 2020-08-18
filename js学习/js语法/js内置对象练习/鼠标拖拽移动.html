@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: #225555;
+        }
+    </style>
+    <script>
+        // 鼠标拖拽移动物体
+        /*  
+            实现鼠标拖拽, 必需具备3个事件:
+                onmousedown 鼠标按下:
+                    鼠标按下的时候要记录鼠标位置到被拖拽物体的相对距离(也就是鼠标在物体上什么位置,到物体的左上角原点距离是多少)?
+                    offsetX = 鼠标的clientX - 物体的offsetLeft;
+                    offsetY = 鼠标的clientY - 物体的offsetTop;
+                onmousemove 鼠标移动:
+                    鼠标移动物体时,鼠标还要保持按下时的相对距离位置,
+                    怎么实现按下的位置保持不变?
+                        要得到物体左上角距屏幕原点距离是多少;
+                        用现在鼠标的位置 - 之前得到的鼠标到物体左上角的距离;
+                    物体的Left值 = 鼠标的clientX - offsetX + 'px';
+                    物体的Top值 = 鼠标的clientY - offsetY + 'px';
+                onmouseup 鼠标抬起:
+                    取消拖拽
+        */
+        //    这种是不限制拖拽出窗口界面的
+        window.onload = function() {
+            var div = document.getElementsByTagName('div')[0];
+            // 鼠标按下是在div上按下,用div调用
+            /* div.onmousedown = function(ev) {
+                var e = ev || window.event;
+                var offsetX = e.clientX - div.offsetLeft;
+                // console.log(e.clientX); 鼠标距(屏幕原点)左的距离
+                // console.log(div.offsetLeft); div距左的距离
+                // console.log(offsetX); 鼠标距div原点的距离
+                var offsetY = e.clientY - div.offsetTop;
+                // 鼠标移动要嵌套在鼠标按下里面,实现按下鼠标不松时,移动鼠标才能拖着div在整个屏幕上移动,否则因为局部作用域的原因,报offsetX/Y变量未定义错误
+                // 鼠标移动是在整个页面移动,用document或window调用,无论鼠标移动到屏幕上哪个位置,鼠标在div上的按下位置都不变
+                document.onmousemove = function(ev) {
+                    var e = ev || window.event;
+                    // 算出div距屏幕原点的距离,保持鼠标移动时,鼠标按下在div上的位置不变
+                    div.style.left = e.clientX - offsetX + 'px';
+                    div.style.top = e.clientY - offsetY + 'px';
+                }
+            };
+            // 鼠标抬起时清除拖拽(就是让鼠标移动事件失效),并让div停在最后拖拽到的位置(div拖拽到某个位置后,它的top和left值就是此位置距离屏幕原点的值,只要不将值恢复到拖拽前的初始值,它就会停在最后拖拽到的位置)
+            div.onmouseup = function() {
+                document.onmousemove = null;
+            } */
+
+            // 这种是限制只能在窗口里面拖拽的,不能出界
+
+            limitDrag(div);
+
+        }
+
+        function limitDrag(node) {
+            node.onmousedown = function(ev) {
+                var e = ev || window.event;
+                var offsetX = e.clientX - node.offsetLeft;
+                var offsetY = e.clientY - node.offsetTop;
+                document.onmousemove = function(ev) {
+                    var e = ev || window.event;
+                    // 物体距窗口左边的距离
+                    var l = e.clientX - offsetX;
+                    // 物体距窗口上边的距离
+                    var t = e.clientY - offsetY;
+                    // 如果物体距窗口左边的距离小于0,表示出了窗口左边界,将物体距窗口左边的距离直接赋值成0,这样left的最小值就是0,无法产生负left值;
+                    if (l <= 0) {
+                        l = 0;
+                    }
+                    // 获取窗口宽度的写法
+                    var windowWidth = document.documentElement.clientWidth || document.body.clientWidth;
+                    // 如果物体距窗口右边的距离大于窗口宽度,表示出了窗口右边界,将物体距窗口右边的距离直接赋值成窗口右边界的值减掉物体的自身宽度,实现物体右边挨着窗口右边界,这样left的最大值就是窗口右边界,无法产生大于窗口右边界的left值;
+                    if (l >=
+                        windowWidth - node.offsetWidth) {
+                        l = windowWidth - node.offsetWidth;
+                    }
+                    // 如果物体距窗口上边的距离小于0,表示出了窗口上边界,将物体距窗口上边的距离直接赋值成0,这样top的最小值就是0,无法产生负top值;
+                    if (t <= 0) {
+                        t = 0;
+                    }
+                    // 获取窗口高度的写法
+                    var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+                    // 如果物体距窗口下边的距离大于窗口高度,表示出了窗口下边界,将物体距窗口下边的距离直接赋值成窗口下边界的值减掉物体的自身高度,实现物体下边挨着窗口下边界,这样left的最大值就是窗口下边界,无法产生大于窗口下边界的top值;
+                    if (t >= windowHeight - node.offsetHeight) {
+                        t = windowHeight - node.offsetHeight;
+                    }
+
+                    node.style.left = l + 'px';
+                    node.style.top = t + 'px';
+                }
+            }
+            document.onmouseup = function() {
+                document.onmousemove = null;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div></div>
+</body>
+
+</html>

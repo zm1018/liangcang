@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            padding: 50px;
+        }
+        
+        #div1 {
+            background-color: red;
+        }
+        
+        #div2 {
+            background-color: blue;
+        }
+        
+        #div3 {
+            background-color: greenyellow;
+        }
+    </style>
+    <script>
+        // 事件监听兼容写法
+        function addEvent(node, eventType, funcName) {
+            if (node.addEventListener) {
+                node.addEventListener(eventType, funcName, false);
+            } else {
+                node.attachEvent('on' + eventType, funcName);
+            }
+        }
+        // 删除事件监听器兼容写法
+        function removeEvent(node, eventType, funcName) {
+            if (node.removeEventListener) {
+                node.removeEventListener(eventType, funcName);
+            } else {
+                node.detachEvent('on' + eventType, funcName);
+            }
+        }
+
+
+        window.onload = function() {
+            var div = document.getElementsByTagName('div');
+            var btn = document.getElementsByTagName('button')[0];
+            // 两个相同的点击事件,第二个把第一个覆盖了,因为事件后面的执行函数,是通过 = 号连接的,赋值操作后面的值会替换前面的值;
+            btn.onclick = function() {
+                alert('我是按钮的第一个点击事件');
+            }
+            btn.onclick = function() {
+                alert('我覆盖了按钮的第一个点击事件');
+            };
+
+            // 用事件监听器,两个相同的点击事件不会被覆盖,都执行了;
+            // btn.addEventListener('click', function() {
+            //     alert('按钮添加的第一个点击事件');
+            // }, false);
+            // btn.addEventListener('click', function() {
+            //     alert('按钮添加的第二个点击事件');
+            // }, false);
+
+            // IE浏览器支持的事件监听器
+            // btn.attachEvent('on' + 'click', function() {
+            //     console.log('按钮的第一个点击事件');
+            // });
+            // btn.attachEvent('onclick', function() {
+            //     console.log('按钮的第二个点击事件');
+            // });
+            // btn.attachEvent('onclick', show);
+
+            // 声明一个函数show,作为事件监听器的参数
+            function show() {
+                alert('1按钮添加的第一个点击事件');
+            }
+            // 调用兼容的事件监听器,传参:btn按钮,事件类型,执行函数名
+            addEvent(btn, 'click', show);
+            // 调用兼容的事件监听器,传参:btn按钮,事件类型,执行匿名函数
+            addEvent(btn, 'click', function() {
+                alert('2按钮的第二个点击事件');
+            });
+
+            // 普通删除,只能将事件绑定赋值为null,并不是真正的删除;
+            btn.onclick = null;
+            // 删除调用show函数的事件监听器,删除只能删除有函数名的函数,不能删除匿名函数
+            removeEvent(btn, 'click', show);
+
+            // 给每个div都添加点击事件,演示事件监听器第三个属性的作用
+            for (var i = 0; i < div.length; i++) {
+                // 事件监听器第三个参数是false,表示事件冒泡
+                div[i].addEventListener('click', function() {
+                    alert('事件冒泡,从里向外' + this.id);
+                }, false);
+                // 事件监听器第三个参数是true,表示事件捕获
+                // div[i].addEventListener('click', function() {
+                //     alert('事件捕获,从外向里' + this.id);
+                // }, true)
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button>事件监听器演示</button>
+    <!-- <button></button>
+    <button></button> -->
+    <div id="div1">
+        <div id="div2">
+            <div id="div3"></div>
+        </div>
+    </div>
+</body>
+
+</html>
