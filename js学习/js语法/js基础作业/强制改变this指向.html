@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 一般情况下this指向,都是函数的主人;
+
+        // 这个函数没有主人,所以它的主人是window;
+        function show() {
+            alert('没有调用方的this指向' + this); // 得到的主人是window对象;
+        }
+        show();
+
+        // 这个函数是对象里面的,所以this指向这个对象;
+        var obj1 = {
+            age: 18,
+            // 这个函数show的主人是obj1,所以this指向obj1,而不是show;
+            show: function() {
+                alert('obj1对象里面的函数的this指向obj1' + this);
+                alert('输出obj1对象的age属性的值' + this.age);
+            }
+        }
+        obj1.show();
+
+        window.onload = function() {
+            var button = document.getElementsByTagName('button')[0];
+            //这个函数有调用方,点.前面是调用方,点后面是函数,它的this指向调用方;
+            button.onclick = function() {
+                alert('函数的调用方是button按钮,此函数的this指向' + this);
+            }
+
+
+            // 强制改变this指向
+
+            // 这个函数没有主人,所以它的主人是window,改变后this指向是3种方法传的第一个参数;
+            function show() {
+                alert('没有调用方的this指向改变后指向' + this);
+            }
+            // call方法强制改变this指向为call2对象
+            show.call('call2');
+            // apply方法强制改变this指向为apply2对象
+            show.apply('apply2');
+            // bind方法强制改变this指向为bind2对象;
+            // 这一步是预设,先改this指向,不执行函数,它的返回值res是原函数,只是this改变了,其它都一样;
+            var res = show.bind('bind2');
+            // 调用它的返回值,才是执行函数;
+            res();
+
+
+            function show2() {
+                alert('this指向button按钮改成this指向' + this);
+            }
+            // 点击按钮后,才改变this指向
+            // 如果直接将函数调用call的结果赋值给button按钮点击事件,它会在用户点击前执行了this执行改变,而不是点击按钮才执行;
+            // button.onclick = show2.call('call3');
+
+            // 这种才是点击按钮后强制改变this指向;
+            button.onclick = function() {
+                show2.call('call3');
+                show2.apply('apply3');
+            };
+
+            // 这时用bind方法就简单多了,可以直接赋值给点击事件,因为调用bind方法时它不会执行函数体,点击按钮时执行函数才会改this指向;
+            // button.onclick = show2.bind('bind3');
+
+
+
+            // Math库的max和min方法,使用时传参数只能一个个传,用,分隔;
+            var num = Math.max(5, 1, 3, 6);
+            console.log(num);
+            var num2 = Math.min(5, 1, 3, 6);
+            console.log(num2);
+            // 现在可以用apply方法让max和min方法直接传数组作为参数;
+            var arr = [5, 1, 3, 6];
+            // 这时不需要它执行改变this指向的功能,所以第一个参数传个空值,而是要利用它第二个参数可以传数组作为原函数的参数的功能;
+            var num3 = Math.max.apply(null, arr);
+            console.log('利用apply第二个参数是数组来实现将数组传给max方法作为参数,得到几个数中的最大数是' + num3);
+            var num4 = Math.min.apply(null, arr);
+            console.log('利用apply第二个参数是数组来实现将数组传给min方法作为参数,得到几个数中的最小数是' + num4);
+        }
+    </script>
+</head>
+
+<body>
+    <button>按钮</button>
+</body>
+
+</html>

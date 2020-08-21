@@ -29,36 +29,53 @@
     </style>
     <script>
         window.onload = function() {
-            // 先获取到div1里所有的button标签
+            // // 先获取到div1里所有的button标签
+            // var btn = document.querySelectorAll('#div1 button');
+            // // 获取到div1里所有的div标签
+            // var div = document.querySelectorAll('#div1 div');
+            // // 遍历所有的button标签,也就是获得的btn对象集合
+            // for (var i = 0; i < btn.length; i++) {
+            //     // 给遍历到的每个对象添加index属性,赋值为i,作为遍历到的对象的下标使用,这里不可以直接通过btn[i]得到下标,所以通过给对象新增个index属性来得到每次循环的btn的下标,
+            //     btn[i].index = i;
+            //     // 给每个遍历到的对象添加点击事件
+            //     btn[i].onclick = function() {
+            //         /* 
+            //         每个按钮对象点击时都会添加id属性变成橘色,
+            //         但取消选中时颜色无法恢复成未选中前的默认颜色,
+            //         需要将取消选中的按钮恢复成未选中前的颜色,
+            //         又不知道每次选中的是哪个按钮,到底要恢复哪个按钮,所以将所有button标签的id设置为空字符串,全部都恢复默认颜色; */
+            //         for (var j = 0; j < btn.length; j++) {
+            //             btn[j].id = '';
+            //             // 将所有div全部设置为隐藏状态
+            //             div[j].style.display = 'none';
+            //         }
+            //         // 给点击时选中的对象添加id属性,让选中的按钮变橘色
+            //         this.id = 'active';
+            //         /*  
+            //         把与选中的按钮索引号相同的div显示出来,
+            //         先将选中按钮的索引作为div标签的索引,这样他们的索引号就相同了,
+            //         再把此索引的div标签设置为显示状态 */
+            //         div[this.index].style.display = 'block';
+            //     }
+            // }
+
+            // 改成通过let声明的变量i,作用域是当前的{},所以for每次循环时,它的变量i只在每次循环中有效,循环3次就创建3个完全没关系的变量i,这样可以直接获取每个i的值作为每个btn的索引,不用再借助创建index属性 = i来存索引了;
             var btn = document.querySelectorAll('#div1 button');
-            // 获取到div1里所有的div标签
             var div = document.querySelectorAll('#div1 div');
-            // 遍历所有的button标签,也就是获得的btn对象集合
-            for (var i = 0; i < btn.length; i++) {
-                // 给遍历到的每个对象添加index属性,赋值为i,作为遍历到的对象的下标使用
-                btn[i].index = i;
-                // 给每个遍历到的对象添加点击事件
+            // let声明的i,每次循环时独立存在;
+            for (let i = 0; i < btn.length; i++) {
                 btn[i].onclick = function() {
-                    /* 
-                    每个按钮对象点击时都会添加id属性变成橘色,
-                    但取消选中时颜色无法恢复成未选中前的默认颜色,
-                    需要将取消选中的按钮恢复成未选中前的颜色,
-                    又不知道每次选中的是哪个按钮,到底要恢复哪个按钮,所以将所有button标签的id设置为空字符串,全部都恢复默认颜色; */
-                    for (var j = 0; j < btn.length; j++) {
+                    for (let j = 0; j < btn.length; j++) {
                         btn[j].id = '';
-                        // 将所有div全部设置为隐藏状态
+                        // 取消某个按钮的选中状态时很难知道到底之前选中了哪个按钮,那就把它们都初始化;
                         div[j].style.display = 'none';
                     }
-                    // 给点击时选中的对象添加id属性,让选中的按钮变橘色
                     this.id = 'active';
-                    /*  
-                    把与选中的按钮索引号相同的div显示出来,
-                    先将选中按钮的索引作为div标签的索引,这样他们的索引号就相同了,
-                    再把此索引的div标签设置为显示状态 */
-                    div[this.index].style.display = 'block';
+                    // 这里变量i存的就是当前btn的下标,直接作为div的下标,将对应的相同下标的div显示出来;
+                    div[i].style.display = 'block';
                 }
-            }
 
+            }
         }
     </script>
 

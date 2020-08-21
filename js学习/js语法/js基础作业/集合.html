@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 声明set集合
+        var set1 = new Set();
+        // 给set集合添加元素,一次只能添加一个元素,是否add里只能传一个参数??
+        set1.add('hello');
+        set1.add('hello'); //这两个一样的元素,只会添加这个hello;因为集合有去重功能,它判断元素是不是同一个元素用的是===的方式;
+        set1.add(2);
+        set1.add(2); //这两个一样的元素,只会添加这个2;
+        set1.add([3, 4, 5]);
+        set1.add([3, 4, 5]); // 元素是数组
+        set1.add(new String('abc')); // 用构造函数创建出来的对象每一个都不一样,不是同一个;
+        set1.add(new String('abc')); // 所以这两个new String()创建的字符串abc都会添加进去;
+        set1.add(function show() {}); // 元素是函数
+        set1.add({
+            a: 88,
+            b: function() {}
+        }); // 元素是对象;
+        console.log(set1); // 一共8个元素;
+
+        // 用add命令给set集合一次添加多个元素
+        set1.add(10).add(20).add(60);
+        console.log(set1); // 之前8个,又添加3个,一共11个元素了;
+
+        // 声明set集合的第二种写法,中括号里是set集合的元素,这里表示添加3个元素;
+        var s2 = new Set([1, 2, 3]);
+        console.log(s2); // 一共3个元素,Set(3) {1, 2, 3}
+        // 用add命令给set集合一次添加多个元素;
+        s2.add(10).add(20);
+        console.log(s2); // 一共5个元素,Set(5) {1, 2, 3, 10, 20};
+
+        // 用size属性获取集合的元素个数,set集合没有length属性;
+        console.log(s2.size); // 得到5,返回值是数字类型;
+
+        // 获取set集合的所有元素,它的元素用键值对的方式存储,键和值相同;
+        console.log(s2.keys()); // 获取集合的所有键,得到{1, 2, 3, 10, 20}
+        console.log(s2.values()); // 获取集合的所有值,得到{1, 2, 3, 10, 20}
+        console.log(s2.entries()); // 获取集合的所有键和值,得到{1 => 1, 2 => 2, 3 => 3, 10 => 10, 20 => 20}
+
+        // 获取set集合的一个元素,必需先将集合通过[...set集合名]转换成数组,再通过索引[索引号]取出某个元素;
+        var result = [...s2][1];
+        console.log(result); //得到索引为1的元素是2;
+
+        // has判断元素是否在set集合里,要判断的元素和集合中的某个元素,是否是同一个元素,是用===的方式判断的;
+        console.log(s2.has(20)); // 返回true,表示20这个元素在集合里;
+        console.log(s2.has('hi')); // 返回false,表示'hi'这个元素不在集合里;
+
+        // 将数组转换成集合,来实现给数组去掉重复元素的目的
+        var arr = [1, 2, 1, 3, 4, 3, 5];
+        var s = new Set(arr); //将数组arr转换成集合s
+        arr = [...s]; // 将集合s转换成数组arr
+        console.log(arr); // 得到[1,2,3,4,5]
+        // 可以简写成:
+        var arr = [...new Set(arr)];
+        console.log(arr);
+
+
+        // 遍历set集合
+        for (let item of s2) {
+            console.log(item); // 得到 1, 2, 3, 10, 20;
+        }
+        s2.forEach(item => console.log(item)); // 得到 1, 2, 3, 10, 20;
+
+        // delete方法删除set集合的一个元素
+        console.log(s2.delete(3)); // 得到true,删除成功;
+        console.log(s2); // 删除后还剩4个元素,Set(4) {1, 2, 10, 20}
+        //clear方法删除所有元素
+        console.log(s2.clear()); //没有返回值,得到undefined;
+        console.log(s2); // 全部删除,变成空集合,Set(0) {}
+
+
+        // 创建map集合
+        var map1 = new Map();
+        // 给map集合添加元素,有去重的功能,键是基础数据类型,不管值是什么,相同的键只会添加最后一个键值对,键是复杂数据类型,相同的键和相同的值也会都添加进去,因为它们实际上是不同的对象;
+        map1.set('a', 1);
+        map1.set('a', 1); // 键是基础数据类型,相同的元素只会添加后面的元素,也就是这个元素;
+        map1.set('小明', '男');
+        map1.set('小明', '女'); // 键是基础数据类型,相同的键,不同的值,也只能添加一个元素;
+        map1.set([3, 5], [2, 3, 4, 5]);
+        map1.set([3, 5], [2, 3, 4, 5]);
+        map1.set(function show() {}, [2, 3, 4, 5]);
+        map1.set(function show() {}, [2, 3, 4, 5]);
+        console.log(map1); //得到Map(6) {"a" => 1, "小明" => "女", Array(2) => Array(4), Array(2) => Array(4), ƒ => Array(4), …}
+
+        // 创建map集合
+        var map2 = new Map([
+            ['张三', '打鱼的'],
+            ['李四', '砍柴的']
+        ]);
+        console.log(map2); // 得到 Map(2) {"张三" => "打鱼的", "李四" => "砍柴的"}
+
+        // 给map集合添加元素
+        map2.set('a', 1).set('b', 2);
+        console.log(map2); // 得到 Map(4){"张三" => "打鱼的", "李四" => "砍柴的", "a" => 1, "b" => 2};
+
+        // 获取map集合的元素个数,也就是map集合的长度
+        console.log(map2.size); // 得到4,数字类型;
+
+        // 获取map集合的元素
+        console.log(map2.get('张三')); // 得到 打鱼的;
+        console.log(map2.get('张')); // 得到 undefined,表示没有这个键,获取失败;
+        console.log(map2.keys()); // 得到所有的键{"张三", "李四", "a", "b"};
+        console.log(map2.values()); // 得到所有的值{"打鱼的", "砍柴的", 1, 2};
+        console.log(map2.entries()); // 得到所有的键值对{"张三" => "打鱼的", "李四" => "砍柴的", "a" => 1, "b" => 2};
+
+        // 遍历map集合
+        for (let item of map2.entries()) {
+            console.log('每个元素是:' + item); // 得到每个元素,键值对; 格式是这样的:["张三", "打鱼的"]等等..
+        }
+        for (let key of map2.keys()) {
+            console.log(`每个键是:${key}`); //得到每个键
+        }
+        for (let value of map2.values()) {
+            console.log(`每个值是:${value}`); //得到每个值
+        }
+        for (let [key, value] of map2) {
+            console.log(`每个键是:${key},每个值是:${value}`); //用解构来快速获取键和值;
+        }
+
+        // 用forEach()快速遍历获取到键和值,不知道为什么参数这样写获取到的内容是反的???? key存的是值,value存的是键;
+        map2.forEach((key, value) => {
+            console.log(`q每个键是:${key},每个值是:${value}`);
+        });
+        // 也是反的,错的;
+        map2.forEach(function(key, value) {
+            console.log(key, value);
+        });
+
+        // 这样写就对了,要把value写前面;
+        map2.forEach((value, key) => {
+            console.log(`q每个键是:${key},每个值是:${value}`);
+        })
+
+        // 删除一个元素
+        console.log(map2.delete('a')); // 得到true,表示删除元素a这个键值对成功;
+        // 清除所有元素
+        map2.clear();
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

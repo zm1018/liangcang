@@ -65,6 +65,7 @@
         function limitDrag(node) {
             node.onmousedown = function(ev) {
                 var e = ev || window.event;
+                // 鼠标在物体的什么位置上
                 var offsetX = e.clientX - node.offsetLeft;
                 var offsetY = e.clientY - node.offsetTop;
                 document.onmousemove = function(ev) {

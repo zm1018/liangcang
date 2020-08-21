@@ -19,6 +19,8 @@
         var age = prompt('我是输入框，请输入内容');
         // 接收用户在输入框输入的内容，并弹出警示框确认用户输入的内容。
         alert(age);
+
+
         // 声明变量，并初始化,再交换两个变量的值
         var apple1 = '青苹果',
             apple2 = '红苹果';
@@ -28,6 +30,19 @@
         // 在控制台输出交换后的变量值
         console.log(apple1);
         console.log(apple2);
+
+        // 用解构方法声明变量,再交换两个变量的值
+        var [apple1, apple2] = ['青苹果', '红苹果'];
+        console.log(apple1, apple2); // 得到 :青苹果 红苹果;
+        // 交换两个变量的值
+        [apple1, apple2] = [apple2, apple1];
+        console.log(apple1, apple2); // 得到 :红苹果 青苹果;
+
+        // 解构方法声明还可以直接将后面的值,赋值成字符串,它会按对应位置匹配字符串的每一个字符;
+        var [a, b, c, d, e, f] = 'hello';
+        // 得到 a = h, b = e, c = l, d = l, e = o, f = undefined,因为字符串一个5个字符,只能给前5个变量赋对应的值,变量f没有值赋给它,所以是undefined,表示没有解构成功;
+        console.log(a, b, c, d, e, f);
+
         // 弹出一个输入框，用户输入年龄后，弹出一个警示框显示字符串拼接的结果，你今年xx岁啦
         var age = prompt('请输入您的年龄');
         alert('你今年' + age + '岁啦');

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 滑槽 */
+        
+        #slide {
+            position: relative;
+            width: 500px;
+            height: 30px;
+            border: 1px solid #000;
+        }
+        /* 填充条的宽度,跟着滑块移动而变,填充滑块滑过的位置 */
+        
+        #full {
+            /* 让填充的初始值是0,设置绝对定位或者将宽度设置为0都可以实现 */
+            /* position: absolute;
+            top: 0;
+            left: 0; */
+            width: 0;
+            height: 100%;
+            background-color: rgb(187, 197, 47);
+        }
+        /* 滑块 */
+        
+        #block {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 35px;
+            height: 100%;
+            background-color: pink;
+        }
+    </style>
+    <script>
+        // localStorage对象的3种方法的参数都只接受字符串,存储数据是键值对格式的;
+        // 存数据,3种写法,本地存储,永久性存储,只存储字符串类型数据;
+        localStorage.setItem('a', '1');
+        localStorage.b = '2';
+        localStorage['c'] = '3';
+        // 取数据,3种写法;
+        console.log(localStorage.getItem('a'));
+        console.log(localStorage.b);
+        console.log(localStorage['c']);
+        // 删除数据
+        console.log(localStorage.removeItem('b')); // 直接删除,没有返回值,输出得到undefined;
+        localStorage.removeItem('a');
+        localStorage.removeItem('c');
+
+        // 滑动条案例,通过localStorage来存储上次滑动的位置,浏览器再次打开后能直接显示在上次滑动的位置;就像看剧,上次看到哪集哪段,再次打开播放器播放时,会接着上次播放的位置继续播放;
+        window.onload = function() {
+            var slide = document.getElementById('slide');
+            var full = document.getElementById('full'),
+                block = document.getElementById('block');
+            // 如果localStorage里存的有slide键,就将它的值取出来,给滑块和填充使用,实现接着上次的位置继续滑动,如果没有存,就将slide的值设置为0,从开始位置重新再滑动;
+            if (!window.localStorage) {
+                alert('该浏览器不支持localStorage');
+            } else {
+                // 要重新赋值给变量l,而不是赋值给滑块距左的距离;
+                // block.offsetLeft = localStorage.getItem('slide') + 'px';
+                // 如果localStorage里存储的有slide键的值,将它重新赋值给变量l;
+                var l = localStorage.getItem('slide') ? localStorage.getItem('slide') : 0;
+                block.style.left = l + 'px';
+                full.style.width = l + 'px';
+            }
+            block.onmousedown = function(ev) {
+                var e = ev || window.event;
+                var offsetX = e.clientX - block.offsetLeft;
+
+                slide.onmousemove = function(ev) {
+
+                    var e = ev || window.event;
+                    // 先算出滑块距滑槽左边原点的距离
+                    var l = e.clientX - offsetX;
+                    if (l <= 0) {
+                        l = 0;
+                    }
+                    if (l >= slide.offsetWidth - block.offsetWidth) {
+                        l = slide.offsetWidth - block.offsetWidth;
+                    }
+                    block.style.left = l + 'px';
+                    full.style.width = l + 'px';
+                    // 如果滑块距左的距离没有存储到localStorage里,就将数据存进去,如果里面已经有数据,就使用此数据,本次进度就从此数据位置开始滑动;
+                    if (!window.localStorage) {
+                        alert('该浏览器不支持localStorage');
+                    } else {
+                        // 将l存的值,也就是这个滑块的当前位置存到localStorage里;
+                        localStorage.setItem('slide', l);
+                        // localStorage.removeItem('slide');
+                        // localStorage.slied = l;
+                        // localStorage.removeItem('slied');
+                    }
+
+                }
+            }
+            slide.onmouseup = function() {
+                slide.onmousemove = null;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!-- 滑动条 -->
+    <div id="slide">
+        <div id="full"></div>
+        <div id="block"></div>
+    </div>
+
+</body>
+
+</html>
