@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 定义类
+        class Car {
+            constructor(carName, carWeight) {
+                this.carName = carName;
+                this.carWeight = carWeight;
+            }
+            speed(km) {
+                return km;
+            }
+
+            // 这里调用speed方法时,一定要将参数km作为showSelf方法的参数传过来,否则报错
+            // showSelf() {
+            showSelf(km) {
+                alert(this.speed(km));
+                alert(`这是一辆${this.carName}车,重${this.carWeight}吨,时速${this.speed(km)}公里`);
+            }
+
+            run() {
+                console.log('这车跑得快');
+            }
+        }
+
+        // 调用类创建对象
+        let BM = new Car('宝马', 6);
+        let benCi = new Car('奔驰', 8);
+        // 使用speed方法;
+        console.log(BM.speed(120)); // 返回120;
+        console.log(benCi.speed(100)); // 返回100;
+        // 使用showSelf方法
+        // BM.showSelf(); // 报错,km未定义,因为在showSelf()方法里调用了speed(km)方法,要通过showSelf(km)方法将speed方法的参数传给speed(km),再给showSelf(km)方法传实参,才能正确执行;
+        BM.showSelf(120);
+        benCi.showSelf(100);
+
+        // 使用run方法;
+        BM.run(); // 这车跑得快
+        benCi.run(); // 这车跑得快
+
+        // 通过实例BM对象给Car类添加方法,这里添加的run方法会替换类里面写的run方法,所有这个Car类创建的对象使用run方法,都会被替换,返回结果都是新添加的 '跑得快' 这个结果了; 慎用!
+        BM.__proto__.run = function() {
+            console.log('跑得快');
+        }
+
+        // 使用run方法,这两个用Car类创建的对象的输出结果都变成了 跑得快, 都被改了;
+        BM.run(); // 跑得快
+        benCi.run(); // 跑得快
+
+
+        // 想看看类里的方法是不是都是不能枚举的????
+        // 确实是,就得到2个属性,3个方法都遍历不到;
+        for (var i in BM) {
+            console.log(i + ':' + BM[i]); // 只得到carName:宝马,carWeight:6这两个属性;
+        }
+
+        console.log(Object.keys(BM)); //  得到["carName", "carWeight"];
+
+
+        // 获取对象的属性的描述:
+        var o = Object.getOwnPropertyDescriptor(BM, 'carName');
+        console.log(o); // 得到:
+        configurable: true // 表示可以通过delete BM.carName删除这个属性;也可以修改carName属性的这4个特性;
+        enumerable: true // 表示可以通过for (var i in BM){console.log(i)} 遍历到这个carName属性;
+        value: "宝马" // 属性值;
+        writable: true // 表示可以修改属性值;
+        __proto__: Object // 指向对象的构造函数,也就是指向这个对象是哪个类或构造函数创建的;
+
+        // 修改对象的属性的描述(数据属性):
+        let obj = {
+            foo: 123
+        };
+        // 修改之前打印一下,得到{value: 123, writable: true, enumerable: true, configurable: true}
+        console.log(Object.getOwnPropertyDescriptor(obj, 'foo'));
+        // 修改前能枚举,得到属性名foo
+        for (var a in obj) {
+            console.log(a);
+        }
+        // 修改前能修改属性的值,得到456;
+        obj.foo = 456;
+        console.log(obj.foo);
+        // 修改前能删除foo属性,得到true,删除成功;
+        // console.log(delete obj.foo);
+
+        // 修改属性的4个特性(描述属性)
+        Object.defineProperty(obj, "foo", {　　　　
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: 789
+        })
+
+        // 修改后不能枚举,for..in 访问不到foo属性了,不报错,控制台也什么都没输出,连log里的文字'什么'都没输出;
+        for (var a in obj) {
+            console.log('什么' + a);
+        }
+        obj.foo = 'hello'; //得到设置里的值789,不是'hello';
+        console.log(obj.foo);
+        // 得到false,删除失败;
+        console.log(delete obj.foo);
+        // 输出修改后的4个特性,得到{value: 789, writable: false, enumerable: false, configurable: false}
+        console.log(Object.getOwnPropertyDescriptor(obj, 'foo'));
+
+
+        // 再重新将configurable属性设置成true,可配置的,报错,一旦把属性定义为不可配置的，那么就再也不能把属性定义回可配置的了。
+        Object.defineProperty(obj, "foo", {　　　　
+            configurable: true
+        })
+
+
+        // new.target属性,在子类继承父类时，new.target会返回子类,可以用来设置一个父类必需通过子类调用;
+        // 父类
+        class Shape {
+            constructor() {
+                // 如果new.target属性全等于父类,返回不能实例化的错误;
+                if (new.target === Shape) {
+                    // 设置调用父类的错误提示信息
+                    throw new Error('本类不能实例化,只能通过子类调用');
+                }
+                this.a = 6;
+            }
+        }
+        // 子类son,用extends继承父类shape,
+        class Son extends Shape {
+            constructor(length, width) {
+                // 调用父类
+                super();
+                alert('声明一个只能通过子类调用的父类成功')
+            }
+        }
+        // 直接调用父类创建对象,报错,错误是上面设置的那个不能实例化;
+        // var obj1 = new Shape();
+        // 通过子类调用创建对象
+        var obj2 = new Son();
+        console.log(obj2.a); //使用继承的父类的a属性,得到属性值6;
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

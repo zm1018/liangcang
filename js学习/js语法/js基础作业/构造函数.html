@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 构造函数是用来创建对象的,封装构造函数
+        function Animal(typ, name, age) {
+            this.typ = typ;
+            this.name = name;
+            this.age = age;
+        }
+        Animal.prototype.run = function() {
+            alert('跑得快');
+        };
+        Animal.prototype.saySelf = function() {
+            alert(`我叫${this.name},我${this.age}岁了,我是一只小${this.typ}`);
+        };
+        // 用构造函数创建对象,需要通过new操作符
+        var cat = new Animal('猫', '小花', 2);
+        cat.run();
+        cat.saySelf();
+
+        let dog = new Animal('狗', '旺旺', 3);
+        dog.saySelf();
+        console.log(cat.saySelf === dog.saySelf); // 它们共用同一个方法;
+
+        // 因为构造函数都要通过new调用,自己封装一个myNew,实现和系统提供的new一样的功能
+        // ...args是将args这个数组的数据展开,否则报语法错误;这个数组里存的是构造函数的行参,也是新建对象的实参;
+        function myNew(foo, ...args) {
+            // 声明一个空对象
+            const obj = {};
+            // 将构造函数的原型与对象的原型属性绑定
+            obj.__proto__ = foo.prototype;
+            // 将构造函数的this指向空对象,apply方法的第一个参数是this的新主人,第二个参数是数组,数组里的元素是构造函数的参数;
+            foo.apply(obj, args);
+            // const result = foo.apply(obj, args); // apply方法没有返回值,所以去掉result
+            // console.log(result instanceof Object);
+            // 因为apply方法没有返回值,所以返回值不用再用instanceof属性 判断是否返回的是一个对象了,应该直接返回新创建的对象;
+            // return result instanceof Object ? result : obj;
+            return obj;
+        }
+        // 调用自己封装的new创建新对象,参数1是构造函数,后面的是构造函数的行参对应的实参;
+        var pig = myNew(Animal, '猪', '哼哼', 1);
+        pig.saySelf();
+        console.log(pig.saySelf === dog.saySelf);
+
+
+        // 枚举pig对象里的属性和方法,用for..in遍历,把属性名和方法名都输出来,
+        for (var key in pig) {
+            console.log(key + ':' + pig[key]); // 返回所有的enumerable为true的属性和方法;
+        }
+
+        // 获取pig对象的所有自身属性的描述符，如果没有任何自身属性，则返回空对象。
+        console.log(Object.getOwnPropertyDescriptors(pig)); //得到3个属性的描述符;
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

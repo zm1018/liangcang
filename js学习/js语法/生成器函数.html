@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 声明一个生成器函数
+        function* fn() {
+            yield 1; // 函数执行要通过next()方法,遇到yield就会暂停向下执行,直到调用下一个next()
+            yield [2, 3, 4, 5]; // 这里调用next()会返回整个数组
+            yield*[2, 3, 4, 5]; // 这种是遍历器的写法,调用一个next()返回一个数组里的元素;
+            var a1 = yield 6; // 接受调用next()时输入的参数,并在调用下一个next()时返回参数;
+            console.log(a1); // 变量只能在内部使用,在外面输出未定义错误;
+            return '这是最后一个next()方法的返回值,这个函数执行完了';
+        }
+
+        // 调用生成器函数生成一个迭代器
+        var a = fn();
+        // 调用生成器的next()方法一步一步执行函数;
+        console.log(a.next()); // 得到一个对象,{value: 1, done: false},是第一个yield后面的值;
+        console.log(a.next()); // 得到{value: Array(4), done: false},是第二个yield后面的值;
+        console.log(a.next()); // 得到{value: 2, done: false},是第三个yield后面的数组的第一个元素;
+        console.log(a.next()); // 得到{value: 3, done: false},是第三个yield后面的数组的第二个元素;
+        console.log(a.next()); // 得到{value: 4, done: false},是第三个yield后面的数组的第三个元素;
+        console.log(a.next()); // 得到{value: 5, done: false},是第三个yield后面的数组的第四个元素;
+        console.log(a.next()); // 得到{value: 6, done: false},是第四个yield的返回值;
+
+        // 得到第四个yield表达式前的变量a1的返回值7,这个返回值7是通过next()传进去的参数,
+        // 和{value: "这是最后一个next()方法的返回值,这个函数执行完了", done:true},是最后一个return的返回值;
+        console.log(a.next(7)); //共执行两句代码,1. a1=7;  2. return表达式的返回值;
+
+        // 上面一共用了8个next()才执行完生成器函数
+
+
+
+
+        function* fn() {
+            yield 1;
+            yield [2, 3, 4, 5];
+            yield*[2, 3, 4, 5];
+            var a1 = yield 6;
+            console.log(a1); // 变量用for..of遍历时不知道怎么传值,所以返回undefined;
+            return '这是最后一个next()方法的返回值,这个函数执行完了'; //for..of遍历时没执行return后面这句话,没输出;
+        }
+
+        // 调用生成器函数生成一个迭代器
+        var aa = fn();
+
+        // 遍历生成器时,next()执行过的代码,for..of不会重复执行,如果next()已经执行完整个生成器函数,for..of就什么值都遍历不到了,如果for..of遍历执行完了整个生成器函数,next()也什么都遍历不到了,但会返回{value: undefined, done: true};
+        console.log(aa.next()); //得到一个对象,{value: 1, done: false},是第一个yield后面的值;
+        console.log(aa.next()); // 得到{value: Array(4), done: false},是第二个yield后面的值;
+        console.log(aa.next()); // 得到{value: 2, done: false},是第三个yield后面的数组的第一个元素;
+
+        // 快速遍历生成器剩余的,next()没执行过的yield的值,只返回yield后面的值,不返回return的值;
+        for (var i of aa) {
+            console.log(i); // 得到 第三个yield后面的数组第二个元素3,4,5和第四个yield的值6, 变量a1返回undefined, return没执行;
+        }
+        // 继续调用next()得到一个对象,{value: undefined, done: true},表示生成器函数执行完了,剩余的yield的值都被for..of取完了;
+        console.log(aa.next());
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
