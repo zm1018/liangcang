@@ -52,17 +52,28 @@ document表示从html标签开始到html标签结束的全部内容,包含全局
                 document.querySelectorAll('.div1 #span2');
                 是获取所有类名叫div1标签里的id名叫span2的标签;
 
-        document.body
-            获取body标签;
-        
-        document.title
-            获取tiele标签;
+    document.body
+        获取body标签;
+    
+    document.title
+        获取tiele标签;
 
-        var windowWidth = document.documentElement.clientWidth || document.body.clientWidth;
-            获取当前窗口的宽度,这是兼容写法;
-        
-        var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-            获取当前窗口的高度,这是兼容写法;
+    var windowWidth = document.documentElement.clientWidth || document.body.clientWidth;
+        获取当前窗口的宽度,这是兼容写法;
+    
+    var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        获取当前窗口的高度,这是兼容写法;
+
+    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        获取当前窗口的滚动高度,也就是滚动条滚走的部分是多少,这是兼容写法;
+
+    跨浏览器获取内部或外部css样式的函数:
+        // node表示变量名(标签),是获取到的标签赋值给变量
+        // cssStyle表示标签的样式属性
+        function getStyle(node, cssStyle) {
+            return node.currentStyle ? node.currentStyle[cssStyle] : getComputedStyle(node)[cssStyle];
+        }
+
 
     文本节点:
         获取双标签包裹的内容,或通过 = 重新赋值来替换标的内容：

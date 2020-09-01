@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #div1 {
+            position: absolute;
+            left: 0;
+            top: 50px;
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+        }
+        
+        #div2 {
+            position: absolute;
+            top: 200px;
+            left: -100px;
+            width: 100px;
+            height: 200px;
+            background-color: #ccc;
+            text-align: center;
+        }
+        
+        #div2 span {
+            position: absolute;
+            top: 50px;
+            left: 100px;
+            width: 30px;
+            background-color: rgb(141, 51, 51);
+            color: #fff;
+        }
+        
+        img {
+            position: absolute;
+            top: 200px;
+            left: 400px;
+            opacity: 0.3;
+            /* 透明度的浏览器兼容写法 */
+            filter: alpha(opacity=30);
+        }
+        
+        #div3 {
+            position: absolute;
+            /* 从左往右运动,从0-500px */
+            left: 0;
+            /* 从右往左运动,从1000-500px */
+            /* left: 1000px; */
+            top: 500px;
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+        }
+        
+        #btn2 {
+            position: absolute;
+            left: 0;
+            top: 470px;
+        }
+    </style>
+    <script>
+        // 匀速运动
+
+        var speed = 7; // 速度,每启动一次定时器移动7px;
+        var dest = 500; // 终点值;
+        // var timer = null; //定时器的返回值,关闭定时器用的;
+
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            var div1 = document.getElementById('div1');
+
+
+            btn.onclick = function() {
+                // 这样写定时器,div每30ms向右移动5px,但是停不下来,需要给设置停下来的终点值,判断当div距左的距离等于终点值,表示到终点了,让定时器关闭,停止运动;
+                // setInterval(function() {
+                //     div1.style.left = div1.offsetLeft + speed + 'px';
+                // 30ms执行一次定时器,大概1s能切换33张图左右;
+                // }, 30);
+
+
+                /* // 改成能停下来的运动
+                timer = setInterval(function() {
+                    // 让div距左的距离如果大于或等于终点值,就关闭定时器; 
+                    // 不能直接写等于,如果速度取某些值,多次相加无法等于终点值,还是停不下来;
+                    // 例如: 速度等于5,可以每次+5加到500停止运动,但速度等于7,每次+7无法得到500这个值,相加的结果要么比500小,要么比500大,它就停不下来;
+                    if (div1.offsetLeft >= dest) {
+                        clearInterval(timer);
+                    }
+                    // 到达终点后,如果点击按钮,每点一次都还会再移动5px距离,因为这句代码直接放在if下面,只要启动一次定时器,就必需执行一次;
+                    div1.style.left = div1.offsetLeft + speed + 'px';
+                }, 30) */
+
+
+                // 改成能停下来,停下来后再怎么启动定时器,div都不再继续向前移动
+                /*  timer = setInterval(function() {
+                     if (div1.offsetLeft >= dest) {
+                         clearInterval(timer);
+                     } else {
+                         // div距左的距离,只要满足if条件就停了,怎么点击按钮都不再继续加5px;
+                         // 但在运动还没到终点时,只要点击按钮,运动就会成倍的变快,因为点击一次启动一个定时器,多个定时器同时作用在一个div上,这里就要保证一次运动中只能启动一个定时器,让div匀速运动;
+                         div1.style.left = div1.offsetLeft + speed + 'px';
+                     }
+                 }, 30) */
+
+
+                // 每次点击按钮只启动一个定时器,让div在运动过程中点击按钮也不会成倍加速,让div匀速运动,到终点停止,到终点后点击按钮也不会再向前移动;
+                // 每次启动定时器之前,先将上次启动的定时器关闭掉;
+                // clearInterval(timer);
+                // timer = setInterval(function() {
+                //     if (div1.offsetLeft >= dest) {
+                //         clearInterval(timer);
+                //     } else {
+                //         div1.style.left = div1.offsetLeft + speed + 'px';
+                //     }
+                // }, 30)
+
+
+                // 调用函数
+                move(speed, dest);
+            }
+
+            // 菜单移入移出效果
+            var div2 = document.getElementById('div2');
+            div2.onmouseover = function() {
+                // share(5, 0);
+                share(0);
+            }
+            div2.onmouseout = function() {
+                // share(-5, -100);
+                share(-100);
+            }
+
+
+            // 图片淡入淡出效果
+            var img1 = document.getElementById('img1');
+            img1.onmouseover = function() {
+                startMove(100);
+            }
+            img1.onmouseout = function() {
+                startMove(30);
+            }
+
+
+            // 缓冲运动
+            var div3 = document.getElementById('div3');
+            var btn2 = document.getElementById('btn2');
+            btn2.onclick = function() {
+                buffer(500);
+            }
+        }
+
+
+
+        // 匀速运动,封装成函数
+        function move(speed, dest) {
+            clearInterval(div1.timer);
+            div1.timer = setInterval(function() {
+                if (div1.offsetLeft >= dest) {
+                    clearInterval(div1.timer);
+                } else {
+                    div1.style.left = div1.offsetLeft + speed + 'px';
+                }
+            }, 30);
+        }
+
+
+        // 移入显示菜单,移出隐藏菜单
+        // 这里函数有两个参数,继续简化到一个参数
+        // function share(speed, iTarget) {
+        //     clearInterval(timer);
+        //     timer = setInterval(function() {
+        //         if (div2.offsetLeft == iTarget) {
+        //             clearInterval(timer);
+        //         } else {
+        //             div2.style.left = speed + div2.offsetLeft + 'px';
+        //         }
+        //     }, 30)
+        // }
+
+
+        // 改成一个参数的,这个参数是终点值;
+        function share(iTarget) {
+            clearInterval(div2.timer);
+            // 将速度参数写在函数内部
+            var speed = 5;
+            // 如果div当前距左距离大于终点值了,速度就设置成-5,减到当前距左距离 = 终点, 
+            // 如果div当前距左距离小于终点值,表示还没到终点,速度就设置成5,加到当前距左距离 = 终点, 
+            speed = div2.offsetLeft > iTarget ? -Math.abs(speed) : Math.abs(speed);
+            div2.timer = setInterval(function() {
+                if (div2.offsetLeft == iTarget) {
+                    clearInterval(div2.timer);
+                } else {
+                    div2.style.left = div2.offsetLeft + speed + 'px';
+                }
+            }, 30)
+        }
+
+
+        // 图片淡入淡出效果
+
+        var alpha = 30; // 因为透明度有浏览器兼容问题,获取值不好获取,所以设置个中间变量,
+        function startMove(iTarget) {
+            // 因为所有页面元素共用一个定时器的返回值,所以启动某一个元素的定时器时,其它元素正在执行的定时器会被关闭,导致动画中断,改成 元素.定时器返回值,就能实现每个元素独自用一个定时器,各元素之间互不影响;
+            clearInterval(img1.timer);
+            var speed = 2;
+            var speed = iTarget > alpha ? Math.abs(speed) : -Math.abs(speed);
+            img1.timer = setInterval(function() {
+                if (alpha == iTarget) {
+                    clearInterval(img1.timer);
+                } else {
+                    alpha += speed;
+                    img1.style.opacity = alpha / 100; //除100因为opacity要赋0-1之间的小数值;
+                    img1.style.filter = `alpha(opacity=${alpha})`; //透明度兼容写法赋值;
+                }
+            }, 30)
+        }
+
+
+        // 缓冲运动
+
+        // 缓冲运动的特点是速度值大时,当前位置到终点的距离值也大,运动速度停下来为0时,到终点的距离也是0,像开车踩刹车;
+        function buffer(iTarget) {
+            clearInterval(div3.timer);
+
+            // 速度写在这个位置,只会在定时器里调用一次,又成了速度不变的匀速运动了;
+            // var speed = (iTarget - div3.offsetLeft) / 8;
+
+            console.log(speed, div3.offsetLeft);
+            div3.timer = setInterval(function() {
+                // 缓冲运动,速度是一直变化的,规律是:速度和距离都是从大到小,可以看成是 速度 = 距离, 
+                // 算距离的公式:iTarget - div3.offsetLeft; 终点 - 当前位置;
+                // 速度 = 距离, 会让最开始运动时速度值特别大,所以将速度值改小,/8时动画是效果最好的,速度必需写在启动定时器里面,才能每30ms执行一次赋值,更新速度值;
+                var speed = (iTarget - div3.offsetLeft) / 8;
+
+                // 判断速度值是否大于0,是就向上取整变成1,计算机就能识别这1px,每启动一次定时器,将当前位置继续加1px,直到等于终点值500,停止定时器,这样div就能准确停在该停的位置上,不会没到,也不会超出,从左往右运动解决了,但从右往左也无法到达终点,继续改;
+                // speed = Math.ceil(speed);
+
+                // 改成三元运算符,判断速度值是否大于0,大于0就向上取整,变成1, 小于0,小于0向下取整变成-1;这样从左往右,和从右往左运动时都能准确到达终点,
+                speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+
+                if (div3.offsetLeft == iTarget) {
+                    clearInterval(div3.timer);
+                } else {
+                    div3.style.left = div3.offsetLeft + speed + 'px';
+                }
+
+                // div无法准确停在结束位置上; 查看速度,和当前位置,从左往右运动时,速度0.375 ,当前位置497,计算机最小能识别的像素是1px,这里速度是0.375,被系统自动向下取整,变成了0,计时器每30ms执行+0速度,当前位置497怎么都无法加到终点500值了,差了3像素,从右往左运动时,-0.5也会变成-0,504多了4像素,怎么减-0都到不了终点500, 所以向下取整变成-1,每次启动定时器都能算出来一个500的数,实现准确停在结束位置上;在工作中,所有元素的摆放位置都是必需刚好的,否则会把其它元素的位置挤走,影响整体布局;
+                console.log(speed, div3.offsetLeft);
+            }, 30)
+        }
+    </script>
+</head>
+
+<body>
+    <button id="btn">点击开始</button>
+    <div id="div1">匀速运动</div>
+    <div id="div2"><span>分享到</span></div>
+    <img id="img1" src="../js内置对象练习/img/小图2.jpg" alt="">
+    <div id="div3">缓冲运动</div>
+    <button id="btn2">开始运动</button>
+    <!-- 设置一条终点线,看看缓冲运动的div是否刚刚好到终点位置停下来 -->
+    <span style="height: 300px;border: 1px solid; position: absolute; top: 450px; left: 500px; display: inline-block;"></span>
+</body>
+
+</html>

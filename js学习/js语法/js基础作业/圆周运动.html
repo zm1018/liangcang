@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1 {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+        }
+    </style>
+    <script>
+        // 圆周运动,让物体画圆圈运动
+        /* 
+        画圆的步骤:
+            1.确定圆心
+            2.确定半径
+            3.确定旋转方向(顺时针)
+        
+        算出圆心到圆上任意一点的坐标, 选任意一点,将点向x轴正方向做垂线,得到一个直角三角形,指定一个锐角,
+        正弦 = 对边 / 斜边(半径) ,余弦 = 邻边 / 斜边,
+        可以得到 对边 = 正弦 * 斜边, 邻边 = 余弦 *斜边, 
+        斜边是半径r已知,角度值设个变量i,初始值0, 
+        换算: 弧度 = 角度i * (PI / 180°); 通过Math.sin(弧度)求出正弦值,Math.cos(弧度)求出余弦值,就能套上面的公式得出 对边和邻边的值;
+        圆心的坐标x +  对边(在x轴) = 圆上任意一点距左(屏幕原点为参考)的距离,也就是点的x坐标;
+        圆心的坐标y - 邻边(在y轴) = 圆上任意一点距上(屏幕原点为参考)的距离,也就是点的Y坐标;
+
+        单位圆里半径r规定是1,那正弦=任意一点y轴坐标,余弦=任意一点x轴坐标,但规定都是向x轴正方向做垂线形成的夹角来确定的正弦和余弦才是这种情况;
+        */
+        window.onload = function() {
+            var div1 = document.getElementById('div1');
+            // 圆心在坐标300的位置
+            var x = 300;
+            var y = 300;
+            // 半径为100
+            var r = 100;
+            // 初始角度为0
+            var i = 0;
+            setInterval(function() {
+                // 每30ms角变大1度
+                i++;
+                // 将角度转换成弧度, 角度i * 1弧度
+                var rad = i * (Math.PI / 180);
+                // 求对边a的长度,sin = a/r; a = sin(弧度rad,得到rad的正弦值) * r;
+                var a = Math.sin(rad) * r;
+                // 求邻边b的长度,sin = b/r; b = sin(弧度rad,得到rad的余弦值) * r;
+                var b = Math.cos(rad) * r;
+                // 求圆上某一点n的x坐标, nx = 圆心坐标 + 对边的长度; 得到nx这个点在x轴上距左left(屏幕原点)的距离;
+                var nx = x + a;
+                // 求圆上某一点n的Y坐标, ny = 圆心坐标 - 斜边的长度; 得到nx这个点在y轴上距上top(屏幕原点)的距离;
+                var ny = y - b;
+                // 将求出来的坐标位置赋值给div的top和left值
+                div1.style.left = nx + 'px';
+                div1.style.top = ny + 'px';
+
+                // 测试用的,看看上面的代码画圆是否成功,显示圆周运动轨迹,每启动一次定时器就添加一个div
+
+                var div = document.createElement('div');
+                div.style.width = '5px';
+                div.style.height = '5px';
+                div.style.position = 'absolute';
+                div.style.backgroundColor = 'blue';
+                div.style.left = div1.offsetLeft + 'px';
+                div.style.top = div1.offsetTop + 'px';
+                document.body.appendChild(div);
+
+            }, 30)
+
+
+        }
+    </script>
+</head>
+
+<body>
+    <div id="div1"></div>
+</body>
+
+</html>

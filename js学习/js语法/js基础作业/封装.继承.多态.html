@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 因为对象的数据是键值对方式存储的,所以封装一个继承值的函数,主要是继承父构造函数的实例对象的属性值和方法的函数部分;
+        function Extend(Child, Parent) {
+            // 遍历父构造函数生成的实例的所有属性和方法名,也就是遍历键;
+            for (var p in Parent) {
+                // 如果子构造函数的实例对象的键对应的值是undefined,就将父构造函数实例对象的键对应的值赋给子构造函数的实例对象;
+                if (typeof Child[p] == "undefined") {
+                    // 将每个子构造函数创建的实例对象的键赋值;
+                    Child[p] = Parent[p];
+                }
+            }
+        }
+
+
+        // 封装父构造函数
+        function Animal(typ, nam, age) {
+            this.typ = typ;
+            this.nam = nam;
+            this.age = age;
+        }
+        Animal.prototype.run = function() {
+            alert('跑得快');
+        };
+        Animal.prototype.saySelf = function() {
+            alert(`我叫${this.nam},我${this.age}岁了,我是一只小${this.typ}`);
+        };
+
+
+
+        // 子构造函数1 继承,和多态
+        function Dog(typ, nam, age, kind) {
+            // 这是多态,属于每个子构造函数自己有的属性和方法,其它继承同一个父类的子类没有,父类也没有,
+            this.kind = kind;
+
+            // 这是继承,改成拷贝父构造函数所有的属性和方法来实现继承,第一个参数是子构造函数的实例对象,第二个参数是父构造函数的实例,实例具有所有的属性和方法,成功解决了写在原型prototype上的方法不能继承的问题;
+            Extend(this, new Animal(typ, nam, age));
+        }
+        // 这是多态,子构造函数1自己的方法,只有子构造函数1创建出来的实例才有这个方法;
+        Dog.prototype.eat = function(food) {
+            return food;
+        }
+
+        // 重写父构造函数的某个方法的功能,来覆盖继承到的某个方法的功能,重写后的此功能变成子类自己独有的,和其它继承同一个父类的子类不一样,和父类也不一样;
+        Dog.prototype.saySelf = function() {
+            alert(`我是${this.kind},是一只小${this.typ},叫${this.nam},我${this.age}岁`);
+        }
+
+        // 子构造函数2,继承
+        function Pig(typ, nam, age) {
+            Extend(this, new Animal(typ, nam, age));
+        }
+
+        // 用子构造函数1创建对象,它继承了父构造函数的所有属性和方法
+        var haShiQI = new Dog('狗', '二哈', 1, '哈士奇');
+        console.log('名字:' + haShiQI.nam);
+        console.log('年龄:' + haShiQI.age);
+        console.log('类型:' + haShiQI.typ);
+        haShiQI.run();
+
+        // 重写此方法,覆盖父构造函数继承到的,让它实现的功能和父构造函数的不一样;
+        haShiQI.saySelf(); // 得到 我是哈士奇,是一只小狗,叫二哈,我1岁;
+
+        console.log('种类:' + haShiQI.kind); // 自己独有的属性
+        console.log(haShiQI.eat('吃狗粮'));
+
+
+
+        // 用子构造函数2创建对象,它继承了父构造函数的所有属性和方法
+        var pig1 = new Pig('猪', '小香', 2);
+        console.log('名字:' + pig1.nam);
+        pig1.saySelf(); //得到 我叫小香,我2岁了,我是一只小猪,输出的是父构造函数里继承的内容;
+        pig1.run();
+        // console.log(pig1.eat('吃猪食料')); //报错,未定义,因为这是子Dog构造函数自己的方法,其它构造函数不能用;
+
+        // 用父构造函数创建实例对象
+        var cat = new Animal('猫', '咪咪', 3);
+        cat.saySelf();
+        // console.log(cat.eat('吃老鼠')); ////报错,未定义,因为这是子Dog构造函数自己的方法,父构造函数也不能用;
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #div1 {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            border: 1px solid #000;
+            margin: 0 auto;
+        }
+        
+        #ball {
+            position: absolute;
+            /* 小球距下的位置要减掉砖块的高度,这样它就在砖块上运动 */
+            bottom: 30px;
+            /* 小球距左的位置也要居中,初始时停在拍子上,div1的宽度600-小球的宽度20 再/2 ; */
+            left: 290px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: red;
+        }
+        
+        #beat {
+            position: absolute;
+            bottom: 0px;
+            /* 拍子居中 */
+            left: 250px;
+            width: 100px;
+            height: 30px;
+            background-color: blue;
+        }
+        
+        #brick div {
+            box-sizing: border-box;
+            float: left;
+            width: calc(600px / 6);
+            height: 20px;
+            border: 1px solid;
+        }
+    </style>
+    <script src="../js内置对象练习/tool.js"></script>
+    <script>
+        window.onload = function() {
+            var div1 = document.getElementById('div1');
+            var ball = document.getElementById('ball');
+            var beat = document.getElementById('beat');
+            var brick = document.getElementById('brick');
+            var bricks = brick.getElementsByTagName('div');
+
+            // 拍子:
+            dragX(beat);
+
+            // 创建60个砖块
+            for (var i = 0; i < 60; i++) {
+                brick.appendChild(createBrick('div'));
+            }
+
+            // 文档流转换,2步,先添加坐标,再转换;
+            // 第一步: 给每个砖块添加坐标,left值和top值;
+            for (var i = 0; i < bricks.length; i++) {
+                bricks[i].style.left = bricks[i].offsetLeft + 'px';
+                bricks[i].style.top = bricks[i].offsetTop + 'px';
+            }
+            // 第二步: 文档流转换,将相对定位转换成绝对定位,砖块创建出来是设置了浮动,才能横向排列,排列完成后获取每块砖的坐标位置,将每块砖用绝对定位固定在当前坐标位置,否则小球碰撞删除砖块时,其它砖因为浮动,会从右往左移,补上消失的那块砖的空位置,而不是碰到哪块砖哪块砖消失时其它砖的位置不变;
+            for (var i = 0; i < bricks.length; i++) {
+                // 必需从新写一个循环改成绝对定位,不能写在给砖块添加坐标的循环里,否则所有砖都叠在一起了;因为绝对定位脱离文档流,不占有当前位置;
+                bricks[i].style.position = 'absolute';
+            }
+
+
+            // 小球:
+            // 随机一个水平方向的速度,取3-6之间的整数;
+            var speedX = parseInt(Math.random() * 4) + 3;
+            // 随机一个垂直方向的速度,取5-7之间的正整数,这是向下运动的;
+            // var speedY = parseInt(Math.random() * 3) + 5;
+            // 将Y轴随机数变成负数,就是向上运动,因为小球要从拍子上向上弹起去打砖块;
+            var speedY = -(parseInt(Math.random() * 3) + 5);
+
+            setInterval(function() {
+                ball.style.left = ball.offsetLeft + speedX + 'px';
+                ball.style.top = ball.offsetTop + speedY + 'px';
+                // 限制小球出界
+                if (ball.offsetLeft >= 580 || ball.offsetLeft <= 0) {
+                    speedX *= -1;
+                }
+                if (ball.offsetTop >= 580 || ball.offsetTop <= 0) {
+                    speedY *= -1;
+                }
+
+                // 在这里做碰撞检测,因为这里每30ms执行一次代码,频率高,只要有碰撞,一定能检测出来;
+                // 让小球碰撞拍子
+                if (crash(ball, beat)) {
+                    // 碰上拍子让小球向上运动,Y轴负值是向上移动
+                    speedY *= -1;
+                }
+
+                // 因为不知道小球每次碰到的是哪块砖,那就将所有的砖都遍历,只要小球碰上了砖,就让碰到的那块砖消失;
+                for (var i = 0; i < bricks.length; i++) {
+                    if (crash(ball, bricks[i])) {
+                        // 碰上砖块小球向下运动,刚才speedY是负值,现在再*-1,负负得正,Y轴正值是向下移动;
+                        speedY *= -1;
+                        // 将小球碰到的砖块删除
+                        brick.removeChild(bricks[i]);
+                    }
+                }
+
+                // 小球的距上距离比拍子的距上距离大,就表示拍子没接到球,游戏结束;但这里不能写拍子的offsetTop值,必需写个确定的数字,否则还要先获取到值再来判断,会导致连续执行几次alert弹窗;
+                if (ball.offsetTop >= 580) {
+                    // 弹出游戏结束提示,点击确定后,执行下面一行的代码;
+                    alert('GAME OVER');
+                    // 从新加载页面
+                    window.location.reload();
+                }
+            }, 30)
+
+
+        }
+
+        // 拍子水平拖拽的函数
+        function dragX(node) {
+            node.onmousedown = function(ev) {
+                var e = ev || window.event;
+                var offsetX = e.clientX - node.offsetLeft;
+                var offsetY = e.clientY - node.offsetTop;
+                document.onmousemove = function(ev) {
+                    var e = ev || window.event;
+                    var l = e.clientX - offsetX;
+                    if (l <= 0) {
+                        l = 0;
+                    }
+                    if (l >= 500) {
+                        l = 500;
+                    }
+                    node.style.left = l + 'px';
+                }
+            }
+            document.onmouseup = function() {
+                document.onmousemove = null;
+            }
+        }
+
+
+        // 创建砖块的函数
+        function createBrick(node) {
+            var tag = document.createElement(node);
+            tag.style.backgroundColor = randomOpacityColor();
+            return tag;
+        }
+
+
+        // 创建碰撞的函数
+        function crash(node1, node2) {
+            // 计算坐标值一定要用一个原点,这里用左上角;
+            var t1 = node1.offsetTop; //物体1上边距上的距离,是指到父盒子上边的距离
+            var b1 = t1 + node1.offsetHeight; //1下边距上的距离,上边距离+物体自己的高度
+            var l1 = node1.offsetLeft; //1左边距左的距离
+            var r1 = l1 + node1.offsetWidth; //1右边距左的距离,左边距离+物体自己的宽度
+
+            var t2 = node2.offsetTop; //2上边距上的距离
+            var b2 = t2 + node2.offsetHeight; //2下边距上的距离,上边距离+物体自己的高度
+            var l2 = node2.offsetLeft; //2左边距左的距离
+            var r2 = l2 + node2.offsetWidth; //2右边距左的距离,左边距离+物体自己的宽度
+
+            // 两个物体碰的着的情况太多了,所以逆向思维,找出碰不着的情况;
+            // 两个物体,绝对碰不着的情况有4种, 1上>2下,1下<2上,1左>2右,1右<2左;
+            // if (t1 > b2 || b1 < t2 || l1 > r2 || r1 < l2) {
+            if (b2 < t1 || t2 > b1 || r2 < l1 || l2 > r1) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="div1">
+        <div id="ball"></div>
+        <div id="beat"></div>
+        <div id="brick"></div>
+    </div>
+</body>
+
+</html>

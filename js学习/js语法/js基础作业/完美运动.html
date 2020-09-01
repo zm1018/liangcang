@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            background-color: red;
+            opacity: 0.3;
+            filter: alpha(opacity=30);
+            /* 设置了边框,因为offsetWidth获取的值包括边框值,所以将这样的值赋值给div的width时,是不准确的,每次启动定时器,width的值实际上是width+border+speed,多出来的border值混在里面赋值给width,会让div宽度变的比运动停止的终点值大 */
+            border: 1px solid;
+        }
+    </style>
+    <script src="../js内置对象练习/tool.js"></script>
+    <script>
+        window.onload = function() {
+            var divs = document.getElementsByTagName('div');
+            for (var i = 0; i < divs.length; i++) {
+                // 将设置透明度的中间变量alpha添加给每个元素作为属性,实现每个元素独自有一个alpha变量,这样下一个div的运动时,alpha就不会记录上一次别的div运动的alpha值,而导致透明度和别的div一样了;
+                // divs[i].alpha = 30;
+                divs[i].onmouseover = function() {
+                    // 多物体运动,让每个div都有一个定时器,而不是共用一个定时器;
+                    // startMove(this, 300);
+                    // startMove(this, 100);
+
+                    // 多物体运动,将css样式属性当做参数传入,让每个div可以以同一种样式运动;
+                    // startMove(this, 'width', 300);
+
+                    // 链式运动,单物体多样式运动,让一个div可以以多种样式运动;
+                    // 将执行下一个样式运动的代码写成函数,传入,实现一个物体多样式运动;
+                    // 先将div的宽运动成300,运动结束后再将div的高变成300,运动结束后再将div的透明度变成100
+                    // startMove(this, 'width', 300, function() {
+                    //     startMove(this, 'height', 300, function() {
+                    //         startMove(this, 'opacity', 100)
+                    //     })
+                    // })
+
+
+                    // 完美运动,单个物体同时多个样式运动,将css样式和终点值作为对象的属性和属性值传入
+                    startMove(this, {
+                        width: 300,
+                        height: 150,
+                        opacity: 100
+                    })
+                }
+
+                divs[i].onmouseout = function() {
+                    //     // startMove(this, 100);
+
+                    //     startMove(this, 'width', 100);
+
+                    //     // startMove(this, 30);
+
+                    // startMove(this, 'opacity', 30, function() {
+                    //     startMove(this, 'width', 100, function() {
+                    //         startMove(this, 'height', 100)
+                    //     })
+                    // })
+
+                    startMove(this, {
+                        width: 100,
+                        height: 100,
+                        opacity: 30
+                    })
+                }
+
+                // // 多物体多样式运动,让每个div各以不同的样式运动;
+                // divs[0].onmouseover = function() {
+                //     startMove(this, 'width', 300);
+                // }
+                // divs[1].onmouseover = function() {
+                //     startMove(this, 'height', 300);
+                // }
+                // divs[2].onmouseover = function() {
+                //     startMove(this, 'opacity', 100);
+                // }
+                // divs[0].onmouseout = function() {
+                //     startMove(this, 'width', 100);
+                // }
+                // divs[1].onmouseout = function() {
+                //     startMove(this, 'height', 100);
+                // }
+                // divs[2].onmouseout = function() {
+                //     startMove(this, 'opacity', 30);
+                // }
+            }
+
+        }
+
+        // 多物体运动,让div的透明度变化,每个div透明度之间互不影响;
+        //将设置透明度的中间变量alpha设置成全局变量,所有的div就共用一个alpha变量,这样当第一个div运动还没结束时,快速开始第二个div运动,因为它们共用一个alpha,第二个div的alpha值和第一个alpha值是一样的,显示出来的透明度就都一样,所以不能共用,要让所有div都独自有一个alpha变量;
+        // var alpha = 30;
+
+        // function startMove(node, iTarget) {
+        // clearInterval(node.timer);
+        // node.timer = setInterval(function() {
+        // var speed = (iTarget - alpha) / 30;
+        // speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+        // if (alpha == iTarget) {
+        // clearInterval(node.timer);
+        // } else {
+        // alpha += speed;
+        // node.style.opacity = alpha / 100;
+        // node.style.filter = `alpha(opacity=${alpha})`;
+        // }
+        // }, 30)
+        // }
+
+
+        // // 改成每个div都独自有一个alpha变量,多物体运动的任何数据都不能共用;
+        // function startMove(node, iTarget) {
+        // clearInterval(node.timer);
+        // node.timer = setInterval(function() {
+        // var speed = (iTarget - node.alpha) / 30;
+        // speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+        // if (node.alpha == iTarget) {
+        // clearInterval(node.timer);
+        // } else {
+        // // alpha写成 当前元素.alpha,就能实现每个元素独自有一个了;
+        // // 这样去调用函数会报错,alpha未定义,所以要在调用的时候将每个div添加一个alpha属性,这时函数内部调用就是 元素.属性,就不会报错了;
+        // node.alpha += speed;
+        // node.style.opacity = node.alpha / 100;
+        // node.style.filter = `alpha(opacity=${node.alpha})`;
+        // }
+        // }, 30)
+        // }
+
+
+
+        // 多物体运动,让每个div独自拥有一个定时器,div的宽增或减,都互不影响;
+
+        // 让哪个div运动,不确定,封装函数是将不确定的值都设置为参数,所以增加一个参数node,表示要运动的元素;
+        // 让div的宽增加,给div设置了border边框,用offsetWidth出问题了,它把border的值也算在内一起赋值给width了,增加到终点值300时,运动停下来,但width显示的值是307,而不是300,多出来的7px是边框值,会导致其它元素的排放乱掉,影响布局,所以要将offsetWidth换成只获取宽度的代码;
+        // function startMove(node, iTarget) {
+        //     clearInterval(node.timer);
+        //     node.timer = setInterval(function() {
+        //         var speed = (iTarget - node.offsetWidth) / 8;
+        //         speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+        //         if (node.offsetWidth == iTarget) {
+        //             clearInterval(node.timer);
+        //         } else {
+        //             node.style.width = node.offsetWidth + speed + 'px';
+        //         }
+        //     }, 30)
+        // }
+
+
+
+        // offsetWidth包含width+border+padding, currentStyle只能获取宽度,但有浏览器兼容问题,要做兼容处理,这里把offsetWidth换成封装好的函数getStyle可以获取任何css样式,实现多物体多样式的运动,如果传宽度,就只获取宽度;
+        // function startMove(node, cssStyle, iTarget) {
+        //     clearInterval(node.timer);
+        //     node.timer = setInterval(function() {
+        //         // 获取当前宽度值,得到的值带有px,要取整把px去掉,
+        //         // 这个icur变量是所有div共用的变量,如果speed是个固定值,就会有大问题,所以速度一定要是动态变化的值;
+        //         // 例如:都是宽100的div,运动速度是5,那icur存的初始值就是100, div运动到宽度300,那icur存的就变成300,停止运动,要执行鼠标移出恢复到100,但是它的icur初始值就从300开始了,那当前值300 + 速度5, 结果只会越来越大, 永远不会等于鼠标移出设置的终点值100,永远都不会执行if控制的关闭定时器,会一直执行else控制的 当前宽度 + 速度,导致宽度一直变大,停不下来;
+        //         // 如果速度值是动态变化的,当icur值是300,执行鼠标移出,这时当前值300不等于终点值100,执行else的代码, 因为速度值等于 终点值100-当前值300 得到 -200, icur的值存的是当前宽度 = 300+-200=100, 刚好等于终点值100,就执行if的代码,停止定时器;
+        //         var iCur = parseInt(getStyle(node, cssStyle));
+
+        //         var speed = (iTarget - iCur) / 8;
+        //         speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+        //         if (iCur == iTarget) {
+        //             clearInterval(node.timer);
+        //         } else {
+        //             // css样式也通过参数传进来,这里不能用.因为参数传进来的是字符串,必需用对象[属性]才能正确转换;
+        //             node.style[cssStyle] = iCur + speed + 'px';
+        //         }
+        //     }, 30)
+        // }
+
+
+
+        // 实现多物体多样式运动,改成连不带px单位的opacity透明度,也能执行;
+        // function startMove(node, cssStyle, iTarget) {
+        //     clearInterval(node.timer);
+        //     node.timer = setInterval(function() {
+        //         // 先将当前获取的css样式值设置成null;
+        //         var iCur = null;
+        //         // 判断当前样式是不是opacity;
+        //         if (cssStyle == 'opacity') {
+        //             // 将获取到的opacity值如果是小数,系统会在下面的计算中直接给向下取整变成0,所以这里要用parseFloat保留小数部分,再*100,变成整数,好参与下面的计算;
+        //             iCur = parseInt(parseFloat(getStyle(node, 'opacity')) * 100);
+        //         } else {
+        //             iCur = parseInt(getStyle(node, cssStyle));
+        //         }
+        //         var speed = (iTarget - iCur) / 8;
+        //         speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+        //         if (iCur == iTarget) {
+        //             clearInterval(node.timer);
+        //         } else {
+        //             iCur += speed;
+        //             // 判断当前样式是不是opacity;
+        //             if (cssStyle == 'opacity') {
+        //                 // 浏览器兼容写法设置opacity的两种方式;
+        //                 node.style.opacity = iCur / 100;
+        //                 node.style.filter = `alpha(opacity=${iCur})`;
+        //             } else {
+        //                 node.style[cssStyle] = iCur + 'px';
+        //             }
+        //         }
+        //     }, 30)
+        // }
+
+
+        // 链式运动,一个div可以有多种样式运动,第一种样式运动结束下一种样式运动开始,需要将下一次执行什么运动封装成函数作为参数传入,在第一种样式运动结束的时候调用,开始下一次运动,这种将函数作为参数传入在别的函数内部调用的写法叫做回调函数;
+        /* function startMove(node, cssStyle, iTarget, complete) {
+            clearInterval(node.timer);
+            node.timer = setInterval(function() {
+                var iCur = null;
+                if (cssStyle == 'opacity') {
+                    iCur = parseInt(parseFloat(getStyle(node, cssStyle)) * 100);
+                } else {
+                    iCur = parseInt(getStyle(node, cssStyle));
+                }
+                var speed = (iTarget - iCur) / 8;
+                speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                if (iCur == iTarget) {
+                    clearInterval(node.timer);
+                    // 关闭上一个运动的定时器后,调用下一个运动的函数,直接调用这个函数是匿名函数指向window,所以要强制改变this指向当前元素node;
+                    // 回调函数执行完后,这里会报错,call未定义的类型错误,因为这时运动都结束了,执行关闭定时器时一定会执行整个if控制的代码,所以又执行一次回调函数,但此时回调函数已经没人调用了,不存在了,一个不存在的函数使用call方法,会使用失败,报错,改成if判断一下这个回调函数是否存在,存在就执行调用函数,不存在就不执行,解决报错问题;
+                    // complete.call(node);
+                    if (complete) {
+                        complete.call(node);
+                    }
+                } else {
+                    iCur += speed;
+                    if (cssStyle == 'opacity') {
+
+                        node.style.opacity = iCur / 100;
+                        node.style.filter = `alpha(opacity=${iCur})`;
+                    } else {
+                        node.style[cssStyle] = iCur + 'px';
+                    }
+                }
+            }, 30)
+        }
+ */
+
+
+        /*  // 完美运动,让一个物体的多个样式一起运动,同时变化,
+         // 这代码有一个问题,如果有一个动画的终点值比其它终点值小,小的这个样式运动到终点值了,它就会关闭定时器,其它还没执行完的样式运动还没到达终点值就被迫结束运动了,因为多个样式共用一个定时器,改成最后一个到达终点值的动画才能关闭定时器;
+
+         // 将参数写成一个对象,将css样式和终点值作为对象的属性和属性值传入
+         function startMove(node, cssObj, complete) {
+             clearInterval(node.timer);
+
+             node.timer = setInterval(function() {
+
+                 // 遍历要运动的css样式对象的所有属性
+                 for (attr in cssObj) {
+
+                     // 将要设置的运动属性的值赋给终点值;
+                     var iTarget = cssObj[attr];
+                     var iCur = null;
+                     // 这里attr是遍历到的当前css样式,
+                     if (attr == 'opacity') {
+                         // 函数的返回值是遍历到的当前css样式运动前的值;
+                         iCur = parseInt(parseFloat(getStyle(node, 'opacity')) * 100);
+                     } else {
+                         iCur = parseInt(getStyle(node, attr));
+                     }
+                     var speed = (iTarget - iCur) / 8;
+                     speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                     if (iCur == iTarget) {
+                         clearInterval(node.timer);
+                         if (complete) {
+                             complete.call(node);
+                         }
+                     } else {
+                         iCur += speed;
+                         if (attr == 'opacity') {
+                             node.style.opacity = iCur / 100;
+                             node.style.filter = 'alpha(opacity=' + iCur + ')';
+                         } else {
+                             node.style[attr] = iCur + 'px';
+                         }
+                     }
+                 }
+             }, 30)
+         } */
+
+
+        // 完美运动,改成最后一个运动到达终点值关闭定时器;
+        function startMove(node, cssObj, complete) {
+            clearInterval(node.timer);
+
+            node.timer = setInterval(function() {
+                // 声明一个变量,假设所有动画都运动完毕了,值为true;
+                var isEnd = true;
+                for (var attr in cssObj) {
+                    // 终点值,是传入的css样式要运动到目的的属性值;
+                    var iTarget = cssObj[attr];
+                    // 当前值，是获取元素的css样式，是没运动前的样式属性值；
+                    var iCur = null;
+                    if (attr == 'opacity') {
+                        iCur = parseInt(parseFloat(getStyle(node, attr)) * 100);
+                    } else {
+                        iCur = parseInt(getStyle(node, attr));
+                    }
+                    // 速度,以什么样的速度运动
+                    var speed = (iTarget - iCur) / 8;
+                    speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                    // 运动
+                    if (attr == 'opacity') {
+                        iCur += speed;
+                        node.style.opacity = iCur / 100;
+                        node.style.filter = `alpha(opacity=${iCur})`;
+                    } else {
+                        node.style[attr] = iCur + speed + 'px';
+                    }
+                    // 判断是否所有运动都执行完了,有一个没执行完就返回false
+                    if (iCur != iTarget) {
+                        isEnd = false;
+                    }
+                }
+
+                // 执行这里的代码就表示所有动画都执行完了,关闭定时器,要写在for循环外面
+                if (isEnd) {
+                    clearInterval(node.timer);
+                    if (complete) {
+                        complete.call(node);
+                    }
+                }
+            }, 30)
+        }
+
+
+
+        // 获取css样式的兼容写法的函数,返回值是字符串类型;
+        function getStyle(node, cssStyle) {
+            return node.currentStyle ? node.currentStyle[cssStyle] : getComputedStyle(node)[cssStyle];
+        }
+        // 同时设置多个css样式的函数,第二个参数是对象,键是css样式属性,值是样式属性的值;
+        function setStyle(node, cssObj) {
+            for (attr in objStyle) {
+                node.style[attr] = objStyle[attr];
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+
+</body>
+
+</html>

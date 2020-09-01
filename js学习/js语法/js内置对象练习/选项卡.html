@@ -59,7 +59,9 @@
             //     }
             // }
 
-            // 改成通过let声明的变量i,作用域是当前的{},所以for每次循环时,它的变量i只在每次循环中有效,循环3次就创建3个完全没关系的变量i,这样可以直接获取每个i的值作为每个btn的索引,不用再借助创建index属性 = i来存索引了;
+
+
+            /* // 改成通过let声明的变量i,作用域是当前的{},所以for每次循环时,它的变量i只在每次循环中有效,循环3次就创建3个完全没关系的变量i,这样可以直接获取每个i的值作为每个btn的索引,不用再借助创建index属性 = i来存索引了;
             var btn = document.querySelectorAll('#div1 button');
             var div = document.querySelectorAll('#div1 div');
             // let声明的i,每次循环时独立存在;
@@ -75,7 +77,44 @@
                     div[i].style.display = 'block';
                 }
 
+            }*/
+
+
+            // 调用构造函数
+            new TabSwitch('div1');
+        }
+
+
+        // 改成面向对象编程,封装构造函数
+        function TabSwitch(id) {
+            // 将需要跨函数或者每个方法都要使用的变量,定义成构造函数的属性;
+            var node = document.getElementById(id);
+            this.btns = node.getElementsByTagName('button');
+            this.divs = node.getElementsByTagName('div');
+            // 将指向实例对象的this赋值给变量_this;
+            var _this = this;
+            for (var i = 0; i < this.btns.length; i++) {
+                // 给实例对象的this添加一个index属性,用来记录当前按钮的下标;
+                this.btns[i].index = i;
+                // 给每个按钮添加点击事件
+                this.btns[i].onclick = function() {
+                    // 点击按钮时切换到当前点击的按钮,因为在点击事件环境里的this指向当前按钮,而不是实例对象,所以调用上面的变量_this调用tab方法,这样点击切换时this还是指向实例对象; 
+                    // 将指向当前按钮的this作为方法的实参,传出去给tab()方法,当前被点击的按钮使用;
+                    _this.tab(this);
+                }
             }
+        }
+        // 将点击按钮切换对应的div显示,封装成构造函数的方法,将指向当前按钮的this实参通过btn形参接收;
+        TabSwitch.prototype.tab = function(btn) {
+            // 将所有按钮和对应的div都初始化,清空颜色和显示样式;
+            for (let i = 0; i < this.btns.length; i++) {
+                this.btns[i].id = '';
+                this.divs[i].style.display = 'none';
+            }
+            // 将被点击的这个当前按钮变成选中样式,颜色变成橘色
+            btn.id = 'active';
+            // 将当前被点击的按钮的下标作为当前应该显示的div的下标,将div设置成显示状态;
+            this.divs[btn.index].style.display = 'block';
         }
     </script>
 
