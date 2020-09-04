@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #div1 {
+            overflow: hidden;
+            position: relative;
+            width: 880px;
+            height: 220px;
+            border: 1px solid #000;
+            margin: auto;
+        }
+        
+        #ul1 {
+            position: absolute;
+            left: 0;
+        }
+        
+        #ul1 li {
+            float: left;
+            list-style: none;
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+        }
+        
+        #ul1 li img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script src="../tool.js"></script>
+    <script>
+        window.onload = function() {
+            var div1 = document.getElementById('div1');
+            var ul1 = document.getElementById('ul1');
+            // 创建4个li,这里不能直接创建8个li,因为图片是2份一样的4张图片进行切换,直接创建8个li,下面创建img标签添加src地址时就要从第1-8张存两份重复的图片在放图片的img文件夹里;所以创建4个li,剩下的4个让它的父标签ul复制包裹的内容,就能实现8个li,8张图;
+            for (var i = 0; i < 4; i++) {
+                var li = document.createElement('li');
+                ul1.appendChild(li);
+            }
+            var lis = document.getElementsByTagName('li');
+            // 创建img标签
+            for (var i = 0; i < lis.length; i++) {
+                var img = document.createElement('img');
+                img.src = '../img/' + (i + 5) + '.jpg';
+                lis[i].appendChild(img);
+            }
+
+            // 实现轮播效果:
+            // 给ul标签里包裹的所有内容复制一份,再添加到ul标签里面,现在ul标签里有8个li标签和img标签了
+            ul1.innerHTML += ul1.innerHTML;
+            // 新添加进来的复制内容因为div1的宽度只有4个li的大小,现在换行显示了,需要将ul标签宽度设置成8个li标签的大小,让它们在一行显示;
+            ul1.style.width = 220 * 8 + 'px';
+
+            // 启动定时器,调用完美运动函数,让完美运动函数每2s调用一次,图片每2s切换一次;
+            setInterval(function() {
+                // 调用完美运动函数,让ul的left值每次启动定时器运动-220px,也就是向左移动一个li一张图的宽度,不能直接用offsetWidth,它不含margin值,li还有margin左右各10px,所以直接写-220,
+                // 但因为外面的定时器不关闭,它一直执行2s向左运动220px,不会停,所以要在回调函数里设置一个运动的最大范围为4张图片结束的位置,让图片实现循环的不停轮播切换;
+                startMove(ul1, {
+                    left: ul1.offsetLeft - 220,
+                }, function() {
+
+                    // ul的left运动到-220时结束运动,关闭定时器,执行完美运动的回调函数,进行if判断,不满足条件,不执行,整个完美运动函数结束调用,
+                    // 2s后再次调用完美运动函数,直到多次调用完美运动函数时,ul的left值比ul宽的一半大或相等时,满足if条件,执行if里的代码,将ul的left值设置成0,(ul宽的一半,也就是4张图片的宽,表示4张图片已经移动到左边了),继续从0开始也就是第一张图片开始,执行-220的运动,
+                    // 运动到ul宽度的一半时又从0开始执行-220的运动,这么循环执行下去,实际上不停运动切换的只有前4张图片,后4张一样的图片只是为了让前4张图片移动出整个div时,不能显示空白而填补空白的作用;
+                    if (ul1.offsetLeft <= -ul1.offsetWidth / 2) {
+                        // 图片每2s切换一次,切换到第5张图片时,将ul的left值设置成0,让已经运动过移到左边去的4张图片再回到运动前的初始位置,实现图片一直4张循环一次;
+                        // 也就是例如:ul的left初始值是0,向左慢慢移动到了-880,就迅速再往右移动880变成0,回到原位,从0~-880,从-880~0,这么一直循环下去;
+                        ul1.style.left = '0px';
+                    }
+                })
+            }, 2000)
+        }
+    </script>
+</head>
+
+<body>
+    <div id="div1">
+        <!-- 轮播图共8个li8张图实现的,前4张运动,后4张填运动后出现的空白 -->
+        <ul id="ul1"></ul>
+    </div>
+</body>
+
+</html>
