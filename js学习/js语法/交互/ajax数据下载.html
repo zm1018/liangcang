@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // ajax数据下载
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            btn.onclick = function() {
+                // 调用XMLHttpRequest()构造函数,创建ajax对象,这个构造函数有兼容问题;
+                var xml = null;
+                // if (window.XMLHttpRequest) {
+                //     xml = new XMLHttpRequest();
+                // } else {
+                //     xml = new ActiveXObject('Microsoft.XMLHTTP');
+                // }
+
+                // var xml = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+
+                // 用try..catch来做创建ajax对象的兼容写法:
+                try {
+                    xml = new XMLHttpRequest();
+                } catch (error) {
+                    xml = new ActiveXObject('Microsoft.XMLHTTP');
+                }
+
+                // 调用open()方法进行传输请求
+                xml.open("get", "1.txt", true);
+                // 调用send()发送请求
+                xml.send();
+                // 用 onreadystatechange事件,等待数据响应
+                xml.onreadystatechange = function() {
+                    // readyState状态值==4的时候是下载到的数据解析完成,这时候才能输出下载到的数据
+                    if (xml.readyState == 4) {
+                        // 判断本次下载的状态码是多少,是200表示
+                        if (xml.status == 200) {
+                            // responseText是响应文本,就是我们下载成功要显示给用户的数据
+                            alert(xml.responseText);
+                        } else {
+                            // 如果下载失败,输出状态码是多少
+                            alert('error:' + xml.status);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button id="btn">点击下载数据</button>
+</body>
+
+</html>

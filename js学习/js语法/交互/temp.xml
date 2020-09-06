@@ -1,0 +1,18 @@
+<!-- xml文件都是这种样子的 -->
+<!-- 指定xml的版本,编码格式 -->
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- 根节点,自定义的标签都写在根节点里 -->
+<root>
+<!-- 这是根节点的子节点 -->
+    <book>
+        <!-- 都是存数据的标签,例如这本书,名字/价格/类型 -->
+        <name>毛泽东选集</name>
+        <price>10元</price>
+        <type>
+            <!-- 这是属性节点,两种写法都行 -->
+            <item key="文学类" value='A'/>
+            <item key="军事类" value='B'></item>
+            <item key="言情类" value='C'></item>
+        </type>
+    </book>
+</root>
