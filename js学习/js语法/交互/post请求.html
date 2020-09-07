@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- post请求时必须要设置表单提交数据的enctype属性,值"application/x-www-form-urlencoded"是表单提交的默认格式，不支持文件类型.它的请求格式是键值对. -->
+    <form action="1.post.php" method="post" enctype="application/x-www-form-urlencoded">
+        <input type="text" name="username" placeholder="用户名">
+        <input type="text" name="age" placeholder="年龄">
+        <input type="text" name="password" placeholder="密码">
+        <input type="submit">
+    </form>
+</body>
+
+</html>

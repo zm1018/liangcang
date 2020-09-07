@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            btn.onclick = function() {
+                var xml = null;
+                try {
+                    xml = new XMLHttpRequest();
+                } catch {
+                    xml = new ActiveXObject('Microsoft.XMLHTTP');
+                }
+                xml.open('post', '1.post.php', true);
+                // post提交必须在send方法前设置请求方式,通过setRequestHeader方法设置请求头,否则会提交失败,这是固定写法,
+                xml.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+                // post提交数据的数据必需传在send方法里,而不是open的第二个参数后面,而且不能带?问号,这种不带问号的查询字符串叫querystring;
+                xml.send('username=jack&age=16&password=888');
+                xml.onreadystatechange = function() {
+                    if (xml.readyState == 4) {
+                        if (xml.status == 200) {
+                            alert(xml.responseText);
+                        } else {
+                            alert('error' + xml.status);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button id="btn">ajax实现post提交数据</button>
+</body>
+
+</html>

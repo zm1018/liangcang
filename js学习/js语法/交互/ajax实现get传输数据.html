@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            btn.onclick = function() {
+                var xml = null;
+                try {
+                    xml = new XMLHttpRequest();
+                } catch (error) {
+                    alert('error:' + error)
+                    xml = new ActiveXObject('Microsoft.XMLHTTP');
+                }
+                // 将数据直接拼接在要请求的文件路径的后面
+                xml.open('get', '1.get.php?username=lili&age=18&password=123', true);
+                xml.send();
+                xml.onreadystatechange = function() {
+                    if (xml.readyState == 4) {
+                        if (xml.status == 200) {
+                            alert(xml.responseText);
+                        } else {
+                            alert('error' + xml.status);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button id="btn">ajax实现get提交数据</button>
+</body>
+
+</html>

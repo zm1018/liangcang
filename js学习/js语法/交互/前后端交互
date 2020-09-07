@@ -82,6 +82,41 @@ ajax 是异步的 javaScript 和 数据传输(xml);
     }
 
 
+get请求提交数据:
+    数据通过查询字符串用键值对和&拼接,
+    通过?将查询字符串拼接在url里,作为参数提交到后台,传给php里的全局get或post变量,数据以数组格式存储,
+    再把php里调用数据的键对应的值提取出来,将要输出的内容返回到html页面,
+    优点:
+        传输数据简单
+    缺点:
+        不安全,数据都是暴露在url里可见的,
+        url不能写太长,所以数据最大只能传输2kb,就无法实现图片/文件/视频等数据的上传了;
+
+ajax实现get请求:
+    将要传的参数写在open方法的第二个参数,url后面,用?拼接查询字符串;
 
 
+post请求提交数据:
+    通过浏览器内部进行提交,
+    数据不会暴露在url里,安全,传输量大,
+
+ajax实现post请求:
+    在send方法之前设置请求头,也就是请求方式
+        setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+    在send方法里传入参数,是不带?的查询字符串;
+
+查询字符串,2种:
+    ?键=值&键=值   这种叫search, ajax的get请求时用;
+    键=值&键=值    这种叫querystring, ajax的post请求时用;
+
+form表单提交数据的enctype属性,3种值:
+    application/x-www-form-urlencoded:
+        这是表单提交的默认格式，不支持文件类型.它的请求格式是键值对.
+
+    multipart/form-data:
+        既可以上传键值对，也可以上传文件。当上传的字段是文件时，会有Content-Type来说明文件类型；content-disposition，用来说明字段的一些信息；
+        提交文件必须要用这种格式，它会将表单的数据处理为一条消息，以标签为单元，用分隔符分开。所以可以上传多个文件。注意不能设置'Content-Type'='multipart/form-data'. 因为你手动设置了它,那么后面这个boundary=浏览器默认boundary就没了。这个是分界线，服务端是以这个分界线去key值.如果没有分界线服务端就不知道从从哪个位置开始取key`
+
+    text/plain:
+        是以纯文本格式（就是一段字符串）发送的. 如果你发送一个对象例如{ name:"leiwuyi", age:12 }一定要对它做JSON.stringfiy()处理，否则将传送[object Object]
 
