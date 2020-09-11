@@ -197,3 +197,54 @@ LimitDrag.prototype.funcMove = function(ev) {
     this.node.style.left = l + 'px';
     this.node.style.top = t + 'px';
 }
+
+
+// ajax传输数据的函数,必需要在调用方的同级目录下调用,否则报未定义错误
+function $ajax({ method = 'get', url, data, success, error }) {
+    var xhr = null;
+    try {
+        xhr = new XMLHttpRequest();
+    } catch (error) {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+
+    if (data) {
+        data = querystring(data);
+    }
+
+    if (method == 'get' && data) {
+        url += '?' + data;
+    }
+
+    xhr.open(method, url, true);
+
+    if (method == 'get') {
+        xhr.send();
+    } else {
+
+        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+        xhr.send(data);
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+
+                if (success) {
+                    success(xhr.responseText);
+                }
+            } else {
+                if (error) {
+                    error('ERROR' + xhr.status);
+                }
+            }
+        }
+    }
+}
+// 将用户传入的对象类型的数据遍历处理,拼接成查询字符串样式的数据,再返回处理好的字符串; 
+function querystring(obj) {
+    var str = '';
+    for (var attr in obj) {
+        str += attr + '=' + obj[attr] + '&';
+    }
+    return str.substring(0, str.length - 1);
+}

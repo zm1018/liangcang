@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="ajax.js"></script>
+    <script>
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            var ul1 = document.getElementById('ul1');
+            btn.onclick = function() {
+                // ajax下载数据
+                $ajax({
+                    url: 'getNews.php',
+                    // 下载数据成功后处理数据
+                    success: function(result) {
+                        // 输出下载到的数据,是json格式的字符串,二进制数据
+                        // alert(result);
+
+                        // 将下载的json字符串转换成数组
+                        var arr = JSON.parse(result);
+
+                        // 2种处理数据的方式:
+                        // 第一种:
+                        /* // 先清空ul标签里的innerHTML,让每次点击btn按钮只创建数组长度个标签,实现刷新的效果,否则每次点击btn按钮都会创建新的li标签增加在上次的li标签后面;
+                        ul1.innerHTML = '';
+                        // 遍历输出到标签的innerHTML里
+                        for (var i = 0; i < arr.length; i++) {
+                            // 创建li/a/span标签
+                            var li = document.createElement('li');
+                            var a = document.createElement('a');
+                            // 设置a标签的跳转url
+                            a.href = '#'+i;
+                            // 设置a标签的标签间内容是数组第i个元素的title属性的属性值
+                            a.innerHTML = arr[i].title;
+                            var span = document.createElement('span');
+                            // 给span标签的标签间内容套个【】好看些,所以用模板字符串拼接
+                            span.innerHTML = `【${arr[i].date}】`;
+                            // 将a标签插入li标签里
+                            li.appendChild(a);
+                            // 将span标签插入li标签
+                            li.appendChild(span);
+                            // 将li标签插入ul标签
+                            ul1.appendChild(li);
+                        } */
+
+                        // 第二种:
+                        // 声明初始变量,是模板字符串;
+                        var str = ``;
+                        for (var i = 0; i < arr.length; i++) {
+                            // 直接拼接每次循环的字符串,插入到ul的标签间,innerHTML里如果有标签,它会自动解析,这种方便快捷,但数据有乱码或杂质也会直接显示到页面上:
+                            str += `<li>
+                                <a href="#${i}">${arr[i].title}</a><span>【${arr[i].date}】</span>
+                            </li>`;
+                        }
+                        // 查看拼接好的字符串长啥样
+                        // alert(str);
+                        // 将循环完成后拼接的整个字符串插入到ul标签间;
+                        ul1.innerHTML = str;
+                    },
+                    error: function(msg) {
+                        alert(msg);
+                    }
+                })
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button id="btn">获取新闻</button>
+    <ul id="ul1">
+
+    </ul>
+</body>
+
+</html>

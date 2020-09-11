@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="ajax.js"></script>
+    <script>
+        window.onload = function() {
+            var btn1 = document.getElementById('btn1');
+            var btn2 = document.getElementById('btn2');
+            // get请求调用$ajax函数
+            btn1.onclick = function() {
+                // 函数参数是解构方式设置的形参,这里也要用解构的方式传参,参数顺序不分先后;
+                $ajax({
+                    // get请求在$ajax函数声明的时候给method赋值了一个默认值get,所以这里可以不用再给method传参;
+                    // 传url;
+                    url: '1.get.php',
+                    // 传用户输入的数据,对象类型;
+                    data: {
+                        username: '小明',
+                        age: 18,
+                        password: '123'
+                    },
+                    // 传回调函数,值是函数类型,这里是声明回调函数函数的参数result是形参,
+                    success: function(result) {
+                        alert('get请求成功' + result);
+                    },
+                    error: function(err) {
+                        alert('get请求失败:' + err);
+                    }
+                })
+            }
+
+            // post请求下载数据调用$ajax函数
+            btn2.onclick = function() {
+                $ajax({
+                    method: 'post',
+                    url: '1.post.php',
+                    data: {
+                        username: '小花',
+                        age: 20,
+                        password: 'abc12'
+                    },
+                    success: function(result) {
+                        alert("post请求下载数据成功" + result);
+                    },
+                    error: function(error) {
+                        alert('post请求下载数据失败' + error);
+                    }
+                })
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <button id="btn1">ajax的get请求下载数据</button>
+    <button id="btn2">ajax的post请求下载数据</button>
+</body>
+
+</html>
