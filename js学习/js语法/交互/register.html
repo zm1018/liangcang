@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../../前端学习练习/Bootstrap框架/bootstrap.css">
+    <script src="ajax.js"></script>
+    <script>
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            var inputs = document.getElementsByTagName('input');
+            $ajax({
+                method: 'post',
+                url: 'register.php',
+                data: {
+                    username: inputs[0].value,
+                    password: inputs[1].value,
+                    date: new date()
+                },
+                success: function(res) {
+                    var obj = JSON.parse(res);
+                    alert(obj.message);
+                },
+                error: function(err) {
+                    alert(err);
+                }
+            })
+        }
+    </script>
+    <style>
+        #register {
+            width: 400px;
+            margin: 100px auto;
+        }
+        
+        a {
+            color: #000;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="card" id="register">
+            <div class="card-header bg-info" style="color: white;">
+                用户注册
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="username">用户名:</label>
+                    <input type="text" class="form-control" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">密码:</label>
+                    <input type="text" class="form-control" name="password">
+                </div>
+                <a href="login.html">马上登录</a>
+                <button id="btn" class="btn btn-info float-right">注册</button>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

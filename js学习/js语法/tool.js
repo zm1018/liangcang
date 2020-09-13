@@ -248,3 +248,24 @@ function querystring(obj) {
     }
     return str.substring(0, str.length - 1);
 }
+
+
+// 写一个格式化年月日、时分秒，让输出的结果格式便于看
+function format_date(time) {
+    var date = new Date(time),
+        year = date.getFullYear(),
+        month = date.getMonth() + 1,
+        month = month < 10 ? '0' + month : month,
+        dates = date.getDate(),
+        dates = dates < 10 ? '0' + dates : dates,
+        arr = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+        day = arr[date.getDay()],
+        hours = date.getHours(),
+        hours = hours < 10 ? '0' + hours : hours,
+        minutes = date.getMinutes(),
+        minutes = minutes < 10 ? '0' + minutes : minutes,
+        seconds = date.getSeconds();
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+    return year + '年' + month + '月' + dates + '日' + ' ' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+
+}

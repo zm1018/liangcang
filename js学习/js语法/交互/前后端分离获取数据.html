@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../../前端学习练习/Bootstrap框架/bootstrap.css">
+    <!-- <link rel="stylesheet" href="bootstrap.min.css"> -->
+    <script src="ajax.js"></script>
+    <script>
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            var t1 = document.getElementById('t1');
+            // console.log(btn);
+            btn.onclick = function() {
+                $ajax({
+                    url: 'showStudent.php',
+                    success: function(result) {
+                        // 将下载到的数据转换成数组
+                        var arr = JSON.parse(result);
+                        var str = ``;
+                        for (var i = 0; i < arr.length; i++) {
+                            str += `<tr>
+                                <td>${arr[i].id}</td>
+                                <td>${arr[i].name}</td>
+                                <td>${arr[i].math}</td>
+                                <td>${arr[i].english}</td>
+                                <td>${arr[i].chinese}</td>
+                            </tr>`;
+
+                        }
+                        t1.innerHTML = str;
+                    },
+                    error: function(err) {
+                        alert(err);
+                    }
+                })
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!-- 用bootstrap框架做的css布局 -->
+    <!-- 响应式布局 -->
+    <div class="container">
+        <!-- 卡,也就是面板样式 -->
+        <div class="card">
+            <div class="card-header"></div>
+            <button class="btn btn-primary" id="btn">点击获取学生成绩</button>
+
+            <div class="card-body">
+                <table class="table table-bordered table-hover" id="tab">
+
+                    <thead>
+                        <tr>
+                            <td>学号</td>
+                            <td>姓名</td>
+                            <td>数学</td>
+                            <td>英语</td>
+                            <td>语文</td>
+                        </tr>
+                    </thead>
+                    <tbody id="t1"></tbody>
+                </table>
+            </div>
+            <!-- 跳转到查看学员信息的html页面 -->
+            <div class="card-footer">
+                <a href="前后端分离增加数据.html">点击新增学员信息</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

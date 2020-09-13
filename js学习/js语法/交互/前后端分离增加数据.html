@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="bootstrap.min.css"> -->
+    <link rel="stylesheet" href="../../../前端学习练习/Bootstrap框架/bootstrap.css">
+    <script src="ajax.js"></script>
+    <script>
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            var inputs = document.getElementsByTagName('input');
+            btn.onclick = function() {
+                $ajax({
+                    method: 'post',
+                    url: 'insertStudent.php',
+                    data: {
+                        name: inputs[0].value,
+                        math: inputs[1].value,
+                        english: inputs[2].value,
+                        chinese: inputs[3].value
+                    },
+                    success: function(res) {
+                        // 这里传来的是php里echo输出的操作数据库自定义的成功或失败的反馈信息对象
+                        var obj = JSON.parse(res);
+                        alert(obj.message);
+                    },
+                    error: function(err) {
+                        alert(err);
+                    }
+                })
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-info" style="color: white;">
+                输入学员信息增加数据
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="name">学员姓名:</label>
+                    <input type="text" class="form-control" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="math">数学成绩:</label>
+                    <input type="text" class="form-control" name="math">
+                </div>
+                <div class="form-group">
+                    <label for="english">英语成绩:</label>
+                    <input type="text" class="form-control" name="english">
+                </div>
+                <div class="form-group">
+                    <label for="chinese">语文成绩:</label>
+                    <input type="text" class="form-control" name="chinese">
+                </div>
+                <div class="form-group">
+                    <button id="btn" class="btn btn-info form-control">提交学员信息</button>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="前后端分离获取数据.html">点击查看全部学生信息</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

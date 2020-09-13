@@ -1,4 +1,168 @@
 数据库:
     数据库的本质也是文件,用来存储数据;
     但数据库还有管理数据的管理程序,这两者组合起来的整体就是数据库;
+
+    启动数据库服务:
+        net start mysql
+    退出数据库服务:
+        net stop mysql
+    登录数据库:
+        mysql -u用户名 -p密码 -P端口号(如果默认3306就不用写)
+    退出数据库:
+        exit
+
+数据库的语法:
+    每个单词之间用空格隔开,多个字段之间用,隔开, 每段代码用;结束
+    
+        创建数据库,2种:
+            create database 数据库名 charset=utf8;
+            create database 数据库名 character set utf8;
+        创建数据库中的表:
+            create table 表名(第一个字段是id int unsigned not null AUTO_INCREMENT,字段2 数据类型(存数据的长度) not null default '') character set utf8;
+            
+            数据类型:
+                int 整型
+                    id 必需是整数型,而且无符号的,不能有-+号,加了这个unsigned就是无符号数;
+                        AUTO_INCREMENT是用户不用填写id字段,自动增加;
+                        在phpmyamdin里设置的时候要设置为primaryKey, 并且AI打钩,表示自动增加;
+                float 浮点型,小数
+                char 字符串,固定长度的,超过设置的长度,超过的部分都会被扔掉无法存到数据库里;
+                varchar 是字符串类型,可以扩展长度的字符串,例如:varchar(30)如果规定长度30,可以超一点也不会被切掉; 传值必须''包起来;如果传的是密码，长度必需大于32；
+                text 文本 文本理论上没有存储上限,写多长的内容都行;
+                date 日期 传值时必须用''包起来, 例如:'2020-01-20';
+            设置:
+                not null 设置不能为空,用户必需要给有此设置的字段传值进去,否则报错;
+                default  设置默认值;
+                character set utf8 是设置编码方式,必需要写,否则不识别中文,传中文的数据会乱码;
+    增:
+        用insert给表存入数据或增加数据:
+        每个字段都插入值:
+            insert into 表名 values(每个字段的值用,隔开);  值的数据类型必需传和字段设置的相同;
+        给部分字段传值:
+            insert into 表名(字段1,字段2) values(值1,值2);
+    删:
+        删除数据库:
+            drop database 数据库名;   数据库不存在会报错
+            drop database if exists 数据库名;   数据库存在就执行删除,不存在也不会报错
+        删除表:
+            drop table 表名;
+        删除表里的数据:
+            删除表里的所有数据:
+                delete from 表名;
+            删除表里的某条数据:
+                delete from 表名 where 字段=值;      where后面跟的都是查询条件
+    改:
+        改表里所有这个字段的值:
+            update 表名 set 字段=新值;
+        改某一条数据的某几个字段的值:
+            update 表名 set 字段1=新值,字段2=新值 where 要改哪条数据的id或name字段=值;
+    查:
+        查看数据库:
+            show databases;
+        使用某个数据库:
+            use 数据库名;
+        查看数据库里的表:
+            show tables;
+        查看表结构:
+            desc 表名;
+        查看表里的数据:
+            查看所有数据:
+                select * from 表名;
+            查看某个数据:
+                select 字段1,字段2 from 表名 where 字段2>或=或<值;
+                例如,查询年龄大于16小于22的学生的名字,where后面跟的是查询条件:
+                    select name,age from student where age>16 and age<22;
+            模糊查询,用like '%':
+                select * from 表名 where 字段 like '字符%';   查找以%前面的字符开头的;  
+                select * from 表名 where 字段 like '%字符';   查找以%后面的字符结尾的;
+                select * from 表名 where 字段 like '%字符%';  查找含有%之间的字符的;
+            排序,用order by:
+                select 字段1,字段2 from 表名 order by 字段2是要排序的那个字段;   默认升序
+                select 字段1,字段2 from 表名 order by 字段2 desc;    加个desc是降序
+                查询学生总成绩排序,例如:
+                    这是升序,as是给前面()里的字段值相加的结果起个别名,t是别名的名字,可以随便写:
+                        select name,(math+english+chinese) as t from student order by t;
+                    这是降序:
+                        select name,(math+english+chinese) as t from student order by t desc;
+
+
+php连接数据库,3种方式:
+    1.mysqli面向过程:
+        连接数据库:
+            $变量1 = mysqli_connect(ip,用户名,密码,数据库名,端口);
+        判断是否连接成功:
+            if(!$变量1) {
+                die(mysqli_connect_errno());   连接失败时执行返回错误
+            }
+            两种错误函数:
+                >mysqli_connect_error()： 函数返回上一次连接错误的错误描述。
+                >mysqli_connect_errno()：函数返回上一次连接错误的错误代码。
+        设置编码格式:
+            mysqli_set_charset($变量1,'utf8');   设置获取到的数据的编码格式
+            mysqli_query($变量1, "set names utf8"); 设置存到数据库编码格式
+        设置mysql语法的语句:
+            $变量2 = '语句';
+        用query()发送sql语句,获取数据:
+            $变量3 = mysqli_query($变量1,$变量2);   返回值是mysqli结果集,是个看不懂的对象类型
+            mysqli_num_rows()方法查看返回数据的行数,也就是有几条数据
+        将结果集转换成数组,:
+            $变量4 = mysqli_fetch_assoc($变量3);   调用一次执行一条数据,返回一个关联数组
+
+            处理结果集的方法:
+                fetch_all()	抓取所有的结果行并且以关联数据，数值索引数组，或者两者皆有的方式返回结果集。
+                fetch_array()	以一个关联数组，数值索引数组，或者两者皆有的方式抓取一行结果。
+                    参数3种可选:
+                        MYSQLI_NUM    索引数组
+                        MYSQLI_ASSOC  关联数组
+                        MYSQLI_BOTH   两者皆有
+                fetch_object()	以对象返回结果集的当前行。
+                fetch_row()	以枚举数组方式返回一行结果
+                fetch_assoc()	以一个关联数组方式抓取一行结果。
+                fetch_field_direct()	以对象返回结果集中单字段的元数据。
+                fetch_field()	以对象返回结果集中的列信息。
+                fetch_fields()	以对象数组返回代表结果集中的列信息。
+            
+            如果要获取结果集里的全部数据,用while循环,将转换成数组的代码作为循环条件;
+            while($变量3 = mysqli_query($变量1,$变量2)){
+                处理数据的代码;
+            }
+
+        关闭结果集:
+            mysqli_free_result($变量3);
+        关闭mysql连接:
+            mysqli_close($变量1);
+
+
+    2.mysqli面向对象:
+        连接数据库:
+            $变量1 = new mysqli(ip,用户名,密码,数据库名,端口);
+        都和上面面向过程一样,只是所有方法或属性都通过 $变量1 这个实例对象调用,不再通过mysqli调用;
+
+
+    3.PDO面向对象:
+        连接数据库,连接时必须指定数据库名,否则报错:
+            try{
+                //第一个参数是 数据库类型:主机名/端口/数据库名/编码格式,这个数据库类型可以指定各种数据库,比如sqlite;
+                $变量1 = new PDO('mysql:host=localhost;port=3307;dbname=yyy;charset=utf8',$username,$password,array(PDO::ATTR_PERSISTENT => true)); 
+
+                设置mysql语法的语句:
+                    $变量2 = '语句';
+                用foreach循环获取数据库里某个表的所有数据,循环条件里写发送sql语句给数据库的代码,并赋值给$变量3,变量3的返回值是关联数组类型:
+                    foreach ($变量1->query($变量2) as $变量3){
+                        处理数据的代码;
+                    }
+                关闭数据库连接:
+                    $变量1 = null;
+                }catch (PDOException $e) {
+                    连接失败或执行try里的代码有错误时,返回的错误信息:
+                    echo $e->getMessage();
+                }
+    注意:
+        PDO里增删改用 实例对象->exec(sql语句),查用 实例对象->query(sql语句);
+        mysqli里都用 query(sql语句);
+
+
+        
+
+
     

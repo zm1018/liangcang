@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="../../../前端学习练习/Bootstrap框架/bootstrap.css"> -->
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="ajax.js"></script>
+    <script src="tool.js"></script>
+    <style>
+        .container {
+            text-align: center;
+        }
+        
+        h4 {
+            text-align: left;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            var t1 = document.getElementById('t1');
+            // console.log(btn);
+            btn.onclick = function() {
+                $ajax({
+                    url: 'userList.php',
+                    success: function(result) {
+                        // 将下载到的数据转换成数组
+                        var arr = JSON.parse(result);
+
+                        var str = ``;
+                        // 调用自己封装的将毫秒转换成年月日的函数,数据库里的毫秒是字符串,要转成数字类型,创建a标签的那个td时,将当前这条数据的id设置成标签的id
+                        for (var i = 0; i < arr.length; i++) {
+                            str += `<tr>
+                                <td>${arr[i].id}</td>
+                                <td>${arr[i].username}</td>
+                                <td>${arr[i].password}</td>
+                                <td>${format_date(Number(arr[i].date))}</td>
+                                <td id="${arr[i].id}">
+                                    <a href="#">删除</a>
+                                    <a href="#">修改</a>
+                                </td>
+                            </tr>`;
+
+                        }
+                        t1.innerHTML = str;
+                    },
+                    error: function(err) {
+                        alert(err);
+                    }
+                })
+
+                // 给所有的删除和修改按钮添加点击,通过事件委托获取用户点击的那条数据的id;
+                t1.onclick = function(ev) {
+                    var e = ev || window.event;
+                    var target = e.target || window.srcElement;
+                    if (target.nodeName.toLowerCase() == 'a') {
+                        var id = target.parentNode.id;
+                        if (target.innerHTML == "删除") {
+                            $ajax({
+                                url: 'deleteUser.php',
+                                data: {
+                                    id: id
+                                },
+                                success: function(res) {
+                                    var obj = JSON.parse(res);
+                                    // 判断,如果code返回结果是0表示数据库里的数据删除成功,那就将前端页面上的当前id的这个tr标签都删除
+                                    if (!obj.code) {
+                                        t1.removeChild(target.parentNode.parentNode);
+                                    } else {
+                                        alert(obj.message);
+                                    }
+                                },
+                                error: function(err) {
+                                    alert(err);
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!-- 用bootstrap框架做的css布局 -->
+    <!-- 响应式布局 -->
+    <div class="container">
+        <!-- 卡,也就是面板样式 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>获取用户列表</h4>
+            </div>
+            <button class="btn btn-primary" id="btn">点击获取用户信息</button>
+
+            <div class="card-body">
+                <table class="table table-bordered table-hover" id="tab">
+
+                    <thead>
+                        <tr>
+                            <td>用户id</td>
+                            <td>用户名</td>
+                            <td>密码</td>
+                            <td>注册日期</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody id="t1"></tbody>
+                </table>
+            </div>
+            <!-- 跳转到查看学员信息的html页面 -->
+            <!-- <div class="card-footer">
+                <a href="前后端分离增加数据.html">点击新增学员信息</a>
+            </div> -->
+        </div>
+    </div>
+</body>
+
+</html>
