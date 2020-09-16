@@ -3,7 +3,7 @@
     // 悬停以查看现有属性的描述。
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
+    "configurations": [    
         {
             "name": "Python: 当前文件",
             "type": "python",
@@ -18,7 +18,8 @@
             "program": "${file}",
             "cwd": "${fileDirname}",
             "port": 9001
-        }, {
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "启动js程序",
@@ -29,5 +30,96 @@
             "sourceMaps": true,
             // "outFiles": []
         },
+        // {
+        //     "name": "Launch localhost",
+        //     "type": "firefox",
+        //     "request": "launch",
+        //     "reAttach": true,
+        //     "url": "http://localhost/index.html",
+        //     "webRoot": "${workspaceFolder}",
+        //     "firefoxExecutable": "D:/Firefox/firefox.exe",
+        // },
+        // {
+        //     "type": "chrome",
+        //     "request": "launch",
+        //     "name": "chrome",
+        //     "url": "http://localhost:8080",
+        //     "sourceMaps": true,
+        //     "webRoot": "${workspaceRoot}",
+        //     "userDataDir": true
+        // },
+        // {
+
+        //     "type": "chrome",
+
+        //     "request": "attach",
+
+        //     "name": "Attach to Chrome",
+
+        //     "port": 9222,
+
+        //     "webRoot": "${workspaceFolder}",
+        //     "url": "http://localhost:8080/#/",
+        //     "sourceMaps": true,
+        //     "sourceMapPathOverrides": {
+        //         "webpack:///src/*":"${webRoot}/*"
+        //     }
+
+        // },
+        {
+
+            "type": "chrome",
+
+            "request": "launch",
+
+            "name": "启动 Chrome 并打开 localhost",
+
+            "url": "http://localhost:5500",
+
+            "webRoot": "${workspaceFolder}"
+
+        },
+        // {
+        //     "type": "node",
+        //     "request": "attach",
+        //     "name": "Attach by Process ID",
+        //     "processId": "${command:PickProcess}",
+        //     "skipFiles": [
+        //         "<node_internals>/**"
+        //     ]
+        // },
+        // {
+        //     "type": "node",
+        //     "request": "launch",
+        //     "name": "启动程序",
+        //     "skipFiles": [
+        //         "<node_internals>/**"
+        //     ],
+        //     "program": "${workspaceFolder}\\app.js"
+        // },
+        // {
+        //     "type": "node",
+        //     "request": "attach",
+        //     "name": "Node: Nodemon",
+        //     "processId": "${command:PickProcess}",
+        //     "restart": true,
+        //     "protocol": "inspector",
+        // }
+        // {
+        //     "type": "node",
+        //     "request": "launch",
+        //     "name": "Launch Program",
+        //     "program": "${workspaceRoot}/index.js"
+        // }, 
+        // {
+        //     "type": "node",
+        //     "request": "attach",
+        //     "name": "Attach to Port",
+        //     "address": "localhost",
+        //     "port": 5858
+        // }
+
+
+        
     ]
 }
