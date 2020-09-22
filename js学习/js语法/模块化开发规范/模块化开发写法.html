@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 闭包的写法写模块,主要作用是不让变量或方法对外暴露,免得别人调用的时候重新赋值导致内部引用这个变量的代码无法正常执行,或直接崩溃;
+        var module1 = (function() {
+            //私有的变量,外面访问不到,外层函数自己也访问不了,只能给外层函数内部的函数或代码使用;
+            var num = 2;
+
+            function cheng() {
+                num *= 3;
+                alert(num);
+            }
+            // 私有的方法,外面访问不到,外面只能访问到它赋值给的对外暴露变量a
+            function jian() {
+                num -= 4;
+                alert(num);
+            }
+            // 这样闭包写法,返回一个对象,无法拓展开发新功能,改成能拓展的写法
+            return {
+                a: cheng,
+                b: jian
+            }
+        })()
+
+        // 调用闭包里的私有方法
+        // module1.a();
+        // module1.b();
+
+        // 能拓展的写法:
+        var module1 = (function(mod) {
+            var num = 2;
+
+            function cheng() {
+                num *= 3;
+                alert(num);
+            }
+
+            function jian() {
+                num -= 4;
+                alert(num);
+            }
+            return {
+                a: cheng,
+                b: jian
+            }
+        })();
+
+        // 这时拓展了一个show方法,对外暴露的名字是变量 c
+        var module2 = (function(mod) {
+            function show() {
+                alert('hello');
+            }
+            mod.c = show;
+            return mod;
+        })(module1); //这里将上面的函数module1作为实参传入,mod形参接收,mod就拥有module1的方法了,变量module2通过 = mod,得到mod上存的所有方法和属性;
+
+        // 调用,这时module2上有3个方法了,实现了拓展,也就是继承,但这种写法有顺序要求,必需要module1在上面,module2在下面,否则报错module1未定义,继续改,解决顺序问题,让不管谁先声明谁先执行都能正确执行;
+        // module2.a();
+        // module2.b();
+        // module2.c();
+
+
+        // 最终完美的写法,解决顺序问题和拓展继承问题,最好拓展的名字也写成module1,也就是和之前的函数同名,我这里写成module2是为了自己好区分,好理解它们怎么互相继承的:
+        var module1 = (function(mod) { //执行的第一步: 这时mod里面存的是{}
+            var num = 2;
+
+            function cheng() {
+                num *= 3;
+                alert(num);
+            }
+
+            function jian() {
+                num -= 4;
+                alert(num);
+            }
+            // 这样将私有方法赋值给形参的属性,外面访问的时候依旧只能访问对外暴露的形参的属性名
+            mod.a = cheng; //执行到这里,mod里存了一个 a方法
+            mod.b = jian; //执行到这里,mod里存了二个方法, a 和 b
+
+            // 返回形参接收的这个拓展功能的函数,这时这个函数上的所有对外暴露的方法都和此函数自己的所有方法都存在形参上,最后赋值给闭包函数前面的那个module1变量了,变量module1就有了拓展功能和此函数自己的所有方法;
+            return mod; //执行到这里返回 存有 a和 b方法的对象
+
+            // 这里调用后面用 || {} 即使module2在module1下面,也能先将空对象赋值给形参mod,而不会报错
+        })(module2 || {});
+
+        // 这里调用,module2在下面才定义,但也已经有了module2的 c方法,也不会报未定义错误,解决了顺序问题
+        module1.a();
+        module1.b();
+        module1.c();
+
+        //拓展一个 c方法功能 ,
+        var module2 = (function(mod) { //执行到这里 mod里存了 a 和 b方法
+            function show() {
+                alert('hello');
+            }
+            mod.c = show; //执行到这里mod上已经存了三个方法 a 和 b 和 c
+            return mod; //执行到这里 返回存了三个方法的 mod
+        })(module1 || {});
+
+        // module2也拥有了module1的 a和b方法
+        module2.a();
+        module2.b();
+        module2.c();
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

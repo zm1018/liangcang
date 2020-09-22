@@ -1,0 +1,5 @@
+ctrl+alt+l 选中变量之后,按这个快捷生成console.log()
+alt + shift +c 注释所有console.log()
+alt + shift +u 启用所有console.log()
+alt + shift +d 删除所有console.log()
+

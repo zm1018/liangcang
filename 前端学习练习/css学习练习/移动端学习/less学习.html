@@ -5,6 +5,21 @@
     less安装：
         1.先安装nodejs，可选版本（8.0），网址：http://nodejs.cn/download/
         2.检查nodejs是否安装成功，调出cmd命令窗口，输入 node -v 查看版本号，显示表示安装成功，nodejs是微软开发的一个安装包管理工具，像python的pip一样，下载什么都可以通过调用nodejs的npm命令下载。
+            npm安装模块
+            【npm install xxx】利用 npm 安装xxx模块到当前命令行所在目录；
+
+            【npm install -g xxx】利用npm安装全局模块xxx；
+
+            【npm install xxx】安装但不写入package.json；
+
+            【npm install xxx –save】 安装并写入package.json的”dependencies”中；
+
+            【npm install xxx –save-dev】安装并写入package.json的”devDependencies”中。
+
+            npm 删除模块
+            【npm uninstall xxx】删除xxx模块；
+            【npm uninstall -g xxx】删除全局模块xxx；
+
         3.通过nodejs在线安装less，在cmd窗口里输入 npm install -g less 即可，它会自动去下载并安装。
         4.检查less是否安装成功，在cmd窗口输入 lessc -v 查看版本号，显示表示安装成功。
     less使用：

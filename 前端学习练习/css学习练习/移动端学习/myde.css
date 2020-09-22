@@ -8,6 +8,7 @@ div3 {
   height: 100px;
 }
 
+/*选择器嵌套：*/
 ul {
   outline: none;
 }
@@ -16,15 +17,15 @@ ul li {
   width: 20px;
 }
 
-ul li div {
+ul li .div1 {
   height: 30px;
 }
 
-ul li p {
+ul li #p {
   text-align: center;
 }
 
-ul li p:hover {
+ul li #p:hover {
   background-color: pink;
 }
 
@@ -35,6 +36,7 @@ div {
   font-family: 宋体;
 }
 
+/* 运算 */
 div {
   width: 95px;
   height: 9rem;
@@ -52,25 +54,53 @@ div {
   width: 3px;
   width: 4px;
   height: 20%;
-  padding: 0.06235;
+  padding: 0.2834;
 }
 
 div {
   font-size: 9px;
 }
 
-/* 混入，不同选择器的样式可以互相调用，还可以传参，设置混入，如下：*/
+/* 混入，混入里写的样式可以供多个选择器调用，还可以传参，但这不是函数,只是一段代码块, 设置混入，如下：*/
+/* 调用混入 */
 div {
   width: 100px;
-  /*调用混入，调用这个选择器名字，会把它的css样式传过来*/
   display: inline;
   padding: 5px;
   color: blue;
 }
 
-/* 设置继承，可以给前面的.换成%表示占位，调用时也用%，这样.line这个选择器就不会显示到css文件里，只会显示调用继承的选择器 */
+span {
+  border-right: 1px solid #000;
+  border-top: 1px solid #000;
+  padding-left: 30px;
+}
+
+span .span1 {
+  border-right: 1px solid #000;
+  border-top: 1px solid #000;
+  padding-left: 50px;
+}
+
+span .span2 {
+  border-right: 3px solid red;
+  border-top: 3px solid red;
+  padding-left: 30px;
+}
+
+span .span3 {
+  border-right: 6px dashed pink;
+  border-top: 6px dashed pink;
+  padding-left: 10px;
+}
+
+/* 继承 */
 .line, div, span {
   display: inline;
+}
+
+.line a, div a, span a {
+  color: #000;
 }
 
 /* 继承样式,一定要带;不然报错*/

@@ -80,6 +80,27 @@
             }*/
 
 
+            /*  // 改成闭包的写法获得每个按钮的下标变量 i的值
+             var btn = document.querySelectorAll('#div1 button');
+             var div = document.querySelectorAll('#div1 div');
+             for (var i = 0; i < btn.length; i++) {
+                 // 点击事件后面的函数写成闭包写法,将函数的形参index,在后面函数调用的()里传入循环的变量 i作为实参,i里保存的是当前点击的按钮的下标
+                 btn[i].onclick = (function(index) {
+                     // 返回一个函数
+                     return function() {
+                         // 不知道会点击哪个按钮,所以将所有的按钮颜色和div变成初始样式
+                         for (let j = 0; j < btn.length; j++) {
+                             btn[j].id = '';
+                             div[j].style.display = 'none';
+                         }
+                         // 将当前点击的按钮的颜色变成橘色,对应的相同下标的div显示出来
+                         this.id = 'active';
+                         div[index].style.display = 'block';
+                     }
+                 })(i);
+             } */
+
+
             // 调用构造函数
             new TabSwitch('div1');
         }

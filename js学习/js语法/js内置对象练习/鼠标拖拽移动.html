@@ -24,60 +24,60 @@
     <script src='tool.js'></script>
 
     <script>
-    window.onload = function() {
-        // 拖拽构造函数创建实例对象;
-            new Drag('div1');
+        window.onload = function() {
+                // 拖拽构造函数创建实例对象;
+                new Drag('div1');
 
-        // 这种是限制只能在窗口里面拖拽的,不能出界的构造函数创建实例对象;
-        new LimitDrag('div2');
+                // 这种是限制只能在窗口里面拖拽的,不能出界的构造函数创建实例对象;
+                new LimitDrag('div2');
 
-        // 给div1改成随机颜色
-        var d1 = document.getElementById('div1');
-        d1.style.backgroundColor = randomColor();
-    }
-        // 鼠标拖拽移动物体
-        /*  
-            实现鼠标拖拽, 必需具备3个事件:
-                onmousedown 鼠标按下:
-                    鼠标按下的时候要记录鼠标位置到被拖拽物体的相对距离(也就是鼠标在物体上什么位置,到物体的左上角原点距离是多少)?
-                    offsetX = 鼠标的clientX - 物体的offsetLeft;
-                    offsetY = 鼠标的clientY - 物体的offsetTop;
-                onmousemove 鼠标移动:
-                    鼠标移动物体时,鼠标还要保持按下时的相对距离位置,
-                    怎么实现按下的位置保持不变?
-                        要得到物体左上角距屏幕原点距离是多少;
-                        用现在鼠标的位置 - 之前得到的鼠标到物体左上角的距离;
-                    物体的Left值 = 鼠标的clientX - offsetX + 'px';
-                    物体的Top值 = 鼠标的clientY - offsetY + 'px';
-                onmouseup 鼠标抬起:
-                    取消拖拽
-        */
+                // 给div1改成随机颜色
+                var d1 = document.getElementById('div1');
+                d1.style.backgroundColor = randomColor();
+            }
+            // 鼠标拖拽移动物体
+            /*  
+                实现鼠标拖拽, 必需具备3个事件:
+                    onmousedown 鼠标按下:
+                        鼠标按下的时候要记录鼠标位置到被拖拽物体的相对距离(也就是鼠标在物体上什么位置,到物体的左上角原点距离是多少)?
+                        offsetX = 鼠标的clientX - 物体的offsetLeft;
+                        offsetY = 鼠标的clientY - 物体的offsetTop;
+                    onmousemove 鼠标移动:
+                        鼠标移动物体时,鼠标还要保持按下时的相对距离位置,
+                        怎么实现按下的位置保持不变?
+                            要得到物体左上角距屏幕原点距离是多少;
+                            用现在鼠标的位置 - 之前得到的鼠标到物体左上角的距离;
+                        物体的Left值 = 鼠标的clientX - offsetX + 'px';
+                        物体的Top值 = 鼠标的clientY - offsetY + 'px';
+                    onmouseup 鼠标抬起:
+                        取消拖拽
+            */
 
 
         // window.onload = function() {
-            //    这种是不限制拖拽出窗口界面的
-            // var div = document.getElementsByTagName('div')[0];
-            // 鼠标按下是在div上按下,用div调用
-            /* div.onmousedown = function(ev) {
+        //    这种是不限制拖拽出窗口界面的
+        // var div = document.getElementsByTagName('div')[0];
+        // 鼠标按下是在div上按下,用div调用
+        /* div.onmousedown = function(ev) {
+            var e = ev || window.event;
+            var offsetX = e.clientX - div.offsetLeft;
+            // console.log(e.clientX); 鼠标距(屏幕原点)左的距离
+            // console.log(div.offsetLeft); div距左的距离
+            // console.log(offsetX); 鼠标距div原点的距离
+            var offsetY = e.clientY - div.offsetTop;
+            // 鼠标移动要嵌套在鼠标按下里面,实现按下鼠标不松时,移动鼠标才能拖着div在整个屏幕上移动,否则因为局部作用域的原因,报offsetX/Y变量未定义错误
+            // 鼠标移动是在整个页面移动,用document或window调用,无论鼠标移动到屏幕上哪个位置,鼠标在div上的按下位置都不变
+            document.onmousemove = function(ev) {
                 var e = ev || window.event;
-                var offsetX = e.clientX - div.offsetLeft;
-                // console.log(e.clientX); 鼠标距(屏幕原点)左的距离
-                // console.log(div.offsetLeft); div距左的距离
-                // console.log(offsetX); 鼠标距div原点的距离
-                var offsetY = e.clientY - div.offsetTop;
-                // 鼠标移动要嵌套在鼠标按下里面,实现按下鼠标不松时,移动鼠标才能拖着div在整个屏幕上移动,否则因为局部作用域的原因,报offsetX/Y变量未定义错误
-                // 鼠标移动是在整个页面移动,用document或window调用,无论鼠标移动到屏幕上哪个位置,鼠标在div上的按下位置都不变
-                document.onmousemove = function(ev) {
-                    var e = ev || window.event;
-                    // 算出div距屏幕原点的距离,保持鼠标移动时,鼠标按下在div上的位置不变
-                    div.style.left = e.clientX - offsetX + 'px';
-                    div.style.top = e.clientY - offsetY + 'px';
-                }
-            };
-            // 鼠标抬起时清除拖拽(就是让鼠标移动事件失效),并让div停在最后拖拽到的位置(div拖拽到某个位置后,它的top和left值就是此位置距离屏幕原点的值,只要不将值恢复到拖拽前的初始值,它就会停在最后拖拽到的位置)
-            div.onmouseup = function() {
-                document.onmousemove = null;
-            } */  
+                // 算出div距屏幕原点的距离,保持鼠标移动时,鼠标按下在div上的位置不变
+                div.style.left = e.clientX - offsetX + 'px';
+                div.style.top = e.clientY - offsetY + 'px';
+            }
+        };
+        // 鼠标抬起时清除拖拽(就是让鼠标移动事件失效),并让div停在最后拖拽到的位置(div拖拽到某个位置后,它的top和left值就是此位置距离屏幕原点的值,只要不将值恢复到拖拽前的初始值,它就会停在最后拖拽到的位置)
+        div.onmouseup = function() {
+            document.onmousemove = null;
+        } */
         // }
 
 
@@ -113,7 +113,7 @@
                      var e = ev || window.event;
                      var l = e.clientX - offsetX;
                      var t = e.clientY - offsetY;
-
+                    // 判断物体距左和距上的距离离屏幕的四条边的距离是多少
                      if (l <= 0) {
                          l = 0;
                      }
@@ -141,79 +141,79 @@
 
 
 
-       /*  // 封装拖拽构造函数
-        function Drag(id) {
-            // 获取页面需要被拖拽的元素
-            this.node = document.getElementById(id);
-            // 定义一个中介变量,存指向实例对象的this;
-            var _this = this;
-            // 给元素节点添加鼠标按下事件,将实参ev传出去,给funcDown()方法的形参ev;
-            this.node.onmousedown = function(ev) {
-                // 处理鼠标按下事件的funcDown()方法,要用中介变量_this来调用,让this在鼠标按下事件的执行环境里,依旧指向实例对象,而不是指向鼠标按下事件的div,如果写this.funcDown(ev),是指向div;
-                // 因为鼠标按下事件需要获取鼠标按下的位置,所以将按下位置的坐标值,存在ev变量里,作为实参传给funcDown()方法的形参ev;
-                _this.funcDown(ev);
-            }
-            // 鼠标抬起事件,调用funcUp()方法;
-            document.onmouseup = this.funcUp;
-        }
-        // 给构造函数添加方法,鼠标按下时执行的功能;
-        Drag.prototype.funcDown = function(ev) {
-            var e = ev || window.event;
-            this.offsetX = e.clientX - this.node.offsetLeft;
-            this.offsetY = e.clientY - this.node.offsetTop;
-            var _this = this;
-            // 添加鼠标移动事件,调用移动功能的方法funcMove();
-            document.onmousemove = function(ev) {
-                _this.funcMove(ev);
-            }
-        }
-        // 给构造函数添加方法,鼠标移动时执行的功能;
-        Drag.prototype.funcMove = function(ev) {
-            var e = ev || window.event;
-            this.node.style.left = e.clientX - this.offsetX + 'px';
-            this.node.style.top = e.clientY - this.offsetY + 'px';
-        }
-        // 给构造函数添加方法,鼠标抬起时执行;
-        Drag.prototype.funcUp = function() {
-            document.onmousemove = null;
-        }
+        /*  // 封装拖拽构造函数
+         function Drag(id) {
+             // 获取页面需要被拖拽的元素
+             this.node = document.getElementById(id);
+             // 定义一个中介变量,存指向实例对象的this;
+             var _this = this;
+             // 给元素节点添加鼠标按下事件,将实参ev传出去,给funcDown()方法的形参ev;
+             this.node.onmousedown = function(ev) {
+                 // 处理鼠标按下事件的funcDown()方法,要用中介变量_this来调用,让this在鼠标按下事件的执行环境里,依旧指向实例对象,而不是指向鼠标按下事件的div,如果写this.funcDown(ev),是指向div;
+                 // 因为鼠标按下事件需要获取鼠标按下的位置,所以将按下位置的坐标值,存在ev变量里,作为实参传给funcDown()方法的形参ev;
+                 _this.funcDown(ev);
+             }
+             // 鼠标抬起事件,调用funcUp()方法;
+             document.onmouseup = this.funcUp;
+         }
+         // 给构造函数添加方法,鼠标按下时执行的功能;
+         Drag.prototype.funcDown = function(ev) {
+             var e = ev || window.event;
+             this.offsetX = e.clientX - this.node.offsetLeft;
+             this.offsetY = e.clientY - this.node.offsetTop;
+             var _this = this;
+             // 添加鼠标移动事件,调用移动功能的方法funcMove();
+             document.onmousemove = function(ev) {
+                 _this.funcMove(ev);
+             }
+         }
+         // 给构造函数添加方法,鼠标移动时执行的功能;
+         Drag.prototype.funcMove = function(ev) {
+             var e = ev || window.event;
+             this.node.style.left = e.clientX - this.offsetX + 'px';
+             this.node.style.top = e.clientY - this.offsetY + 'px';
+         }
+         // 给构造函数添加方法,鼠标抬起时执行;
+         Drag.prototype.funcUp = function() {
+             document.onmousemove = null;
+         }
 
 
 
-        // 封装限制拖拽出界的构造函数,继承拖拽构造函数
-        function LimitDrag(id) {
-            // 继承拖拽构造函数的所有属性
-            Drag.call(this, id);
-        };
+         // 封装限制拖拽出界的构造函数,继承拖拽构造函数
+         function LimitDrag(id) {
+             // 继承拖拽构造函数的所有属性
+             Drag.call(this, id);
+         };
 
-        // 原型链继承,拷贝继承拖拽构造函数的所有方法
-        for (var item in Drag.prototype) {
-            LimitDrag.prototype[item] = Drag.prototype[item];
-        }
+         // 原型链继承,拷贝继承拖拽构造函数的所有方法
+         for (var item in Drag.prototype) {
+             LimitDrag.prototype[item] = Drag.prototype[item];
+         }
 
-        // 多态,重写拖拽构造函数的移动方法,重写的功能只在子构造函数内有效,不会改变父构造函数;
-        LimitDrag.prototype.funcMove = function(ev) {
-            var e = ev || window.event;
-            var l = e.clientX - this.offsetX;
-            var t = e.clientY - this.offsetY;
-            if (l <= 0) {
-                l = 0;
-            }
-            var windowWidth = document.documentElement.clientWidth || document.body.clientWidth;
-            if (l >= windowWidth - this.node.offsetWidth) {
-                l = windowWidth - this.node.offsetWidth;
-            }
-            if (t <= 0) {
-                t = 0;
-            }
-            var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-            if (t >= windowHeight - this.node.offsetHeight) {
-                t = windowHeight - this.node.offsetHeight;
-            }
+         // 多态,重写拖拽构造函数的移动方法,重写的功能只在子构造函数内有效,不会改变父构造函数;
+         LimitDrag.prototype.funcMove = function(ev) {
+             var e = ev || window.event;
+             var l = e.clientX - this.offsetX;
+             var t = e.clientY - this.offsetY;
+             if (l <= 0) {
+                 l = 0;
+             }
+             var windowWidth = document.documentElement.clientWidth || document.body.clientWidth;
+             if (l >= windowWidth - this.node.offsetWidth) {
+                 l = windowWidth - this.node.offsetWidth;
+             }
+             if (t <= 0) {
+                 t = 0;
+             }
+             var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+             if (t >= windowHeight - this.node.offsetHeight) {
+                 t = windowHeight - this.node.offsetHeight;
+             }
 
-            this.node.style.left = l + 'px';
-            this.node.style.top = t + 'px';
-        } */
+             this.node.style.left = l + 'px';
+             this.node.style.top = t + 'px';
+         } */
     </script>
 </head>
 

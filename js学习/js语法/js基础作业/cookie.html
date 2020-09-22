@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入自己封装的设置/查询/删除cookie的函数 -->
+    <script src="cookie.js"></script>
+    <script>
+        // cookie客户端会话存储技术演示:
+        // 设置coolie,页面打开到页面关闭是一次会话
+        // document.cookie = 'username=jack';
+        // 获取所有cookie,返回值是字符串类型
+        // alert(document.cookie);
+        // 设置中文的键或值,要通过encodeURIComponent编码
+        // document.cookie = 'uname=' + encodeURIComponent("钢铁侠");
+        // document.cookie = encodeURIComponent('小明') + "=666";
+        // 获取中文的键或值要通过decodeURIComponent解码
+        // alert(decodeURIComponent(document.cookie));
+
+        // 设置过期时间,默认过期时间是页面打开到页面关闭的这一次会话,过期时间必需是个日期对象,否则设置不上去
+        // 封装一个获取n天后的日期
+        // function afterOfDate(n) {
+        //     // 获取当前时间
+        //     var d = new Date();
+        //     // 将当前时间的日获取到
+        //     var day = d.getDate();
+        //     // 设置时间,参数是传入的n天+当前这日
+        //     d.setDate(n + day);
+        //     // 返回设置的n天后的新日期对象
+        //     return d;
+        // }
+
+        // 这条cookie过期时间设置在1天后过期,将这条代码注释,将本次打开的页面关闭,再打开多少次页面这条cookie都在,直到一天后的这个时间,过期了会被系统自动清除,才不在了;
+
+        // 一个键只能存一个值,这里uname的值tom会覆盖上一个cookie的uname值钢铁侠;
+        // document.cookie = 'uname=tom;expires=' + afterOfDate(1);
+        // alert(decodeURIComponent(document.cookie));
+
+        // 用自己封装的函数来设置cookie
+        setCookie('x1', '超人', {
+            expires: 2,
+        });
+        setCookie('xxx', 'yyy', {
+            expires: 1,
+        });
+        setCookie('x2', '这种', {});
+        // 用三个功能合成一个函数来设置cookie
+        $cookie('aaa', '666', {
+            expires: 3
+        });
+        $cookie('a1', '66', {});
+
+        // 用自己封装的函数来获取cookie
+        alert(getCookie('x1'));
+        alert(getCookie('xxx'));
+        // 调用三合一函数获取cookie
+        alert($cookie('a1'));
+
+
+        // 删除cookie
+        // 将过期时间设置在过去的时间,系统就会销毁这条过期的cookie,
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            btn.onclick = function() {
+                // 日期对象Date()参数传0返回的日期对象是1970年0点的那个时间
+                // document.cookie = 'uname=tom;expires=' + new Date(0);
+                // 删除cookie时uname也可以传空值,就是值那里啥都不写,和第二个属性直接用;隔开,也可以调用自己封装的函数,将参数传-1,日期就变成昨天了;
+                // document.cookie = 'uname=;expires=' + afterOfDate(-1);
+
+                //调用自己封装的函数删除cookie
+                removeCookie('x1');
+                // 调用三合一函数删除cookie
+                $cookie('aaa', null);
+                // 函数最多只有3个参数,这里传了4个,报错
+                $cookie('a1', null, {}, {});
+            }
+        }
+
+        // path限制访问路径,设置失败,因为没有d文件夹
+        // document.cookie = 'uname=xxx;path=/p/d';
+
+        // Domain限制访问域名,设置失败,因为设置cookie的文件域名是127.0.0.1
+        // document.cookie = 'username=xxx;domain=127.0.0.2';
+
+        //secure是限制协议,默认http协议,如果设置cookie时写了这个单词,就必需https开头的才能设置成功
+        // document.cookie = 'use=xxx;secure';
+    </script>
+</head>
+
+<body>
+    <button id="btn">点击删除cookie</button>
+</body>
+
+</html>

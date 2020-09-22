@@ -1489,6 +1489,45 @@ js对象（object）：
         最大可以存4KB,每个域名下最多可以存50条数据;
         它们是相互作用的,如果存了4KB还没到50条数据,以4KB为准,不够50条也存不进去了;
         如果存了50条还不够4KB,以50条为准,不够4KB也存不进去了;
+        只能存储字符串,字符串里是键值对的格式,一个键只对应一个值,如果后面再设置相同的键和新值,新值会将前面的值覆盖掉,而且只能存4kb,所以一般存登录/购物车信息/是否点赞/视频播放进度等;
+            像摄像机,从打开一个网页到关闭一个网页是一次会话,本次会话中全程记录用户的活动;
+            火狐浏览器支持从本地磁盘加载的文件缓存cookie,谷歌只支持从服务器加载的文件缓存cookie;
+        设置cookie语法,name和value是必须参数:
+            document.cookie= 'name=value';
+        获取cookie语法,会获取打开的页面上所有cookie,返回值是字符串类型:
+            document.cookie;
+            中文会乱码,需要编译:
+                encodeURIComponent 将中文转成字符,存储cookie时用
+                语法:
+                    document.cookie = 'name=' + encodeURIComponent("中文值");
+                decodeURIComponent 将字符转成中文,获取cookie时用
+                语法:
+                    decodeURIComponent(document.coolie);
+        cookie的几个可选参数:
+            expires设置过期时间:
+                默认过期时间是页面打开到页面关闭的这一次会话,系统会自动销毁过期的cookie;
+                可以通过expires属性设置过期时间,值必须是日期对象,用字符串拼接的方式拼成字符串:
+                    语法:
+                        document.cookie = 'name=value;expires=' + 时间对象;
+                    可以设置n多天后过期,这样注释这条设置cookie的代码,关闭本次会话页面,再打开页面时,这条cookie仍然在;
+                    删除cookie:
+                        也可以利用系统自动清除过期的cookie来删除没到过期时间的cookie,只要将时间对象设置在当前时间之前;
+                        或者控制台Application点击cookies找到文件右键delete删除cookie;
+            path限制访问路径:
+                默认是打开的这个文件的路径,这个设置cookie的文件同级目录或子目录的文件都可以访问到这个cookie;
+                如果用别的路径访问这个设置cookie的文件路径,是访问不到的;
+                例如:
+                    document.cookie = 'name=value;path=/js学习/demo文件夹';
+                    设置失败,因为/js学习文件夹下面没有demo文件夹,
+            domain限制访问域名:
+                默认是打开的这个文件的域名,如果写成别的域名来给打开的这个文件设置cookie,因为域名不同,是无法设置成功的;
+                    document.cookie = 'name=value;domain='+"127.0.0.2";
+                    设置失败,打开文件的域名和设置cookie的域名不一样,主要是为了cookie安全,就像开门的钥匙必需能匹配这把锁,才能进来,否则这个门都进不去;
+            secure:
+                默认是http协议;
+                如果设置了这个属性,就必需是https协议来加载文件才能设置成功cookie;
+                document.cookie = 'name=value;secure';
+
     
     sessionStorage
         是服务端会话技术,数据真正的是存储在服务器,
