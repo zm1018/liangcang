@@ -54,7 +54,7 @@ div {
   width: 3px;
   width: 4px;
   height: 20%;
-  padding: 0.98561;
+  padding: 0.76839;
 }
 
 div {
@@ -109,9 +109,9 @@ div, span {
   display: inline;
 }
 
-/* 设置属性合并，要先定义变量，在变量里用小括号括起来写键值对 */
+/* 设置属性合并，也就是样式简写,要先定义变量，在变量里用小括号括起来写键值对 ,比如border属性或font属性,单独一个个写的合并成一行,共用一个键*/
 div {
-  background: url(a.png), url(b.png);
+  background: url(a.png), pink;
   transform: scale(2) rotate(30deg);
 }
 

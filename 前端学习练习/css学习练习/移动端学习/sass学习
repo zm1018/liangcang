@@ -130,10 +130,10 @@ sass使用：
         }
         继承样式语法：
         .选择器名 {
-            @extend %选择器名字;
+            @extend 选择器名字;
         }
         
-        百分号占位，让设置继承语法不显示：
+        百分号占位，让设置继承语法不显示,语法：
         %选择器名字 {
             样式
         }
@@ -141,23 +141,25 @@ sass使用：
         .选择器名 {
             @extend %选择器名字;
         }
+
     sass属性合并：
         设置属性合并，要先定义变量，在变量里用小括号括起来写键值对，例如：
         $background: ( 
             a: url(a.png),
-            b: url(b.png)
+            color:pink
             );
         $transform: ( 
             a: scale(2), 
             b: rotate(30deg)
             );
-        调用属性合并
+        调用属性合并:
         div {
-            这种生成用，隔开的合并属性
+            这种生成用,隔开的合并属性
             background: map-values($background);
             这种生成用空格隔开的合并属性，后面的...不能省略
             transform: zip(map-values($transform)...);
         }
+        
     sass媒体查询写法：
         选择器 {
             标准样式
