@@ -1,4 +1,5 @@
 @charset "UTF-8";
+/*! 定义变量 */
 div3 {
   /* 调用变量 */
   width: 75px;
@@ -26,7 +27,8 @@ ul li #p {
 }
 
 ul li #p:hover {
-  background-color: pink;
+  background-color: #f5f5d5;
+  color: rgba(0, 0, 255, 0.5);
 }
 
 div {
@@ -47,6 +49,7 @@ div {
   padding: 6px;
   padding: 11px;
   padding: 3px;
+  width: 50%;
 }
 
 /* 调用内置的函数，这个是四舍五入 */
@@ -54,11 +57,13 @@ div {
   width: 3px;
   width: 4px;
   height: 20%;
-  padding: 0.00181;
+  padding: 0.98624;
 }
 
+/* 自定义函数 */
 div {
   font-size: 9px;
+  background-color: black;
 }
 
 /* 混入，混入里写的样式可以供多个选择器调用，还可以传参，但这不是函数,只是一段代码块, 设置混入，如下：*/
@@ -131,22 +136,62 @@ div {
   }
 }
 
-/* 判断 */
+/* 判断,2种写法 */
 div {
   width: 17px;
 }
 
-/* 循环 */
-div-0 {
-  width: 100px;
+body {
+  background-color: #000;
 }
 
+/* 循环 */
 div-1 {
   width: 101px;
 }
 
 div-2 {
   width: 102px;
+}
+
+a {
+  font-size: 1px;
+}
+
+a {
+  font-size: 2px;
+}
+
+.div1 {
+  width: 1px;
+}
+
+.div2 {
+  width: 2px;
+}
+
+.div3 {
+  width: 3px;
+}
+
+.div4 {
+  width: 4px;
+}
+
+.div5 {
+  width: 5px;
+}
+
+.div3 {
+  width: 3rem;
+}
+
+.div2 {
+  width: 2rem;
+}
+
+.div1 {
+  width: 1rem;
 }
 
 /* 导入另一个sass文件 */

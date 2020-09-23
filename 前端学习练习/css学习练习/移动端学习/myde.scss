@@ -1,5 +1,7 @@
 // sass代码的执行顺序是从上到下。
-// 定义变量
+
+/*! 定义变量 */
+
 $num: 75px;
 // 定义插值
 $key:margin;
@@ -30,7 +32,10 @@ ul {
             text-align: center;
             // 伪类或伪元素的写法,&符号是父级元素选择器
             &:hover {
-                background-color: pink;
+                // rgb颜色编译的时候会自动转换成 #进制颜色
+                background-color: rgb(245, 245, 213);
+                // rgba颜色编译时不会被转换
+                color: rgba(0, 0, 255, .5);
             }
         }
     }
@@ -65,6 +70,7 @@ div {
     padding: (10px + 2) / 2;
     padding: 10px + 2 / 2;
     padding: 10px / 2 - 2;
+    width: 100% - 50%;
 }
 
 // 函数
@@ -82,14 +88,34 @@ div {
     // padding: sqrt(25%);
 }
 
-// 自定义函数
+
+/* 自定义函数 */
+
 @function sum($n, $m) {
     @return $n+$m;
 }
 
+// 声明一个映射
+$colors: (light: white, dark:black);
+// 声明一个函数,设置个形参 key
+@function color($key) {
+    // if not是判断如果不是 要执行的代码, map-has-key()是查看key是否在map里,在返回true,否则返回false,
+    // 写这个判断是因为,如果map里没有这个key,也不会报错,也不编译到css文件,所以看不到反馈,不能有效的调试代码,找出问题,所以要自己设置报错
+    @if not map-has-key($colors, $key) {
+        // 这里可以设置一个警告,如果没有这个键,就在黑窗口输出警告信息,提示我哪里有问题,程序不会中断,这是在黑窗口运行监听sass时才能看到,我是直接在vscode里运行的,看不到警告信息,
+        // @warn "我是警告,这里没有你传的这个键名";
+        // 设置报错,如果没有这个键会直接报错,程序中断,报错信息在vscode的控制台输出
+        @error "我是报错,这里没有你传的这个键名";
+    }
+    // map-get()通过键获取值,返回要获取的键的值,如果键不存在,返回null
+    @return map-get($colors, $key);
+}
+
 div {
-    // 调用自定义函数，定义多少参数，就要传多少参数， 参数用，隔开。
+    // 调用自定义函数sum，定义多少参数，就要传多少参数， 参数用，隔开。
     font-size: sum(4px, 5px);
+    // 调用color函数,传入上面声明的映射中的某个键,将值返回赋值给背景色,如果传入的键映射里没有,就会输出自定义的报错信息
+    background-color: color(dark);
 }
 
 // 混入
@@ -213,12 +239,12 @@ div {
 }
 
 
-/* 判断 */
+/* 判断,2种写法 */
 
 // 先定义个变量
 $count: 3;
 div {
-    // 判断条件是否满足，如果满足返回这行代码的运算结果，如果不满足继续向下执行代码
+    // 带括号的写法,括号里的判断条件是否满足，如果满足返回这行代码的运算结果，如果不满足继续向下执行代码
     @if($count > 4) {
         width: 100px + $count;
     }
@@ -228,18 +254,58 @@ div {
     }
 }
 
+$theme: dark;
+body {
+    // 不带括号直接写表达式的写法
+    @if $theme==dark {
+        background-color: #000;
+    }
+    @else if $theme==hight {
+        background-color: #fff;
+    }
+    @else {
+        background-color: #ccc;
+    }
+}
+
 
 /* 循环 */
 
-// for循环，$i是计数器，from是从...开始，through是到..之间结束（包含结束值），{循环的代码体}
-@for $i from 0 through 2 {
+// for循环2种，$i是计数器，from是从...开始，through是到..之间结束（包含结束值），{循环的代码体}
+@for $i from 1 through 2 {
     // 拼接要用-#{每次循环后的计数器值作为参数}
     div-#{$i} {
         width: 100px + $i;
     }
 }
 
+// 第二种for 变量 from ..to.., 不包含结束值
+@for $i from 1 to 3 {
+    a {
+        font-size: $i * 1px;
+    }
+}
+
+// each循环,遍历列表
+$arr: 1 2 3 4 5;
+@each $item in $arr {
+    .div#{$item} {
+        width: #{$item}px;
+    }
+}
+
+// while循环,必需要在结束位置写循环停止条件,否则容易死循环
+$n:3;
+@while $n>0 {
+    .div#{$n} {
+        width: 1rem * $n;
+    }
+    // 循环停止条件
+    $n: $n - 1;
+}
+
 
 /* 导入另一个sass文件 */
 
+// 一般是将公共样式文件用 _文件名.scss命名,引入的时候直接写 @import "文件名"导入,不需要写_和后缀;
 @import "wo.scss";
