@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .div1 {
+            margin: 100px;
+            padding: 30px;
+            width: 300px;
+            height: 150px;
+            border: 1px solid #ccc;
+        }
+        
+        ul {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div1">
+        <h1>简单计算器</h1>
+        <ul>
+            <!-- 调用model指令实现双向数据绑定 -->
+            <!-- <li>数值a: <input type="text" v-model="a"></li> -->
+            <!-- 自己实现v-model指令的双向数据绑定功能,用v-bind监听value值的变化,再用input事件,在用户输入的时候触发事件函数,将用户输入的value值赋值给变量a -->
+            <li>数值a: <input type="text" v-bind:value="a" v-on:input="fn"></li>
+
+            <li>数值b: <input type="text" v-model="b"></li>
+
+            <li><button @click="count">计算</button></li>
+
+            <li>计算结果: <span v-text="res"></span> </li>
+        </ul>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var obj = new Vue({
+            el: '.div1',
+            data: {
+                a: '',
+                b: '',
+                res: '',
+            },
+            methods: {
+                // 自己实现v-model的功能,用事件对象的value属性,在input事件的value值改变时,动态更新变量a的值,实现输入框的输入和填充到页面的数据同步变化
+                fn: function(e) {
+                    this.a = e.target.value;
+                    console.log(e.target.value);
+                },
+                count: function() {
+                    this.res = parseInt(this.a) + parseInt(this.b);
+
+                }
+            }
+
+        })
+    </script>
+</body>
+
+</html>

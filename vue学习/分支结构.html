@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        ul {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <!-- 分支结构,判断和判断条件都是直接写在标签里的,只会将满足判断条件的那个li标签渲染到页面上 -->
+        <li v-if="grade>90">优秀</li>
+        <li v-else-if="grade>80&&grade<90">良好</li>
+        <li v-else-if="grade>60&&grade<80">一般</li>
+        <li v-else>较差</li>
+        <!-- v-show会渲染标签,但是否显示到页面,要由绑定的变量的值是true还是false来决定 -->
+        <li v-show="flag">v-show演示</li>
+        <li><button @click="active">点击显示或隐藏绑定v-show的元素</button></li>
+    </ul>
+    <script src="vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: 'ul',
+            data: {
+                // 改变这个变量的值,可以控制if-else将满足判断条件的li标签渲染到页面上,
+                grade: 86,
+                // 设置v-show绑定的标志位变量初始值是false,这个标签会渲染在控制台可以查看,但不会显示在页面上,实现原理是将元素的css样式display设置成none,将元素隐藏了
+                flag: false,
+            },
+            methods: {
+                // 点击按钮将flag变量的值取反,是true时这个标签会显示到页面上
+                active: function() {
+                    this.flag = !this.flag;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

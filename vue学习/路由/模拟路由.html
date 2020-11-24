@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <a href="#zhuye">主页</a>
+        <a href="#keji">科技</a>
+        <a href="#xinwen">新闻</a>
+        <a href="#yule">娱乐</a>
+
+        <!-- 父组件标签,不用一个一个把子组件写在这里,用<component>标签来动态切换子组件,这标签相当于一个占位符,动态绑定is属性,值写的是存子组件名的变量,变量值是哪个子组件,就加载哪个子组件,把子组件里的模板内容渲染到页面 -->
+        <component :is="comName"></component>
+    </div>
+    <script>
+        // 定义对象,给子组件用
+        const zhuye = {
+            template: '<h1>我是主页</h1>'
+        };
+        const keji = {
+            template: '<h1>我是科技</h1>'
+        };
+        const xinwen = {
+            template: '<h1>我是新闻</h1>'
+        };
+        const yule = {
+            template: '<h1>我是娱乐</h1>'
+        };
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                // 这个变量存的是子组件名称
+                comName: 'zhuye'
+            },
+            // 注册子组件,本来写法是 zuye:'zhuye',可以省略属性值不写
+            components: {
+                zhuye,
+                keji,
+                xinwen,
+                yule
+            },
+            methods: {}
+        });
+
+        // window里监听hash值变化的事件,只要hash值变化就会触发
+        window.onhashchange = function() {
+            // location.hash获取最新的hash值,用slice()截取字符串,把#去掉
+            switch (location.hash.slice(1)) {
+                // 判断,如果得到的hash值是zhuye,给vue实例的comName变量赋值成zhuye子组件,vue实例就会因为它里面的comName变量值变化而重新执行子组件渲染页面
+                case 'zhuye':
+                    vm.comName = 'zhuye';
+                    break;
+                case 'keji':
+                    vm.comName = 'keji';
+                    break;
+                case 'xinwen':
+                    vm.comName = 'xinwen';
+                    break;
+                case 'yule':
+                    vm.comName = 'yule';
+                    break;
+            }
+        }
+    </script>
+</body>
+
+</html>

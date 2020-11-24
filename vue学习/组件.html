@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 组件必需在vue实例里使用,这div是vue实例el属性绑定的元素,是组件的父级组件 -->
+    <div id="app">
+        <!-- 调用组件,直接写组件名,写成标签的格式,一个组件可以多次调用,它们都是这个组件的实例对象,它们之间的数据都是独立的数据,互不影响 -->
+        <add-button></add-button>
+        <add-button></add-button>
+        <!-- 调用template里写多个标签的组件 -->
+        <concent></concent>
+        <!-- 调用组件名是驼峰命名写法的组件,这里必需转成全小写,中间用-隔开,这里不能写成<helloWorld></helloWorld> -->
+        <hello-world></hello-world>
+
+        <!-- 调用子组件,通过自定义属性接收父组件传过来的数据,可以写多个自定义属性,这里的自定义属性名要和子组件的props属性数组里的元素名一样 -->
+        <item title="父组件的数据,这是直接写具体的数据" :nu="msg1"></item>
+        <!-- 因为子组件的template模板的插值表达式里调用了title和nu 2个属性,这里调用组件时只定义了title属性,页面渲染时,会把没定义的nu属性赋undefined值,也显示在页面上 -->
+        <item title="父组件的数据,父组件是vue实例,这是直接写具体的数据"></item>
+        <!-- 自定义属性接收的5种值演示,值必须用v-bind动态绑定才能接收到  -->
+        <temp :str="str" :num="num" :bool="bool" :arr="arr" :obj="obj"></temp>
+
+        <!-- 调用子组件,通过自定义事件向父组件传数据,
+        div里style属性传个对象,作用是给fontSize样式的值加单位px,否则是纯数值,无法渲染css样式,
+        形参$event接收子组件传来的数据,可以直接用$event进行运算,也可以将$event作为事件函数的参数,传给事件函数,
+        big-font是自定义的事件名,parentFn()是父组件里定义的函数名,$event是接收子组件模板里$emit()的第二个参数数据,再将这第二个参数数据传给父组件里定义的函数作为实参,
+        -->
+        <div :style="{fontSize: fontSize + 'px'}">{{pmsg}}</div>
+        <!-- 点击按钮,父组件的数据pmsg字体放大,这是调用父组件中定义的函数,将$event做参数传给函数的写法 -->
+        <child-data @big-font='parentFn($event)'></child-data>
+
+        <!-- 兄弟组件相互传数据,需要写一个vue实例对象,作为事件中心,也就是中介来传,不能直接互传,这两个是兄弟组件,这里要实现点击按钮执行tom组件时更新jerry组件中的数据值,执行jerry组件时更新tom组件中的数据值,-->
+        <test-tom></test-tom>
+        <test-jerry></test-jerry>
+        <!-- 这个销毁事件写在了父组件里,也就是vue实例里 -->
+        <button @click="delEvent">销毁兄弟组件互传数据时$on()生成的事件</button>
+
+        <!-- 组件插槽,用来接收调用组件标签时写在组件标签间的内容,通过在模板中写slot标签获取组件标签间内容 -->
+        <alert-box1>这是一条警告!</alert-box1>
+        <alert-box1>这是一个bug!</alert-box1>
+        <!-- 这个span标签虽然写在子组件中间,但子组件写在vue实例对象的模板里,所以span标签也属于vue实例对象的模板,所以span标签可以直接使用vue实例对象中的数据,再通过子组件的插槽让这个span标签在子组件中渲染,就实现了子组件直接使用父组件的数据,不用再通过父传子了,可以通过插槽的功能直接用 -->
+        <alert-box1>
+            <!-- 这个msg1数据变量是通过插槽在子组件中渲染显示的父组件的数据 -->
+            <span>{{msg1}}</span>
+        </alert-box1>
+
+        <!-- 具名插槽有2种用法,1是只匹配一个标签,这里标签上写slot属性绑定组件的template里写的插槽名,就能将对应名字的标签间的内容传给组件模板的同名插槽,也就是同名slot标签,
+        没有用slot属性绑定插槽名的标签间的内容,都会被没有名字的插槽获取到 -->
+        <alert-box2>
+            <p slot="header">这是名为header的插槽接收的信息</p>
+            <p>主体内容1,这是没取名字的插槽接收的信息</p>
+            <p>主体内容2,这也是没取名字的插槽接收的信息</p>
+            <p slot="footer">这是名为footer的插槽接收的信息</p>
+        </alert-box2>
+        <!-- 具名插槽的第二种用法,一个插槽匹配多个标签,通过vue提供的临时容器<template>标签,将同一个名字的插槽获取的标签包裹起来,slot属性写在template标签上 -->
+        <alert-box2>
+            <template slot="header">
+                <p>匹配多个标签,这是名为header的插槽接收的信息1</p>
+                <p>这是名为header的插槽接收的信息2</p>
+            </template>
+            <p>主体内容1,这是没取名字的插槽接收的信息</p>
+            <template slot="footer">
+                <p>这是名为footer的插槽接收的信息1</p>
+                <p>这是名为footer的插槽接收的信息2</p>
+                <p>这是名为footer的插槽接收的信息3</p>
+            </template>
+        </alert-box2>
+
+        <!-- 作用域插槽,应用场景:就是子组件的模板写好了,在不改子组件模板的情况下,通过调用子组件时对获取到的父组件的数据进行修改等操作,
+        在子组件模板里写插槽,在插槽上写一个属性,属性名自定义,值是子组件获取到的父组件的数据变量名,动态绑定这个属性,
+        在调用组件标签里写template标签,标签上写slot-scope属性,这个属性值是自定义变量名,接收的是插槽动态绑定的那个属性,
+        通过变量名.插槽的属性名就能获取到那个属性值上的数据,并对数据进行处理
+        -->
+        <!-- 通过动态属性接收父组件的数据list1 -->
+        <alert-box3 :f-List="list1">
+            <!-- 插槽处理遍历过的list1的数据 -->
+            <template slot-scope="slotProps">
+                <!-- 这里info是插槽里的自定义属性,info属性传过来的是模板里遍历过的父list1的数据,将id=1的这条数据加粗显示 -->
+                <strong v-if="slotProps.info.id==1">{{slotProps.info.name}}</strong>
+                <span v-else>{{slotProps.info.name}}</span>
+            </template>
+        </alert-box3>
+
+
+        <!-- 调用局部组件,局部组件只能在注册它的vue实例el绑定的标签容器里调用,否则报错 -->
+        <component-a></component-a>
+        <component-b></component-b>
+    </div>
+
+    <script src="vue.js "></script>
+    <script>
+        // component定义全局组件,第一个参数是组件名,第二个参数是个对象
+        Vue.component('add-button', {
+            // 组件里重要属性有2个,data属性的属性值是函数,作用还是存数据的,函数主要是形成闭包环境,让实例对象使用这里的数据时,各自独立拥有这个数据,而不是一改数据的值全部组件的实例对象里的值都跟着变,
+            data: function() {
+                //数据存在return返回值里,return返回的是一个对象,这是固定写法
+                return {
+                    // 数据变量名count,值0,作用是当点击按钮时,记录点击的次数
+                    count: 0,
+                }
+            },
+            // 重要属性2,template属性,值是字符串,作用是模板渲染,字符串里写的是要渲染到页面的标签,标签里可以使用之前学的所有模板语法,这里绑定个点击事件,对count变量进行累加
+            // template: `<button @click="count++ ">点击了{{count}}次</button>`
+            // 也可以将count累加放在函数里,让点击事件直接绑定个函数,而不是具体的值,这里点击一次按钮count+2
+            template: '<button @click="add ">点击了{{count}}次</button>',
+            methods: {
+                add: function() {
+                    this.count += 2;
+                }
+            }
+        });
+
+        // 演示全局组件里写多个标签和调用全局组件
+        Vue.component('concent', {
+            /*  
+            这里模板字符串里写了多个子标签,都必须用一个父标签包起来,否则报错,
+            第三个标签<helloWorld>是调用驼峰命名的组件,在这里调用组件可以写成驼峰或-的格式都行,这里调用helloWorld组件,helloWorld组件就成了这个concent组件的子组件,它们的层级关系是父子
+            第四个标签<item>是调用有自定义属性的组件,来接收父组件传的数据
+                */
+            data: function() {
+                return {
+                    msg1: '在concent组件调用item组件,concent组件是父级,vue实例里的msg1变量值无法再用,现在显示的内容是在concent组件里从新定义的变量msg1的值'
+                }
+            },
+            template: `
+                <div>
+                    <button>组件里写多个标签都要用一个父标签包起来,否则报错</button>
+                    <button>测试template里写多个标签</button>
+                    <helloWorld></helloWorld>
+                    <item title="接收父组件的数据,在concent组件的template里调用item组件,父组件是concent组件,这是直接写具体的数据 " :nu="msg1 "></item>
+                </div>
+                `
+        });
+
+        // 演示组件名是驼峰写法的,在html标签里调用组件,必需转成全小写,单词间用-隔开,在template里调用组件2种命名写法都可以
+        Vue.component('helloWorld', {
+            data: function() {
+                return {
+                    msg: 'helloWorld'
+                }
+            },
+            template: '<div>{{msg}}</div>'
+        });
+
+        // 演示父组件向子组件传数据,子组件通过props属性接收数据,属性值是数组,数组里的元素是调用组件时写在组件里的自定义属性,元素(自定义属性)的值是父组件里存数据的变量名或具体的数据值,值支持5种数据类型;
+        Vue.component('item', {
+            data: function() {
+                return {
+                    msg: '子组件自己的数据',
+                }
+            },
+            // props属性接收父组件的数据
+            props: ['title', 'nu'],
+            // 渲染子组件自己的数据和父组件传过来的数据
+            template: `<div>{{msg +"---- " + title + "---- " + nu}}</div>`,
+        });
+
+        // 演示自定义属性值支持的5种数据类型
+        Vue.component('temp', {
+            // 如果没有数据要渲染,可以不用写data属性
+            // props属性接收父组件的数据
+            props: ['str', 'num', 'bool', 'arr', 'obj'],
+            // 渲染父组件传过来的数据,,系统规定props属性是单向数据流,只能父向子传值,不能子向父传值,虽然像模板里写的button按钮实现的功能,子组件可以直接操作父组件中的数据,给父组件里添加数据也能成功,不会报错,但系统不建议这样做,规定子传给父要通过自定义事件的方式;
+            template: `
+                <div>
+                    <span>{{str}}</span>
+                    <span>{{num,typeof num}}</span>
+                    <span>{{bool,typeof bool}}</span>
+                    <span :key="index" v-for="(item,index) in arr">{{item +"-- "}}</span>
+                    <button @click="arr.push('banana')">点击给父组件的数组数据添加元素</button>
+                    <span :key="key" v-for="(value,key,index) in obj">{{value}}</span>
+                </div>`,
+        });
+
+        // 演示子组件向父组件传数据
+        Vue.component('child-data', {
+            // 接收父组件传来的数据
+            props: ['pmsg'],
+            // 这里要实现的功能是点击button按钮让父组件中的数据 pmsg的字体变大
+            // 模板标签里事件函数的值 $emit()是固定写法,参数1是自定义事件名,参数2是要传给父组件的数据,子组件的数据通过调用子组件时写自定义事件,绑定父组件中定义的函数,给函数写$event参数传给父组件,父组件里再通过函数的形参接收子组件传的数据
+            template: `
+                <div>
+                    <button @click='$emit("big-font",5)'>点击将父组件中的数据pmsg的值字体变大5px</button>
+                    <button @click='$emit("big-font",10)'>点击将父组件中的数据pmsg的值字体变大10px</button>
+                </div>`
+        });
+
+        // 演示兄弟组件相互传数据
+        var hub = new Vue(); //写个vue实例作为事件中心
+        // 定义兄弟组件1
+        Vue.component('test-tom', {
+            data: function() {
+                return {
+                    num1: 0 //执行jerry组件时,num1的值被jerry组件传入的数据更改
+                }
+            },
+            // click事件绑定的是实现监听事件功能的函数tomAdd
+            template: `
+                <div>
+                    <span>Tom:{{num1}}</span>
+                    <button @click="tomAdd">点击按钮tom组件向jerry组件传数据</button>    
+                </div>
+            `,
+            // 监听事件,操作兄弟组件传过来的数据
+            mounted: function() {
+                // 定义监听事件名tom-event,接收兄弟组件传来的数据,用事件中心hub调用$on()来监听tom-event事件的数据变化,这个数据是兄弟组件jerry通过val参数传来的,
+                hub.$on('tom-event', val => {
+                    // 将兄弟组件传过来的数据和num1变量进行运算,再赋值给num1
+                    this.num1 += val;
+                })
+            },
+            // 触发事件,传数据给兄弟组件jerry
+            methods: {
+                // 触发事件,把tom组件的数据发送给jerry组件,tomAdd函数绑在button标签事件上,点击按钮就会触发这个函数,实现操作兄弟组件jerry的数据num2的值功能,每点击一次按钮,给jerry的num2变量的值加上1
+                tomAdd: function() {
+                    // 发送数据给兄弟组件jerry,用事件中心hub调用$emit(),参数1是兄弟组件的监听事件名,参数2是要传给兄弟组件的数据
+                    hub.$emit('jerry-event', 1)
+                },
+            }
+        });
+        // 定义兄弟组件2
+        Vue.component('test-jerry', {
+            data: function() {
+                return {
+                    num2: 0
+                }
+            },
+            template: `
+                <div>
+                    <span>Jerry:{{num2}}</span>
+                    <button @click="jerryAdd">点击按钮jerry组件向tom组件传数据</button>
+                </div>
+            `,
+            // 事件监听写在mounted钩子函数里
+            mounted: function() {
+                // 定义监听事件名jerry-event,接收兄弟组件tom传来的数据
+                hub.$on('jerry-event', val2 => {
+                    this.num2 += val2;
+                })
+            },
+            // 触发事件,传数据给兄弟组件tom
+            methods: {
+                // 触发事件,发送数据给兄弟组件tom,每点击一次按钮,给tom组件的num1变量的值加上2
+                jerryAdd: function() {
+                    hub.$emit('tom-event', 2)
+                }
+            },
+        });
+
+        // 组件插槽,在template属性里用slot标签接收写在调用组件时组件标签间的内容,并将内容渲染到页面;
+        Vue.component('alert-box1', {
+            template: `
+                <div>
+                    <strong>提示信息:</strong>
+                    <slot></slot>
+                </div>
+            `,
+        });
+        // 具名插槽,就是给插槽用name属性取名字,调用组件时用slot属性绑定插槽名,将名字匹配成功的组件的内容传给对应的插槽
+        Vue.component('alert-box2', {
+            template: `
+                <div>
+                    <header>
+                        <slot name="header"></slot>
+                    </header>
+                    <main>
+                        <slot></slot>
+                        </main>
+                    <footer>
+                        <slot name="footer"></slot>
+                    </footer>                    
+                </div>
+                `,
+        });
+        // 作用域插槽,将父组件传过来的数据写在插槽里,给插槽动态绑定个自定义属性,属性值是要处理的数据,在调用子组件时可以用template标签的slot-scope属性接收写在插槽里的info属性,并处理info属性传过去的数据,处理完成后通过插槽的动态绑定属性,接收处理后的数据并渲染到页面
+        Vue.component('alert-box3', {
+            props: ['fList'],
+            template: `
+                <div>
+                    <li :key="item.id" v-for="item in fList">
+                        <slot :info="item">{{item.name}}</slot>
+                    </li>
+                </div>
+                `,
+        });
+
+
+        // 定义局部组件,2步,1先写个对象,对象里的内容和全局组件的格式一样
+        var com1 = {
+            data: function() {
+                return {
+                    tom: 'helloTom'
+                }
+            },
+            template: '<div>{{tom}}</div>'
+        };
+        var com2 = {
+            data: function() {
+                return {
+                    rose: 'helloRose'
+                }
+            },
+            template: '<div>{{rose}}</div>'
+        };
+
+        // vue实例也是组件,而且是根组件,是其它所有组件的父级
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg1: '这是写在父组件data属性里的数据',
+                // 子组件接收这里传的5种数据类型的值,子组件接收数值和布尔值类型时,自定义属性必需用v-bind动态绑定,才能得到正确的数据类型
+                str: '字符串类型的值',
+                num: 18,
+                bool: true,
+                arr: ['apple', 'orange'],
+                obj: {
+                    uname: '张三',
+                    age: 12
+                },
+                // 子组件向父组件传数据,修改这条数据的值,将这条数据通过style属性绑定,来实现对 pmsg 数据的字体放大功能,
+                fontSize: 10,
+                // 先让子组件接收这条数据,再通过调用子组件将数据传给父组件,实现点击按钮对这条数据值的字体放大功能
+                pmsg: '父组件的数据,这里实现子组件向父组件传数据,数据是字体要放大的数值',
+                // 子组件接收这条数据,再通过子组件的作用域插槽处理数据
+                list1: [{
+                    id: 1,
+                    name: 'tom',
+                }, {
+                    id: 2,
+                    name: 'jack',
+                }, {
+                    id: 3,
+                    name: 'rose'
+                }]
+            },
+
+            methods: {
+                // 子组件向父组件传数据,这里val接收的是子组件传过来的数据,每次点击按钮时子组件中的数据会让fontSize变量的值产生变化,就会触发模板中的自定义事件绑定的这个parentFn函数,将新的值传过来
+                parentFn: function(val) {
+                    this.fontSize += val;
+                },
+
+                // 点击销毁按钮时,销毁兄弟组件互传数据时用$on()生成的监听事件
+                delEvent: function() {
+                    hub.$off('tom-event');
+                    hub.$off('jerry-event')
+                }
+            },
+
+            // 2在components属性里注册局部组件,属性值是一个对象,对象里面的属性是组件名,值是定义在vue外面的对象名,局部组件只能在它的父组件里调用,它的父组件是vue实例对象
+            components: {
+                // 组件名是component-a,要用''引起来,值是外面定义的对象名
+                'component-a': com1,
+                'component-b': com2,
+            }
+        })
+    </script>
+</body>
+
+</html>

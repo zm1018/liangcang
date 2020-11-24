@@ -1,4 +1,5 @@
 <?php
+// 接收ajax的post请求传入的数据
 header('content-type:text/html;charset="utf-8"');
 $username = $_POST['username'];
 $age = $_POST['age'];

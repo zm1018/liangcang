@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        ul {
+            list-style: none;
+            width: 500px;
+            margin: 100px auto;
+        }
+        
+        li {
+            width: 100%;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+        }
+        
+        table {
+            width: 100%;
+            height: 50px;
+            /* 和写在table标签里的cellspacing="0"效果一样,合并单元格间隙 */
+            border-collapse: collapse;
+            border: 1px dotted #ccc;
+        }
+        
+        ul li:nth-child(2),
+        ul li:nth-child(3),
+        thead {
+            background-color: #f3dcac;
+        }
+        
+        ul li:nth-child(3) {
+            border-top: 1px dotted #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>
+            <h1>图书管理</h1>
+        </li>
+        <li>
+            <!-- :disabled属性动态控制input框是否禁用,使用自定义指令v-focus自动获取input框焦点 -->
+            <span>编号:</span> <input type="text" v-model="id" :disabled="flag" v-focus>
+            <span>名称:</span> <input type="text" v-model="name">
+            <!-- :disabled动态控制提交按钮是否禁用 -->
+            <button @click="book" :disabled="submitFlag">提交</button></li>
+        <!-- 调用计算属性函数,不用加() -->
+        <li>图书总数: <span>{{total}}</span> </li>
+        <li>
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 遍历data里的list数组 -->
+                    <tr :key="item.id" v-for="item in list">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <!-- 调用过滤器函数,并传格式化的格式作为函数的第二个参数 -->
+                        <td>{{item.time | format('yyyy-MM-dd hh:mm:ss')}}</td>
+                        <!-- 用prevent修饰符禁用a链接的默认行为,再绑定事件函数,将用户点击的这条数据的id传给事件函数作为实参 -->
+                        <td><a href="" @click.prevent="toEdit(item.id)">修改</a> <span>|</span> <a href="" @click.prevent="del(item.id)">删除</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
+    </ul>
+
+    <script src="../vue.js"></script>
+    <script>
+        // 实现图书管理系统的步骤:
+        /* 
+            1.先将数据渲染到页面,
+            2.禁止a标签的默认跳转行为
+            3.对input框实现双向数据绑定
+            4.将input框输入的内容添加到后台的数组里
+            5.将用户点击修改的数据的id传入与后台数据对比,筛选出用户要修改的数据,将输入id的input框禁用,将用户要修改的name属性值更新到数组里
+            6.将用户点击删除的数据的id传入与后台数据对比,筛选出用户要删除的数据的索引,调用数组的方法将此条数据删除
+            7.写过滤器将图书保存时间的毫秒格式化成年月日时分秒
+        */
+        var vm = new Vue({
+            el: 'ul',
+            // 这里不连接数据库,直接写几个假数据,填充到页面
+            data: {
+                // 用来区分用户是添加图书还是修改图书,false可以编辑id,true禁止修改id
+                flag: false,
+                // 用来区分用户输入的图书名,是否与数据库里的名字重名,如果重名禁止按钮的提交功能
+                submitFlag: false,
+                // 给input框用的
+                id: '',
+                name: '',
+                // 给tr遍历数据,td渲染数据用的,这个空数组里的数据来自生命周期 mounted 钩子函数被触发的时候,这个钩子函数被触发的时候,就会将数据库里的数据添加到这个list数组里
+                list: []
+            },
+            methods: {
+                // 增和改功能
+                book: function() {
+                    if (this.flag) {
+                        // 如果if条件为true,就是修改图书
+                        // 这个filter中的匿名函数的this指向window,所以要写成箭头函数,箭头函数的 this指向它的父级,也就是book函数,book函数是vue实例里定义的,所以指向vue实例,这样就能通过this调用data里的id和name属性
+                        var b = this.list.filter(item => {
+                            // 如果遍历list数组中的某一条数据的id等于用户点击修改填充到input框里的id,就表示找到了要修改的那条数据,就将数据的name属性值更新成用户输入的name值
+                            if (item.id == this.id) {
+                                item.name = this.name;
+                                // 只要找到一个符合条件的元素,就手动停止继续遍历数组,提高性能
+                                return true;
+                            };
+                        });
+                        this.flag = false;
+                    } else {
+                        // 添加图书,准备一个空对象,将input框里的数据添加到对象里
+                        var obj = {};
+                        obj.id = this.id;
+                        obj.name = this.name;
+                        obj.time = +new Date();
+                        // 将对象添加到数组list里,这里的push()方法是响应式的
+                        this.list.push(obj);
+                    }
+                    // 添加或修改完成后清空input框
+                    this.id = '';
+                    this.name = '';
+                },
+                // 修改图书名,通过id查找list里对应的这条数据,用户点击了哪条数据的id,是a标签绑定的事件函数传过来的,这里通过函数的参数id接收,
+                toEdit: function(id) {
+                    // 修改时图书的id是不允许修改的,这里给disabled属性值设置成true,禁止input的输入,只允许修改name
+                    this.flag = true;
+                    // 通过id筛选出list里的这条数据,这个参数item是filter()遍历到的某一条数据,filter()方法的返回值是符合条件的元素组成的新数组
+                    var ite = this.list.filter(function(item) {
+                        // 如果遍历到的这条数据的id和用户点击修改传过来的id相等
+                        return item.id == id;
+                    });
+                    // 把获取到的用户要修改的这条数据,填充到input框
+                    this.id = ite[0].id;
+                    this.name = ite[0].name;
+                },
+                // 删除图书
+                del: function(id) {
+                    // 先将用户点击删除的这条数据的id传过来,通过findIndex()方法获取到这个id在list数组里对应的这条数据的下标
+                    // var index = this.list.findIndex(item => item.id == id);
+                    // 通过splice()方法删除这个下标对应的数据,这里只删除1条数据,1必需写,否则这个下标之后的所有数据都会被删除
+                    // this.list.splice(index, 1);
+
+                    // 第二种删除方法,用filter()来删除数据
+                    this.list = this.list.filter(function(item) {
+                        // list数组中的一条数据的id等于传进来的id,表示这条数据是要删除的,用!=把要删除的数据过滤掉,剩下的都是不用删除的数据,把这些不用删除的数据重新赋值给list数组,就完成了删除图书功能
+                        return item.id != id;
+                    })
+                }
+            },
+            // 用过滤器格式化日期,将毫秒转成用户指定的日期格式
+            filters: {
+                format: function(val, val2) {
+                    function dateFormat(date, f) {
+                        var date = new Date(date);
+                        if (!date || date.toUTCString() == 'Invalid Date') {
+                            return '';
+                        }
+                        var map = {
+                            'M': date.getMonth() + 1,
+                            'd': date.getDate(),
+                            'h': date.getHours(),
+                            'm': date.getMinutes(),
+                            's': date.getSeconds(),
+                            'S': date.getMilliseconds(),
+                            'q': Math.floor((date.getMonth() + 3) / 3),
+                        };
+                        f = f.replace(/([yMdhmsSq])+/g, function(all, t) {
+                            var v = map[t];
+                            if (v !== undefined) {
+                                if (all.length > 1) {
+                                    v = '0' + v;
+                                    v = v.substring(v.length - 2);
+                                }
+                                return v;
+                            } else if (t === 'y') {
+                                return (date.getFullYear() + '').substring(4 - all.length);
+                            }
+                            return all;
+                        })
+                        return f;
+                    }
+                    return dateFormat(val, val2);
+                }
+            },
+            // 自定义局部指令,实现自动获取input输入框的焦点
+            directives: {
+                focus: {
+                    // 这里用bind声明函数无效,用inserted才有效
+                    inserted: function(el) {
+                        el.focus();
+                    }
+                }
+            },
+            // 写个计算属性,显示图书的总数
+            computed: {
+                total: function() {
+                    // 计算图书的总数,也就是数组中元素的数量,这里直接获取数组的长度
+                    return this.list.length;
+                }
+            },
+            // 写侦听器,监听data里的name属性值,作用是用户输入的图书名在数据库里是否已存在,存在就禁止提交按钮提交功能,不存在就可以添加图书到数据库里
+            watch: {
+                // 侦听器监听哪条数据,侦听器名就必需和哪条数据相同,参数val接收这条数据的v-model传来的最新值,也就是用户在input框输入的内容
+                name: function(val) {
+                    // item参数表示数组中的某一条数据,如果这条数据name值等于val参数接收的新值,表示书名重复,要禁用提交按钮
+                    var flag = this.list.some(function(item) {
+                        return item.name == val;
+                    });
+                    if (flag) {
+                        this.submitFlag = true;
+                    } else {
+                        this.submitFlag = false;
+                    }
+                }
+            },
+            // vue实例的生命周期中的mounted钩子函数,在模板准备好,可以填充数据的时候触发,这里模拟数据库里获取到的数据,这些获取到的数据会在这个钩子函数触发时将数据填充到data属性的list空数组里
+            mounted: function() {
+                var data = [{
+                    id: 1,
+                    name: '红楼梦', //书名
+                    time: +new Date(), //存入时间
+                }, {
+                    id: 2,
+                    name: '西游记',
+                    time: +new Date(),
+                }, {
+                    id: 3,
+                    name: '水浒传',
+                    time: +new Date()
+                }];
+
+                // 将数据库中的数据赋值给list数组
+                this.list = data;
+            }
+        })
+    </script>
+</body>
+
+</html>

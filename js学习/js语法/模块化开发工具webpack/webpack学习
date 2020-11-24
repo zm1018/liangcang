@@ -1,0 +1,197 @@
+webpack(构建工具的意思)是什么?
+    是一个模块化开发打包工具,项目开发完成后用这个工具整理打包后部署到服务器,供浏览器使用;
+    依赖node环境,要在node环境下才能运行;
+       
+作用:
+　　它将根据模块的依赖关系进行静态分析，打包生成对应的静态资源,
+    例如: 打包一个js文件,它会将这个js文件里引入的所有其它文件都找到,一起打包处理成一个新的js文件,我们在html里引用的时候,只需要引用这个新生成的js文件就行了;
+    在webpack看来，前端的所有资源文件（js、json、css、img、less……）都可以作为模块处理,
+    把各种其他模块化开发工具写的代码,和es6以上的高级js代码,scss写的css代码,html,要用的图片,json配置文件, ..等文件,都自动分类/合并/压缩/转换成浏览器支持的版本的代码,整理打包到新的js/css/html/图片/json文件里,而且不止js文件,css/图片/html等这些文件也会被webpack当做模块来使用;
+
+使用步骤:
+    1.去node里下载全局安装webpack和webpack-cli这两个包:
+        cnpm i -g webpack webpack-cli  // 没指定版本号,下载最新的
+        cnpm i -g webpack@3.6.0 //指定版本号会下载指定的版本, 4.0以上版本要下载webpack-cli
+        可以 webpack -v 查一下版本,有就下载成功了;
+    或者在项目里安装webpack包进行打包完成后,项目上线运行了,这个项目里安装的webpack包就没用了,可以删了,所以安装到本地要用如下命令:
+        cnpm i webpack --save-dev  //-save是本地安装,-dev是开发时依赖,是development的缩写
+
+    2.执行模块文件打包,2种方式:
+        (1).不配置webpack,直接写命令执行:
+            等所有的项目都写完了,在当前要使用webpack整理打包的文件夹位置打开终端,在终端里输入 webpack ./要打包的文件路径.js ./放打包后新生成的js文件的路径,例如:
+                webpack ./src/main.js ./dist/main.js    //这写的是在同级目录下的路径
+            不配置的情况下:
+                因为打包生成的新文件里的代码是个闭包格式的,而且是立即执行的,例如:(()=>{所有代码})(); 所以相同的代码再次打包到同一个文件里时,这个文件里会再生成一个新的闭包,合并到第一个闭包里,
+                会自动在第一个闭包原来的代码后面增加这个新的闭包代码,而不是替换或覆盖第一个闭包的代码,就会导致这个新文件里的代码重复,再打包多少次,相同的那部分代码就重复多少次都存到这个新js文件的第一个闭包里,解决办法:
+                    要么把之前打包生成的代码都删掉,从新打包一次,要么等整个项目开发完后才执行一次打包;
+
+        (2)先配置好webpack,再执行打包,打包多少次都不会代码重复了:
+            1.创建一个项目文件夹,在文件夹位置打开终端,在终端输入 npm init -y 命令,快速初始化一个node的包管理工具到当前项目里,这个命令执行会自动创建一个package.json文件到当前项目里,当前项目要用的所有node里的包都会被这个json文件管理:
+                //如果项目文件夹名字里有中文,这个命令会报错,因为要生成的json文件里name属性的值不能含中文,而项目文件夹名是给name属性做属性值用的;
+                    npm init -y  
+                //项目文件夹名有中文只能用这个命令,执行后弹出package name:时直接在:后面随便输入一个不带中文的名字作为即将要生成的json文件里的name属性的值,就可以成功生成package.json文件了;
+                    npm init  
+                //在生成的package.json文件的script属性里添加一个"dev"属性,属性值是"webpack",作用是让script节点下的脚本可以通过npm run 执行:
+                    "scripts": {
+                        //这是package.json文件生成时自带的,调试debug用的,暂时用不着,不用管
+                            "test": "echo \"Error: no test specified\" && exit 1", 
+                        //这个是我们添加配置的,主要是为了把webpack命令和npm run 命令做个映射,让webpack打包时这一长串webpack ./src/main.js ./dist/main.js的执行命令变成npm run命令,写起来能更短更简单,
+                        这里配置好了dev属性,执行webpack打包时就可以用npm run dev 命令了,
+                        本来终端里输入命令,执行的都是全局的包,但因为这里的这个配置,执行时就会优先执行当前项目里安装的webpack包,只有当本地没有这个包或找不到这个包时,才会去执行全局的,
+                        我没在本地(当前项目里)安装webpack包,我直接用的全局的webpack包,所以它执行的是全局的webpack包,如果以后工作写真实的项目,基本每个项目里都会安装一个webpack包,因为项目需要使用的版本可能和全局的包的版本不一样,如果直接使用全局的包可能版本不同,有些东西不支持,导致打包出错;
+                            "dev": "webpack" 
+                    },
+                
+            2.创建一个配置文件,文件名是webpack.config.js,是固定名字;
+
+            3.在配置文件里写commonjs的导入导出语法,如下:
+                (1)导入node的核心包path,作用是可以动态获取配置文件里的入口出口文件路径,配置时只用写相对路径,不用再写绝对路径了:
+                    const path = require('path') 
+                (2)导出:
+                module.exports = {
+
+                    mode属性设置构建模式,2个值可选:
+                        如果是 development 表示开发模式,打包时不会对代码进行压缩合并等,文件比较大,但执行打包的时间会快一点,
+                        如果是 production 表示生产模式,一般是项目啥都弄好了,准备上线给用户使用了,才用这个属性值,会把代码压缩合并等,让文件变小,但执行打包的时间要长一点;
+                        mode: 'development',
+                    entry属性设置入口文件:
+                        entry:'./要把哪个文件打包就写哪个文件的路径,例如:./src/main.js', 
+
+                    output属性设置出口文件:
+                        output:{  
+                            path属性是配置路径的,属性值里写的path是使用导入的node里的path包,
+                            jion()或resolve()是path包里的2个方法,都可以实现动态拼接路径,
+                            方法有2个参数,第一个是 __dirname,是node里自带的全局变量,会自动获取从盘符开始到当前这个配置文件为止的绝对路径,
+                            第二个参数是要打包到哪个文件夹里的文件夹名,例如:'dist':
+                                path: path.jion(__dirname, 'dist'),
+                            filename属性是配置文件名的,要打包到哪个文件里就写哪个文件名:
+                                filename: 'main.js'
+                        },
+
+                    module属性配置webpack依赖的各种loader包(插件)的:
+                        module:{
+                            配置loader系列的包,除了js文件,其它所有类型的文件要用模块化开发的写法,都要先下载loader系列的包来转换成js能处理的代码,webpack才能正确执行打包,webpack本身只支持js的模块化,所以需要在node里输入cnpm i --save-dev 某种-loader 来下载loader系列的插件来进行文件转换,要转换什么类型的文件就去百度或官网都有教怎么写配置的;
+                            loader系列的包的执行顺序是从后往前,从下往上;
+                            以转换处理 SCSS 文件为例子：
+                                SCSS 源代码会先移交给 sass-loader 把 SCSS 转换成 CSS；
+                                把 sass-loader 输出的 CSS 交给css-loader 处理，找出 CSS 中依赖的资源、压缩 CSS 等；
+                                把 css-loader 输出的 CSS 交给 style-loader 处理，转换成通过脚本加载的 JavaScript 代码；
+                                可以看出以上的处理过程需要有顺序的链式执行，先 sass-loader 再 css-loader 再 style-loader。
+                            // rules属性是配置第三方模块的匹配规则
+                            rules:[
+                                //配置.scss文件的loader
+                                {
+                                // 增加对 SCSS 文件的支持
+                                    test: /\.scss$/,
+                                //use属性里写要用的第三方模块名字,loader的执行顺序是从下至上,从右至左,所以哪个包最后一个执行,就把哪个包写到列表里的第一个位置:
+                                    use: ['style-loader','css-loader','sass-loader']
+                                },
+                                
+                                //配置.vue文件的loader
+                                {
+                                 //匹配.vue类型的文件
+                                    test: /\.vue$/,
+                                //配置打包.vue文件要用的loader包
+                                    use:['vue-loader']
+                                }
+                            ]
+                    },
+
+                    //resolve属性是配置所有需要解析的东西的,node下载的vue包直接导入使用时,默认不支持模板解析,所以要换成支持模板的文件,就是vue包里的dist文件夹下的vue.js文件
+                    resolve:{
+                        //alias属性是给这个支持模板语法的vue文件这一串路径取个别名
+                        alias:{
+                            'vue$':'vue/dist/vue.js'
+                        }
+                    },
+
+                    //plugins属性是配置第三方插件的
+                    plugins:[
+                        //这是使用vue-router转换.vue文件要用的插件plugin,必需要把上面引入插件那里的那个变量(构造函数)new一个实例对象出来;
+                        new VueLoaderPlugin()
+                    ]
+                }
+
+        4.在终端使用命令执行webpack打包: 
+            npm run dev
+
+
+打包图片需要的配置:
+    1.要打包各种后缀的图片,需要先node里下载url-loader和file-loader这2个包;
+         cnpm i url-loader file-loader --save-dev
+    2.在module属性的rules属性里配置这个图片转换要用的loader:
+        module:{
+            rules:[
+                //图片有多种后缀,都写上
+                test:/\.(jpg|gif|png|jpeg)$/, 
+                use:[{ //use数组里传对象
+                    // 转换要用的loader
+                    loader: 'url-loader',
+                    //options属性用来设置loader转换时我们要传的参数
+                    options:{
+                        //限制图片大小,一般都设置为8kb,这个值是8kb*1024得到的,
+                        小于limit属性值时,只需要url-loader就能转换,图片会被转换成base64格式的字符串嵌入到转换后的js文件里,
+                        大于limit属性值时,图片会被当做一个模块文件,需要url-loader和file-loader一起转换,会在转换后的文件夹里自动生成一个图片文件,图片文件名是自动生成的,是一个32位的hash值,目的是为了防止名字重复,file-loader只用下载下来,不用配置;
+                        limit: 8192,
+                        //因为自动生成的图片文件名32位hash值太长,而且一串乱七八糟的字符,根本就不知道是哪张图片,所以要用name属性配置自动生成的图片文件名字,
+                        属性值: 
+                            img/是把自动生成的图片文件都放到img文件夹里,免得都在dist文件夹里太乱,
+                            [name]是把原来没打包前引入的这个图片的名字传过来,通过name变量接收,给打包后自动生成的图片使用,
+                            .[hash:8]因为原来引入的图片可能是在不同文件夹里引入的,有重名的也因为前面文件夹路径不同,不会出错,但打包后都放在一个img文件夹里了,原来重名的图片就只会存在一张,所以要在用原来图片名字时拼接上自动生成的hash值,这里只取8位长度,防止重复,
+                            .[ext]是把原来图片的扩展名(后缀名)传过来,给打包后自动生成的图片使用;
+                        name: 'img/[name].[hash:8].[ext]'
+                    }
+                }]
+            ]
+        }
+
+
+打包vue文件需要的配置,我写这里是为了让自己知道要打包vue代码得下载和配置哪些东西:
+    1.要打包.vue文件,必需先去node里下载vue和vue-loader和vue-template-compiler这3个包,vue包项目上线了也要用,所以下载时不能加-dev,下载代码:
+        cnpm i vue --save
+        cnpm i vue-loader vue-template-compiler --save-dev
+    2.vue包默认用的是不支持模板的那个js文件,所以要改成支持模板渲染的js文件,在配置的resolve属性里写支持模板的那个文件的路径:
+        resolve:{
+            alias:{
+                'vue$':'vue/dist/vue.js'
+            }
+        }
+
+    3.在module属性的rules属性里配置vue-router包:
+        module:{
+            rules:[test:/\.vue$/, use:'vue-router']
+        }
+    4.vue-loader包是14以上的版本就必需配置叫一个plugin的插件,这个插件要导入,和配置文件最上面的导入path写在一起,代码是: 
+        const VueLoaderPlugin = require('vue-loader/lib/plugin')
+    导入的插件返回一个构造函数赋值给自己定义的VueLoaderPlugin变量,使用插件需要new这个构造函数的实例,写在配置文件的plugins属性里,代码是:
+        plugins:[new VueLoaderPlugin()]   
+    5.在入口文件里导入vue包和.vue文件,再创建vue实例对象,在对象里用render属性渲染组件,例如:
+        main.js里写:
+            import Vue from 'vue'; //导入vue包
+            import App from '1.vue'; //导入自己写的.vue的单文件
+            const vm = new Vue({
+                //绑定html文件里的id是app的标签,.vue里的template会替换这个HTML里的id是app的标签,把template里的内容渲染到这个标签的位置
+                el:'#app', 
+                //render是渲染组件,h()里指定要渲染哪个组件,是接收导入.vue文件的那个变量App
+                render: h => h(App)  
+            })   
+    6.再去html文件里写一个vue的el属性绑定的标签,例如: 
+        index.html文件里写:
+            //这个标签会被.vue文件里的template模板替换,最终会渲染模板里的标签到页面上
+            <div #app></div>   
+
+
+打包时自动生成index.html文件:
+    因为html文件是写在项目的根目录下的,它和放原文件的src文件夹以及打包后生成的dist文件夹同级,所以不会被打包到dist文件夹里,但所有的js文件都需要html来最终加载渲染给用户看,所以dist文件夹里也得有html文件,HtmlWebpackPlugin插件就是解决这个问题的,
+    HtmlWebpackPlugin插件是会在打包自动生成的文件夹里创建一个index.html文件,并在html文件的body标签里自动添加一个script标签,自动将打包的js文件插入script标签里,所以原html文件里写的script标签要注释掉,否则引入2次同一个js文件,
+    先node里下载这个插件:
+        cnpm i html-webpack-plugin -save-dev
+    再配置里导入HtmlWebpackPlugin插件,返回一个构造函数:
+        const HtmlWebpackPlugin = require('html-webpack-plugin')
+    再去配置的plugins属性里使用这个插件,new一个构造函数的实例对象:
+        new HtmlWebpackPlugin({
+            template: '要把哪个原html文件当做模板,按它里面的内容自动生成就写哪个html文件'
+        })
+
+
+还有很多的webpack配置,比如热更新webpack-dev-server包,把开发时依赖的配置文件和生成时依赖的配置文件进行分离的webpack-merge包等,我都没下载,配置文件我也只创建了一个webpack-config.js,没有分离,以后要用再百度

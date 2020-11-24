@@ -1,0 +1,119 @@
+<!-- 
+    async/await是ES7的新语法,
+    async是关键字,写在函数声明的前面,像var写在变量声明的前面一样,表示该函数是一个异步函数，意味着该函数的执行不会阻塞后面代码的执行 异步函数的调用跟普通函数一样,语法:
+        async function 函数名(){};
+    await是关键字(意思是等待),写在使用async的函数内部,它后面可以跟一个表达式。如果是值(如字符串、数字、普通对象等等)的话，返回值就是本身的值。
+    不过最常用的是后面跟一个promise对象。await会等待这个promise的状态由pending转为fulfilled或者rejected。在此期间它会阻塞，延迟执行await语句,直到promise请求返回结果,再将结果作为await的表达式的返回值,赋值给等号前面的变量,来实现异步请求。
+    如果promise对象的结果是resolve，它会将resolve的值，作为await表达式的运算结果。
+    可以通过等号前面的变量直接获取数据,也可以将这个变量存的promise对象作为函数的返回值return,再调用函数时,通过函数.then()获取数据,语法:
+        async function 函数名() {
+            var 变量名 = await new Promise(function(resolve,reject){
+                这里判断请求成功还是失败,请求成功调用resolve(),把服务器返回的数据通过await返回,赋值给变量;
+            })
+            return 变量名;
+        }
+        //调用函数:
+        函数名().then(res=>{处理数据的代码})
+
+
+    用await关键字处理异步请求时,如果后面的请求依赖前面的请求的结果,不用再同时调用多个then(),直接接着往下写多个await就行,它会自动保证每个请求按写的顺序执行,比promise语法在上一个then()里写下一个请求方便多了,让异步请求变的更简单方便,语法例如:
+        async function 函数名() {
+
+            //发送第一个请求,把请求结果赋值给变量1
+            var 变量名1 = await axios.get('url1');
+
+            //发送第二个请求,把第一个请求的返回结果里的数据取出来,用字符串拼接的方式作为第二个请求的url参数键的值
+            var 变量名2 = await axios.get('url2?键名1=' + 变量名1.data);
+            
+            // 发送第三个请求,把第二个请求的返回结果里的数据取出来,用字符串拼接的方式作为第三个请求的url参数
+            var 变量名3 = await axios.get('url3?键名2' + 变量名2.data);
+
+            return 变量名3;  //返回第三个请求结果
+        }
+
+        //调用函数,then()拿到的是第三个请求的结果:
+        函数名().then(res=>{处理数据的代码});
+
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        // 直接用axios发送请求:
+        axios.get('1.txt').then(res => console.log(res.data));
+
+        // 用async语法发送异步请求:
+        async function queryData() { //把async关键字写在函数声明前面
+            //await关键字写在函数内部,axios异步请求前面,这个异步请求的返回结果可以直接通过变量ret拿到,不用再调用then()方法
+            const ret = await axios.get('1.txt');
+            console.log(ret.data); //直接在函数里面取出数据
+        }
+        queryData(); //调用函数
+
+        // 或者在调用函数时取出数据:
+        async function queryData2() {
+            const ret2 = await axios.get('1.txt');
+            return ret2; //将promise对象作为函数的返回值
+        }
+        queryData2().then(res => console.log(res.data));
+
+        // await后面写promise实例对象:
+        async function queryData3() {
+            /* const ret3 = await new Promise((resolve, reject) => {
+                // 懒得在里面写ajax请求,所以用个定时器模拟异步请求
+                setTimeout(function() {
+                    resolve('async写法实现异步请求演示');
+                }, 1000)
+            });
+            // console.log(ret3); //能直接拿到请求结果
+            return ret3; //将请求结果return,在调用函数那里通过.then()获取
+ */
+            // promise里写ajax请求,这么多步,还是第三方框架axios好用:
+            let ret4 = await new Promise(function(resolve, reject) {
+                var xml = new XMLHttpRequest();
+                xml.open('get', '1.txt');
+                xml.send();
+                xml.onreadystatechange = function() {
+                    if (xml.readyState != 4) return;
+                    if (xml.readyState == 4 && xml.status == 200) {
+                        resolve(xml.responseText);
+                    } else {
+                        reject(xml.status);
+                    }
+                }
+            });
+            return ret4;
+        }
+        queryData3().then(res => console.log(res), err => console.log(err));
+
+
+        // 发送多个请求,后面的请求依赖前面的请求的结果,每个请求是按写的await顺序来执行,演示:
+        async function queryData4() {
+            // 第一个请求返回结果赋值给变量
+            var ret4 = await axios.get('1.txt');
+            console.log(ret4.data); //得到数据是 hello word
+
+            // 第二个请求把第一个请求结果data里的数据取出来作为第二个请求url参数键的值
+            var ret5 = await axios.get('fetch发送get请求.php?username=' + ret4.data);
+            console.log(ret5.data); //得到数据是 你的名字:hello word,年龄:,密码:
+
+            // 第三个请求把第二个请求结果data里的数据取出来作为第三个请求的url参数键的值
+            var ret6 = await axios.get('fetch发送get请求.php?username=' + ret5.data);
+            console.log(ret6.data); //得到数据是 你的名字:你的名字:hello word,年龄:,密码:,年龄:,密码:
+
+            // return ret6;
+        }
+        queryData4(); //调用函数,没写return,直接在函数里面打印的,这里不需要调用.then()拿结果
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

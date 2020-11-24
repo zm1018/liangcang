@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #app {
+            text-align: center;
+            color: #D1D1D0;
+            background: #535C63;
+        }
+        
+        header,
+        footer {
+            font-size: 22px;
+            height: 50px;
+            line-height: 50px;
+        }
+        /* 内容区域共2列,采用flex布局,实现一列固定宽度,一列自适应 */
+        
+        .content {
+            display: flex;
+            width: 100%;
+            height: 550px;
+        }
+        /* 这是固定宽度的一列 */
+        
+        .content .left {
+            /* 第一个0表示占主轴剩余空间的比例,是默认宽度,第二个0表示剩余空间不够时也不缩小默认宽度,第三个225px是默认宽度 */
+            flex: 0 0 225px;
+            height: 200px;
+            list-style: none;
+            background: #9FA09F;
+        }
+        
+        li {
+            box-sizing: border-box;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            border-bottom: 1px solid #ccc;
+        }
+        /* 这是自适应宽度的一列 */
+        
+        .content .right {
+            /* 1表示占满父盒子的整个剩余空间 */
+            flex: 1;
+            background: #fff;
+            color: #000;
+        }
+        
+        h3 {
+            height: 50px;
+            line-height: 50px;
+        }
+        
+        table {
+            /* 表格一定要设置宽度,不然每个th都挤在一块 */
+            width: 100%;
+            /* 合并表格间隙 */
+            border-collapse: collapse;
+        }
+        
+        tr {
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            border: 1px dotted #ccc;
+        }
+        
+        thead tr {
+            background-color: #DBDDDB;
+        }
+        
+        footer {
+            font-size: 16px;
+            background-color: #9FA09F;
+        }
+    </style>
+    <script src="../vue.js"></script>
+    <script src="vue-router.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+    <!-- 路由知识实现后台管理系统 -->
+    <div id="app">
+        <!-- 占位符,把根组件的模板内容渲染到页面 -->
+        <router-view></router-view>
+
+    </div>
+
+    <script>
+        // 根组件
+        const app = {
+            template: `
+                <div>
+                    <header class="header">传智后台管理系统</header>
+                    <div class="content">
+                        <ul class="left">
+                            <!-- 用tag属性渲染成li标签 -->
+                            <router-link tag="li" to="user">用户管理 </router-link>
+                            <router-link tag="li" to="limits">权限管理</router-link>
+                            <router-link tag="li" to="list">商品管理 </router-link>
+                            <router-link tag="li" to="order">订单管理 </router-link>
+                            <router-link tag="li" to="system">系统设置</router-link>
+                        </ul>
+                        <div class="right">
+                            <!-- 用占位符把每个li标签对应的子组件展示区域渲染出来 -->
+                            <router-view></router-view>    
+                        </div>
+                    </div>
+                    <footer>版权信息</footer>
+                </div>
+            `
+        }
+        const user = {
+            data: function() {
+                return {
+                    ulist: [],
+                }
+            },
+            template: `
+            <div>
+                <h3>用户管理页面</h3>
+                 <table>
+                     <thead>
+                         <tr>
+                             <th>编号</th>
+                             <th>姓名</th>
+                             <th>年龄</th>
+                             <th>操作</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr :key="item.id" v-for="item in ulist">
+                             <td>{{item.id}}</td>
+                             <td>{{item.username}}</td>
+                             <td>{{item.age}}</td>
+                             <td>
+                                 <a href="" @click.prevent="toList(item.id)">详情页</a>
+                             </td>                            
+                         </tr>
+                     </tbody>
+                 </table>
+            </div>
+            `,
+            // 在生命周期函数里发送axios请求,下载所有用户展示到页面
+            mounted: async function() {
+                const data = await axios.get('user.php');
+                this.ulist = data.data;
+            },
+            methods: {
+                toList(id) {
+                    // 把动态参数id传给子路由配置对象
+                    this.$router.push('/userinfo/' + id)
+                }
+            }
+        }
+
+        const userinfo = {
+            props: ['id'],
+            template: `
+                <div>
+                    <h3>用户详情页---用户id是{{id}}</h3>
+                    <button @click="touser">返回用户页面</button>
+                </div>
+            `,
+            methods: {
+                touser() {
+                    this.$router.go(-1)
+                }
+            }
+
+        }
+        const limits = {
+            template: `
+            <div>
+                <h3>权限管理页面</h3>
+                
+            </div>
+            `
+        }
+        const list = {
+            template: `
+                <div>
+                    <h3>商品管理页面</h3>
+                    
+                </div>
+            `
+        }
+        const order = {
+            template: `
+            <div>
+                <h3>订单管理页面</h3>
+               
+            </div>
+            `
+        }
+        const system = {
+            template: `
+            <div>
+                <h3>系统设置页面</h3>
+                
+            </div>
+            `
+        }
+        const router = new VueRouter({
+            routes: [
+                // 根路由
+                {
+                    path: '/',
+                    component: app,
+                    // 重定向要写在根路由这里,这样根组件和user组件都会展示出来,用户访问根路由,就重定向到user路由,展示user组件,
+                    redirect: '/user',
+                    // 每个li标签对应的路由配置对象,它们都是根路由的子路由,所以要写成路由嵌套
+                    children: [{
+                            path: '/user',
+                            component: user
+                        },
+                        // 用户详情页,没有写在li标签里,只能通过user路由跳转访问
+                        {
+                            path: '/userinfo/:id',
+                            component: userinfo,
+                            props: true
+                        }, {
+                            path: '/limits',
+                            component: limits
+                        }, {
+                            path: '/list',
+                            component: list
+                        }, {
+                            path: '/order',
+                            component: order
+                        }, {
+                            path: '/system',
+                            component: system
+                        }
+                    ]
+                }
+            ]
+        })
+        const vm = new Vue({
+            el: '#app',
+            router,
+            data: {},
+            methods: {}
+        });
+    </script>
+</body>
+
+</html>

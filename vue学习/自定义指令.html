@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <form action="">
+        <!-- 自定义一个全局指令,作用是加载好页面就自动获取input输入框的焦点,不需要用户再用鼠标点击输入框才能输入 -->
+        <!-- 这是不用自定义指令focus的输入框,要先鼠标点击才能输入内容 -->
+        <input type="text">
+        <!-- 这是调用自定义指令的输入框,可以直接输入内容,自定义的这个v-focus获取焦点这个指令即使每个input框都调用,也只会在最后一个调用的标签里生效 -->
+        <input type="text" v-focus>
+        <!-- 调用自定义指令color,直接在指令后面传实参,后台通过binding的value属性获取orange这个属性值,这是行内写法,将input框的背景色变成橘色 -->
+        <input type="text" v-color="{co:'orange'}">
+        <!-- 这种是将指令后面的实参写成一个变量,变量是vue实例data里的变量,和上面这个行内写法作用一样,也是将input框的背景色变成橘色 -->
+        <input type="text" v-color="co2">
+
+        <!-- 调用局部自定义指令font,将输入框内的字体变成红色 -->
+        <input type="text" v-font="{co3:'red'}" value="我是自定义局部指令,功能是字体颜色变红色">
+        <input type="text" v-font="co4" v-bck="co5" value="我是自定义局部指令,功能是字体颜色变蓝色,背景变粉色">
+    </form>
+    <div>
+        <!-- 局部指令定义在哪个实例对象里,就在哪个实例对象里有效 -->
+        <input type="text" v-color="co2" v-bck="co5" value="这里调用自定义指令,只有全局指令v-color生效,定义在实例对象v里的局部指令报错">
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        // 自定义全局指令,调用时不带参数的
+        Vue.directive('focus', {
+            inserted: function(el) {
+                // el接收的是调用指令的那个html标签元素,focus()是获取焦点事件函数
+                el.focus();
+            }
+        })
+
+        // 自定义全局指令,调用时带参数的
+        Vue.directive('color', {
+            // binding参数接收的是调用的这个指令的所有信息,包括指令=后面的参数值;
+            bind: function(el, binding) {
+                console.log(binding);
+                // 把元素的css样式背景色设置成自定义指令的binding参数里的value属性的值,这个value属性存的是指令=后面绑定的变量的值,这是调用指令时值是行内写法的
+                el.style.background = binding.value.co;
+                // 这是指令绑定的值是个变量co2,变量定义在vue实例对象data里的写法
+                el.style.background = binding.value;
+            }
+        })
+
+        var v = new Vue({
+            el: 'form',
+            data: {
+                // 自定义全局指令绑定的变量co2定义在这里,调用自定义指令时绑定的参数是这个变量名
+                co2: 'orange',
+                // 自定义局部指令绑定的变量co4定义在这里,调用自定义指令时绑定的参数是这个变量名
+                co4: 'blue',
+                co5: 'pink'
+            },
+            // 自定义局部指令,局部指令是写在vue实例对象里的,只在vue实例对象el的值form元素内有效,通过directives属性,值是对象类型
+            directives: {
+                // 属性名是自定义局部指令名,属性值是个对象
+                font: {
+                    bind: function(el, binding) {
+                        // 这里将指令value属性co3的值赋值给调用这个指令的元素的字体颜色,这是行内写法调用指令
+                        el.style.color = binding.value.co3;
+                        // 这是调用指令时值是data里的变量co4的写法
+                        el.style.color = binding.value;
+                    }
+                },
+                // 可以定义多个指令,和上个指令之间用,隔开
+                bck: {
+                    inserted: function(el, bi) {
+                        // 调用co5变量的值将调用这个指令的input框背景色变成粉色
+                        el.style.backgroundColor = bi.value;
+                    }
+                }
+            }
+        })
+
+        // 这个vue实例对象里没有定义局部指令bgk,只有form里定义了,所以在div里的input标签调用d-bgk会报错,但全局指令就能正常使用
+        var v2 = new Vue({
+            el: 'div',
+            data: {
+                co2: 'yellow',
+                co5: 'green',
+            }
+        })
+    </script>
+</body>
+
+</html>

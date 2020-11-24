@@ -9,7 +9,7 @@ if(!$link){
 mysqli_set_charset($link,'utf8');
 $sql = 'select * from student';
 $res = $link->query($sql);
-// 
+
 $arr = array();
 while($row = $res->fetch_assoc()){
     array_push($arr,$row);

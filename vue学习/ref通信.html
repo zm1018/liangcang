@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="app">
+        <!-- 用ref属性注册引用信息,ref写在标签上,在vue实例对象里用$refs对象获得的就是ref注册的input标签元素 -->
+        <input type="text" ref="my1">
+        <button @click="f1">获取input框的内容</button>
+
+        <!-- ref写在子组件上,属性值都是自定义的,$refs获取的就是这个子组件实例对象,vue实例就可以轻松获取子组件里的数据,调用子组件里定义的方法等,比组件间父组件传数据给子组件或子组件传数据给父组件要方便,但耦合性太高,不建议常用 -->
+        <child ref="my2"></child>
+        <button @click="f2">父组件获取子组件的数据,或传数据给子组件</button>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '.app',
+            data: {
+                fmsg: '我是父组件的数据',
+            },
+            methods: {
+                // ref绑定的是标签,父级组件用$refs接收到的就是这个标签元素
+                f1: function() {
+                    console.log(this.$refs.my1); //这里使用ref属性值 my1,得到input标签
+                    console.log(this.$refs.my1.value); //通过标签的value属性,得到输入框内容
+                },
+                // ref绑定的是子组件,父级组件用$refs接收的就是整个子组件实例对象
+                f2: function() {
+                    //打印一下vue实例对象,里面有一个$refs属性,属性值是一个对象,对象里包含所有用ref属性绑定的元素或子组件
+                    console.log(this);
+                    //打印$refs得到 {my1: input, my2: VueComponent}
+                    console.log(this.$refs);
+                    console.log(this.$refs.my2); //得到子组件child实例对象
+                    console.log(this.$refs.my2.cmsg); //访问子组件child在data里写的数据
+                    this.$refs.my2.cf2(); //访问子组件child在methods里写的方法
+                    //访问子组件child在methods里写的方法,并将数据传给子组件,这里传了2条数据,一个是字符串,一个是data里写的变量的值
+                    this.$refs.my2.cf2('我是父组件传给子组件的数据', this.fmsg);
+                }
+            },
+            // 注册局部子组件
+            components: {
+                child: {
+                    data: function() {
+                        return {
+                            cmsg: '我是子组件的数据',
+                        }
+                    },
+                    template: `<p>{{cmsg}}</p>`,
+                    methods: {
+                        // 子组件里定义的方法,用ref属性绑定后,父组件可以通过$refs属性访问到,并且可以直接在调用方法时,给子组件传数据,这里子组件用形参接收,就可以在子组件内部使用父组件传过来的数据了,这里接收父组件传过来的2条数据
+                        cf2(val, val2) {
+                            // 打印通过val形参接收父组件传过来的数据
+                            console.log('我是子组件的方法' + '----' + val + '--' + val2);
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

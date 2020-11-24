@@ -9,7 +9,7 @@ $server = 'localhost';  //ip
 $username = 'root';     //用户名
 $password = 'My@_19My'; //密码
 $dbname = 'yyy';        //连接哪个数据库的数据库名字
-$port = 3307;   //端口号,默认3306
+$port = 3308;   //端口号,默认3306
 
 /* // 第一种:面向对象连接mysql数据库,共8步:
 // 1.用mysqli构造函数创建一个连接mysql的实例对象

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        li {
+            list-style: none;
+            float: left;
+            margin-top: 300px;
+            width: 300px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <!-- vue提供一个<component>标签,通过动态绑定此标签的is属性来动态控制加载哪个子组件,is属性后面的值可以直接是某个子组件名,也可以是个定义在父组件data里的变量,变量的值是不同的子组件名,
+        is属性的值从原来的值改变成新的值,新的子组件就被加载,原来加载的子组件被销毁,
+        可以在<component>标签外面套一个vue提供的<keep-alive>标签,单词是保持活着的意思,会保留原来加载的子组件的状态,避免重新加载渲染
+        这里当把home组件切换成list组件时,home组件会被销毁,从新切换回home组件,之前home组件模板里的input框里的用户输入的内容会丢失 -->
+        <component :is="who">组件模板会重新渲染,input框的内容丢失</component>
+
+        <!-- 写<keep-alive>标签包裹动态控制组件的<component>标签,实现切换子组件时,被切换掉的那个子组件能保留状态,
+        这里当把home组件切换成list组件时,home组件不会被从新渲染,从新切换回home组件,之前home组件模板里的input框里的用户输入的内容还在 -->
+        <keep-alive>
+            <component :is="who">组件模板不会重新渲染,input框的内容还在</component>
+        </keep-alive>
+        <footer>
+            <ul>
+                <!-- a标签不写href属性时,就不会有默认行为,写了href属性,就要在事件后面写修饰符prevent取消跳转默认行为,
+                事件绑定的是who变量的值,这些值都是子组件名,点击不同的a标签,会加载不同的子组件 -->
+                <li><a @click="who='home'">首页</a> </li>
+                <li><a @click="who='list'">列表页</a> </li>
+                <li><a @click="who='shopcar'">购物车页面</a> </li>
+            </ul>
+        </footer>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '.box',
+            data: {
+                who: 'home',
+            },
+            components: {
+                home: {
+                    template: '<div>home组件<input type="text"></div>'
+                },
+                list: {
+                    template: '<div>list组件</div>'
+                },
+                shopcar: {
+                    template: '<div>shopcar组件</div>'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+#img4 {
+    width: 200px;
+    height: 200px;
+    /* 图片大小小于webpack配置里limit属性值的,转换打包后会将这张图片转换成base64字符串嵌入url里,不会额外自动生成一个图片文件,只用url-loader就能转换 */
+    background: url(../img/4.jpg);
+}
+
+#img9 {
+    width: 200px;
+    height: 200px;
+    /* 图片大小大于webpack配置里limit属性值的,打包时会将这张图片当成一个模块来打包,需要下载url-loader和file-loader一起转换,转换打包后会在dist文件夹里自动生成一个图片文件 */
+    background: url(../img/9.jpg);
+}

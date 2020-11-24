@@ -1,0 +1,188 @@
+学习前端路由必需了解几个概念:
+    路由是一种对应关系
+    渲染就像给一幅模板画的每个不同的部分涂上不同的颜色;
+    1.后端渲染后端路由阶段:
+        根据不同url,返回不同的内容,url请求与服务器资源之间的对应关系;
+        由后端代码来处理下载到的数据;
+        
+    2.前后端分离前端渲染阶段:
+        根据不同url,静态资源服务器返回不同的页面文件(html+css+js),浏览器执行js文件向API服务器发送请求,后端代码只去数据库拿数据返回给前端,由js来处理下载到的数据;
+        整个网站有多个页面,所以没有历史记录,无法前进和后退;
+    3.前端路由阶段:
+        根据不同的用户事件,显示不同的页面内容,是用户事件与事件函数之间的对应关系;
+        SPA单页面应用程序,整个网站只有一个页面,url的hash值变化会被前端路由拦截,分发给对应的组件,单单改变#后的内容，浏览器只会滚动到相应位置，实现局部刷新,不会重新加载网页。
+        浏览器不会重新向服务器请求页面。只要#hahs值变化,就会产生历史记录,支持前进和后退;
+        实现前端路由改变url不会刷新网页的2种方式:
+            1.location.hash = '锚点'
+            2.history.pushState({},'',url) 或history.replaceState({},'',url)
+        模拟前端路由是怎样实现的,通过onhashchange()事件监听url的改变,通过location.hash获取最新的url的#开头的哈希值:
+            window.onhashchange() = function(){
+                判断这个url的hash值是xxx,执行这个url对应的xxx组件的代码..;
+            }
+
+    
+vue-router是vue提供的前端路由管理器:
+    官网:https://router.vuejs.org/zh/
+    基本使用步骤:
+        1.引入相关库文件,必需要在vue.js下面引入,否则不生效,因为它是基于vue的插件;
+        2.添加路由链接组件,在vue实例绑定的html标签里写:
+            <router-link to="路径,是个字符串,会被渲染成#hash值"></router-link>
+                通过<router-link>或者<a>标签实现的页面跳转叫声明式导航;
+                <router-link>标签是vue提供的组件,是个全局组件,默认被渲染成a标签,它有多个属性可选:
+                    to属性(必需属性,属性值对应path路径):
+                        默认被渲染成a标签的href属性,属性值默认被渲染成锚点,也就是#开头的hash值;
+                    tag属性:
+                        用来指定<router-link>组件被渲染成什么标签显示在页面,属性值是html标签元素;
+                        tag="button" 渲染后页面上就是button按钮
+                    replace属性:
+                        没有属性值,写了这个属性就是替换url,页面上就没有历史记录了,写法:
+                         <router-link to="路径" replace></router-link>
+                    active-class属性:
+                        作用是修改默认的class名字,属性值是自定义的类名,因为vue自动添给渲染好的标签加的类名是router-link-active,太长,可以一个一个改成自定义的类名,在哪个<router-link>组件里写active-class就改哪个,
+                        也可以去路由实例对象里写linkActiveClass属性批量改这个类名,批量改的整个前端路由都生效;
+                        但一般不用这个属性,不建议改vue自动添加的类名;
+            彩蛋:
+                1.当点击哪个标签时,<router-link>组件对应的路由匹配成功,会自动给当前点的标签设置一个router-link-active的class名字,用来展示路由对应的组件内容和css样式,
+                所以可以在style标签里写.router-link-active{css样式代码}设置标签的css样式;
+                   
+        3.添加路由填充位组件,在vue实例绑定的html标签里写:
+            <router-view></router-view>
+                是占位置的,通过路由规则匹配到的子组件,替换掉<router-view>标签,渲染到这个位置,写在<router-link>标签的上下左右什么位置它就把组件内容渲染到什么位置;
+        4.定义路由组件:
+            定义路由用的子组件对象,不是注册在vue实例里,要注册在路由实例的配置路由规则对象里;
+                {paht:'/hash值',component:子组件名},
+        5.配置路由规则并用new VueRouter()创建路由实例对象:
+            var 变量 = new VueRouter({
+                routes:[
+                    {paht:'/hash值',component:子组件名},
+                ],
+                mode:'history',  //要在服务器下打开页面才能用
+                linkActiveClass: '自定义的类名', //批量修改router-link-active这个默认类名
+            })
+            参数:
+                1. 一个{}:
+                    {}里的必需属性routes是管理所有路由配置对象的,属性值是个[],
+                    []里写配置对象,配置对象有2个必需属性,path属性是配置url地址的,属性值是#后面的字符串,component属性是注册子组件的,属性值是个变量也就是子组件名,不能带''否则报错;
+                2. mode属性:
+                    默认属性值是hash,常用来设置history值;
+                    因为hash模式的url上都显示一个#,不好看,
+                        hash模式的url: http://127.0.0.1:5501/vue-router.html/user
+                    如果要美观,属性值写成'history',就自动改成历史模式,
+                        history模式的url: http://www.p.com/user
+                3.linkActiveClass属性:
+                    属性值是自定义类名,
+                    批量修改<router-link>组件对应的路由匹配成功时,vue自动给当前点的标签添加的router-link-active的class名,这属性不常用;
+
+        6.把路由挂载到vue根实例中:
+            必需用vue实例对象的router属性,将路由实例对象挂载到vue实例中,路由才能使用,属性值是创建的路由实例对象的名字;
+            var vm = new Vue({
+                el:'div',
+                router:路由实例对象名,
+            })
+
+    路由重定向,写在路由实例对象的routes属性里:
+        把url地址a通过redirect属性重定向,属性值是b地址,输入a地址会直接跳转到b地址加载b地址对应的组件展示到页面,
+        {path:'/a的hash值',redirect:'/b的hash值'}
+        使用场景:
+            一般是让首次加载页面时默认显示首页内容,而不是用户加载页面后还要点击首页才显示首页内容,相当于给url设置个默认值,例如:
+                {path:'',redirect:'/home'}
+
+    路由嵌套,写在路由实例对象的routes属性的父及路由配置对象里:
+        1.在父路由对应的组件模板里写路由链接标签和路由占位符标签,例如:
+            template: `
+                <div>
+                    <h1>我是父路由要展示的组件</h1>
+                    <!-- 路由嵌套的子路由链接写这里: -->
+                    <router-link to="/子路由的hash值1">子路由1</router-link>
+                    <router-link to="/子路由的hash值2">子路由2</router-link>
+                    <!-- 子路由占位符写这里: -->
+                    <router-view />
+                </div>
+            `
+        2.父路由里写children属性,属性值是个数组,数组里写这个父路由的所有子路由配置对象,例如:
+            var 变量 = new VueRouter({
+                routes:[
+                    {path:'/hash值1',component:子组件名1},
+                    {
+                        path:'/hash值2',
+                        component:子组件名2,
+                        children:[
+                            {path:'/子路由的hash值1',component:子路由要展示的子组件名1},
+                            {path:'/子路由的hash值2',component:子路由要展示的子组件名2},
+                        ]
+                    },
+                ],               
+            })
+
+    动态路由匹配,写在路由实例对象的routes属性的路由配置对象里:
+        主要给url动态拼接参数的,路径相同,路径后面携带的参数不同,
+            比如路径是/user,每个用户访问的路径都是这个user页面,登录携带的用户名就是参数,但每个用户的用户名都不同,这部分是动态变化的,张三访问时,url后面是/user/zhangsan,李四访问时,url后面是/user/lisi,动态路由匹配主要就是处理变化的参数部分;
+        1.路由配置对象的path属性值里写 :变量 ,实现不同参数的url共用一个路由配置对象,例如:
+            {path:'/user/:id',component:user} //这个用户id就是动态匹配的
+        2.获取url参数部分,2种方式:
+            1.通过vue内置的$route对象(获取的是routes属性里处于活跃的路由配置对象).params属性,再调用path属性值:后面的变量名,就能拿到参数,例如:
+                {{$route.params.id} //要在组件的哪个位置展示参数,就填充到哪个位置
+            2.在路由配置对象里写第三个参数,props属性,(属性值是true时,route.params会被设置为组件属性),在组件里写props属性接收参数变量,就可以在组件的模板里调用变量名,拿到参数,
+            建议用这种方式获取参数,是解耦合的,例如:
+                {path:'/user/:id',component:user,props:true} //传参给组件
+                var 组件1 = {
+                    props:['id'],  //接收参数
+                    template:'<div>路由参数是:{{ id }}</div>' //使用参数
+                }
+
+            路由配置对象里props属性有3种属性值:
+                1.布尔值:
+                    只能拿到url动态绑定的这个参数id,
+                    {path:'/user/:id',component:user,props:true}
+                2.对象:
+                    只能拿到props属性值对象里传的参数,拿不到id了,
+                    {path:'/user/:id',component:user,props:{name:'tom',age:18}}
+                3.函数:
+                    能拿到动态参数id,也能拿到name和age参数,
+                    箭头函数的形参route是一个对象,接收:id匹配到的多个url参数,传给函数体里的route.params.id,
+                    {path:'/user/:id',component:user, props: route =>({name:'tom',age:18, id:route.params.id})}
+
+    命名路由:
+        给路由取个名字,在路由配置对象里写个name属性,属性值是字符串就是这个路由的名字,例如:
+            {path:'/user/:id',component:user,name:'aaa1'} //这个路由就叫aaa1
+
+        和<router-link>组件to属性进行路由匹配时,to属性必需动态绑定,属性值传个对象,
+        对象的第一个参数是接收路由配置对象的名字,
+        第二个参数是通过params属性传给:id的动态路由参数,
+        不再传'/user/666'这种路径了,
+        例如:
+            <router-link :to="{name:'aaa1',params:{id:666}}"></router-link>
+            
+
+    
+编程式导航:
+    也就是不用<router-link>组件,写普通标签通过绑定的事件函数实现路由跳转,整个路由管理的实现过程除了把<router-link>换成普通标签,to属性换成事件函数里$router.push(),其它步骤不变;
+    vue给每个组件都设置了$router属性(它获取的是我们创建的router实例对象),通过this调用,可以在事件函数里实现路由跳转,和写<router-link>组件实现的效果一样, 
+    常用API有3个:
+        $router.go(整数);  //前进和后退几条历史记录的
+        $router.replace('hash值'), //不产生历史记录的url跳转
+        $router.push('hash值');  //产生历史记录的url跳转
+            push()的参数有2种:
+                1.hash地址,例如:push('/home'),
+                2.对象,对象里属性可分为3种:
+                    (1)path属性,例如:push({path:'/home'}),
+                    (2)query属性,例如:push({path:'/home',query:{uname:'tom',age:18}}),
+                        query属性是查询字符串,最后query的值会变成?拼接在url后面,
+                    (3)name属性,例如:push({name:'home'}),
+                        params属性传动态参数,例如:push({name:'home',params:{id:666}});
+
+    直接在vue实例绑定的html标签里写正常的html标签,和<router-link>组件的tag属性效果一样,例如:
+        <button @click="事件函数1"></button>
+    在vue组件的methods里声明事件函数,例如:
+        methods:{
+            事件函数1:function(){
+                //在函数里调用$router属性,用push()方法,配置要跳转的path路径,和<router-link>组件的to属性效果一样,实现url跳转,会产生历史记录,例如:
+                this.$router.push('/index');
+                //也可以调用replace()方法,实现url跳转,不会产生历史记录,例如:
+                this.$router.replace('/home')
+            }
+        }
+
+
+            
+

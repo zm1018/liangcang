@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <!-- 这里用v-model获取用户输入的内容,赋值给数据变量msg -->
+        <input type="text" v-model="msg">
+        <br>
+        <!-- 调用过滤器upper处理msg这条数据,将数据值字符串的首字母转换成大写,过滤器是函数但调用不带() -->
+        <span>{{msg | upper}}</span>
+        <br>
+        <!-- 级联操作,这里lower处理的是upper处理过的msg数据,调用2个过滤器,这个msg数据一共被处理了2次,先将首字母转换成大写,再将大写的首字母转换成小写 -->
+        <span>{{msg | upper | lower}}</span>
+        <br>
+        <!-- 在动态绑定的属性值里使用过滤器,将id名首字母转换成大写 -->
+        <span :id="msg | upper">这个标签的属性值调用了过滤器,将用户输入的内容作为属性值,并且用过滤器把首字母转换成了大写</span>
+
+    </div>
+    <script src="vue.js"></script>
+
+    <script>
+        // 定义全局过滤器
+        // 通过Vue.filter()定义,第一个参数是过滤器名,第二个参数是个匿名函数,函数有一个参数,接收的是调用过滤器的那条数据,数据处理完必需用return返回处理后的数据
+        Vue.filter('upper', function(val) {
+            // 用js代码处理val接收的数据msg,将msg获取的用户输入内容的首字母变成大写
+            // charAt(0)是获取第一个字符,toUpperCase()是将第一个字符转成大写, +拼接从索引1开始到结束的剩下字符,组成新的字符串
+            return val.charAt(0).toUpperCase() + val.slice(1);
+        })
+
+        var v = new Vue({
+            el: 'div',
+            data: {
+                msg: '',
+            },
+            // 定义局部过滤器,只在当前vue实例v里有效
+            // 用filters属性定义局部过滤器,属性值是一个对象,对象里函数名lower是过滤器名,函数必需有一个参数,和return返回值,可以同时定义多个过滤器,用,隔开;
+            filters: {
+                lower: function(val) {
+                    // 将首字母转换成小写,通过参数传进来的数据msg不用this调用,直接通过形参val调用,这里用js的 变量[索引]来获取指定字符的写法报错,只能用charAt(索引)来获取指定字符
+                    return val.charAt(0).toLowerCase() + val.substring(1);
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

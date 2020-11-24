@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 1.引入文件,vue.js必需在上面 -->
+    <script src="vue.js"></script>
+    <script src="vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- 2.添加路由链接,这标签默认被渲染成a标签,to属性是href属性,属性值是#/hash值 -->
+        <router-link to="user">user</router-link>
+        <!-- 给<router-link>组件里写个tag属性,属性值写html标签名,写什么标签名就渲染成什么标签,例如:button,让组件渲染成按钮,因为有to属性后面的路径,所以渲染成什么标签都能点击跳转 -->
+        <router-link to="register" tag="button">register</router-link>
+
+        <!-- 3.路由填充位,占位符,路由规则匹配到的子组件会替换这个标签,渲染到这个位置进行显示 -->
+        <router-view></router-view>
+    </div>
+
+    <script>
+        // 4.创建子组件,稍后在路由实例对象里注册
+        const user = {
+            template: '<h1>我是用户组件</h1>'
+        };
+        const register = {
+            template: '<h1>我是注册组件</h1>'
+        };
+
+        // 5.创建路由实例对象,对象里传一个对象做参数,参数对象里必需写routes属性,属性值是一个数组,所有要匹配的路由规则都写在这个数组里
+        const router = new VueRouter({
+            routes: [
+                // 写路由规则的地方,是对象类型,2个必需参数,path属性的值是要匹配的hash值,component属性值是这个url对应的要展示在路由填充位的子组件名
+                {
+                    path: '/user', //hash值就是<router-link>标签的to属性后面的字符串
+                    component: user //子组件名,是变量对象,不是字符串,一定不能带引号
+                },
+                // 第二个组件,有几个组件要切换就要写几个路由规则和路由链接
+                {
+                    path: '/register',
+                    component: register
+                }
+            ],
+
+
+            /* 写mode属性,把hash模式改成history历史模式,url更美观:
+            hash模式的url: http://127.0.0.1:5501/vue-router.html/user,
+            history模式的url: http://www.p.com/user
+            */
+            mode: 'history', //默认是hash模式,属性值写为 history就是历史模式
+        })
+
+
+        const vm = new Vue({
+            el: '#app',
+            // 6.把路由实例对象挂载到vue实例中,vue实例对象里的router属性是专门挂载路由的,属性值是路由实例对象名,属性名和属性值一样,可以简写成router
+            // router: router
+            router,
+        });
+    </script>
+</body>
+
+</html>

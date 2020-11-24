@@ -1,0 +1,344 @@
+<!-- 
+    什么是 axios？
+        axios 是一个基于 promise 的 HTTP 库，可以用在浏览器和 node.js 中;
+        一般发送请求时,服务器只会返回我们请求的数据和相关信息,用axios请求会将服务器返回的内容进行包装,包装成返回一个promise对象,成功时内部自动调用resolve()方法,失败时自动调用reject()方法,可以直接调用then()提取出数据或失败错误信息,成功时返回的内容里包含请求头信息,返回的数据等;
+
+    特性功能:
+        从浏览器中创建 XMLHttpRequests
+        从 node.js 创建 http 请求
+        支持 Promise API
+        拦截请求和响应
+        转换请求数据和响应数据
+        取消请求
+        自动转换 JSON 数据
+        客户端支持防御 XSRF
+    常用请求提交方法:
+        axios.get(url[, config]) 查询数据
+        axios.post(url[, data[, config]]) 增加数据
+        axios.put(url[, data[, config]])  修改数据
+        axios.delete(url[, config]) 删除数据
+        axios.request(config)
+        axios.head(url[, config])
+        axios.options(url[, config])
+        axios.patch(url[, data[, config]])
+        axios.all(arr) 并发请求,同时发送多个请求
+            参数是一个数组,数组里的元素是要发的每个请求,所有请求都执行完成才能返回结果,返回一个数组,数组里的元素是每个请求执行后返回的结果,发请求和返回结果顺序一一对应;
+            axios提供了一个方法,用来展开结果数组,在then()里调用,写法:
+                axios.all([axios(请求1),axios(请求2)]).then(axios.spread((参数1,参数2)=>{
+                    console.log(参数1.data);  //第一个请求返回的数据
+                    console.log(参数2.data); //第二个请求返回的数据
+                }))
+
+    
+axios发请求有2种写法:
+    1.直接传一个参数,参数是个对象,对象里写请求所需要的所有属性配置,例如:
+        axios({
+        url: 'xxx', //要请求的后端地址,get和delete请求可以直接在后面拼接参数,
+        method: 'get' //请求方式,如果是get,是默认的,可以不用写method属性,
+        params:{
+            如果不想在get请求后面直接拼接参数,也可以将参数用键值对的格式写在这里,axios框架会自动处理拼接到url后面;
+        }
+        }).then(参数=>参数.data)
+    2.调用axios里封装好的请求方法常用的有:
+        get()和delete()提交方法传参写法差不多,2个参数,参数1是url,参数2是个{}, 
+        url可以后面直接拼接参数,或在参数2对象里写params属性,属性值是个对象,在对象里写参数,建议用params传参的写法:
+            axios.get('url',{
+                params:{
+                    键:'值',
+                    键:'值'
+                }
+            }).then(参数=>参数.data);
+
+        post和put提交方法传参更简单,第二个参数对象里直接写要传给后台的数据,默认是json格式,例如:
+            axios.post('url',{
+                键:'值',
+                键:'值'
+            }).then(参数=>参数.data);
+
+    常用响应结果的属性:
+        data 获取response响应返回的数据,
+            一般数据库返回的都是json格式的数据,这个data属性会自动将json格式的数据转换成对象或数组,比如转换成了对象,再通过data.键名 就能拿到具体数据值了;
+        headers 获取响应头信息
+        status 获取响应状态码
+        statusText 获取响应状态的文字信息
+
+
+    axios的全局配置,也就是先配置好发请求需要的默认值,每个请求就不用再重复写了,全局配置有很多,这里只写几个常用的:
+        axios.defaults.timeout = 毫秒数;
+        axios.defaults.baseURL = '经常要请求的后台url地址';
+        axios.defaults.headers['mytoken'] = '要携带的token值' //请求头[]里可以写很多种,这里只演示携带token;
+    
+
+    *并不是所有请求都只发给同一个服务器,所以用全局的axios和全局配置并不合理,实际开发中,都用create()方法创建axios实例,在实例里写默认配置,这样哪个请求想发给哪个服务器,只要调用写了那个服务器ip地址的实例就行,创建实例并配置默认值:
+        var 实例名1 = axios.create({
+            timeout: 毫秒数;  //配置默认请求时长
+            baseURL: '服务器A的ip地址'; //配置默认url地址
+        });
+        var 实例名2 = axios.create({
+        baseURL: '服务器B的ip地址';
+        });
+        实例1里配置的是A服务器的ip地址,向A服务器发送请求就要调用实例1:
+        实例名1({
+            //这里只要写A服务器里的哪个文件的名字就行,发送时会自动拼接上已经设置好的默认值A服务器的ip;
+            url:'文件名', 
+            params: {url的参数,要传给后台的数据} 
+        }).then(res=>console.log(res));
+
+        实例2里配置的是B服务器的ip地址,向B服务器发送请求就要调用实例2:
+        实例名2({
+            url:'文件名'
+        }).then(res=>console.log(res));
+
+
+    拦截器,有点像python中间件的作用,这是全局的写法,设置过后,每个请求都会被拦截,2种:
+        请求拦截器,发送请求前可以对这些要发送的请求进行设置,再发送,
+        调用axios的内置interceptors(拦截器的意思)属性,再调用request属性,再调用use方法(),这个方法有2个参数,都是函数,参数1是处理拦截到的请求的代码,参数2是接收拦截失败的错误信息,语法:
+            axios.interceptors.request.use(function(config){
+                第一个函数里调用函数的参数设置要拦截的代码,例如某些页面必需是登录的用户才能访问,那需要给请求头设置个token存用户名等信息,请求时携带传给服务器:
+                config.headers.token1 = 'my token1';
+                //一定要返回这个函数的参数,否则拦截器拦住了发送请求的所有配置信息,发送请求时就无法获取,请求就不知道以什么方式发,发给谁,所以发不出去报错
+                return config; 
+            },function(error){
+                第二个函数是接收错误信息的
+            })
+        
+        响应拦截器,对数据库返回数据进行拦截,处理后再返回给前台请求的then()方法,
+        将request换成response属性,其它都一样,语法:
+            axios.interceptors.response.use(function(result){
+                第一个函数里调用函数参数处理要拦截数据,也就是处理axios包装的那个请求返回的数据对象,例如获取axios返回的数据对象里的data属性值,再return这个data,这样就不用每个请求都再写 参数.data获取数据了,直接data就能得到数据,
+                必需要写return返回,否则服务器返回的数据被拦截器拦住了,发送请求调用的then()什么也接收不到:
+                return result.data; 
+            },function(error){
+                第二个函数是处理响应失败的错误信息的
+            })
+
+
+    将axios封装,避免对第三方框架的依赖,以后这个框架淘汰了,也只用改封装的这一个地方的代码:
+            function 函数名(config){
+                //创建axios的实例对象,可以创建多个实例,在实例里配置发送请求的默认值配置
+                const 实例名 = axios.create({
+                    //配置发送请求时的默认值,例如:
+                    baseURL: 'xxx',
+                    timeout: 毫秒
+                })
+                //返回这个实例的调用结果,是个promise对象,也就是发送请求后服务器返回的结果,当用户要发请求时调用封装的函数名,传入要请求的文件路径,这里的形参config就会接受用户传入的参数,来发送请求给服务器,再将服务器返回的请求结果作为函数的返回值,传给用户发请求调用的then()方法的参数
+                return 实例名(config); 
+            }
+
+            //调用自己封装的函数发请求,和直接用axios发请求的写法一样:
+            函数名({
+                //对象里的这个url会传给函数的参数config,再传给axios实例的参数config
+                url: 'xxx' ,
+                method: 'post',
+                data:{
+                    uname: '张三',
+                    age: 20
+                }
+            }).then(res=>console.log(res)).catch(err=>console.log(err));
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 这个axios库是专门做网络请求的框架,最好是去官网下载下来,我懒得下,直接用cdn,通过网址访问这个文件,要连网,否则报错axios未定义 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        // axios比fetch()发送请求还方便,只用调用一次then(),就能拿到最终需要的数据,
+        /* // 用axios发送get请求,.get()是axios提供的提交方法,调用.then()接收后台数据,返回一个大对象,我们需要的数据要用axios提供的属性data来获取,then()的形参也就是返回的对象.data是固定写法;
+        // axios.get('1.txt').then(ret => console.log(ret.data));
+
+        // 发送get请求,传参给后台,后台就用fetch请求的php文件不用改任何代码,2种写法:
+        // 1直接将参数通过?拼接在url后面:
+        axios.get('fetch发送get请求.php?username=keke&age=20&password=222').then(res => console.log(res.data));
+
+        // 2将参数写在get()方法的第二个参数对象的params属性里:
+        axios.get('fetch发送get请求.php', { //第二个参数是个对象
+            params: { //params属性值也是个对象,要传给后台的数据写在这里
+                username: 'get()方法发送get请求',
+                age: 5,
+                password: 666
+            }
+        }).then(res => console.log(res.data)).catch(err => console.log(err));
+        // 或:
+        axios({
+            url: 'fetch发送get请求.php',
+            // get请求要传给后台的参数写在parames属性里
+            params: {
+                username: 'axios()方法发送get请求',
+                age: 9,
+                password: 369
+            }
+        }).then(res => console.log(res.data));
+
+
+        // 用axios发送post请求,2种写法:
+        // 直接写在axios()里:
+        axios({
+            url: 'fetch发送post请求2.php',
+            method: 'post',
+            // post请求要传给后台的参数写在data属性里
+            data: {
+                username: '用axios()发送post请求json格式数据',
+                age: 1,
+                password: '我是密码'
+            }
+        }).then(res => console.log(res.data));
+        // 调用axios内置的请求方法:
+        // 1. 调用.post()是axios提供的提交方法,第一个参数是要请求的url,第二个参数是个对象,对象里写要传给后台的数据,这些数据会被默认转换成json格式,推荐用这种写法:
+        axios.post('fetch发送post请求2.php', {
+            username: 'post请求json格式数据',
+            age: 30,
+            password: 888
+        }).then(res => console.log(res.data));
+
+        // 2.传form格式的数据,比json格式的麻烦:
+        // URLSearchParams是个构造函数,可以直接把url后面拼接的参数取出来,也可以把对象里的键值对转换成不带?的查询字符串,这个构造函数里定义了一些实用的方法来处理 URL 的查询字符串,要用的时候再百度,这里只演示append()添加数据到查询字符串里,这个方法添加的数据里有中文会自动编码成二进制,使用时需要用decodeURI()解码,不然显示乱码。
+        var params = new URLSearchParams(); //先创建个实例对象
+        params.append('username', 'post请求form格式数据'); //添加键值对数据到实例对象里
+        params.append('age', 17);
+        params.append('password', 777);
+        //URLSearchParams实例的get()方法通过键获取值时有中文会自动解码;
+        // console.log(params.get('username'));
+        axios.post('fetch发送post请求1.php', params).then(ret => {
+            //因为URLSearchParams()实例传给后台时中文是编码的,这里拿到的后台返回的数据就会中文乱码,用decodeURI()方法解码,才能正确显示中文
+            console.log(decodeURI(ret.data));
+        });
+
+        // 发送put请求,修改某条数据,一般情况下url后面也要拼接一个参数,是要修改的那条数据的id,用RESTful协议格式写,url/id值,后台怎么接收不知道,没学过restful格式的url写法,所以这里url后面我没写参数,等于直接新增了一条数据传给后台:
+        axios.put('fetch发送post请求2.php', {
+            username: 'put请求json格式数据',
+            age: 10,
+            password: 999
+        }).then(res => console.log(res.data));
+
+
+        // .all()并发请求,同时发送多个请求,每个请求都完成才会返回结果,3种写法:
+        // 参数是个数组,数组里的元素是每个要发送的请求,返回值也是个数组,数组里的元素是发送的每个请求返回的结果,发送和返回的数组元素顺序是一一对应的;
+        // 1.数组里调用axios()
+        axios.all([axios({
+            url: 'fetch发送post请求2.php',
+            method: 'post',
+            data: {
+                username: '并发post请求1',
+                age: 1,
+                password: '密码1'
+            }
+        }), axios({
+            url: 'fetch发送post请求2.php',
+            method: 'post',
+            data: {
+                username: '并发post请求2',
+                age: 2,
+                password: '密码2'
+            }
+        })]).then(results => {
+            //then()传一个参数接收到的结果是个数组,发送几个请求,数组里就按发送顺序返回几个结果作为元素,如果不传参数,可以直接调用axios里专门处理返回数组的方法spread()将数组展开,这里演示平时常用的写法,传一个参数接收返回的数组:
+            console.log(results);
+            console.log(results[0]); //得到第一个请求结果,axios内置存请求结果的data属性,
+            console.log(results[0].data); //得到data属性里第一个请求结果里的后台返回的数据
+            console.log(results[1]);
+            console.log(results[1].data); //得到第二个请求结果里的后台返回的数据
+        });
+
+        // 2.数组里调用get()post()等方法:
+        axios.all([axios.post('fetch发送post请求2.php', {
+            username: '并发post请求11',
+            age: 11,
+            password: '密码11'
+        }), axios.post('fetch发送post请求2.php', {
+            username: '并发post请求22',
+            age: 22,
+            password: '密码22'
+        })]).then(axios.spread((res1, res2) => {
+            // 这里演示的是传spread()方法的写法,then()传的是axios内置处理并发请求结果的方法spread(),作用是展开数组的,参数是个函数,函数的参数是:发送几个请求,spread()就写几个参数接收,参数接收的数据和发送请求的顺序是一一对应的:
+            console.log(res1); //得到第一个请求结果,axios内置存请求结果的data属性,
+            console.log(res1.data); //得到data属性里第一个请求结果里的后台返回的数据
+            console.log(res2);
+            console.log(res2.data);
+        }))
+
+        // 3.定义个对象,把发送请求的参数都写外面,然后post()的第二个参数直接传变量名,看起来简单些,但不知道这3种写法哪个运行效率高:
+        var obj1 = {
+            username: '并发post请求33',
+            age: 33,
+            password: '密码33'
+        };
+        var obj2 = {
+            username: '并发post请求44',
+            age: 44,
+            password: '密码44'
+        };
+        axios.all([axios.post('fetch发送post请求2.php', obj1), axios.post('fetch发送post请求2.php', obj2)]).then(axios.spread((res1, res2) => {
+            console.log(res1.data);
+            console.log(res2.data);
+        }))
+ */
+
+        /*  // 演示axios的全局配置,也就是设置默认值,发请求时每个请求都会共用这些默认配置,这样每个请求里可以少写点内容:
+         axios.defaults.timeout = 3000; // 设置请求时长,如果过了3秒还没请求成功,本次请求失败
+         // 如果真实的向服务器发送请求,就要写上服务器的地址,例如:http://www.p.com/students,这是配置了服务器地址和数据库名字,后面每次发送请求只要写要请求的文件路径就行了,不用再写要请求哪个服务器的哪个数据库;
+         axios.defaults.baseURL = 'fetch发送post请求2.php'; //设置默认要请求哪个文件的url
+         axios.defaults.headers['token1'] = 'hello token1'; //设置请求头默认要携带的token
+         axios.defaults.method = 'post'; //设置默认请求方式是post
+         axios({
+             // 因为全局配置写了默认请求的文件路径,所以这里发送的这个请求没写url属性,就会默认请求fetch发送post请求2.php这个文件,写了默认请求方式是post,所以这里没写method属性,也会发送post请求
+             data: {
+                 username: '用了全局配置(默认值)的post请求'
+             }
+         }).then(res => console.log(res.data)); */
+
+        // 全局axios和全局配置要慎用,上面的所有发请求的写法都是使用的全局axios,调用全局axios时,它里面设置的默认配置,所有请求共用,如果有些业务不想用这些默认配置,就无法成功发送请求,例如全局axios里配置的默认url是A服务器地址,有一个请求是发给B服务器的数据库1,它在使用全局axios时,会被默认拼接全局axios里配置的baseURL地址,这个请求还是会被发给A服务器,但A服务器里没有数据库1,就会导致请求失败,解决办法是用axios内置的create()方法创建axios实例,在实例里写默认配置,这样需要向A服务器发请求的可以调用配置的默认配置是A服务器ip的那个实例,需要向B服务器发请求的可以调用默认配置是B服务器ip地址的那个实例:
+        /*  var axios1 = axios.create({ //第一个实例
+             // 默认配置写在这里,所有要向A服务器发送请求的都可以调用axios1实例来发送
+             baseURL: 'http://www.p.com', //A服务器的默认url
+             timeout: 2000, //A服务器的默认请求时间,超过这个时间服务器没响应就不再发了,就报错
+         });
+         var axios2 = axios.create({ //第二个实例
+             baseURL: 'https://httpbin.org', //B服务器的默认url
+             timeout: 3000 //B服务器的默认超时时间是3秒
+         });
+         // 向A服务器发送请求,就要用第一个axios实例:
+         axios1.get('1.txt').then(res => console.log(res.data)); //请求A服务器的1.txt文件
+         // 请求请求A服务器的demo文件夹里的2.txt文件,返回http://www.p.com网站里demo文件夹里2.txt文件的内容
+         axios1.get('/demo/2.txt').then(res => console.log(res.data));
+         // 向B服务器发送请求,就要用第二个axios实例:
+         //请求B服务器的headers内容,返回https://httpbin.org网站的请求头信息
+         axios2.get('/headers').then(res => console.log(res.data)) */
+
+
+        // 请求拦截器,在发送请求之前可以有针对性的对某些请求进行设置,比如设置只让id是xx开头的人访问,只给某些请求设置全局配置默认值等,拦截器的写法:
+        axios.interceptors.request.use(function(config) {
+            //所有要设置拦截的属性都通过第一个函数的参数config调用,所以打印一下config是什么,得到一个对象,里面有请求的url,请求时间设置等各项可以调用的配置属性
+            console.log(config);
+            // 打印发送这个请求的url
+            console.log(config.url);
+            config.headers.token = 'nihao'; //给要发送的这个请求的请求头设置一个token信息
+            return config; //一定要返回这个参数,否则配置信息都被拦截了,就无法发送请求
+        }, function(error) { //第二个函数是用来接收错误信息的
+            console.log(error);
+        });
+
+        // 响应拦截器,将返回的数据对象先进行处理再返回给发送请求调用的then()的参数,写法:
+        axios.interceptors.response.use(function(res) {
+            //参数res接收的是axios包装的数据对象,和直接发送请求时调用then()的参数接收的是一样的,之前每个then()都要 参数.data才能拿到数据,那个.data可以在拦截器里调用,再把调用结果返回,之后的每个请求的then()都可以直接使用参数拿到数据
+            console.log(res);
+            var data = res.data; //第一个函数的参数调用.data,拿到数据,赋值给变量data
+            return data; //一定返回,否则被拦截器拦截了,then()无法获取服务器返回的数据,这里返回这个变量,这个变量里存的就是后台返回的数据内容
+        }, function(err) {
+            console.log(err); //第二个函数接收响应失败的错误信息的
+        })
+
+        // 发送请求时调用的是全局的axios,上面刚给全局axios设置了请求和响应拦截器,所以这个请求会触发上面的拦截器,打印出config参数对象和url,和请求到的数据内容,这里参数里存的就是请求到的数据,不用再写 res.data了
+        axios.get('1.txt').then(res => console.log(res));
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

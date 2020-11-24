@@ -5,28 +5,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../../../前端学习练习/Bootstrap框架/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
     <script src="ajax.js"></script>
     <script>
         window.onload = function() {
             var btn = document.getElementById('btn');
             var inputs = document.getElementsByTagName('input');
-            $ajax({
-                method: 'post',
-                url: 'register.php',
-                data: {
-                    username: inputs[0].value,
-                    password: inputs[1].value,
-                    date: new date()
-                },
-                success: function(res) {
-                    var obj = JSON.parse(res);
-                    alert(obj.message);
-                },
-                error: function(err) {
-                    alert(err);
-                }
-            })
+            var alert_info = document.getElementById('alert_info');
+            btn.onclick = function() {
+                $ajax({
+                    method: 'post',
+                    url: 'register.php',
+                    data: {
+                        username: inputs[0].value,
+                        password: inputs[1].value,
+                        // 日期直接获取毫秒数
+                        date: new Date().getTime()
+                    },
+                    success: function(res) {
+                        var obj = JSON.parse(res);
+                        // 注册成功code是0
+                        if (obj.code) {
+                            // 注册失败,提示框变成红色
+                            alert_info.class = 'alert alert-danger';
+                        } else {
+                            // 注册成功提示框变成绿色
+                            alert_info.class = 'alert alert-success';
+                            // 启动延时器,注册成功2秒后自动跳转到登录页面
+                            setTimeout(function() {
+                                location.href = "login.html";
+                            }, 2000);
+                        }
+                        // 显示注册成功或失败的信息
+                        alert_info.style.display = 'block';
+                        alert_info.innerHTML = obj.message;
+                    },
+                    error: function(err) {
+                        alert(err);
+                    }
+                })
+            }
         }
     </script>
     <style>
@@ -37,6 +55,14 @@
         
         a {
             color: #000;
+        }
+        
+        #alert_info {
+            margin: 2px;
+            padding: 2px;
+            text-align: center;
+            margin-bottom: 10px;
+            display: none;
         }
     </style>
 
@@ -57,6 +83,7 @@
                     <label for="password">密码:</label>
                     <input type="text" class="form-control" name="password">
                 </div>
+                <div id="alert_info" class="alert alert-danger"></div>
                 <a href="login.html">马上登录</a>
                 <button id="btn" class="btn btn-info float-right">注册</button>
             </div>

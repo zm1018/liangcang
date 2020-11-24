@@ -18,7 +18,7 @@
             create database 数据库名 charset=utf8;
             create database 数据库名 character set utf8;
         创建数据库中的表:
-            create table 表名(第一个字段是id int unsigned not null AUTO_INCREMENT,字段2 数据类型(存数据的长度) not null default '') character set utf8;
+            create table 表名(第一个字段是id int unsigned not null AUTO_INCREMENT,字段2 数据类型(存数据的长度) not null default '',create_time timestamp not null default current_timestamp,update_time timestamp not null default current_timestamp on update current_timestamp;) character set utf8;
             
             数据类型:
                 int 整型

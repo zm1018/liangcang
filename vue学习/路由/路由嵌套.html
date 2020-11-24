@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <script src="vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <router-link to="/home">首页</router-link>
+        <!-- 这个路由链接用来演示路由嵌套的,它的子路由不能用下面这个同级的路由填充位,要在login组件的模板里写子路由链接标签和填充位标签 -->
+        <router-link to="/login">登录</router-link>
+        <router-view></router-view>
+    </div>
+    <script>
+        const home = {
+            template: '<h1>我是首页组件</h1>'
+        }
+        const login = {
+            // 路由嵌套的子路由链接和子路由占位符都写在login组件的模板里,to属性的属性值要和子路由的path属性值一一对应
+            template: `
+            <div>
+                <h1>我是登录组件</h1>
+
+                <!-- 路由嵌套的子路由链接 -->
+                <router-link to="/tab1">tab1</router-link>
+                <router-link to="/tab2">tab2</router-link>
+                <!-- 子路由占位符 -->
+                <router-view />
+            </div>
+            `
+        }
+
+        // 给子路由用的组件
+        const tab1 = {
+            template: '<h1>我是登录页的子组件1,演示嵌套路由的</h1>'
+        }
+        const tab2 = {
+            template: '<h1>我是登录页的子组件2,演示嵌套路由的</h1>'
+        }
+
+        const router = new VueRouter({
+            routes: [{
+                    path: '/home',
+                    component: home
+                },
+                // 演示路由嵌套,子路由写在它的父路由规则对象里,通过children属性实现,属性值是[],它所有子路由的配置都写里面
+                {
+                    path: '/login',
+                    component: login,
+                    // 路由规则对象里的第三个属性children,属性值是[],数组里用来放login路由的所有子路由配置对象的,子路由的路径也要和路由链接标签里to属性的值一一对应
+                    children: [{
+                        path: '/tab1',
+                        component: tab1
+                    }, {
+                        /*
+                        path: '/login/tab2',这个嵌套关系的路径写法是错的,会导致它的父级路由和父路由的兄弟之间无法切换,
+                        例如父级路由有:
+                        http://127.0.0.1:5501/vue-router.html#/user,
+                        http://127.0.0.1:5501/vue-router.html#/login,
+                        login里面有2个子路由:
+                        http://127.0.0.1:5501/vue-router.html#/login/tab1,
+                        http://127.0.0.1:5501/vue-router.html#/login/tab2,
+                        只要子路由在地址栏上显示 #/login/tab2,再切换到父级的uesr路由,就无法正常显示,因为地址栏上的路径变成了:
+                        http://127.0.0.1:5501/vue-router.html#/login/user,
+                        login下没有user这个路由,user不是login的子路由,而是它的兄弟路由,但login进入子路由后无法退回,所以子路由的ath属性值必须写成'/tab2',子路由在地址栏上显示成:
+                        http://127.0.0.1:5501/vue-router.html#/tab2,
+                        切换时才能正常显示父路由和父的兄弟路由;
+                        */
+                        // path: '/login/tab2',
+                        path: '/tab2',
+                        component: tab2
+                    }]
+                }
+            ]
+        })
+        const vm = new Vue({
+            el: '#app',
+            router,
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="" id="app"> 姓名:
+        <!-- 点击提交按钮获取用户输入的内容 -->
+        <input type="text" v-model="uname">
+        <!-- 使用表单的修饰符lazy,将input事件切换成change事件,作用是可以让用户输完内容输入框失去焦点时触发事件,验证完整的用户名是否被注册过 -->
+        <!-- 使用表单修饰符trim可以将input输入框里用户输入的数据开头和结尾的空格去掉 -->
+        <input type="text" v-model.lazy.trim="username"><span>{{username}}</span>
+        <br> 性别:
+        <!-- 为了区分这两条数据,添加vaule属性,通过v-model绑定在data里写的变量,将用户选了哪个按钮的value值提交到后台给变量做为值,同时如果是后台默认选中哪个按钮,将变量的值写成要选中的那个value的值,也能将后台选了哪个按钮传到前台渲染出来,后台默认选中和input标签的selected属性作用一样 -->
+        <label for="nan">男</label> <input type="radio" name="sex" id="nan" value="1" v-model="rad">
+        <label for="nv">女</label> <input type="radio" name="sex" id="nv" value="2" v-model="rad">
+        <br>
+        <!-- 通过v-model获取用户选中的是哪个复选框,或者后台默认选中的是哪些复选框,必须要写value属性,用来区分选中了哪条数据,v-model获取的都是对应的value值 -->
+        喜好: 吃
+        <input type="checkbox" name="like" value="1" v-model="hobby"> 睡
+        <input type="checkbox" name="like" value="2" v-model="hobby"> 玩
+        <input type="checkbox" name="like" value="3" v-model="hobby">
+        <br>
+        <!-- 下拉菜单v-model写在select标签,v-model绑定的数据变量值可以写单条数据值,
+            如果添加multiple属性选择多条数据(属性值可以空字符串,也可以写true),vue建议下拉菜单的v-model绑定的数据变量必需是数组类型的值,不然控制台弹警告,数组里只有一条数据,也用数组类型写
+             -->
+        职业:
+        <select name="" id="" v-model="opt" multiple="">
+            <!-- value属性必需写,来区分选中了哪条数据 -->
+            <option value="1">写代码的</option>
+            <option value="2">搬砖的</option>
+            <option value="3">打鱼的</option>
+        </select>
+        <br>个人简介:
+        <!-- vue操作富文本时,富文本框里默认显示的内容或用户输入的内容都要通过v-model绑定变量来实现,会自动将变量值填充渲染到页面,不需要再用{{}}将内容数据填充到标签间,
+        html里,textarea的内容应该也在标签间,在vue里,不允许直接在textarea标签间写内容,这里写的"哈哈哈"无效,不会显示在页面上,后台也获取不到 -->
+        <textarea name="" id="" rows="3" v-model="ta">哈哈哈</textarea>
+        <br>
+        <!-- 先禁止提交按钮的默认行为,再通过事件绑定函数操作数据提交 -->
+        <input type="submit" @click.prevent="hi">
+    </form>
+    <script src="vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                // 通过v-model双向数据绑定操作表单里的数据,这里姓名框的初始值是空字符串
+                uname: '',
+                // 使用表单的修饰符lazy,将input事件切换成change事件,这里变量username的值会在input框失去光标时渲染到span标签间
+                username: '',
+                // v-model将这里选第二个按钮的初始值2传给前台数据,实现选定第二个单选按钮,这里单选按钮的初始值是女
+                rad: 2,
+                // 复选框的值是数组类型,因为每次选中的不止一个值
+                hobby: ['1', '3'],
+                // 下拉菜单默认选中单条数据,直接在变量后面写要选的数据对应的value值
+                // opt: 2,
+                // 下拉菜单多选时,vue建议下拉菜单的变量值是数组类型,否则控制台警告,默认选中第2和3条数据
+                opt: ['2', '3'],
+                // 富文本框用v-model绑定数据变量的值来填充默认显示在文本框里的内容,会自动将变量值渲染到页面,标签间不需要写{{}},标签里也不需要写v-text
+                ta: '我是填充显示在富文本框里的内容',
+            },
+            methods: {
+                hi: function() {
+                    // 输出姓名框里用户输入的数据
+                    // console.log(this.uname);
+                    // 这里用了表单修饰符lazy将input事件切换成change事件,还用了trim修饰符将输入内容的开头和结尾的空格去掉,所以得到的数据的长度是不含空字符的长度
+                    console.log(this.username, this.username.length);
+                    // 输出性别单选按钮里用户选中的数据
+                    // console.log(this.rad);
+                    // 输出喜好复选框里用户选中的数组,这种获取到的数组里还有一个vue自带的对象__ob__: Observer,如果不想要,可以用tosrting()转换成字符串,得到的就是需要的数据纯value值
+                    // console.log(this.hobby.toString());
+                    // 输出下拉菜单的选中的数据
+                    // console.log(this.opt.toString());
+                    // 输出富文本框里的用户输入的内容或后台默认显示在富文本框里的内容
+                    console.log(this.ta);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

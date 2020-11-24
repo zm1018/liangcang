@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        ul {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <!-- v-for遍历,后面的关键字可以是in或of,效果一样,
+            遍历数组,数组里是普通元素的 -->
+        <li v-for="item in arr">{{item}}</li>
+        <!-- 加上v-bind:key属性,可以提高vue执行性能,在更新数据时,让标签元素知道哪条数据是新来的,或哪个标签里的数据被修改或删除了 -->
+        <li :key="item" v-for="(item,index) in arr">{{item+'---'+index}}</li>
+
+        <!-- 遍历数组里是对象元素的,获取对象的属性值用.属性名 -->
+        <li :key='item.id' v-for="item in arr2">{{item.ename+'---'+item.cname}}</li>
+
+        <!-- 遍历对象,in前面可以直接写一个变量key或value,得到的都是对象里的键的value值,
+            如果要获取对象里的键,in前面必需用(value,key),这时这个key变量得到的就是键名,顺序是固定写法,
+            如果还要获取索引,in前面用(value,key,index)3个属性,顺序和写法是固定的 -->
+        <li v-for="(v,k,i) in obj">{{'值是:'+ v +',键是:'+ k + ',索引是:'+ i}}</li>
+
+        <!-- v-if可以和v-for结合使用,循环时符合判断条件的那一条数据才会被渲染显示到页面上 -->
+        <li v-if="v==22" v-for="(v,k,i) in obj">{{'遍历对象,用关键字in,对象中符合if条件的数据是:'+ '值是:'+ v +',键是:'+ k + ',索引是:'+ i}}</li>
+        <!-- v-for的遍历有2个关键字可以用,in和of,效果一样 -->
+        <li v-if="v==22" v-for="(v,k,i) in obj">{{'遍历对象,用关键字of,对象中符合if条件的数据是:'+ '值是:'+ v +',键是:'+ k + ',索引是:'+ i}}</li>
+
+    </ul>
+    <script src="vue.js"></script>
+    <script>
+        // console.time('t1');
+        var v = new Vue({
+                el: 'ul',
+                data: {
+                    // v-for遍历数组
+                    arr: ['apple', 'banana', 'orange'],
+                    // v-for遍历数组,数组里是复杂数据类型,是对象
+                    arr2: [{
+                        // id是这条数据的唯一标识,主要是给标签里写的key用的,可以提高性能
+                        id: 6,
+                        ename: 'apple',
+                        cname: '苹果'
+                    }, {
+                        id: 7,
+                        ename: 'orange',
+                        cname: '橘子'
+                    }],
+                    // v-for遍历对象
+                    obj: {
+                        uname: 'tom',
+                        age: 22,
+                        sex: '男'
+                    }
+                }
+            })
+            // console.timeEnd('t1')
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        
+        .div1,
+        .div2 {
+            padding: 10px;
+            background-color: red;
+        }
+        
+        .div2 {
+            background: pink;
+        }
+        /* 动态控制类名,实现标签使用哪种css样式 */
+        
+        .active {
+            border: 1px solid red;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .color {
+            background: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 将vue对象的data里写的数据填充到div标签里,通过{{}}插值表达式传入存数据的键 -->
+        <div v-cloak>{{ msg }}</div>
+        <!-- 通过v-text指令填充数据到标签div里 -->
+        <div v-text="msg1"></div>
+        <!-- 通过v-html填充数据到标签里,自动解析了数据里的h1标签 -->
+        <div v-html="msg2"></div>
+        <!-- 添加了v-pre指令,不编译数据,输出原始信息,所以填充的数据msg3没有被解析成对应的值,而是直接输出了{{msg3}}这个键 -->
+        <div v-pre>{{msg3}}</div>
+        <!-- 添加了v-once指令,填充到标签里的数据只会编译一次,这条数据不会再被监听,在控制台改值,页面数据不会跟着变 -->
+        <div v-once v-text="msg4"></div>
+
+        <!-- 添加了v-model指令,双向数据绑定,这里用户输入什么,msg5键的值就变成什么 -->
+        <input type="text" v-model="msg5">
+        <!-- 这个调用msg5的div的内容也跟着变成用户输入的新值 -->
+        <div v-text="msg5"></div>
+
+        <!-- 给input标签button属性添加了事件绑定指令,对num键的值进行累加操作,2种写法: -->
+        <div>{{num}}</div>
+        <button v-on:click="num++">点击</button>
+        <button @click="num++">点击1</button>
+        <!-- 但将处理事件绑定的代码直接写在行内,不符合前后端分离的开发规范,所以改成调用函数,2种写法-->
+        <button @click="add">点击3</button>
+        <button @click="add()">点击4</button>
+
+        <!--事件函数,2种写法在获取事件对象时的区别  -->
+        <button @click="fn1">默认携带事件对象作为实参传给事件函数fn1</button>
+        <button @click="fn2('参数1',$event)">必需写事件对象$event作为实参传给事件函数fn2</button>
+
+        <!-- 阻止事件冒泡,fn3事件函数里写的是num累加代码,但因为浏览器天生有事件流特点,所以点击div2时因为事件冒泡也能触发div1身上的fn3函数, 实现num累加,
+            但我需要只有点击div1时再实现num累加,点击div2时不要有任何操作,这就必需用.stop阻止事件冒泡-->
+        <div class="div1" @click='fn3'>
+            <div class="div2" @click.stop='fn4'>用.stop阻止事件冒泡,点击这个div2不会触发div1的num累加</div>
+        </div>
+
+        <!-- 阻止a链接的默认行为,也就是默认跳转行为 -->
+        <a href="http://www.baidu.com" @click.prevent="fn5">点击会跳转到百度,现在用.prevent阻止默认行为,点击不会跳转了</a>
+
+        <!-- 按键修饰符 -->
+        <br>
+        <!-- 按delete键清空input框里输入的内容 -->
+        <input type="text" v-model="uname" @keyup.delete="clearContent">
+        <!-- 输完密码,按enter键会触发事件函数fn6,在控制台输出用户提交的内容,keyup事件后面必需加.enter,否则按任何键都能触发fn6这个事件函数,加了.enter就只有按回车键才会提交触发;
+         绑定了个按delete键清空input框里的内容的函数-->
+        <input type="text" v-model="pwd" @keyup.enter='fn6' @keyup.delete="clearContent">
+        <!-- 原来都是点击提交按钮触发事件函数,进行提交内容和输出 -->
+        <button @click='fn6'>提交</button>
+
+        <br>
+        <!-- 直接在键盘事件后面写.ASCII码来自定义事件修饰符,但数字没有语义化,所以用下面的先写个对象名,将ASCII值赋值给对象,再调用对象名 -->
+        <input type="text" @keyup.65="keys">
+        <!-- 使用自定义的按键修饰符aa,来触发事件绑定的事件函数keys -->
+        <input type="text" @keyup.aa="keys">
+
+        <!-- 属性动态绑定,一般href后面直接写跳转链接,现在想要实现通过一个变量,获取值,值是链接,就要用v-bind:指令 -->
+        <br>
+        <a href="http://www.baidu.com">百度,常用写法</a><br>
+        <a v-bind:href="url">点击跳转,动态写法</a>
+        <a :href="url">点击跳转,动态写法简写</a>
+        <!-- 点击按钮触发attr事件函数,实现点击按钮修改url的值,也就是href的值链接 -->
+        <button @click="attr">切换链接</button>
+
+        <!-- class类名动态控制添加和清除,实现标签动态切换样式,3种方式 -->
+        <!-- 属性值传三目运算符的写法,类名2选一时用最方便 -->
+        <div :class="isC?'active':'color'">class传三目运算符测试</div>
+        <button @click="lei1">class传三目运算符切换样式</button>
+        <!-- 属性值传个对象的写法,键是类名,键的值是标志位变量,值是true将某个键名添加到div的class属性上,值是false将某个键名从div的class属性上清除,来实现给标签添加和删除样式 -->
+        <div v-bind:class="{active:isActive,color:isColor}">class类传对象值,对象值是标志位测试</div>
+        <!-- 标志位变量的默认值我设的是true,添加样式,点击按钮会变成fasle清除样式 -->
+        <button @click="leiObj">class传对象值清除样式</button>
+        <div :class="classObj">class类传对象值,对象值是类名测试</div>
+        <button @click="classO">class传对象值清除样式</button>
+
+        <!-- 属性值传数组的写法,直接将类名赋值给变量,显示样式,将变量的值设置成""清除类名删除样式,这种数组值清除样式比较方便,添加样式还要重新赋值,比传对象值麻烦,后面加class命名是见名思意,表示动态操作的是class属性,不是id或其它属性 -->
+        <div v-bind:class="[activeClass,colorClass]">class类传数组值,数组直接写在class属性里,测试</div>
+        <!-- 属性值是数组的写法,直接将存数组的变量赋值给class属性,将数组写在vue实例的data里 -->
+        <div :class="classArr">class类传数组值,数组写在后台data里,测试</div>
+        <button @click="leiArr">class传数组值清除样式</button>
+
+        <!-- style行内样式表动态添加css样式,2种方式 -->
+        <!-- 属性值是对象的简写,直接将对象名赋值给style属性 -->
+        <div v-bind:style="objStyles">style传对象值测试</div>
+        <!-- 属性值是数组的写法,数组里的元素是对象,每个对象都是一套css样式,如果样式重复,后面的覆盖前面的,不重复的会新增到css样式里 -->
+        <div v-bind:style="[objStyles,overrideStyles]">style传数组值测试</div>
+        <button @click="sty">点击动态修改style属性的对象里的css样式,这里改字体大小</button>
+
+
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        // 自定义一个按键修饰符,将ASCII值赋值给对象,使用时调用对象名,按键a的ASCII码值是65
+        Vue.config.keyCodes.aa = 65;
+        // 生成一个vue对象
+        var vm = new Vue({
+            // 参数传一个对象,对象里的el键,是要将数据填充到哪里就写哪个标签,标签是css选择器格式的字符串类型
+            el: '#app',
+            // 参数data是一个对象类型的,里面传需要填充到标签里的数据,数据是键值对格式
+            data: {
+                msg: '我是插值表达式hello vue,用v-cloak解决闪动问题',
+                msg1: '我是v-text纯文本,没有闪动问题',
+                msg2: '<h1>我是v-html填充,会自动解析标签,但不能填充下载到的第三方数据</h1>',
+                msg3: '我是v-pre,标签里写什么都不编译,直接将原始信息填充到页面',
+                msg4: '我是v-once,只编译一次数据到页面标签中,后续vue不监听我的值是否变化',
+                msg5: '我是v-model双向数据绑定,用户输入内容发生变化,这里就会变,这里值变了,其它调用这条数据的标签内容都会跟着变',
+                num: 0,
+                // 按键修饰符,按delete一键清空输入框里的内容
+                uname: '',
+                pwd: '',
+                // 给动态属性绑定,v-bind:使用的键
+                url: 'http://www.baidu.com',
+
+                // 操作class类实现css样式控制,将属性值设置成true或false来控制类名是否添加到标签里,is开头的值都叫标志位,这是标签的class属性值传三目运算符或对象的时候,键的值的写法
+                isC: true,
+                // 这种是对象值是标志位的写法
+                isActive: true,
+                isColor: true,
+                // 这种是对象值用类名做属性的写法,值还是true或false来控制这个类名是否添加到calss属性里
+                classObj: {
+                    active: true,
+                    color: true
+                },
+                // 这是class属性值传数组的时候,数组里的元素的值的写法,将类名赋值给元素变量
+                activeClass: 'active',
+                colorClass: 'color',
+                // 或者class属性值传存数组的这个变量名,将数组写到data这里,而不是写在标签的class属性值里,
+                classArr: ['active', 'color'],
+
+                // 这是style行内样式表属性值传对象的写法,对象里的键值对就是css样式,属性值传数组也是这种写法,数组里的元素就是这里定义的每个对象,用数组写法可以给style传多套css样式
+                objStyles: {
+                    width: '100px',
+                    height: '200px',
+                    border: '1px solid red',
+                    fontSize: '20px'
+                },
+                // 传数组时,这个对象里的height100px会覆盖上面的200px,再将color添加到css样式里面
+                overrideStyles: {
+                    height: '100px',
+                    color: 'blue'
+                }
+
+            },
+            // 参数methods是一个对象,对象里可以写多种函数,调用data里的键需要用this调用,不能直接调用,例如:num++ 会报错,this.num++才对,这里this指向vue的实例对象
+            methods: {
+                // 定义个对num进行累加的函数,在button点击事件时调用
+                add: function() {
+                    // 这里this指向vue的实例对象
+                    this.num++;
+                },
+                // 标签那里直接绑定函数名,事件函数这里规定必需设置事件对象作为第一个形参;
+                fn1: function(e1) {
+                    // 获取是谁触发事件对象的,输出这个标签名
+                    console.log(e1.target.tagName);
+                },
+                // 标签那里调用事件函数,规定传$event作为实参,事件函数这里必需设置事件对象作为最后一个形参;
+                fn2: function(a, e2) {
+                    // 调用事件函数的写法时,事件函数可以传多个参数,a是普通参数
+                    console.log(a);
+                    // e2是事件对象参数,规定必需写在最后的位置
+                    console.log(e2.target.tagName);
+                },
+                fn3: function(e3) {
+                    this.num++;
+                    // 输出触发事件的标签的类名,得到div1,事件函数fn3是绑定在div1上的,但是点击div1的子元素div2也能触发fn3事件函数,实现num累加,这就是事件冒泡
+                    alert(e3.target.className);
+                },
+                fn4: function(e4) {
+                    // 给div2添加.stop事件修饰符,阻止事件冒泡,此时在点击子元素div2就不会对num累加了,只有点击div1才会累加,这里只会输出div2的类名,不会再对num累加;
+                    alert(e4.target.className);
+                },
+                // 这个事件函数绑定在a链接上,阻止a链接的默认行为时触发
+                fn5: function() {
+                    console.log("阻止默认行为时触发这个事件函数");
+                },
+                // 键盘事件的事件修饰符,按enter键提交用户输入的内容
+                fn6: function() {
+                    console.log('按回车键提交表单时触发这个事件函数', this.uname, this.pwd);
+                },
+                // 键盘事件的事件修饰符,按delete键一键清空input输入框里的内容
+                clearContent: function() {
+                    this.uname = '';
+                    this.pwd = '';
+                },
+                // 自定义按键修饰符,标签里事件后面用.调用自定义对象名,触发这个事件函数
+                keys: function(e5) {
+                    // 事件对象的keyCode属性是获取按键的ASCII码值
+                    console.log(e5.keyCode);
+                },
+                // 给a标签添加动态属性绑定的v-bind:在href属性前面,实现动态切换href的值
+                attr: function() {
+                    // 点击切换按钮,将百度的url切换成vue官网的url
+                    this.url = 'https://cn.vuejs.org'
+                },
+
+                // class类名来控制样式是否显示,这2个事件函数是用来切换true和false的,控制是否将类名添加到标签里,来显示类名里写的样式,这是标签的calss属性值传对象的写法
+                // 动态绑定class值是三目运算符写法,切换css样式,定义函数时function可以省略不写,
+                lei1() {
+                    this.isC = !this.isC;
+                },
+                // class值是对象,对象的值是标志位的写法,添加或删除样式,               
+                leiObj() {
+                    // 取反,如果isActive是true,触发事件函数时,取反就是false,实现动态控制样式是否显示,或显示哪个类名里的样式
+                    this.isActive = !this.isActive;
+                    this.isColor = !this.isColor;
+                },
+                // class值是对象,对象的值是类名的写法,添加或删除样式,
+                classO() {
+                    this.classObj.active = !this.classObj.active;
+                    this.classObj.color = !this.classObj.color
+
+                },
+                // class属性值传数组的写法,清除类名,就是将属性值设置成'',来实现清除css样式:
+                leiArr: function() {
+                    this.activeClass = '';
+                    this.colorClass = '';
+                    this.classArr = '';
+                },
+
+                // style行内样式表属性动态控制css样式,这里实现点击按钮切换标签的字体大小
+                sty: function() {
+                    this.objStyles.fontSize = '30px';
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <script src="vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 登录页面login不变,登录的用户不同,用户名这部分就可以写成动态匹配的,实现多个用户名,共用一个路由配置对象 -->
+        <router-link to="/login/tom">tom</router-link>
+        <router-link to="/login/jack">jack</router-link>
+        <router-link to="/login/rose">rose</router-link>
+
+
+        <router-link to="/home/id1">home1</router-link>
+        <router-link to="/home/id2">home2</router-link>
+        <router-link to="/home/id3">home3</router-link>
+
+
+        <router-view></router-view>
+
+    </div>
+    <script>
+        // login组件,写成动态路由后,多个用户共用这一个登录页面
+        const login = {
+            template: `
+            <div>
+                <h1>登录组件</h1>
+
+                <!-- 获取url参数有2种方式,第一种:
+                    在login组件模板里写$route.params获取url的参数,也就是登录的用户名 
+                -->
+                <h4>登录的用户是:{{$route.params.uname}}</h4>
+            </div>`
+        }
+
+        const home = {
+            // 获取url参数有2种方式,第二种:
+            // 路由配置对象里props属性可以传3种值,这里接收的写法都一样,如下:
+            // props: ['id'], // 路由配置对象里props属性值是布尔值,在组件里写props属性,[]里写path属性值里动态绑定的那个变量名
+            // props: ['name', 'age'], // 路由配置对象里props属性值是对象,[]里写路由配置对象里props属性值对象中的属性名
+            props: ['id', 'name', 'age'], //路由配置对象里props属性值是箭头函数,[]里写路由配置对象里props属性值函数体里的对象中的属性名
+            template: `
+            <div>
+                <h1>首页组件</h1>
+                <!-- 使用props接收的参数,获取url的参数id -->
+                <h4>用户id是:{{id}}</h4> 
+                <!-- 使用props接收的参数,获取用户名和年龄 -->
+                <h4>用户名是:{{name}}</h4>
+                <h4>用户年龄:{{age}}</h4>
+            </div>`
+        }
+
+        const router = new VueRouter({
+            routes: [
+                // 实现动态路由匹配:路由配置对象的path属性值后面用 v-bind的简写 : 来动态绑定一个变量,来匹配当前活跃的to属性值;
+                // 这两个路由配置对象的写法不一样,第二个多个props:true的属性和属性值,它们实现动态路由匹配的功能是一样的,在获取 :后面的url参数时调用的方法和步骤都是不一样的
+                {
+
+                    //这个路由对象获取变量uname的值要通过$route.params.uname获取
+                    path: '/login/:uname',
+                    component: login //login组件注册在这里,所有用户共用
+                },
+
+                // 这个路由配置对象多了第三个参数props属性,有3种属性值,布尔/对象/函数,用来获取动态路由参数的;
+                // 接收路由配置对象里props属性的值时要通过组件里的props属性接收,建议用这种方式,解耦合的
+                {
+                    path: '/home/:id',
+                    component: home,
+                    // props: true, //第一种:属性值传布尔值,可以获取:绑定的变量的值
+
+                    /*    props: { //第二种:属性值传对象,可以获取对象里写的所有属性的值
+                           name: '佩奇',
+                           age: 18
+                       }, */
+
+                    props: route => ({ //第三种:属性值传箭头函数,可以获取函数体的对象里写的所有属性的值,形参route接收所有动态路由参数id变量的值
+                        name: '佩奇',
+                        age: 18,
+                        id: route.params.id //获取函数形参route对象接收的url动态参数值
+                    })
+                }
+            ]
+        })
+        const vm = new Vue({
+            el: '#app',
+            router,
+        });
+    </script>
+</body>
+
+</html>

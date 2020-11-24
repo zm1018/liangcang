@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <!-- 输入框里注册用户名,v-model调用侦听器函数监听数据变量uname值的变化,v-model默认是input事件,触发侦听器函数太频繁,所以切换成change事件,span标签里的msg变量在输入框失去焦点时反馈给用户注册状态 -->
+        <input type="text" v-model.lazy="uname"><span>{{msg}}</span>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        // 这里用延时器方法setTimeout()延时器,模仿ajax异步请求
+        var v = new Vue({
+            el: 'div',
+            data: {
+                uname: '',
+                msg: ''
+            },
+            methods: {
+                // 这个函数的功能是模拟实现ajax向数据库发请求获取数据库里的数据,来验证用户输入的用户名是否已存在
+                check: function(uname) { //将data里的变量uname作为参数传入
+                    // 延时器模拟数据库接口调用,延时器里面要用uname和msg变量,但延时器里的this指向window,所以要将this在延时器外面赋值给其它变量
+                    this1 = this;
+                    setTimeout(function() {
+                        // 判断用户输入的用户名是否和数据库里已有的用户名重复
+                        if (uname == 'tom') {
+                            this1.msg = '用户名已存在,请更换一个'
+                        } else {
+                            this1.msg = '用户名可以使用'
+                        }
+                    }, 2000)
+                }
+            },
+            // 如果uname数据值发生变化,将用户输入传入后台,触发侦听器调用check函数,验证uname值在数据库里是否存在,再将后台的验证结果和提示信息通过侦听器函数同步显示到页面
+            watch: {
+                // 这里监听uname变量的值的变化,所以侦听器名必需和数据变量同名
+                uname: function(val) {
+                    // 这里将input框里用户输入的内容通过参数val接收,再传给check()函数,进行用户名验证,并将验证满足判断条件的那条验证信息显示到页面
+                    this.check(val);
+                    // 用户输入完成后,将提示信息显示到页面上
+                    this.msg = '正在验证...'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

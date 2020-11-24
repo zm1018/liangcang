@@ -141,6 +141,7 @@
     <br>
     <a href="image/python_logo.zip">下载链接，href地址写文件.exe或压缩包.zip等等</a>
     <br>
+    <!-- a标签里包裹其它元素,点在包裹的元素上就能实现a链接跳转 -->
     <a href="https://www.baidu.com/" target="_blank"><img src="image/python_logo.gif" title="这是网页元素链接，点这个图片就能跳转到百度（网页元素比如图片、视频、音乐）等等" height="30" /> </a>
     <br>
     <!-- 锚点链接有两种写法：
@@ -249,7 +250,8 @@
         也可以用2d转换的rotate选择属性。
         斜线分割单元格不能直接在目标单元格上设置，要在单元格里面写个容器div之类的，设置那个div，再往div里添加两个容器，写两个三角里的内容，再用定位把内容（绝对定位定）到单元格（相对定位）合适位置显示。
     
-    cellspacing(单元格之间的间距)是去除单元格之间的间隙的，变成单线框；cellpadding（单元格内边距）是内容到单元格边框的距离，默认值是1 -->
+    cellspacing(单元格之间的间距)是去除单元格之间的间隙的，变成单线框,和css里border-collapse:collapse作用一样；
+    cellpadding（单元格内边距）是内容到单元格边框的距离，默认值是1 -->
     <table border="1px" cellspacing="0" cellpadding='20'>
         <caption>是表格标题</caption>
         <!-- col表示一列，需要设置width属性让单元格大小一致，有多少列就写多少个col标签，这是个单标签,单词column -->
@@ -270,6 +272,10 @@
             <td>跨行合并在目标单元格里写属性rowspan="数字"，要把几个单元格合并成一个就写几"</td>
             <td>跨列合并在目标单元格写colspan='数字'，合并完一定要删除多余的单元格</td>
             <!-- 单元格内的文字自动换行：先table标签写css样式：style="table-layout:fixed";再td标签写：style="word-wrap:break-word"; 如果给td标签设置了宽度，里面的文字就需要自动换行；
+                tableLayout 属性用来显示表格单元格、行、列的算法规则,3个可选属性值:
+                    auto列宽度由单元格内容设定。(默认值)
+                    fixed 列宽由表格宽度和列宽度设定。
+                    inherit 规定应该从父元素继承 table-layout 属性的值。
             
             隐藏空的没写内容的单元格，css里写：table{empty-cells:hide}，空单元格的边框就看不见了。
             -->

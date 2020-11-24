@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #app {
+            width: 300px;
+            margin: 100px auto;
+            text-align: center;
+        }
+        
+        .list {
+            list-style: none;
+        }
+        
+        .title,
+        .total {
+            width: 100%;
+            height: 43px;
+        }
+        
+        .title {
+            background-color: #AED8E8;
+            line-height: 43px;
+        }
+        
+        .total {
+            /* 受到上面的li样式的影响,要把left向左移-10px,否则这个li框和上面的li列表左边多出一个margin-left值10px,会偏右对不齐 */
+            position: relative;
+            left: -10px;
+            background-color: #FFCD47;
+            color: red;
+            font-weight: 700;
+            /* 让内联元素右对齐 */
+            text-align: right;
+            line-height: 43px;
+        }
+        
+        .total label {
+            position: absolute;
+            left: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .total button {
+            border: none;
+            width: 65px;
+            height: 30px;
+            background-color: #DD4C40;
+            margin: 0 5px 0 10px;
+        }
+        /* 列表用的是圣杯布局,右边+-删除都是包裹在div1里面,将div1设置固定宽度,左边用户选中哪条购物车里的商品来结算的多选按钮也是设置了固定宽度,中间的商品名name宽度自适应 */
+        
+        .list li {
+            position: relative;
+            margin: 0 150px 0 10px;
+            height: 43px;
+            border-bottom: 1px solid #D5E8E9;
+        }
+        
+        .checkItem {
+            position: absolute;
+            /* -10px刚好紧贴li标签的左边,但不好看,所以稍微右移一点,给了-2px的值 */
+            left: -2px;
+            width: 10px;
+            height: 100%;
+        }
+        
+        .div1 {
+            /* float: left; */
+            position: absolute;
+            right: -150px;
+            width: 150px;
+            height: 100%;
+        }
+        
+        .name {
+            float: left;
+            width: 100%;
+            height: 100%;
+            line-height: 43px;
+        }
+        
+        a {
+            text-decoration: none;
+            /* 转成行内块元素,不然设置的宽度无效,实际宽度只随着内容变 */
+            display: inline-block;
+            width: 15px;
+            height: 25px;
+            background-color: #ccc;
+            text-align: center;
+            font-size: 20px;
+            /* input框和-+对不齐,因为input框有2px的边框,用垂直居中对齐 */
+            vertical-align: middle;
+        }
+        
+        .number {
+            outline: none;
+            /* 把input的默认边框改成1px */
+            border-width: 1px;
+            width: 40px;
+            height: 25px;
+            text-align: center;
+        }
+        /* 这整个li的垂直对齐的基线是以最后一个行内元素的文字底边线决定的,也就是这个类名是.del的span标签决定的, vertical-align用middle值没对齐,但用sub下标值对齐了,查别人写的博客说是前面的那些行内元素底边和这个span标签的文字底边对齐了,没太明白怎么回事,反正对齐了就行*/
+        
+        .del {
+            display: inline-block;
+            width: 30px;
+            margin-left: 10px;
+            font-size: 28px;
+            color: red;
+            vertical-align: sub;
+        }
+        
+        .del:hover {
+            background: #e5b899;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <my-cart></my-cart>
+    </div>
+
+    <script src="../vue.js"></script>
+    <script>
+        // 定义3个局部子组件来实现将购物车分成3部分,标题,列表,总价计算,我把总价计算给直接写到第二个子组件列表里了,更方便
+        var cartTitle = {
+            props: ['uname'],
+            template: `
+                <div class="title">{{uname}}的商品</div>
+            `,
+        };
+        var cartList = {
+            props: ['list'],
+            data: function() {
+                return {
+                    // 存用户选中的商品的初始数组
+                    checkArr: [],
+                    // 判断用户是否选中了全选或多选按钮,来触发事件函数控制是否勾选全选按钮
+                    isAllChecked: false,
+                }
+            },
+            // 圣杯布局,宽度自适应的元素一定要写在第一个,所以span标签写在第一个,显示在中间位置,多选框的input标签写在第二个,再通过定位显示在第一个位置
+            template: `
+                <ul class="list">
+                    <li :key="item.id" v-for="item in list">
+                        <span class="name">{{item.name}}</span>
+                        <input type="checkbox" class="checkItem" v-model="checkArr" :value="item" @change="itemChange"/>
+                        <div class="div1">
+                            <a href="" @click.prevent="sub(item.id)">-</a>
+                            <input class="number" type="text" :value="item.num" @blur="changeNum(item.id,$event)">
+                            <a href="" @click.prevent="add(item.id)">+</a>
+                            <span class="del" @click="del(item.id)">x</span>
+                        </div>
+                    </li>
+                    <li class="total">
+                        <label for="c1">
+                            <input type="checkbox" id="c1" v-model="isAllChecked" @change="handleChange"/>
+                            <span>全选</span>
+                        </label>
+                        <span>总价:{{sum()}}.00</span> <button>结算({{numbers()}})</button>
+                    </li>
+                </ul>
+            `,
+            // 父组件传过来的数据都要去父组件里操作数据,这里的子组件定义的函数都只获取用户要操作哪条数据,将这条数据的id传给父组件
+            // 这里操作list的num属性的3个函数,这3个函数共用一个自定义事件名change-num,通过自定义的type属性,来区别用户点击的是哪个标签绑定的函数,要实现什么功能:
+            // 函数1.通过修改input框的值,来修改商品数量,子组件这个函数只是获取要修改的数据的id和input输入框里的当前最新值
+            methods: {
+                // 这下面的函数都是操作本组件里的checkArr数组
+                // 给全选按钮添加点击事件,绑定控制全选和全不选按钮的函数,通过标志位变量获取当前按钮是否是选中状态
+                handleChange() {
+                    // 如果标志位变量isAllChecked值为true,表示选中了全选按钮,那就将list数组赋值给用户选中的商品数组checkArr
+                    if (this.isAllChecked) {
+                        this.checkArr = this.list;
+                    } else {
+                        // 如果标志位变量isAllChecked值为false,表示未选中全选按钮,那就将数组checkArr赋值成空数组
+                        this.checkArr = [];
+                    }
+                },
+                // 给li列表里的每个多选按钮添加点击事件,绑定这个函数,如果用户li列表里的选项按钮有一个没选中,就将标志位变量isAllChecked值为false,实现取消全选功能,
+                itemChange() {
+                    // 如果用户选中的商品数组checkArr的长度和加到购物车的list数组数据长度相等,就表示购物车里所有的商品前面的多选框都被选中了,就将标志位变量的值设置成true, √选全选按钮
+                    if (this.checkArr.length === this.list.length) {
+                        this.isAllChecked = true;
+                    } else {
+                        // 只要有一个列表里的选项按钮没被选中,那checkArr数组的长度就会小于list数组,就表示未全选,将标志位变量的值设置成false,取消全选按钮的√
+                        this.isAllChecked = false;
+                    }
+                },
+                // 在本组件里计算选中商品的总金额和总件数,在li标签的插值表达式里直接调用sum()函数,就不会报错,很容易实现
+                // 计算选中的商品的总金额
+                sum: function() {
+                    var t = 0;
+                    // 用in关键字遍历数组,更简单
+                    for (var i in this.checkArr) {
+                        t += this.checkArr[i].num * this.checkArr[i].price
+                    }
+                    return t;
+                },
+                // 计算选中商品的总件数
+                numbers: function() {
+                    var n = 0;
+                    for (var i in this.checkArr) {
+                        n += this.checkArr[i].num
+                    }
+                    return n;
+                },
+
+                // 这下面的函数都是要去父组件里操作list数组
+                changeNum: function(id, val) {
+                    // 这里要传给父组件的数据有2条,用一个对象传过去
+                    this.$emit('change-num', {
+                        id: id,
+                        type: 'change',
+                        num: val.target.value
+                    });
+                },
+                // 函数2:点击-号修改input框的num值,点击一次减1,这里还是将id传给父组件,在父组件里操作数据
+                sub: function(id) {
+                    this.$emit('change-num', {
+                        id: id,
+                        type: 'sub',
+                    })
+                },
+                // 函数3:点击+号修改input框的num值,点击一次加1
+                add: function(id) {
+                    this.$emit('change-num', {
+                        id: id,
+                        type: 'add'
+                    })
+                },
+                del: function(id) {
+                    // 如果多选框按钮被选中时,当用户点击删除,要操作checkArr和list数组,将checkArr数组里的用户点击删除的元素删掉,同时将list数组里的这条数据也删掉,判断条件是checkArr数组长度大于0,表示数组里有数据了,用户选中了至少一个选项按钮
+                    if (this.checkArr.length > 0) {
+                        // 找到用户选中的这条数据的索引
+                        var index = this.checkArr.findIndex(item => item.id == id);
+                        // 这里同时触发子组件和父组件绑定的事件函数,子组件删除数据时,findIndex()方法的返回值不能是-1,index是-1表示没有找到和用户选中的数据id相同的这条数据
+                        if (index != -1) {
+                            // 删除checkArr数组里的这条数据
+                            this.checkArr.splice(index, 1);
+                        }
+                        // 同步删除list数组里的这条数据,也要在父组件里判断index不能是-1;
+                        this.$emit('del-item', id);
+                    } else if (this.checkArr.length === 0) {
+                        // 多选框或全选按钮都没选中时,删除用户要删除的数据,只能操作list数组,但因为数据是父组件传过来的,最好去父组件里删除,所以这里子组件只获取用户选中的数据的id,传给父组件,通过模板标签里绑定的del函数的实参拿到用户要删除的那条数据的id
+                        // $emit()不直接写在模板标签的@click事件后面,写在@click绑定的函数里,要用this调用
+                        this.$emit('del-item', id);
+                    }
+                }
+            }
+        };
+        /*  var cartTotal = {
+             // 想接收用户勾选的商品,计算选中的商品总价和件数,所以要用多选框绑定的那个数组变量checkArr,写了总是报错,先不管了以后再改吧
+
+             // 这里计算的是父组件list数组里的所有商品总价和总数量
+             props: ['list'],
+             template: `
+                 <div class="total">
+                     <span>总价:{{total}}</span>                    
+                     <button>结算({{nums}})</button>
+                 </div>
+             `,
+
+             // 计算属性,计算购物车所有选中的商品的总价和加到购物车的商品总数量,这里要用多选按钮里v-model绑定的那个数组变量,因为那个数组里存的是用户选中的要进行结算的商品
+             computed: {
+                 // 计算总金额
+                 total: function() {
+                     var t = 0;
+                     this.list.forEach(item => {
+                         t += item.price * item.num;
+                     });
+                     return t;
+                 },
+                 // 计算总数量
+                 nums: function() {
+                     var n = 0;
+                     this.list.forEach(item => {
+                         n += item.num;
+                     });
+                     return n;
+                 }
+             },
+         }; */
+
+        // 父组件
+        Vue.component('my-cart', {
+            data: function() {
+                return {
+                    uname: '张三',
+                    list: [{
+                        id: 1,
+                        name: 'TCL彩电',
+                        price: 1000,
+                        num: 1
+                    }, {
+                        id: 2,
+                        name: '小米手机',
+                        price: 1200,
+                        num: 1
+                    }, {
+                        id: 3,
+                        name: '机顶盒',
+                        price: 300,
+                        num: 1
+                    }, {
+                        id: 4,
+                        name: 'T苹果手机',
+                        price: 6000,
+                        num: 1
+                    }, {
+                        id: 5,
+                        name: '华为手机',
+                        price: 3000,
+                        num: 1
+                    }, {
+                        id: 6,
+                        name: '平板电脑',
+                        price: 2000,
+                        num: 1
+                    }, ],
+                    // 先接收cart-list子组件传过来的用户选中的要结算的商品,存到这个数组里,再把这个数组的数据传给子组件cart-total进行结算
+                    // checkArr: [],
+                }
+            },
+            /* <div class="cart">
+                <cart-title :uname="uname"></cart-title>
+                <cart-list :list="list" @del-item="delItem($event)" @change-num="changeNum($event)"></cart-list>
+                <cart-total :list="list"></cart-total>
+            </div> */
+            template: `
+                <div class="cart">
+                    <cart-title :uname="uname"></cart-title>
+                    <cart-list :list="list" @del-item="delItem($event)" @change-num="changeNum($event)"></cart-list>
+                </div>
+            `,
+            // 在全局组件里注册局部子组件
+            components: {
+                'cart-title': cartTitle,
+                'cart-list': cartList,
+                // 'cart-total': cartTotal
+            },
+            methods: {
+                // 通过子组件传过来的用户选中的数据的id来修改数据的num属性的值,传过来的是一个对象,但子组件里3个函数都共用这一个自定义事件绑定的函数,所以要在函数里判断用户触发的是哪一个功能的函数
+                changeNum: function(obj) {
+                    // 如果type属性值是change,将input框里的值赋值给num属性
+                    if (obj.type == 'change') {
+                        this.list.some(item => {
+                            // 如果遍历的list当前数据的id和传过来的对象的id相等,就将传过来的input框里获取的num值赋值给list的num属性
+                            if (item.id == obj.id) {
+                                item.num = parseInt(obj.num);
+                                return true;
+                            }
+                        })
+                    } else if (obj.type == 'sub') {
+                        // 如果传过来的对象的type属性值是sub,用户点击一次触发一次函数,给num-1
+                        this.list.some(item => {
+                            if (item.id == obj.id) {
+                                // -号减到num值是1时,就不能再减,否则num会出现-值,这里判断一下,num是否等于1
+                                if (item.num === 1) {
+                                    item.num = 1;
+                                    alert('真的不能再少了');
+                                } else {
+                                    item.num -= 1;
+                                }
+                                return true;
+                            }
+                        })
+                    } else if (obj.type == 'add') {
+                        // 如果type属性值是add,给num+1
+                        this.list.some(item => {
+                            if (item.id == obj.id) {
+                                item.num += 1;
+                                return true;
+                            }
+                        })
+                    }
+                },
+                // 通过用户选中的数据的id删除此条数据,
+                // 如果多选或全选按钮未选中任何商品,删除功能必需写在父组件里,操作list数组,如果多选或全选按钮有一个选中了,就必需执行写在子组件里的删除功能,操作checkArr列表;
+                delItem: function(id) {
+                    // 根据这条数据的id查出对应的下标
+                    var index = this.list.findIndex(item => item.id == id);
+                    // 判断是否成功获取到用户要删除的这条数据的索引,-1是没有获取到这条数据
+                    if (index != -1) {
+                        // 根据此条数据的下标删除此条数据
+                        this.list.splice(index, 1);
+                    }
+                }
+            }
+        });
+        // 父组件也是在vue实例里调用的
+        var vm = new Vue({
+            el: '#app',
+        })
+    </script>
+</body>
+
+</html>

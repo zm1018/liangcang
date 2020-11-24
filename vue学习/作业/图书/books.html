@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #app {
+            list-style: none;
+            width: 500px;
+            text-align: center;
+            margin: 100px auto;
+        }
+        
+        li,
+        table {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            border-collapse: collapse;
+        }
+        
+        tbody tr {
+            border: 1px dotted #ccc;
+        }
+        /* 选中前3个li标签 */
+        
+        ul li:nth-child(-n+3),
+        thead {
+            background: #f3dcac;
+            border-bottom: 1px dotted #ccc;
+        }
+        
+        input {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 和数据库交互的vue图书管理案例 -->
+    <ul id="app">
+        <li>
+            <h1>图书管理</h1>
+        </li>
+        <li>编号: <input type="text" disabled="false" v-model="id"> 名称: <input type="text" v-model="name" v-focus>
+            <button @click="book" :disabled="submitFlag"> 提交</button>
+        </li>
+        <li>
+            <h3>图书总数: {{total}}</h3>
+        </li>
+        <li>
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr :key="item.id" v-for="item in list">
+                        <td>{{item.id}}</td>
+                        <td>{{item.bname}}</td>
+                        <td>{{item.stime}}</td>
+                        <td>
+                            <a href="" @click.prevent="toEdit(item.id)">修改</a> |
+                            <a href="" @click.prevent="del(item.id)">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
+
+    </ul>
+
+    <script>
+        // 给axios进行响应拦截,省得在发送请求的地方处理数据
+        axios.interceptors.response.use(function(res) {
+            return res.data;
+        }, error => console.log(error));
+
+        //  vue实例
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                list: [],
+                id: '',
+                name: '',
+                flag: false,
+                submitFlag: false,
+            },
+            methods: {
+                // 封装一个发送get请求获取全部书的异步函数
+                queryData: async function() {
+                    // 没进行响应拦截先把数据处理好,就要写2行代码
+                    // const data = await axios.get('showBooks.php');
+                    // this.list = data.data;
+
+                    // 进行响应拦截,处理了数据,这里只需要一行代码,await的返回值就是处理过的数据
+                    this.list = await axios.get('showBooks.php');
+                },
+
+                // 添加和修改图书
+                book: async function() {
+                    // 查出要修改的书名那里把flag改成true,这里if条件才成立,才执行修改图书
+                    if (this.flag) {
+                        var res = await axios.post('reBooks.php', {
+                            bname: this.name,
+                            id: this.id
+                        });
+                        // 修改书名成功要调用展示图书的函数发请求,把最新的数据展示出来
+                        if (res == '修改图书成功') {
+                            this.queryData();
+                        }
+                        // 编辑完成要把标志位改成false,以便后续新增操作
+                        this.flag = false;
+                    } else { //添加图书只需要把图书名传给后台,id和日期数据库会自动生成
+                        var res = await axios.post('addBooks.php', {
+                            bname: this.name
+                        });
+                        // 因为拦截器已经把数据处理过了,所以这里res拿到的不是axios包装过的对象,而是对象里data属性存的数据,所以判断条件是后台返回的数据"新增图书成功"这几个字,如果判断条件为true,表示添加成功,调用自己封装的展示图书的函数,发请求给后台,把最新的数据下载展示出来
+                        // if (res.status == 200) {
+                        if (res == '新增图书成功') {
+                            this.queryData();
+                        }
+                    }
+                    this.name = '';
+                    this.id = '';
+                },
+
+                // 根据id发送请求到数据库查出要修改书名,填充到input框里
+                toEdit: async function(id) {
+                    // 用于区分是修改还是添加操作,true是修改
+                    this.flag = true;
+                    // 后台返回的是编码过的json数据,这里会自动转换,不用写JSON.parse()转换
+                    var ret = await axios.get('upBooks.php?id=' + id);
+                    this.id = ret.id;
+                    this.name = ret.bname;
+                },
+
+                // 根据id发送请求到数据库删除图书,并更新展示列表
+                del: async function(id) {
+                    var ret = await axios.get('delBooks.php?id=' + id);
+                    if (ret == '删除图书成功') {
+                        this.queryData();
+                    }
+                }
+
+            },
+            // 用生命周期函数mounted,只要模板加载好就调用自己封装的发送请求的函数向服务器发送请求下载数据,展示全部图书
+            mounted: function() {
+                this.queryData();
+            },
+            // 用侦听器属性,监听data里的name属性值的变化,也就是input框用户输入的书名是否重复
+            watch: {
+                name: async function(val) {
+                    // 发送get请求,把name属性值作为url的参数传给数据库,查数据库里书名是否已存在
+                    var ret = await axios.get('queryBooks.php?bname=' + this.name);
+                    // 如果返回的数据是'此书已存在',表示书名重复,将标志位改成true,禁用button 按钮
+                    if (ret == '此书已存在') {
+                        this.submitFlag = true;
+                    } else {
+                        this.submitFlag = false;
+                    }
+                }
+            },
+
+            // 计算属性,把图书总数展示在页面
+            computed: {
+                total() {
+                    // 图书总数就是list列表的长度
+                    return this.list.length;
+                }
+            },
+
+            // 自定义局部指令,自动获取input框焦点
+            directives: {
+                focus: {
+                    inserted(el) {
+                        el.focus();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

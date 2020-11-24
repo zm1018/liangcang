@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <!-- 这是没用计算属性处理过的原始数据 -->
+        <span>{{msg}}</span>
+        <!-- 这是直接在插值表达式里写处理数据的代码,可读性低,不符合前后端分离的要求 -->
+        <span>直接在插值表达式里反转字符串:{{msg.split('').reverse().join('')}}</span>
+        <br>
+        <!-- 这是用计算属性处理过的数据,这个计算属性的功能是翻转过的字符串,这里调用不需要加(),只要写函数名即可 -->
+        <span>通过调用计算属性反转字符串:{{reverseString}}</span>
+        <br>
+
+        <!-- 计算属性和methods里的方法的区别 -->
+        <!-- 调用methods里的add1方法,必需加(),调用2次,执行2次add1函数 -->
+        <span>{{add1()}}</span>
+        <span>{{add1()}}</span>
+        <!-- 调用计算属性里的add2函数,直接写函数名,调用2次,执行一次add2函数,第2次输出的是缓存的计算结果 -->
+        <span>{{add2}}</span>
+        <span>{{add2}}</span>
+        <br>
+        <!-- 用v-model双向绑定input框里输入内容的变化,调用侦听器监听实现前后台数据同步变化 这里v-model后面调用的是侦听器,也是个函数,调用时不用加() -->
+        姓:<input type="text" v-model="firstName"> 名:
+        <input type="text" v-model="lastName">
+        <!-- 这里是使用data里的变量 -->
+        <span>侦听器显示姓名:{{fullName}}</span>
+        <br>
+        <!-- 这是计算属性实现的数据监听,和侦听器实现的功能一样,这里是调用计算属性函数 -->
+        <span>计算属性显示姓名:{{fName}}</span>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        var v = new Vue({
+            el: 'div',
+            data: {
+                // 原始数据hello,这里要翻转字符串,实现用计算属性处理后变成olleh
+                msg: 'hello',
+                // methods里定义的函数和计算属性里定义的函数都要用的变量,实现计算这个变量值的累加和;
+                num: 100,
+                // 侦听器要用的数据,侦听器主要是监听这个变量值的变化,在变量的值有变化时调用侦听器函数
+                firstName: '张',
+                lastName: '三',
+                fullName: '张三' //将监听的2条数据拼接,赋值给这个变量,用插值表达式显示到页面
+            },
+            // methods里定义的函数是方法,调用要加(),没有缓存,每次标签调用add1都会执行一遍add1函数
+            methods: {
+                add1: function() {
+                    console.log('方法调用一次执行一次');
+                    var res = 0;
+                    for (var i = 0; i <= this.num; i++) {
+                        res += i;
+                    }
+                    return res;
+                }
+            },
+            // 用computed定义计算属性,属性值是个对象,这里面定义的函数有缓存功能,只有在函数使用的data里的变量值发生变化时才会重新执行里的函数
+            computed: {
+                // 这里写自定义的计算属性名,属性值是个函数
+                reverseString: function() {
+                    // 这里写要实现的功能,先用split()将字符串hello用''分割成数组,每个字符是数组里的元素,再用reverse()方法反转数组里的元素,再用join方法将数组里的元素通过''拼接转换成字符串,实现反转字符串的功能
+                    return this.msg.split('').reverse().join('');
+                },
+                // 计算属性有缓存功能,只有在变量num发生变化时才会重新执行函数add2,否则都返回第一次执行的结果,比methods里add1方法执行效率高
+                add2: function() {
+                    console.log('有缓存,只要num变量的值不变,调用多少次都只执行一次函数');
+                    var res2 = 0;
+                    for (var i = 0; i <= this.num; i++) {
+                        res2 += i;
+                    }
+                    return res2;
+                },
+
+                // 用计算属性来实现监听数据同步变化,处理简单的数据同步,计算属性比侦听器简单,处理异步数据和庞大的数据监听,得用侦听器实现
+                fName: function() {
+                    return this.firstName + this.lastName;
+                }
+            },
+            // 用watch属性定义侦听器,属性值是个对象
+            watch: {
+                // 侦听器名要和data里要监听的数据变量名一样,值是个函数,函数必需有一个参数val,来接收firstName变量的最新值
+                firstName: function(val) {
+                    // 这里将val接收的input里用户输入的最新的姓和名做字符串拼接,再赋值给fullName变量显示到页面上,能实现输入内容和显示内容同步变化
+                    this.fullName = val + this.lastName;
+                },
+                lastName: function(val) {
+                    this.fullName = this.firstName + val;
+                }
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>

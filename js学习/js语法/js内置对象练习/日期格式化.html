@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 格式化日期,这个函数的主要功能就是把第一个参数的日期对象里获取到的年月日时分秒等,替换成第二个参数的格式,用repalce()把第二个参数对应的字母比如yyyy替换成2020,MM替换成10等..
+        function dateFormat(date, format) {
+            // 别人写的这里的if代码到现在都不知道干嘛用的,里面的正则也不知道匹配啥的????
+            if (typeof date === 'string') {
+                var mts = date.match(/(\/Date\((\d+)\)\/)/);
+                if (mts && mts.length >= 3) {
+                    date = parseInt(mts[2]);
+                }
+            }
+            // 保险起见,将用户传入的第一个参数,再转换一次,转换成时间对象,这里要求用户传入的参数格式必需是new Date()规定的那几种传参形式,否则返回Invalid Date,导致最终函数执行if (!date || date.toUTCString() == 'Invalid Date')返回'';
+            date = new Date(date);
+            // toUTCString()将一个时间对象转换成世界时间格式的字符串,这里判断date日期对象是否存在或返回Invalid Date无效的时间,如果是,return一个空字符串;
+            if (!date || date.toUTCString() == 'Invalid Date') {
+                return '';
+            }
+            var map = {
+                'M': date.getMonth() + 1, //获取时间对象里的月份,国外0-11月,国内1-12月,所以国内要正常显示需要+1
+                'd': date.getDate(), //获取日
+                'h': date.getHours(), //获取时
+                'm': date.getMinutes(), //获取分
+                's': date.getSeconds(), //获取秒
+                'q': Math.floor((date.getMonth() + 3) / 3), //获取季度,当前获取到的月份+3个月是一季,再向下取整除以3得到当前是第几个季度
+                'S': date.getMilliseconds() //获取毫秒                   
+            };
+            // replace()方法是替换字符串中字符的方法,用第二个参数的内容,来替换第一个参数匹配到的内容,第二个参数传个回调函数,回调函数的第一个参数是replace()第一个参数正则表达式匹配到的内容,第二个参数是捕获到的字符
+            format = format.replace(/([yMdhmsqS])+/g, function(all, t) {
+                // v变量接收的是map对象里t参数存的值,只有map对象里有的属性,才符合判断条件v !== undefined,才执行和v变量有关的代码,map里没有正则中的y字符,所以从第二次执行回调函数才会触发这个if控制的代码执行v变量相关的代码,参数t存的值是正则字符集中的M,M是获取月份,所以v变量的值是得到的月份,比如10月,值是数字类型;
+                var v = map[t];
+                if (v !== undefined) {
+                    // 这里主要功能是处理月日时分秒如果是1位数,就在前面补个0,
+                    // all参数接收的是用户传入的yyyy-MM-dd字符串,每次执行回调函数匹配正则字符集[]中的一个字符,第一次执行回调函数匹配y赋值给参数t,yyyy赋值给all,第二次执行匹配 M赋值给t, MM赋值给all,直到整个正则中的内容匹配完,停止调用这个回调函数,这里写>1主要是过滤format接收到的单个字符,比如季度,只传个S,而不是传SS,单个字符是不需要执个if里的代码的;
+                    if (all.length > 1) {
+                        //这里all.length是大于1的,给v存的值前面补个0,也顺便将数字类型的值转换成了字符串类型,例如10补个0,变成了'010';
+                        v = '0' + v;
+                        // 这里用substring()截取字符串,3位数的计算的结果是从索引1开始截取,所以前面v存的值补的0会被截掉,最终得到字符串类型的'10',但如果是1位数,比如3,v变量的长度就是0,2-2=0计算结果就是从0开始截取,最终得到'03',之所以不把y写到map对象里,是因为年是4位的,加0后是5位长度,substring()计算后无法准确截取字符串,所以单独用下面的else if判断
+                        v = v.substring(v.length - 2);
+                    }
+                    // 返回v存的字符串值
+                    return v;
+                } else if (t === 'y') { //这个是处理不在map对象里的正则字符集里的y字符,也就是年
+                    // 这里是获取年,date.getFullYear()返回的是数值,所以+''转换成字符串,年的长度最长是4位数,参数all接收的是格式化年的字符串yyyy,长度是4,4-4就是0,substring(0)从下标0开始截取字符串到结束,返回截取的这个字符串;
+                    return (date.getFullYear() + '').substring(4 - all.length);
+                }
+                // 返回获取到的年
+                return all;
+            });
+            // 因为返回的是format,所以用户传的format实参是什么格式,返回的就是什么格式,整个函数的功能是传的字母替换成对应的日期值,例如dd替换成11日;
+            return format;
+        }
+
+
+        // 调用函数,不知道第一个参数传什么样的值,才能触发var mts = date.match(/(\/Date\((\d+)\)\/)/);这行代码,得到这个正则的结果,我都不知道这个正则写在函数里是什么作用
+        var ti = new Date();
+        var a = dateFormat(ti, 'yyyy-MM-dd hh:mm:ss q S')
+        document.write(a);
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

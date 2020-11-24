@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <!-- 调用过滤器,给过滤器传第二个参数的实参 -->
+        <span>{{time | fo('yyyy-MM-dd hh:mm:ss')}}</span>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var v = new Vue({
+            el: 'div',
+            data: {
+                // time: new Date(), //创建一个当前日期对象
+                time: 111111111111, //数据传毫秒也行,都会被函数里的new Date()转换成本地时间格式
+            },
+
+            // 定义局部过滤器
+            filters: {
+                // 过滤器除了第一个必需参数,还可以传其它参数,这里第二个参数接收的是html标签调用过滤器时传的参数
+                fo: function(val, val2) {
+                    // 封装一个格式化日期的函数
+                    function dateFormat(date, format) {
+                        var date = new Date(date);
+                        if (!date || date.toUTCString() == 'Invalid Date') {
+                            return '';
+                        }
+                        var map = {
+                            'M': date.getMonth() + 1,
+                            'd': date.getDate(),
+                            'h': date.getHours(),
+                            'm': date.getMinutes(),
+                            's': date.getSeconds(),
+                            'q': Math.floor((date.getMonth() + 3) / 3), //获取当前季度
+                            'S': date.getMilliseconds() //获取当前毫秒
+                        };
+                        format = format.replace(/([yMdhmsqS])+/g, function(all, t) {
+                            var v = map[t];
+                            if (v !== undefined) {
+                                if (all.length > 1) {
+                                    v = '0' + v;
+                                    v = v.substring(v.length - 2);
+                                }
+                                return v;
+                            } else if (t === 'y') {
+                                return (date.getFullYear() + '').substring(4 - all.length);
+                            }
+                            return all;
+                        })
+                        return format;
+                    }
+
+                    // 过滤器里调用上面封装的格式化日期的函数,将过滤器的参数作为实参,传给格式化日期的函数,再返回这个格式化日期函数的执行结果给调用过滤器函数的html标签                 
+                    return dateFormat(val, val2);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

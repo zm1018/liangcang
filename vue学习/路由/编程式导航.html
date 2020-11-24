@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <script src="vue-router.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- 演示不用<router-link>组件,写普通标签实现路由跳转,在普通标签绑定的事件函数里调用$router属性,vue给每个组件都默认添加了一个$router属性,这个属性获取的是router实例对象;
+        整个路由管理的实现过程除了把<router-link>换成普通标签,to属性换成事件函数里$router.push(),其它步骤都一样,
+        -->
+        <!-- 首页<router-link>标签换成了普通html元素标签,to属性的跳转功能要去事件函数里调用$router对象实现 -->
+        <button @click="btnHome">首页,不用router-link组件,写普通标签实现路由跳转</button>
+        <!-- replace属性是不产生历史记录,和 this.$router.replace()或 history.replaceState()方法作用一样 -->
+        <router-link to="/list" replace>列表页</router-link>
+        <router-view></router-view>
+
+    </div>
+
+
+    <script>
+        const home = {
+            template: `
+                <div>
+                    <h1>我是首页组件</h1>
+                    <button @click="goBack1">跳转到列表页</button>
+                </div>
+            `,
+            methods: {
+                goBack1() {
+                    // 点击按钮从首页跳转到列表页
+                    this.$router.push('/list');
+                }
+            }
+        }
+        const list = {
+            template: `
+                <div>
+                    <h1>我是列表页组件</h1>
+                    <button @click="goBack2">后退到首页</button>
+                </div>
+            `,
+            methods: {
+                goBack2() {
+                    // $router.go()实现历史记录的前进和后退
+                    this.$router.go(-1);
+                }
+            }
+        }
+
+        const router = new VueRouter({
+            routes: [
+                // 演示不用<router-link>组件,写普通标签实现路由跳转,这里写法不变
+                // 这个是命名路由,多一个name属性,也就是给这个路由取个名字,<router-link>或普通标签使用的时候可以用名字匹配,不再用path匹配
+                {
+                    path: '/home/:id', //动态路由接收router.push()里params属性里id的值
+                    component: home,
+                    name: 'h1' //这个路由的名字是h1,名字可以随便取
+                },
+
+                //这个是普通路由
+                {
+                    path: '/list',
+                    component: list
+                }
+            ]
+        })
+        const vm = new Vue({
+            el: '#app',
+            // 在vue实例里挂载路由实例对象
+            router,
+            methods: {
+                btnHome() {
+                    // 普通路由的写法:
+                    // push()方法等价于<router-link>组件的to属性,会产生历史记录
+                    // this.$router.push('/home'); //传hash地址的写法
+
+                    // push()方法的参数传个对象,有3种写法:
+                    // this.$router.push({ //对象里是path属性,但不知道动态参数怎么传
+                    //     path: '/home/333', //这个path值好像会替换路由配置对象里的path值
+                    // });
+                    // 对象里写查询参数query属性:
+                    // this.$router.push({
+                    //     path: '/home',
+                    //     query: { //这个query属性的值会通过?拼接在url后面
+                    //         age: 18,
+                    //         uname: 'tom'
+                    //     }
+                    // });
+                    //命名路由的写法:
+                    // 对象里面写的是在路由配置对象里的name属性和属性值,如果要设置动态参数,写params:{参数1:值}来设置
+                    this.$router.push({ //传个对象,对象里是name属性
+                        name: 'h1', //给这个路由取名字
+                        params: { //给这个路由动态传参
+                            id: 666
+                        },
+                        query: { //这个query属性的值会通过?拼接在url后面
+                            age: 18,
+                            uname: 'tom'
+                        }
+                    });
+
+
+                    // 或者调用replace()方法,等价于<router-link>组件的replace属性,不会产生历史记录
+                    // this.$router.replace('/home');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -123,6 +123,12 @@ document表示从html标签开始到html标签结束的全部内容,包含全局
         增:
             createElement('标签名')
                 创建新的元素节点;
+                参数3个:
+                    1.字符串类型(必需参数,不能不传),要创建的标签名,例如:'div'
+                    2.对象类型,这个要创建的标签的属性,例如:{id:'box'},
+                    3.数组类型,这个要创建的标签间的内容,例如:['hello'],
+                        数组里还可以传createElement()继续创建元素,
+                        例如:['hello',createElement('button',['点我下载'])]这个button元素就会被创建在div元素里面,是div的子元素;
                 格式:document.createElement('标签名');
                 返回值:    
                     新创建的这个元素节点;
@@ -339,10 +345,13 @@ document表示从html标签开始到html标签结束的全部内容,包含全局
                 unload 页面解构时触发(刷新/关闭/跳转),IE浏览器生效,其它浏览器都不兼容
                 scroll 页面滚动(滚动条)时触发
                 resize 窗口大小发生变化(拉伸/缩放)时触发
+                hashchange 只要哈希值变化就会触发,哈希值就是锚点,是url的#开始的部分
+                    这个事件监听的hash值可以通过location.hash获取到元素的hash值
 
             表单事件：
                 focus 获取光标焦点
                 blur 失去光标焦点
+                input 在用户向input框输入内容时触发。该事件在 <input> 或 <textarea> 元素的值发生改变时触发。但从输入框的下拉菜单的提示信息中选值时不会触发,会失效;
                 change 当输入框中的文本进行修改,并且失去焦点的时候触发;
                 select 当输入框种的文本内容被选中的时候触发
                 必需添加在form元素上,也就是用form元素调用:

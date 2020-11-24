@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 使用打包后生成的新js文件,这个js文件里的语法是浏览器支持的,可以直接执行的语法,
+    用了vue模块后,在这里引入js文件就报找不到 #app这个模板的错,解决方法:把引入js文件写到body标签里面最下边 -->
+    <!-- <script src="dist/main.js"></script> -->
+</head>
+
+<body>
+
+    <h1>演示的是webpack打包工具</h1>
+
+    <!-- 演示处理图片打包转换的url-loader和file-loader -->
+    <div id="img4">演示webpack打包图片,用url-loader把小于设置里limit限制的图片转换成base64字符串,嵌入到打包后的js文件里</div>
+    <br>
+    <div id="img9">演示webpack打包图片,用url-loader和file-loader把大于设置里limit限制的图片当成一个模块文件进行打包,会在dist文件夹里自动生成图片文件,打包后的js引用的是这个图片文件路径</div>
+
+    <!-- 这是给直接在js文件里写vue代码的vue模块用的 -->
+    <!-- <div id="app">
+        <h2>这是在node里安装的vue演示:{{msg}}</h2>
+        <button @click="f1">点击</button>
+    </div> -->
+
+    <!-- 这是给.vue单文件的vue和vue-router模块用的
+    .vue文件里的template模板里的写的标签会替换这个标签,并把模板里的内容都渲染到这个位置 -->
+    <div id="app"></div>
+
+    <!-- webpack里用vue模块,要把引入js文件写在这里,才能正常渲染,
+    因为webpack打包时需要使用第三方插件自动生成个HTML文件,它会自动引入js文件,所以我写的原文件这里就要把引入js的代码注释掉,避免把这个html当成模板自动生成一个一样的html文件时,引入2次这个js文件 -->
+    <!-- <script src="dist/main.js"></script> -->
+</body>
+
+</html>

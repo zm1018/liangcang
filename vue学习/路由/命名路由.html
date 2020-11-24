@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <script src="vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 命名路由to属性一定要动态绑定,属性值传一个对象,
+            对象里第一个属性是name属性,属性值是在路由配置对象里定义的此路由配置对象的名字,
+            如果路由配置对象里path绑定了动态参数,要写第二个属性params,属性值是个对象,对象里写路由配置对象里path的动态参数名,值是动态参数值 -->
+        <router-link :to="{name:'haha',params:{id:888}}">用户1</router-link>
+        <router-link to="/user/666">用户2</router-link>
+        <router-view></router-view>
+        <h1></h1>
+    </div>
+    <script>
+        const user = {
+            props: ['id'],
+            template: '<h1>获取的用户id是:{{id}}</h1>'
+        }
+        const router = new VueRouter({
+            routes: [{
+                path: '/user/:id',
+                props: true,
+                name: 'haha',
+                component: user,
+                // 这是命名路由,通过name属性实现的,属性值就是名字,可以自己随便取,这个配置对象的名字叫haha
+
+            }]
+        })
+        const vm = new Vue({
+            el: '#app',
+            router,
+        });
+    </script>
+</body>
+
+</html>

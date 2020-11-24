@@ -1,0 +1,112 @@
+<!-- 
+    fetch数据请求是W3C制定的数据请求标准库,比ajax的xml好用,是基于promise来使用的,新出不久,现在浏览器支持还比较差;
+    采用链式调用,调用2次then(),第一次拿到一个请求头信息,里面有json对象,所以第一次要返回这个json对象,这个返回值json对象再第二次调用then(),拿到的就是一个有具体的数据的对象;
+    Fetch请求后台时，返回时一个Promise对象。对象支持解析返回数据的方法有：arrayBuffer()、blob()、formData()、json()、text()。
+
+    发送请求:
+        fetch('url地址').then(data=>{
+            return data.text(); //这个.text()是固定写法,返回的是一个promise实例对象,用于获取后台返回的数据;
+        }).then(res=>{
+            这里拿到的是最终的数据,要处理数据的代码写这里;
+        });
+
+   下载数据语法: 
+        如果调用的是.text(),那要在第二个then()里写JSON.parse()将数据转换成对象或数组数据类型,再取值;
+        一般从数据库里下载到的数据都是json格式的,所以要调用.json(),会自动将json转换成对象或数组等数据类型,方便取值:
+            fetch('要下载的数据地址').then(箭头函数的参数 => 参数.json()).then(箭头函数的参数 => {处理下载到的数据的代码})
+
+    fetch()常用配置选项,也就是参数:
+        第一个参数,必需:
+            url,可以只写url,也可以传参给后台;
+            url传参时要指定请求方式,如果是RESTful协议的写法,method数有4种值:
+                get和delete的传参写法基本一样,发送请求时不用写键,直接写 '路径/参数值',后台接收时要写键名,没学暂时不会写;
+                post请求一般url后面不写参数,要传的数据写在对象参数的body属性里,并且要设置headers属性,否则body里的数据无法传到后台;
+                put请求一般url后面写/id的值,用来指定修改id为xx的数据,其它都和post提交一样的写法;
+
+        第二个参数是个对象,要不要写主要看请求方式是什么,对象里的常用属性有:
+            method:'post', //请求方式默认值是get,还可以put,delete,
+
+            body属性是发请求时要传给后台的数据,post请求必需要写这个属性,2种写法:
+            body:'键=值&键=值', //form表单格式传数据值是查询字符串,不带?的,
+            body:JSON.stringify({键:'值',键:'值'}), //将对象转换成json格式字符串赋值给body
+
+            //headers设置请求头,是post请求必需要写的属性,否则body里的数据无法传到后台,可以写成form表单格式的,也可以写成json格式的:
+            headers:{'Content-type':'application/x-www-form-urlencoded'},//form表单格式
+            headers:{'Content-type':'application/json'} //json格式的
+
+            mode:'cros', //控制是否允许跨域,3种值:
+                same-origin（同源请求）,写这个值时跨域求情会报错;
+                no-cors（默认）可以请求其他域的脚本、图片和其他资源，但是不能访问response里面的属性，
+                cros（允许跨域请求），可以获取第三方数据，前提是所访问的服务允许跨域访问。
+
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 用fetch()来发送请求,比ajax简单好用,请求是异步的
+        /* fetch('1.txt').then(data => {
+            console.log(data); //第一个then()拿到的是一个promise实例对象
+            return data.text() //将拿到的这个json对象通过text()方法,把里面我们需要的数据拿出来,传给下一个then()
+        }).then(data => console.log(data)); */
+
+        /* 演示fetch()的参数,第二个参数对象里不指定method属性的值,默认是get请求,
+        发送get请求时携带参数传给后台,2种写法, 第1种参数,是RESTful格式的url,暂时没学,不会写,第2是种普通的url拼接查询字符串,例如: */
+        fetch('fetch发送get请求.php?username=jack&age=18&password=888', {
+            method: 'get', //默认get请求,所以这第二个参数对象可以省略不写,我写是为了演示书写格式;
+        }).then(data => data.text()).then(data => console.log(data));
+
+
+        // 发送post请求,有2种方式,如下:
+        // 发送form表单字符串格式的数据,将参数传给后台,必需写第二个参数并设置这3个属性:
+        fetch('fetch发送post请求1.php', { //fetch()的第二个参数是个对象
+            method: 'post', //请求方式
+            body: 'username=xiaohong&age=20&password=666', //post请求传给后台的数据
+            headers: {
+                'Content-type': 'application-x-www-form-urlencoded' //post请求的请求头
+            }
+        }).then(data => data.text()).then(data => console.log(data));
+
+
+        // 发送json字符串格式的数据,写法:
+        fetch('fetch发送post请求2.php', {
+            method: 'post',
+            //这里要写成对象,再转换成json字符串
+            body: JSON.stringify({
+                username: 'tom',
+                age: 16,
+                password: 333
+            }),
+            //请求头写成json类型
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }).then(d => {
+            return d.text() //后台返回的是普通字符串,所以这里不需要调用json()
+        }).then(d => console.log(d)).catch(err => console.log(err));
+
+
+        // 发送put请求写法,也是2种写法,就把method属性的值换成put,其它和post提交的2种写法一样不变,php文件里的代码也不变:
+        fetch('fetch发送post请求2.php', {
+            method: 'put', //这里改成put就行了
+            body: JSON.stringify({
+                username: 'jerry',
+                age: 16,
+                password: 333
+            }),
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }).then(d => d.text()).then(d => console.log(d)).catch(err => console.log(err))
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

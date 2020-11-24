@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- vue.js也是第三方框架,也应该封装在一个文件里,而不是直接引入,懒得封装,所以这里还是直接引入 -->
+    <script src="vue.js"></script>
+    <!-- 引入自己封装发送axios请求的js文件 -->
+    <script src="封装的axios请求.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h3>下载到的数据是:{{msg}}</h3>
+        <button @click="handleClick()">点击用axios下载数据</button>
+    </div>
+
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '', //这个变量稍后用于接收异步请求返回的数据
+            },
+            methods: {
+                handleClick() {
+                    // 调用自己封装的函数发送axios请求;
+                    myaxios({
+                            //要请求的url地址
+                            url: '../js学习/js语法/交互/1.txt',
+                            //请求成功调用then()
+                        }).then(res => {
+                            //将then()的参数.data获取到的服务器返回的数据赋值给vue的data里的变量msg,
+                            this.msg = res.data;
+                            console.log(this.msg);
+                        }).catch(err => console.log(err)) //catch()接收请求失败的信息
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

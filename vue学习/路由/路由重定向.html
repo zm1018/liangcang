@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <script src="vue-router.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <router-link to="/home">首页</router-link>
+        <router-link to="/list">列表页</router-link>
+        <router-view></router-view>
+    </div>
+
+
+    <script>
+        const home = {
+            template: '<h1>我是首页组件</h1>'
+        }
+        const list = {
+            template: '<h1>我是列表页组件</h1>'
+        }
+
+        const router = new VueRouter({
+            routes: [
+                // 演示路由重定向,访问a地址时,直接跳转到redirect属性指定的b地址:
+                {
+                    path: '', //用户打开页面的根路径
+                    redirect: '/home' //重定向到首页路径,用户打开页面就显示首页组件的内容
+                }, {
+                    path: '/home',
+                    component: home
+                }, {
+                    path: '/list',
+                    component: list
+                }
+            ]
+        })
+        const vm = new Vue({
+            el: '#app',
+            // 在vue实例里挂载路由实例对象
+            router,
+        });
+    </script>
+</body>
+
+</html>

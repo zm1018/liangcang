@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        li {
+            display: inline-block;
+            width: 50px;
+            height: 30px;
+            margin-right: 50px;
+            border: 1px solid #000000;
+        }
+        
+        #app div {
+            display: none;
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+        }
+        
+        #app .tab {
+            background: orange;
+        }
+        
+        #app .active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 这种是声明式编程,就是html结构和显示出来的效果基本一致 -->
+    <div id="app">
+        <ul>
+            <!-- 给li标签添加背景色样式,用三目运算符,当当前选项卡的索引和遍历的索引相等时,将橘色背景色样式添加给li标签,不相等就添加个空字符串 -->
+            <!-- 绑定点击事件,通过传参的写法,将遍历时的index作为实参传给事件函数btn的形参index,再赋值给选项卡的索引变量,来改变选项卡到索引值,实现给li标签和div标签添加或删除active和tab样式-->
+            <li :key="item.id" v-for="(item,index) in list" v-text="item.title" :class="currentIndex==index?'tab':''" @click="btn(index)"></li>
+        </ul>
+        <!-- 如果当前遍历的索引等于data里的currentIndex变量的索引值,就给div添加个active样式,让隐藏的div显示 -->
+        <div :class="currentIndex==index?'active':''" :key="item.id" v-for="(item,index) in list" v-text="item.text"></div>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                // 选项卡的初始索引
+                currentIndex: 0,
+                // 把li标签内容和div标签的内容都通过列表里的对象来存储,再去标签里遍历这个列表,动态创建li和div标签,并将对象里的数据渲染到标签间
+                list: [{
+                    id: 1,
+                    title: '香蕉',
+                    text: '这是香蕉'
+                }, {
+                    id: 2,
+                    title: '苹果',
+                    text: '这是苹果'
+                }, {
+                    id: 3,
+                    title: '橘子',
+                    text: '这是橘子'
+                }]
+            },
+            methods: {
+                // 这里形参接收的是事件绑定时传的实参,传的是for循环遍历时的索引
+                btn: function(index) {
+                    // 这里主要实现给谁添加样式的功能,先将for循环遍历时当前li标签的索引赋值给对应的div标签,实现给相同索引的li和div动态添加样式
+                    this.currentIndex = index;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

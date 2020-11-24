@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <!-- 检测input框里用户输入的内容的变化,将输入内容通过myText变量传给后台的事件函数search,在search函数里通过数组的indexOf方法,查出数组中包含用户输入的字符的元素,通过数组的filter方法将indexOf方法查出的符合条件的元素都过滤出来,存到新数组里,再将新数组赋值给复制的数组,再遍历复制的数组,实现输入什么内容显示和什么内容相关的数据 -->
+        <input type="text" v-model="myText" @input="search1()">
+        <!-- 这里遍历的是复制的数组 -->
+        <p v-for="data in listCopy">绑定普通函数将搜索内容显示到页面,演示:{{data}}</p>
+        <br>
+
+        <!-- 用计算属性实现输入什么内容显示和什么内容相关的数据,用户输入内容,myText变量值发生变化,触发计算属性函数,执行计算属性函数,将处理后的数据存到新数组作为函数的返回值,再遍历这个函数的返回值,这里不会对原数组的数据产生任何影响 -->
+        <input type="text" v-model="myText">
+        <!-- 遍历计算属性返回的新数组,将新数组的数据填充到页面 -->
+        <li v-for="item in search">使用计算属性将搜索内容显示到页面,演示:{{item}}</li>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: 'div',
+            data: {
+                // 动态绑定此属性,获取用户输入的内容,初始值是空字符串
+                myText: '',
+                // 原生js写法,这个数组必需复制一份,这样每次filter过滤操作的都是原数组,再将过滤后的新数组赋值给复制的数组,改的就是复制数组,不会导致原数组数据被修改丢失,再次调用函数执行filter方法时没有数据可以过滤;
+                listCopy: ['aaa', 'bbb', 'ccc', 'abb', 'cdd', 'vcd'],
+                // 根据用户输入的内容,将列表中含有和用户输入内容中相同字符的元素显示到页面,
+                list: ['aaa', 'bbb', 'ccc', 'abb', 'cdd', 'vcd'],
+            },
+            // 普通函数和计算属性的区别
+            methods: {
+                // 普通函数过滤后,只有将新数组赋值给原数组一种方法可以改变页面上的数据更新,这会改变原数组,但filter方法必须要用原数组里的数据,过滤后的新数组赋值会导致原数组数据更新,下次调用此函数时,无法再次操作原数组的所有数据,
+                search1: function() {
+                    var newArr = this.list.filter(item => item.indexOf(this.myText) > -1);
+                    // 这里将新数组赋值给复制的数组,改变的是复制的数组,不会改变原数组,这样能保证每次filter方法操作的还是原数组
+                    this.listCopy = newArr;
+                }
+            },
+            // 用计算属性检测input框输入的数据变化,在数据有变化时会触发此函数
+            computed: {
+                search() {
+                    return newList = this.list.filter(item => item.indexOf(this.myText) > -1);
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
