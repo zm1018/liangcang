@@ -362,7 +362,7 @@ vue常用特性:
             3.beforeMount 在挂载开始之前被调用;
             4.mounted html的标签元素被新创建的vue实例绑定的el替换,并挂载到实例上之后被调用,也就是模板都渲染好了,可以往模板里填充数据库里的数据的时候被调用,这个钩子函数比较常用;
             5.beforeUpdate 数据更新时被调用,发生在虚拟DOM打补丁之前;
-            6.updated 由于数据更改导致的虚拟DOM重新渲染和打补丁,在这之后被调用;
+            6.updated 界面发生刷新时被调用,由于数据更改导致的虚拟DOM重新渲染和打补丁,在这之后被调用;
             7.beforeDestroy vue实例对象销毁之前调用;
             8.destroyed 实例对象销毁之后调用;
             语法:
@@ -618,8 +618,14 @@ vue常用特性:
                 template:`<div>
                     <slot></slot> //通过插槽接收后,就等于把<span></span>写这位置了
                 </div>`
-
-        具名插槽:
+        
+        
+    具名插槽:
+        vue2.6版本开始具名插槽就废弃了<div slot="插槽名"></div>这种写法,
+        改成了插槽名写在<template v-slot:item-text></template>标签上,里面可以写一个或多个dom元素,属性后面是:不是=,而且属性值不能有空格和'',可以把v-slot简写成#号,如果是没名字的插槽,简写有参数要传时,#后面必需带上插槽默认名字default,不能直接写#={};
+            <template v-slot:item-text></template>
+            <template #item-text="{ 要传的参数 }"></template>
+        下面是vue2.6以下的版本的具名插槽写法:
             就是具有名字的插槽,slot标签里写name属性,给这个插槽取名字,
             在调用组件时,组件里面写普通标签,普通标签写slot属性,值就是插槽名,这样slot标签获取组件标签间内容时,会先根据插槽名进行匹配,再将组件间的内容填充到对应的模板标签里,渲染到页面;
             只匹配一个标签,将slot属性="插槽名"直接写在标签上,
@@ -658,7 +664,7 @@ vue常用特性:
                 </组件名>
 
         作用域插槽:
-            应用场景:父组件可以对子组件的内容进行加工和处理;
+            应用场景:父组件可以对子组件的传给父组件的数据内容进行加工和处理;
             在子组件模板里写插槽,在插槽上写一个属性,属性名自定义,值是子组件获取到的父组件的数据变量名,动态绑定这个属性,演示:
                 props:['父数据']
                 template:`
@@ -675,7 +681,41 @@ vue常用特性:
                         <strong>{{自定义变量名.插槽的自定义属性名}}</strong> //这是用strong标签给显示的数据加粗
                     </template>
                 </组件>
-                
+            vue2.6以上版本这样写:
+                <组件名>
+                    <template v-slot:default="自定义变量名">
+                        <strong>{{自定义变量名.插槽的自定义属性名}}</strong> //这是用strong标签给显示的数据加粗
+                    </template>
+                </组件>
+
+        独占默认插槽的缩写语法:
+            当最终组件里要展示的内容只有默认插槽替换后的内容时，组件的标签才可以被当作插槽的模板来使用。这样我们就可以把 v-slot 直接用在组件上：
+                <组件名 v-slot:default="slotProps">
+                {{ slotProps.user.firstName }}
+                </组件>
+            简写,不带默认插槽名default:
+                <current-user v-slot="slotProps">
+                {{ slotProps.user.firstName }}
+                </current-user>
+            接收参数还可以简写成 {} 解构的写法:
+                <current-user v-slot={user}>
+                {{ user.firstName }}
+                </current-user>
+            或把接收到的参数重命名:
+                <current-user v-slot={user:uname}>
+                {{ uname.firstName }}
+                </current-user>
+            注意默认插槽的缩写语法不能和具名插槽混用，因为它会导致作用域不明确：
+              
+               
+        2.6.0 新增动态指令参数也可以用在 v-slot 上，来定义动态的插槽名：
+            <组件名>
+            <template v-slot:[dynamicSlotName]>
+                ...
+            </template>
+            </组件>
+
+            
         动态组件:
             在调用子组件时,不写子组件标签,而是写vue提供的<component>标签,通过动态绑定此标签的is属性来动态控制加载哪个子组件,is属性后面的值可以直接是某个子组件名,也可以是个定义在父组件data里的变量,变量的值是不同的子组件名,
             is属性的值从原来的值改变成新的值,新的子组件就被加载,原来加载的子组件被销毁,

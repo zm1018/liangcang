@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <!-- 天气查询案例 -->
+    <script>
+        function download(data) {
+            var t1 = document.getElementById('t1');
+            var info = document.getElementById('info');
+            info.innerHTML = `城市:${data.city}, pm2.5:${data.pm25}`;
+            // 实参是个对象格式,里面的weather这个键里保存的是天气的信息,所以将这个键的值获取到,是一个数组格式,数组里面的元素是对象
+            var arr = data.weather;
+            var str = ``;
+            for (var i = 0; i < arr.length; i++) {
+                str += `<tr>
+                    <td>${arr[i].date}</td>
+                    <td>${arr[i].temp}</td>
+                    <td>${arr[i].wind}</td>
+                    <td>${arr[i].weather}</td>
+                </tr>`;
+            }
+            t1.innerHTML = str;
+        }
+    </script>
+    <script>
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            var search = document.getElementById('search');
+            btn.onclick = function() {
+                if (!search.value) {
+                    alert('请输入城市名字');
+                } else {
+                    // 点击按钮时创建script标签下载数据
+                    var script = document.createElement('script');
+                    // 城市是获取input框里用户输入的内容,callback 是调用自己声明的下载函数
+                    script.src = `https://api.asilu.com/weather/?city=${search.value}&callback=download`;
+                    // 将script标签插入到body里
+                    document.body.appendChild(script);
+                }
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <!-- 用bootstrap框架做的css布局 -->
+    <!-- 响应式布局 -->
+    <div class="container">
+        <!-- 卡,也就是面板样式 -->
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4>天气查询</h4>
+                <span id="info"></span>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="city">城市名字:</label>
+                    <input type="text" id="search" class="form-control">
+                </div>
+                <button class="btn btn-primary form-control" id="btn">查询该城市天气</button>
+            </div>
+            <div class="card-footer">
+                <table class="table table-bordered table-hover" id="tab">
+
+                    <thead>
+                        <tr>
+                            <td>日期</td>
+                            <td>温度</td>
+                            <td>风力</td>
+                            <td>天气情况</td>
+                        </tr>
+                    </thead>
+                    <tbody id="t1"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

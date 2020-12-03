@@ -17,7 +17,7 @@
 /*! runtime requirements: __webpack_require__, __webpack_exports__, module */
 /***/ ((module, exports, __webpack_require__) => {
 
-eval("var __WEBPACK_AMD_DEFINE_RESULT__;// 用AMD模块化语法导出这2个属性和方法\r\n\r\n!(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {\r\n    let a = 3;\r\n\r\n    function f1() {\r\n        console.log('我是AMD模块化导出的方法');\r\n    }\r\n\r\n    // return对象里写的是把这2个属性和方法对外暴露\r\n    return {\r\n        f1: f1,\r\n        a: a\r\n    }\r\n}).call(exports, __webpack_require__, exports, module),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))\n\n//# sourceURL=webpack://my_web/./src/js/3.js?");
+eval("var __WEBPACK_AMD_DEFINE_RESULT__;// 用AMD模块化语法导出这2个属性和方法,会在打包后的dist文件夹里自动生成一个单独的js文件\r\n\r\n!(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {\r\n    let a = 3;\r\n\r\n    function f1() {\r\n        console.log('我是AMD模块化导出的方法');\r\n    }\r\n\r\n    // return对象里写的是把这2个属性和方法对外暴露\r\n    return {\r\n        f1: f1,\r\n        a: a\r\n    }\r\n}).call(exports, __webpack_require__, exports, module),\n\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))\n\n//# sourceURL=webpack://my_web/./src/js/3.js?");
 
 /***/ })
 

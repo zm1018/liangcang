@@ -83,15 +83,17 @@ module.exports = {
         ]
     },
 
-    // resolve属性是配置要解析的东西,比如引入文件时省略后缀名等配置, 这是主要是写vue包要用的配置,因为vue默认用的是不支持模板语法的那个版本,所以打包后无法解析模板语法,导致页面上渲染不出来任何写在vue模板里的内容,这里把vue要用的版本文件改成另一个支持模板语法的版本文件的路径;
+    // resolve属性是配置要解析的东西,比如引入文件时省略后缀名等配置, 这里主要是写vue包要用的配置,因为vue默认用的是不支持模板语法的那个版本,所以打包后无法解析模板语法,导致页面上渲染不出来任何写在vue模板里的内容,这里把vue要用的版本文件改成另一个支持模板语法的版本文件的路径;
     resolve: {
         // 给支持模板语法的版本文件取个别名,要不然每次写一大串路径,太长了
         alias: {
             // 这是在本地安装vue后要写的路径
             // 'vue$': 'vue/dist/vue.js'
             // 这是在全局安装vue后要写的路径,不然它会在 '模块开发工具webpack'这个项目文件夹里找vue包,我又没安装在本地,肯定是找不到的,会报不支持模板的错;
-            'vue$': 'C:/Users/Administrator/AppData/Roaming/npm/node_modules/vue/dist/vue.js'
-        }
+            'vue$': 'C:/Users/Administrator/AppData/Roaming/npm/node_modules/vue/dist/vue.js',
+        },
+        // 写在这个数组里的后缀,在导入这种后缀的文件时都可以省略后缀不写了
+        extensions: ['js', '.vue', '.json', '.css']
     },
 
     // plugins属性是配置插件的

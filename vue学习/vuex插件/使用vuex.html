@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <!-- 引入vuex插件,要在vue文件后面引入,因为它也依赖vue.js -->
+    <script src="https://unpkg.com/vuex@3.6.0/dist/vuex.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 使用定义在vuex里的变量:
+          vue实例根组件里使用vuex里定义的变量,调用vuex的全局变量$store.state属性来使用我们定义在state对象里的变量名 -->
+        <h1>{{$store.state.num}}</h1>
+        <h1>{{$store.state.msg}}</h1>
+
+        <!-- 演示使用vuex里定义的变量,是经过getters属性处理过的变量students,把学生里年龄大于20的人显示在这里,但20这个过滤条件在getters属性定义的函数sAge里被写死了,因为sAeg函数的返回值是个准确的值 -->
+        <h3>{{$store.getters.sAge1}}</h3>
+        <!-- 演示通过getters属性定义的函数sAge返回一个函数,在这里调用时传参来解决过滤条件写死的问题 -->
+        <h3>{{$store.getters.sAge2(2)}}</h3>
+
+        <!-- 演示在getters属性里把getters属性作为参数传给下一个函数,再次处理sAge2函数处理过的数据,获取过滤后符合年龄的数据的长度,但getter 的返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了改变才会被重新计算。所以这里执行一次后就不会再执行了,不想让它缓存,暂时不知道怎么解决缓存问题 -->
+        <h3>{{$store.getters.sAgeLength}}</h3>
+
+        <!-- 使用子组件,在子组件的模板里用vuex里定义的变量 -->
+        <home></home>
+    </div>
+    <script>
+        // 创建vuex实例对象,要调用vuex里的store()构造函数来创建
+        const store = new Vuex.Store({
+            // 共用的数据变量定义在这里,所有组件都能通过$store.state.变量名 共用这个变量里,不放到vue实例或各个组件的data,某个组件改了这个变量的值,所有用这个变量的组件里的这个变量值都会自动更新,这里定义的变量值最好不要在用这个变量的各个组件里直接赋值修改,否则谁改的都不知道,万一出错都不好查
+            state: {
+                num: 8,
+                msg: '我是写在vuex里的数据变量,所有组件都可以用这个变量',
+                students: [{
+                    name: 'tom',
+                    age: 28
+                }, {
+                    name: 'jerry',
+                    age: 10
+                }, {
+                    name: 'rose',
+                    age: 23
+                }],
+                info: {
+                    name: '熊大',
+                    age: 3
+                }
+            },
+            // 这是修改变量值的地方,先定义方法,方法里写修改state属性里定义的变量值的,这里修改变量值的方法在各个使用变量的组件里调用,能被浏览器上装的devtools插件跟踪修改记录,谁改的几点改的,改了哪里等...异步操作的代码不能写在mutations里,devtools检测不到修改记录,异步的要去actions属性里提交在mutations里定义的修改函数
+            mutations: {
+                // 定义一个修改变量值的方法,这里定义的函数会默认携带一个参数state,就是上面定义变量的属性state,方法定义好了就可以去各组件里通过调用this.$store.commit('addNum')修改vuex里定义的变量值了
+                addNum(state) {
+                    // 修改num变量的值,每次给num变量加1
+                    state.num++
+                },
+                // mutations属性里定义的函数在调用修改变量时还可以传参,这里只要再设置第二个形参接收调用函数时携带传过来的实参就行了,如果传多个参数可以将对象赋值给变量,再把那个变量传过来,这里演示传个数值过来,实现用户可以按需给state里的变量一次减几
+                subNum(state, num2) {
+                    state.num -= num2
+                },
+                // 演示commit()提交时传一个变量参数,变量值是个对象,点击按钮调用这个addStudent函数来增加学生
+                addStudent(state, obj) {
+                    // 形参接收的就是obj
+                    state.students.push(obj)
+                },
+
+                // 演示commit()提交时传一个对象参数,对象里面变量值是个对象,点击按钮调用这个addStudent2函数来增加学生
+                addStudent2(state, payload) {
+                    // 形参接收的是个{},要获取obj对象得通过 形参.obj才能获取
+                    state.students.push(payload.obj)
+                },
+
+                // 演示给state里定义的变量对象新增一个属性,而且这个属性也要是响应式的,(如果数据要做到响应式,必需在state里提前定义,不能后期直接增加),但用vue提供的几个响应式添加元素的方法就可以,比如push()/set()等
+                updateInfo(state) {
+                    // 这样直接增加属性和属性值,不是响应式的,能增加成功,但使用info变量的地方的数据都不会自动更新
+                    // state.info['address'] = "北京"
+
+                    // 这是响应式的增加,使用info变量的地方的数据都会自动更新
+                    Vue.set(state.info, 'address', '北京')
+                        // 响应式删除属性age,使用info变量的地方的数据都会自动更新
+                    Vue.delete(state.info, 'age')
+                }
+            },
+
+            // 提交有异步操作时在mutations里定义的函数来修改state里定义的变量,这样修改记录才会被devtools插件检测到
+            actions: {
+                // 演示调用时不传参数的异步操作,写个定时器模仿异步操作,发送数据请求,函数的参数context获取的是整个store实例对象,
+                /* updateinfo(context) {
+                    setTimeout(() => {
+                        // 在这里提交在mutations里定义的函数来修改state里定义的变量,再去事件函数里通过this.$store.dispatch('updateinfo')调用在actions这里定义的函数updateinfo
+                        context.commit('updateInfo')
+                    }, 1000);
+                }, */
+
+                // 演示调用时传参数过来的,参数是个大对象,对象里有变量,有函数等,这里定义的函数的参数有2个,context获取的是整个store实例对象,payload获取的是事件函数那里dispatch()传过来的大对象参数
+                /* updateinfo(context, payload) {
+                    setTimeout(() => {
+                        // 在这里提交在mutations里定义的函数来修改state里定义的变量,再去事件函数里通过this.$store.dispatch('updateinfo')调用在actions这里定义的函数updateinfo
+                        context.commit('updateInfo')
+                        // 使用传过来的大对象里写的参数变量
+                        console.log(payload.message);
+                        // 使用传过来的大对象里写的回调函数
+                        payload.success("我是actions里定义的函数调用dispatch()传过来的回调函数success()时传的参数")
+                    }, 1000);
+                }, */
+
+                // 也可以直接在这里返回一个promise实例对象,再去事件函数那里调用.then()来相互传递参数,形参context获取的是整个store实例对象,str形参获取的是事件函数那里dispatch()传过来的字符串
+                updateinfo(context, str) {
+                    // 这个函数的返回值是一个promise实例对象
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            //在这里提交在mutations里定义的函数来修改state里定义的变量,再去事件函数里通过this.$store.dispatch('updateinfo')调用在actions这里定义的函数updateinfo
+                            context.commit('updateInfo')
+                            console.log(payload);
+                            resolve('我是promise实例对象异步请求成功时执行的函数reslove的参数,要传给调用.then()的那个事件函数')
+                        }, 1000);
+                    })
+
+                },
+
+            },
+            // 相当于全局的计算属性,如果state里的数据还需要处理一下再用,就可以在getters属性里定义函数来把变量处理一下,然后各组件使用变量时通过$store.getters.方法名,就能使用处理过的变量,例如:把年龄大于20岁的学生显示到页面
+            getters: {
+                // 自己定义个函数,处理state里定义的变量students,把年龄大于20的过滤出来,使用这个处理过的变量时,通过$store.getters.sAge就行了,sAge不要加()
+                sAge1(state) {
+                    // 这个函数的返回值就是一个准确的值,过滤条件20写死了,如果用户要过滤其它年龄的人,还要来改这里的代码,所以要改成返回一个函数的写法,用户在调用这个函数时可以按需传年龄进来
+                    return state.students.filter(s => s.age > 20)
+                },
+
+                // 改成返回一个函数的写法,让用户动态传过滤条件年龄作为这个函数的参数
+                sAge2(state) {
+                    return age => {
+                        // 过滤条件写成 >age这个参数变量接收的用户调用函数时传来的值,就能实现动态的按用户需求处理students这个变量了
+                        return state.students.filter(s => s.age > age)
+                    }
+                },
+
+                // 把sAge2函数已经处理过一次的数据再进行处理,getters属性里的函数,第一个参数默认是state属性,第二个参数默认是getters属性,所以可以通过getters.sAge2.length获取处理过的符合条件的数据的长度
+                sAgeLength(state, getters) {
+                    // 这个结果会被getters缓存,暂时不知道怎么让它不缓存
+                    return getters.sAge2.length
+                }
+            },
+
+            // 如果上面的state里定义的变量太多,不方便阅读,可以把变量定义在modules里的state里,它会以模块名:{}的方式自动合并到上面的根state里,使用时直接$store.state.模块名.变量名
+            modules: {
+                // 定义个模块A
+                modA: {
+                    state: {
+                        count: 100
+                    },
+                    // 提交mutations里定义的修改变量的函数时,和上面的根mutations属性一样都是commit()提交,用法写法都一样
+                    mutations: {},
+                    // 提交模块里定义的修改函数的
+                    actions: {
+                        // 这里的参数context只能commit()提交模块里的mutations里定义的函数
+                        a1(context) {
+                            // 异步操作代码..
+                            context.commit('函数名')
+                                // 还可以获取根getters和state里定义的函数和变量
+                            context.rootGetters()
+                            context.rootState()
+                        }
+                    },
+                    // 使用getters里定义的处理变量的函数时,和上面的根getters属性一样都是$store.getters.函数名 ,用法写法都一样
+                    getters: {
+                        /* 如果模块里的getters里定义的函数要传参数,可以传3个参数,
+                        1.state,是获取模块里的state里定义的变量,
+                        2.getters,只能获取模块里的getters里定义的所有函数,
+                        3.rootState,获取根state里定义的所有变量
+                         */
+                        add(state, getters, rootState) {}
+                    }
+                },
+                // 定义个模块B,属性值是定义在外面的对象b
+                // modB: b
+            }
+        })
+
+        // 把模块B的属性值对象定义在外面,让vuex的modules属性里代码更简洁
+        /* const b = {
+            state: {
+                count: 50
+            },
+            mutations: {},
+            actions: {},
+            getters: {}
+        } */
+
+
+        // 定义个子组件
+        const home = {
+            template: `
+            <div>
+              <!-- vue子组件里使用vuex里定义的变量 -->
+              <h3>我是在子组件里用vuex里定义的变量:{{$store.state.num}}</h3>
+              <h3>{{$store.state.msg}}</h3>
+              <button @click="add">点击修改vuex里定义的变量num的值+1</button>
+              <!-- 点击按钮让事件函数调用vuex的mutations属性里定义的修改变量的subName函数,给state属性里定义的num变量值按用户传的参数来一次减掉几个数 -->
+              <button @click="sub(3)">点击修改vuex里定义的变量num的值-3</button>
+              <button @click="sub(5)">点击修改vuex里定义的变量num的值-5</button>
+
+              <!-- commit()提交时直接传变量,点击按钮让事件函数调用vuex的mutations属性里定义的修改变量的addStudent函数,给state属性里定义的students变量添加学生 -->
+              <button @click="addStudent">点击修改vuex里定义的变量students的值,添加新的学生</button>
+
+              <!-- commit()提交时传个大对象,点击按钮让事件函数调用vuex的mutations属性里定义的修改变量的addStudent函数,给state属性里定义的students变量添加学生 -->
+              <button @click="addStudent2">点击修改vuex里定义的变量students的值,添加新的学生</button>
+
+               <!-- 演示点击按钮给state里定义的变量对象info增加一个属性和属性值 -->
+               <h3>{{$store.state.info}}</h3>
+               <button @click="upInfo">点击变量对象info增加一个属性和属性值</button>
+            </div>
+          `,
+            // home这个子组件要修改vuex里定义的变量num的值
+            methods: {
+                add() {
+                    // 调用vuex的全局变量$store,用commit()方法来调用在vuex实例里定义的修改变量的函数addNum(),来修改变量num的值,这样修改变量后能在浏览器上的devtools插件里跟踪到修改记录,谁改的什么时间改的
+                    this.$store.commit('addNum')
+                },
+                sub(num2) {
+                    this.$store.commit('subNum', num2)
+                },
+                // 这是定义的事件函数,点击按钮调用vuex的mutations属性里定义的函数来修改state里定义的变量,可以在调用修改变量的函数时携带实参传给定义的修改变量的那个函数
+                addStudent() {
+                    const obj = {
+                            name: 'lili',
+                            age: 32
+                        }
+                        // 这个obj对象作为参数传给vuex的mutations属性里定义的修改变量的函数addStudent,在addStudent2里通过 state.要修改的变量.形参 就能获取到数据
+                    this.$store.commit('addStudent', obj)
+                },
+                // commit()的第2种传参写法,传个对象,vuex的mutations属性里定义的函数的第2个参数接收的会是这里传的整个对象:
+                addStudent2() {
+                    // 这整个{}对象作为参数传给vuex的mutations属性里定义的修改变量的函数addStudent2,在addStudent2里要通过 state.要修改的变量.形参.obj 才能获取到数据
+                    this.$store.commit({
+                        type: 'addStudent',
+                        obj: {
+                            name: 'xiaoming',
+                            age: 26
+                        }
+                    })
+                },
+
+                // 这是同步的,演示点击按钮给vuex的state里定义的info对象添加个属性和属性值,而且是响应式添加,点击按钮添加属性后,所有用到这个info变量的地方的数据都要跟着变
+                // upInfo() {
+                //     this.$store.commit('updateInfo')
+                // }
+
+                // 这是异步的,演示点击按钮给vuex的state里定义的info对象添加个属性和属性值,而且是响应式添加,点击按钮添加属性后,所有用到这个info变量的地方的数据都要跟着变
+                upInfo() {
+                    // commit提交修改函数写在actions属性里,这个事件函数里写actions里定义的执行异步操作的函数
+                    // this.$store.dispatch('updateinfo')
+
+                    // dispatch()也可以传递参数,演示传个对象
+                    /* this.$store.dispatch('updateinfo', {
+                        message: '这是要传给actions里定义的函数的数据',
+                        // 自定义的回调函数,用来在异步请求是否执行完时给我一个反馈信息,res参数接收的是actions里定义的函数里面调用的回调函数时传过来的参数,所以他们定义和调用时可以相互传参数
+                        success: (res) => {
+                            console.log('这是在actions里定义的函数里面调用的回调函数,主要是为了知道那个异步请求是不是执行结束了,因为只有异步请求执行结束了才会执行下一行代码,也就是这个回调函数')
+                            console.log(res);
+                        }
+                    }) */
+
+                    // dispatch()正常传参数,dispatch()还能返回一个promise实例对象,接收的是actions里定义的执行异步操作的函数返回的promise实例对象,在这里调用promise实例对象的.then()方法,让代码看起来更优雅更清晰
+                    this.$store.dispatch('updateinfo', '我是要传给actions里定义的执行异步操作的函数的参数').then(res => {
+                        console.log(res);
+                    })
+                }
+            },
+        }
+
+        const vm = new Vue({
+            el: '#app',
+            // 和路由一样的用法,也要把vuex插件注册到vue实例对象里
+            store,
+            // 注册子组件
+            components: {
+                home
+            }
+        });
+    </script>
+</body>
+
+</html>

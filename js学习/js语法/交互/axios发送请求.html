@@ -67,6 +67,8 @@ axios发请求有2种写法:
         axios.defaults.timeout = 毫秒数;
         axios.defaults.baseURL = '经常要请求的后台url地址';
         axios.defaults.headers['mytoken'] = '要携带的token值' //请求头[]里可以写很多种,这里只演示携带token;
+        axios.defaults.transformRequest:[function(data){}] //发送请求前处理一下数据
+        axios.defaults.transformResponse: [function(data){}] //请求到的数据做下处理再返回
     
 
     *并不是所有请求都只发给同一个服务器,所以用全局的axios和全局配置并不合理,实际开发中,都用create()方法创建axios实例,在实例里写默认配置,这样哪个请求想发给哪个服务器,只要调用写了那个服务器ip地址的实例就行,创建实例并配置默认值:

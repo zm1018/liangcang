@@ -31,6 +31,7 @@
                 <div>
                     <h1>我是首页组件</h1>
                     <button @click="goBack1">跳转到列表页</button>
+                    <h2>取出查询字符串参数里的uname值:{{$route.query.uname}}</h2>
                 </div>
             `,
             methods: {
@@ -63,6 +64,7 @@
                     path: '/home/:id', //动态路由接收router.push()里params属性里id的值
                     component: home,
                     name: 'h1' //这个路由的名字是h1,名字可以随便取
+
                 },
 
                 //这个是普通路由

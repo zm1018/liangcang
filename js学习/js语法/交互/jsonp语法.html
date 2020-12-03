@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 声明一个函数,用来跨域下载数据,形参,用来接收函数调用时传入的实参;
+        function download(data) {
+            // 这里写处理下载到的数据的代码
+            alert('下载到的数据是:' + data);
+        }
+    </script>
+    <script>
+        // 这里动态创建script标签,在标签的src属性的url后面拼接查询字符串,调用上面的下载数据的函数;
+        window.onload = function() {
+            var btn = document.getElementById('btn');
+            btn.onclick = function() {
+                // 点击按钮时下载数据,所以要点击按钮时创建script标签
+                var script = document.createElement('script');
+                // 将标签的src属性值传要下载的数据的url
+                // 这个是本地创建了一个1.js文件,在里面调用了下载数据的函数,所以ur后面不用拼接查询字符串调用函数
+                script.src = '1.js';
+                // 将创建的标签插入到body标签里
+                document.body.appendChild(script);
+            }
+
+
+        }
+    </script>
+</head>
+
+<body>
+    <button id="btn">点击下载数据</button>
+</body>
+
+</html>

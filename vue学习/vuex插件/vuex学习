@@ -1,0 +1,124 @@
+vuex是专门为vue管理公共状态(变量)的插件,类似管理数据变量的管家,写在vuex里的变量,所有组件都可以使用,而且变量值是动态监听的,只要某一个组件里改了这个变量的值,其它引用这个变量的地方,变量值会自动更新,
+在浏览器上安装devtools插件,插件会记录每次都是哪个组件改的这个变量值,这样如果变量数据出错能很容易找到问题所在的组件文件;
+一般存购物车商品/用户登录状态等这样的变量,很多页面都要用,这种变量就需要写在vuex里,而不是写在vue各组件的data属性里,写在组件里数据传递很麻烦,写在vuex里让组件之间的数据传递更方便;
+使用步骤:
+  1.安装vuex插件,项目上线了也要用这个插件,所以不能加-dev:
+    cnpm i vuex --save
+  2.建一个store文件夹,里面建一个index.js文件,文件里导入vuex里的store全局构造函数,创建实例对象:
+  cli脚手架里用:
+    import { createStore } from 'vuex'
+    export default createStore({
+      state: {},
+      mutations:{},
+      actions: {},
+      getters: {},
+      modules: {}
+    })
+  普通html页面script标签引入时用:
+    const store = new Vuex.Store({
+      state: {},
+      mutations:{},
+      actions: {},
+      getters: {},
+      modules: {}
+    })
+    3.每个状态的作用和写法:
+      state:
+        和组件里的data属性一样,定义变量的地方,这里定义的变量属于响应式的公共变量,所有页面都可以使用,比组件间数据传递更方便,只要变量值有修改,所有页面自动修改更新,
+        state单一状态树(single source of truth)概念,就是一个项目只创建一个store实例对象,所有公共变量都交给一个store对象管理,调用$store时,只会获取唯一的store实例对象,方便后期维护和管理;
+          state: {
+            num: 2,
+            obj: {a:1,b:'haha'}
+          }
+        调用:
+          $store.state.变量名
+
+      getters:
+        和组件的计算属性作用一样,用来加工理state里定义的数据:
+        getters: {
+          f5(state) {
+            return 箭头函数的形参 => {
+              return state.要加工处理的变量.filter(item => item > 箭头函数的形参)
+            }
+          }
+        }
+      调用:
+        <h1>{{ $store.getters.f5(要传给箭头函数的实参)}}</h1>
+
+      mutations:
+        所有定义在state里的变量,只要不是异步请求得到的数据,都在这里面定义函数来修改,才能被浏览器插件devtools监测到修改记录;
+        mutations里定义的修改state里定义的变量的那些函数名学名叫事件类型,后面的函数部分叫回调函数,可以在函数调用时可以传多种数据类型的实参,通过形参接收,形参学名叫做payload(载荷),写法:
+        这种形参接收的是简单数据类型:
+          mutations: {
+            f1 (state,payload) {
+              state.变量名 += payload
+            }           
+          }     
+      调用:
+        组件里调用修改函数commit()提交,这里传实参,传的是简单数据类型: 
+        methods:{
+          f1() {
+            this.$store.commit('函数名也就是事件类型名','实参具体的数据值例如:"你好"') 
+          },
+          //这种是用户可以传值给形参的:
+          f2(形参) {
+            this.$store.commit('函数名也就是事件类型名',形参) 
+          }
+        }
+        标签里调用methods里定义的事件函数,让用户传实参:
+          <h1 @click="f2(用户调用事件函数传的f2的实参)"></h1>
+
+      这种形参接收的是复杂数据类型:
+        接收的是commit()里的那个{},要使用对象里面的实参,得形参.变量才行;
+        函数名(state,payload) {
+          state.公共变量名 += 形参.实参变量名1
+        }
+      调用:
+        给commit()里传对象,函数形参接收的是整个对象:
+        this.$store.commit({
+          type: '函数名',
+          实参变量名1:值,
+          实参变量名2:值
+        })
+
+    actions:
+      所有定义在state里的变量,只要是异步请求的,都要把mutations里定义的修改函数,写在这里定义的函数里commit()提交,这样浏览器才能监测变量的修改记录;
+      参数context接收整个store实例对象,payload接收调用这里定义的函数时传的实参,可以是多种类型的参数:
+        actions: {
+          f3(context,payload) {
+            这里发送异步请求的代码里写提交修改函数 {
+              context.commit('f1');
+              console.log(payload)
+            }
+          }
+        }
+      组件里调用:
+        methods: {
+          ff() {
+            this.$store.dispatch('f3','实参')
+          }
+        }
+
+    modules:
+      变量都定义在vuex的store实例对象state里阅读性太差,也不好找,分一部分写到modules里,它会自动以 对象: {各个变量:值} 的形式合并到store实例对象的state里,modules里可以写多个模块,模块里的属性调用时都和store实例对象里调用写法一样:
+      modules: {
+        模块A: a,
+        模块B: b
+      }
+      const a = {
+          模块里定义的变量使用时$store.state.模块名.变量名
+          state: {
+            变量1: 值
+          },
+          模块里的getters里定义的函数可以传3个参数,state接收模块里的state里定义的所有变量,getters接收模块里定义在getters里的所有函数,rootState接收store实例对象里的state里定义的所有变量:
+          getters: {
+            f1 (state,getters,rootState) {
+              return state.要处理的变量.处理变量的方法()
+            }
+          },
+          定义函数修改模块里state里定义的变量
+          mutations: {},
+          只能commit()提交模块里的mutations定义的修改函数
+          actions: {}
+        }
+    
